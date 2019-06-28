@@ -21,6 +21,7 @@ export default {
 <style>
 :root {
   --bordercolor: #d3d3d3;
+  
 }
 /* CSS */
 </style>
