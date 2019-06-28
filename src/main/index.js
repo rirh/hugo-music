@@ -21,7 +21,9 @@ function createWindow() {
     height: 563,
     useContentSize: true,
     width: 1000,
+    frame: false,
   });
+  mainWindow.setMenu(null);
 
   mainWindow.loadURL(winURL);
 
@@ -29,8 +31,16 @@ function createWindow() {
     mainWindow = null;
   });
 }
-
 app.on('ready', createWindow);
+// 设置隐藏菜单
+
+/**
+ *
+ *
+ *
+ */
+require('./main');
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

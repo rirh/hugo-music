@@ -8,7 +8,8 @@ export default new Router({
     {
       path: '/',
       name: 'landing-page',
-      component: require('@/components/LandingPage').default,
+      meta: { title: '首页' },
+      component: () => import('@/views/Home'),
     },
     {
       path: '*',
