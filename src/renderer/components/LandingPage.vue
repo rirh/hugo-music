@@ -8,6 +8,7 @@
         </span>
         <system-information></system-information>
       </div>
+      <button @click="handleLogin">send</button>
 
       <div class="right-side">
         <div class="doc">
@@ -30,17 +31,22 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation';
-
-  export default {
-    name: 'landing-page',
-    components: { SystemInformation },
-    methods: {
-      open(link) {
-        this.$electron.shell.openExternal(link);
-      },
+import { get_cell_phone } from '@/actions';
+import SystemInformation from './LandingPage/SystemInformation';
+// eslint-disable-next-line import/first
+export default {
+  name: 'landing-page',
+  components: { SystemInformation },
+  methods: {
+    async handleLogin() {
+      const res = await get_cell_phone('phone=13683656716&password=Netease123.');
+      console.log(res);
     },
-  };
+    open(link) {
+      this.$electron.shell.openExternal(link);
+    },
+  },
+};
 </script>
 
 <style>

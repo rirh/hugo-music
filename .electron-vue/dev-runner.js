@@ -161,17 +161,17 @@ function greeting () {
   const cols = process.stdout.columns
   let text = ''
 
-  if (cols > 104) text = 'electron-vue'
-  else if (cols > 76) text = 'electron-|vue'
+  if (cols > 104) text = 'TIGER ZH'
+  else if (cols > 76) text = 'TIGER |ZH'
   else text = false
 
   if (text) {
     say(text, {
-      colors: ['yellow'],
-      font: 'simple3d',
+      colors: ['white'],
+      font: 'block',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  electron-vue'))
+  } else console.log(chalk.yellow.bold('\n  TIGER ZH'))
   console.log(chalk.blue('  getting ready...') + '\n')
 }
 
