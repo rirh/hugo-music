@@ -14,6 +14,8 @@
   },
   "main": "background.js",
   "dependencies": {
+    "ant-design-vue": "^1.3.10",
+    "babel-plugin-import": "^1.12.0",
     "cfonts": "^2.4.3",
     "core-js": "^2.6.5",
     "register-service-worker": "^1.6.2",

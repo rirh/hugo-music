@@ -5,6 +5,15 @@
 </template>
 
 <style lang="less">
+:root{
+  --red:#d5504b;
+  --btnRed:#d33a31;
+  --white:#f0c2c0;
+  --black:#2f2f2f;
+  --bgColor:#ededed;
+  --menuHover:#e2e2e2;
+  --tipsColor:#888;
+}
 body{
   margin: 0;
 }

@@ -11,12 +11,12 @@ footer {
   flex: 1;
 } */
 header {
-  height: 8vh;
+  height: 7.3vh;
   background-color: bisque;
   -webkit-app-region: drag;
 }
 footer {
-  height: 8vh;
+  height: 9.1vh;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -33,7 +33,7 @@ footer {
 .HolyGrail-nav,
 .HolyGrail-ads {
   /* 两个边栏的宽度设为12em */
-  flex: 0 0 30%;
+  flex: 0 0 20%;
   background-color: aquamarine;
 }
 .HolyGrail-nav {
@@ -54,21 +54,31 @@ footer {
 </style>
 
 <template>
- <body class="HolyGrail">
+<body class="HolyGrail">
   <header>
-    <Header/>
+    <Header />
   </header>
   <div class="HolyGrail-body">
-    <main class="HolyGrail-content">contant</main>
-    <nav class="HolyGrail-nav">nav</nav>
+    <main class="HolyGrail-content">
+      <Contant />
+    </main>
+    <nav class="HolyGrail-nav">
+      <Control />
+    </nav>
   </div>
-  <footer>footer</footer>
+  <footer>
+    <Music />
+  </footer>
 </body>
 </template>
 
 <script lang="ts">
+import Header from '@/components/Header';
+import Control from '@/components/Control';
+import Contant from '@/components/Contant';
+import Music from '@/components/Music';
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component({})
+@Component({ components: { Header, Control, Contant, Music } })
 export default class Home extends Vue {}
 </script>

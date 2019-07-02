@@ -1,0 +1,56 @@
+<style lang="less" scoped>
+.wapper {
+  height: 100%;
+  width: 98%;
+  margin-left: 2%;
+  background-color: var(--red);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &-link {
+    color: var(--white);
+    font-weight: 500;
+    cursor: default;
+  }
+}
+</style>
+
+<template>
+  <div class="wapper">
+    <router-link
+      class="wapper-link"
+      v-for="(menu,index) in router"
+      tag="span"
+      :key="index"
+      :to="menu.path"
+    >{{menu.name}}</router-link>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import routers from '@/routers';
+
+@Component
+export default class HelloWorld extends Vue {
+  @Prop() private msg!: string;
+  get router() {
+    let result: any = [];
+    const router: any = routers;
+    const { fullPath }: any = this.$route;
+    if (fullPath) {
+      const findFatherRouter = (e: any) => {
+        return ~(fullPath.indexOf(e.path));
+      };
+      const routerCursor = router.find(findFatherRouter);
+      result = routerCursor.children;
+    }
+    return result;
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="less">
+</style>
