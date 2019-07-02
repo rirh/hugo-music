@@ -40,11 +40,9 @@ export default class HelloWorld extends Vue {
     const router: any = routers;
     const { fullPath }: any = this.$route;
     if (fullPath) {
-      const findFatherRouter = (e: any) => {
-        return ~(fullPath.indexOf(e.path));
-      };
+      const findFatherRouter = (e: any) => ~fullPath.indexOf(e.path);
       const routerCursor = router.find(findFatherRouter);
-      result = routerCursor.children;
+      if (routerCursor) {result = routerCursor.children; }
     }
     return result;
   }

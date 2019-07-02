@@ -8,7 +8,7 @@ export default [
     name: '发现音乐',
     // <a-icon type="customer-service" />
     type: 'customer-service',
-    // component: () => import('@/views/Find/index.vue'),
+    component: () => import('@/views/Find/index.vue'),
     meta: { title: '发现音乐', keepAlive: true, permission: ['dashboard'] },
     redirect: '/find/recommed',
     children: [ ...findRouters ],

@@ -3,7 +3,7 @@
 
 <template>
 <div>
-  个性推荐
+  作者电台
 </div>
 </template>
 

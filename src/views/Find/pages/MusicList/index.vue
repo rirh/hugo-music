@@ -3,7 +3,7 @@
 
 <template>
 <div>
-  个性推荐
+  歌单
 </div>
 </template>
 
