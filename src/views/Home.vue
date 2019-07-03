@@ -1,10 +1,11 @@
 <style lang="less" scoped>
 .HolyGrail {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   flex-direction: column;
   background-color: antiquewhite;
   text-align: center;
+  overflow: hidden;
 }
 /* header,
 footer {
@@ -26,9 +27,11 @@ footer {
 .HolyGrail-body {
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 .HolyGrail-content {
   flex: 1;
+  overflow: hidden;
 }
 .HolyGrail-nav,
 .HolyGrail-ads {

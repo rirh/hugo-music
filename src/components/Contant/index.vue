@@ -2,7 +2,9 @@
 .wapper {
   height: 100%;
   width: 100%;
+  overflow: scroll;
   background-color: white;
+  -webkit-overflow-scrolling: touch;
 }
 </style>
 

@@ -23,7 +23,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 2;
     }
+
     &-close {
       background-color: #fc605c;
     }
@@ -89,10 +91,10 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      &-icon{
+      &-icon {
         margin-left: 20px;
         font-size: 18px;
-        color: var(--white)
+        color: var(--white);
       }
     }
   }
@@ -102,13 +104,13 @@
 <template>
   <div class="wapper">
     <div class="wapper-menu">
-      <span class="wapper-menu-tips wapper-menu-close">
+      <span @click="handleMenu('close')" class="wapper-menu-tips wapper-menu-close">
         <!-- <strong>x</strong> -->
       </span>
-      <span class="wapper-menu-tips wapper-menu-min">
+      <span @click="handleMenu('min')" class="wapper-menu-tips wapper-menu-min">
         <!-- <strong>+</strong> -->
       </span>
-      <span class="wapper-menu-tips wapper-menu-zoom">
+      <span @click="handleMenu('zoom')" class="wapper-menu-tips wapper-menu-zoom">
         <!-- <strong>🤓</strong> -->
       </span>
     </div>
@@ -141,12 +143,43 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Menu from '@/components/Menu';
+import { ipcRenderer, remote } from 'electron';
+import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
 @Component({
   components: { Menu },
 })
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
-
+  public handleMenu(key: any) {
+    // remote.getCurrentWindow().maximize();
+    // remote.getCurrentWindow().minimize();
+    // remote.getCurrentWindow().unmaximize();
+    // remote.getCurrentWindow().restore();
+    const mainWindow = remote.getCurrentWindow();
+    const build: any = {
+      close: () => {
+        // ipcRenderer.send(MAIN_CLOSE);
+        mainWindow.unmaximize();
+      },
+      min: () => {
+        // ipcRenderer.send(MAIN_MIN);
+        mainWindow.minimize();
+      },
+      zoom: () => {
+        if (mainWindow.isFullScreen()) {
+          mainWindow.setFullScreen(false);
+          return;
+        }
+        // ipcRenderer.send(MAIN_ZOOM);
+        if (mainWindow.isMaximized()) {
+          mainWindow.setFullScreen(true);
+        } else {
+          mainWindow.maximize();
+        }
+      },
+    };
+    build[key]();
+  }
   public handleBack() {
     this.$router.go(-1);
   }

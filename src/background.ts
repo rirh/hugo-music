@@ -37,6 +37,7 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+  require('./background.main')
 }
 
 // Quit when all windows are closed.

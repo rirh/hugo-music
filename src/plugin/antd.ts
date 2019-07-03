@@ -1,12 +1,18 @@
 import Vue from 'vue';
-import { Button, Icon, Avatar, Row, Col } from 'ant-design-vue';
+import { Button, Icon, Avatar, Row, Col, Carousel, Skeleton, List, Card } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1272441_ynetj48glqm.js',
+  // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
+  scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',
+
 });
+Vue.component(IconFont.name, IconFont);
 Vue.component(Button.name, Button);
 Vue.component(Icon.name, Icon);
 Vue.component(Avatar.name, Avatar);
 Vue.component(Row.name, Row);
 Vue.component(Col.name, Col);
-Vue.component(IconFont.name, IconFont);
+Vue.component(Carousel.name, Carousel);
+Vue.component(Skeleton.name, Skeleton);
+Vue.component(List.name, List);
+Vue.component(Card.name, Card);
