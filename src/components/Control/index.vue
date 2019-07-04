@@ -23,12 +23,12 @@
       font-size: 14px;
     }
   }
-  &-tips{
+  &-tips {
     width: 100%;
-     justify-self: flex-start;
-     display: flex;
-     color: var(--tipsColor);
-     margin-left: 10px;
+    justify-self: flex-start;
+    display: flex;
+    color: var(--tipsColor);
+    margin-left: 10px;
   }
   &-main {
     margin-top: 10px;
@@ -47,8 +47,12 @@
         font-weight: 500;
         flex: 1;
         text-align: left;
-        
+        font-size: 13px;
       }
+    }
+    .active {
+      background-color: var(--menuHover);
+      color: var(--red);
     }
     &-list:hover {
       background-color: var(--menuHover);
@@ -70,14 +74,24 @@
       <a-icon class="wapper-avatar-icon" type="caret-right" />
     </div>
     <dl class="wapper-main">
-      <dd class="wapper-main-list"  v-for="(menu,index) in menu1" :key="index">
+      <dd
+        :class="{'active':activeMenu(menu)}"
+        class="wapper-main-list"
+        v-for="(menu,index) in menu1"
+        :key="index"
+      >
         <a-icon class="wapper-main-list-icon" :type="menu.type" />
         <router-link class="wapper-main-list-link" tag="span" :to="menu.path">{{menu.name}}</router-link>
       </dd>
     </dl>
     <h5 class="wapper-tips">我的音乐</h5>
     <dl class="wapper-main">
-      <dd class="wapper-main-list" v-for="(menu,index) in menu2" :key="index">
+      <dd
+        :class="{'active':activeMenu(menu)}"
+        class="wapper-main-list"
+        v-for="(menu,index) in menu2"
+        :key="index"
+      >
         <a-icon class="wapper-main-list-icon" :type="menu.type" />
         <router-link class="wapper-main-list-link" tag="span" :to="menu.path">{{menu.name}}</router-link>
       </dd>
@@ -105,6 +119,12 @@ export default class HelloWorld extends Vue {
   }
   public menus = Nav;
   @Prop() private msg!: string;
+  public activeMenu(arg: any) {
+    let result = false;
+    const { fullPath } = this.$route;
+    if (~fullPath.indexOf(arg.path)) { result = true; }
+    return result;
+  }
 }
 </script>
 

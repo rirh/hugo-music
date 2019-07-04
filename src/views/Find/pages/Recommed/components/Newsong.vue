@@ -1,8 +1,9 @@
 <style lang="less" scoped>
 .newsong {
+  padding: 1vw;
   &-tips {
     text-align: left;
-    margin-left: 13px;
+    margin-left: 1vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -20,13 +21,13 @@
       flex-wrap: wrap;
     }
     &-list {
-      flex: 0 0 42%;
+      flex: 0 0 44%;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       border-top: 1px solid #efefef;
-      margin: 0 4%;
-      padding: 5px 0;
+      margin: 0 3%;
+      padding: 1vw 0;
       cursor: pointer;
 
       &-left {
@@ -62,6 +63,11 @@
         color: #999;
       }
       &-right {
+        // display: flex;
+        // justify-content: flex-start;
+        // align-items: flex-start;
+        // flex-direction: column;
+        align-self: flex-start;
         &-name {
           text-align: left;
           font-size: 14px;
@@ -77,41 +83,66 @@
 </style>
 
 <template>
-  <a-skeleton class="newsong" :loading="loading" active>
-    <div class="newsong-newsong">
-      <h3 class="newsong-tips">
-        最新音乐
-        <AIconfont class="newsong-tips-icon" type="icon-right" />
-      </h3>
-      <dl class="newsong-newsong-lists">
-        <dd class="newsong-newsong-list" v-for="(newsong,index) in data" :key="index">
-          <div class="newsong-newsong-list-left">
-            <span class="newsong-newsong-list-left-tips">
-              <AIconfont class="newsong-newsong-list-left-tips-icon" type="icon-up1-copy" />
-            </span>
-            <img class="newsong-newsong-list-left-img" :src="newsong.song.album.picUrl" alt />
-          </div>
-          <div class="newsong-newsong-list-index">{{index+1}}</div>
-          <div class="newsong-newsong-list-right">
-            <div class="newsong-newsong-list-right-name">{{newsong.name}}</div>
-            <div class="newsong-newsong-list-right-auth">{{newsong.song.artists[0].name}}</div>
-          </div>
-        </dd>
-      </dl>
+  <a-skeleton :loading="loading" active>
+    <div class="newsong">
+      <div class="newsong-newsong">
+        <h3 class="newsong-tips">
+          最新音乐
+          <AIconfont class="newsong-tips-icon" type="icon-right" />
+        </h3>
+        <dl class="newsong-newsong-lists">
+          <dd
+            class="newsong-newsong-list"
+            @click="handlePlay(newsong)"
+            v-for="(newsong,index) in data"
+            :key="index"
+          >
+            <div class="newsong-newsong-list-left">
+              <span class="newsong-newsong-list-left-tips">
+                <AIconfont class="newsong-newsong-list-left-tips-icon" type="icon-up1-copy" />
+              </span>
+              <img
+                class="newsong-newsong-list-left-img"
+                :onerror="errorImg"
+                :src="newsong.song.album.picUrl"
+                alt
+              />
+            </div>
+            <div class="newsong-newsong-list-index">{{index+1}}</div>
+            <div class="newsong-newsong-list-right">
+              <div class="newsong-newsong-list-right-name">{{newsong.name}}</div>
+              <div class="newsong-newsong-list-right-auth">{{newsong.song.artists[0].name}}</div>
+            </div>
+          </dd>
+        </dl>
+      </div>
     </div>
   </a-skeleton>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
-  loading = true;
+  public loading = true;
+  public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    if (arg.length > 0) this.loading = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) {
+      this.loading = false;
+    }
+  }
+  public handlePlay(args: any) {
+    const params = {
+      id: args.id,
+      name: args.name,
+      auth: args.song.artists[0].name,
+      image: args.song.album.picUrl,
+    };
+    this.$store.commit('updata_music_data', params);
   }
 }
 </script>

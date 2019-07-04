@@ -19,3 +19,7 @@ GET  https://music.huzhihui.org.cn/personalized/mv
 GET  https://music.huzhihui.org.cn/program/recommend
 
 ###
+GET  https://music.huzhihui.org.cn/song/url?id=1371353582
+
+###
+

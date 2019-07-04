@@ -1,12 +1,12 @@
 <style lang="less" scoped>
 .ant-carousel /deep/ .slick-slide {
   text-align: center;
-  height: 295px;
+  height: 45vh;
   overflow: hidden;
 }
 
 .ant-carousel /deep/ .slick-slider {
-  width: 800px;
+  width: 80vw;
   height: 100%;
 }
 .ant-carousel /deep/ .custom-slick-arrow {
@@ -52,6 +52,7 @@
         border-top-left-radius: 20px;
         background-color: var(--btnRed);
         color: var(--white);
+        font-weight: bold;
       }
     }
   }
@@ -78,15 +79,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({})
 export default class Home extends Vue {
-  loading = true;
+  public loading = true;
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    if (arg.length > 0) this.loading = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) { this.loading = false; }
   }
 }
 </script>

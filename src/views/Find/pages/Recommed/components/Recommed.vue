@@ -1,17 +1,18 @@
 <style lang="less" scoped>
 .recommed {
+  padding: 1vw;
   &-tips {
     text-align: left;
-    margin-left: 13px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin-left: 1vw;
     &-icon {
       font-size: 24px;
     }
   }
   &-recommed {
-    padding: 10px;
+    padding:4vw;
     width: 100%;
     &-lists {
       margin-top: 10px;
@@ -20,7 +21,7 @@
       flex-wrap: wrap;
     }
     &-list {
-      flex: 0 0 20%;
+      flex: 1;
       cursor: pointer;
 
       &-main {
@@ -32,7 +33,7 @@
       }
       &-playcount {
         position: absolute;
-        right: 14px;
+        right: 1.4vw;
         top: 0;
         color: white;
         &-logo {
@@ -45,17 +46,17 @@
       }
       &-img {
         border-radius: 5px;
-        height: 135px;
-        width: 135px;
+        height: 20vh;
+        width: 14vw;
         overflow: hidden;
         object-fit: cover;
       }
       &-name {
         font-size: 13px;
         text-align: left;
-        padding: 5px 0;
+        padding: .5vw 0;
         // word-break: break-all;
-        width: 135px;
+        width: 14vw;
         color: #333;
         font-weight: 450;
       }
@@ -65,14 +66,15 @@
 </style>
 
 <template>
-  <a-skeleton class="recommed" :loading="loadingRecommed" active>
-    <div class="recommed-recommed">
-      <h3 class="recommed-tips">
-        推荐歌单
-        <AIconfont class="recommed-tips-icon" type="icon-right" />
-      </h3>
-      <div type="flex" class="recommed-recommed-lists">
-        <!-- <div
+  <a-skeleton :loading="loadingRecommed" active>
+    <div class="recommed">
+      <div class="recommed-recommed">
+        <h3 class="recommed-tips">
+          推荐歌单
+          <AIconfont class="recommed-tips-icon" type="icon-right" />
+        </h3>
+        <div type="flex" class="recommed-recommed-lists">
+          <!-- <div
             class="recommed-recommed-list"           
           >
             <div class="recommed-recommed-list-main">
@@ -85,17 +87,23 @@
               <img class="recommed-recommed-list-img" src="recommed.picUrl" alt />
               <div class="recommed-recommed-list-name">asdf</div>
             </div>
-        </div>-->
-        <div class="recommed-recommed-list" v-for="(recommed,index) in data" :key="index">
-          <div class="recommed-recommed-list-main">
-            <span class="recommed-recommed-list-playcount">
-              <AIconfont class="recommed-recommed-list-playcount-logo" type="icon-up1-copy" />
-              <span
-                class="recommed-recommed-list-playcount-count"
-              >{{transformW(recommed.playCount)}}</span>
-            </span>
-            <img class="recommed-recommed-list-img" :src="recommed.picUrl" alt />
-            <div class="recommed-recommed-list-name">{{recommed.name}}</div>
+          </div>-->
+          <div class="recommed-recommed-list" v-for="(recommed,index) in data.slice(0,10)" :key="index">
+            <div class="recommed-recommed-list-main">
+              <span class="recommed-recommed-list-playcount">
+                <AIconfont class="recommed-recommed-list-playcount-logo" type="icon-up1-copy" />
+                <span
+                  class="recommed-recommed-list-playcount-count"
+                >{{transformW(recommed.playCount)}}</span>
+              </span>
+              <img
+                class="recommed-recommed-list-img"
+                :onerror="errorImg"
+                :src="recommed.picUrl"
+                alt
+              />
+              <div class="recommed-recommed-list-name">{{recommed.name}}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -104,15 +112,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
-  loadingRecommed = false;
+  public loadingRecommed = true;
+  public errorImg = ERROR_IMG;
+
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    if (arg.length > 0) this.loadingRecommed = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) { this.loadingRecommed = false; }
   }
 
   /**

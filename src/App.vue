@@ -26,6 +26,7 @@ export default class Home extends Vue {
 
 <style lang="less">
 :root {
+  
   --red: #d5504b;
   --btnRed: #d33a31;
   --white: #f0c2c0;
@@ -33,6 +34,8 @@ export default class Home extends Vue {
   --bgColor: #ededed;
   --menuHover: #e2e2e2;
   --tipsColor: #888;
+  --textColor:#999;
+  --line:#efefef;
 }
 body {
   margin: 0;

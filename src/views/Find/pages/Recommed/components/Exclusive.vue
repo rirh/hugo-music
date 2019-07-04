@@ -1,8 +1,9 @@
 <style lang="less" scoped>
 .exclusive {
+  padding: 1vw;
   &-tips {
     text-align: left;
-    margin-left: 13px;
+    margin-left: 1vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -11,15 +12,14 @@
     }
   }
   &-exclusive {
-    padding: 10px;
-    width: 100%;
+    
     &-main {
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       &-list {
-        flex: 0 0 33%;
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -65,19 +65,26 @@
 </style>
 
 <template>
-  <a-skeleton class="exclusive" :loading="loadingExclusive" active>
-    <div class="exclusive-exclusive">
-      <h3 class="exclusive-tips">
-        独家放送
-        <AIconfont class="exclusive-tips-icon" type="icon-right" />
-      </h3>
-      <div class="exclusive-exclusive-main">
-        <div v-for="(exclusive,index) in data" :key="index" class="exclusive-exclusive-main-list">
-          <span class="exclusive-exclusive-main-list-tips">
-            <AIconfont type="icon-up1-copy" />
-          </span>
-          <img class="exclusive-exclusive-main-list-img" :src="exclusive.picUrl" alt />
-          <div class="exclusive-exclusive-main-list-name">{{exclusive.name}}</div>
+  <a-skeleton :loading="loadingExclusive" active>
+    <div class="exclusive">
+      <div class="exclusive-exclusive">
+        <h3 class="exclusive-tips">
+          独家放送
+          <AIconfont class="exclusive-tips-icon" type="icon-right" />
+        </h3>
+        <div class="exclusive-exclusive-main">
+          <div v-for="(exclusive,index) in data" :key="index" class="exclusive-exclusive-main-list">
+            <span class="exclusive-exclusive-main-list-tips">
+              <AIconfont type="icon-up1-copy" />
+            </span>
+            <img
+              class="exclusive-exclusive-main-list-img"
+              :onerror="errorImg"
+              :src="exclusive.picUrl"
+              alt
+            />
+            <div class="exclusive-exclusive-main-list-name">{{exclusive.name}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -85,15 +92,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
-  loadingExclusive = false;
+  public loadingExclusive = true;
+  public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    if (arg.length > 0) this.loadingExclusive = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) { this.loadingExclusive = false; }
   }
 }
 </script>

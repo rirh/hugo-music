@@ -1,13 +1,13 @@
 <style lang="less" scoped>
 .djprogram {
-  padding: 10px;
+  padding: 1vw;
   width: 100%;
   &-tips {
     text-align: left;
-    margin-left: 13px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin-left: 1vw;
     &-icon {
       font-size: 24px;
     }
@@ -59,38 +59,41 @@
 </style>
 
 <template>
-  <a-skeleton class="djprogram" :loading="loadingDjProgram" active>
-    <div class="djprogram-main">
-      <h3 class="djprogram-tips">
-        主播电台
-        <AIconfont class="djprogram-tips-icon" type="icon-right" />
-      </h3>
-      <dl class="djprogram-lists">
-        <dd class="djprogram-list" v-for="(djprogram,index) in data" :key="index">
-          <div class="djprogram-list-left">
-            <img class="djprogram-list-left-img" :src="djprogram.picUrl" alt />
-          </div>
-          <div class="djprogram-list-right">
-            <div class="djprogram-list-right-name">{{djprogram.name}}</div>
-            <div class="djprogram-list-right-auth">{{djprogram.copywriter}}</div>
-          </div>
-        </dd>
-      </dl>
+  <a-skeleton :loading="loadingDjProgram" active>
+    <div class="djprogram">
+      <div class="djprogram-main">
+        <h3 class="djprogram-tips">
+          主播电台
+          <AIconfont class="djprogram-tips-icon" type="icon-right" />
+        </h3>
+        <dl class="djprogram-lists">
+          <dd class="djprogram-list" v-for="(djprogram,index) in data" :key="index">
+            <div class="djprogram-list-left">
+              <img class="djprogram-list-left-img" :onerror="errorImg" :src="djprogram.picUrl" alt />
+            </div>
+            <div class="djprogram-list-right">
+              <div class="djprogram-list-right-name">{{djprogram.name}}</div>
+              <div class="djprogram-list-right-auth">{{djprogram.copywriter}}</div>
+            </div>
+          </dd>
+        </dl>
+      </div>
     </div>
   </a-skeleton>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
-  loadingDjProgram = false;
+  public loadingDjProgram = true;
+  public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    console.log(arg);
-    if (arg.length > 0) this.loadingDjProgram = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) { this.loadingDjProgram = false; }
   }
 
   /**

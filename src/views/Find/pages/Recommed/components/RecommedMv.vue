@@ -1,8 +1,9 @@
 <style lang="less" scoped>
 .recommedmv {
+  padding: 1vw;
   &-tips {
     text-align: left;
-    margin-left: 13px;
+    margin-left: 1vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -19,7 +20,7 @@
       justify-content: center;
       align-items: center;
       &-list {
-        flex: 0 0 25%;
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -60,28 +61,35 @@
 </style>
 
 <template>
-  <a-skeleton class="recommedmv" :loading="loadingRecommedmv" active>
-    <div class="recommedmv-recommedmvs">
-      <h3 class="recommedmv-tips">
-        推荐MV
-        <AIconfont class="recommedmv-tips-icon" type="icon-right" />
-      </h3>
-      <div class="recommedmv-recommedmvs-main">
-        <div
-          v-for="(recommedmv,index) in data"
-          :key="index"
-          class="recommedmv-recommedmvs-main-list"
-        >
-          <span class="recommedmv-recommedmvs-main-list-tips">
-            <AIconfont class="recommedmv-recommedmvs-list-playcount-logo" type="icon-up1-copy" />
-            <span
-              class="recommedmv-recommedmvs-list-playcount-count"
-            >{{transformW(recommedmv.playCount)}}</span>
-          </span>
-          <img class="recommedmv-recommedmvs-main-list-img" :src="recommedmv.picUrl" alt />
-          <div class="recommedmv-recommedmvs-main-list-name">
-            <div>{{recommedmv.name}}</div>
-            <div style="color:#999">{{recommedmv.artistName}}</div>
+  <a-skeleton :loading="loadingRecommedmv" active>
+    <div class="recommedmv">
+      <div class="recommedmv-recommedmvs">
+        <h3 class="recommedmv-tips">
+          推荐MV
+          <AIconfont class="recommedmv-tips-icon" type="icon-right" />
+        </h3>
+        <div class="recommedmv-recommedmvs-main">
+          <div
+            v-for="(recommedmv,index) in data"
+            :key="index"
+            class="recommedmv-recommedmvs-main-list"
+          >
+            <span class="recommedmv-recommedmvs-main-list-tips">
+              <AIconfont class="recommedmv-recommedmvs-list-playcount-logo" type="icon-up1-copy" />
+              <span
+                class="recommedmv-recommedmvs-list-playcount-count"
+              >{{transformW(recommedmv.playCount)}}</span>
+            </span>
+            <img
+              :onerror="errorImg"
+              class="recommedmv-recommedmvs-main-list-img"
+              :src="recommedmv.picUrl"
+              alt
+            />
+            <div class="recommedmv-recommedmvs-main-list-name">
+              <div>{{recommedmv.name}}</div>
+              <div style="color:#999">{{recommedmv.artistName}}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -90,16 +98,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 @Component({})
 export default class Home extends Vue {
-  loadingRecommedmv = false;
+  public loadingRecommedmv = true;
+  public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch("data")
-  handleChange(arg: any) {
-    console.log(arg);
-    if (arg.length > 0) this.loadingRecommedmv = false;
+  @Watch('data')
+  public handleChange(arg: any) {
+    if (arg.length > 0) { this.loadingRecommedmv = false; }
   }
 
   /**

@@ -4,7 +4,7 @@ const path = require("path");
 // const CompressionPlugin = require("compression-webpack-plugin");
 // const webpack = require("webpack");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  // .BundleAnalyzerPlugin;
+// .BundleAnalyzerPlugin;
 // const { env } = argv;
 
 const config = {
@@ -39,11 +39,16 @@ const config = {
           // "component-background": "#131722",
           // "border-color-base": "#212738",
           // "text-color": "#c5cbce"
+          'primary-color': '#d5504b',
+          'link-color': '#d5504b',
+          'success-color': 'd5504b'
         },
         javascriptEnabled: true
       }
     }
   },
-  
+
+  // ...other config
+
 };
 module.exports = config;

@@ -1,6 +1,9 @@
 // 服务器
 export const host = 'https://music.huzhihui.org.cn/';
 
+
+// 错误图片
+export const ERROR_IMG = `http://wx3.sinaimg.cn/large/006ARE9vgy1fwods66zi5g308c06wdfx.gif`;
 // 无需登录
 /// banner
 export const GET_BANNER = `${host}banner`;
@@ -12,6 +15,10 @@ export const GET_PERSONALIZED = `${host}personalized`;
 export const GET_PERSONALIZED_MV = `${host}personalized/mv`;
 // 推荐电台
 export const GET_DJ_PROGRAM = `${host}personalized/djprogram`;
+
+// 获取播放url
+export const GET_SONG_URL = `${host}song/url`;
+
 
 // 独家放送
 // 说明 : 调用此接口 , 可获取独家放送
