@@ -1,10 +1,11 @@
 import Vue from 'vue';
-import { Button, Icon, Avatar, Row, Col, Carousel, Skeleton, List, Card, Modal, Slider } from 'ant-design-vue';
+import { Button, Icon, Avatar, Row, Col, Carousel, Skeleton, List, Card, Modal, Slider, Popover } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
   // scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',
-  scriptUrl: '//at.alicdn.com/t/font_1272441_evj5r6r4oe7.js',
+  // scriptUrl: '//at.alicdn.com/t/font_1272441_evj5r6r4oe7.js',
+  scriptUrl: '//at.alicdn.com/t/font_1272441_xqo0fqvoxyn.js',
 });
 Vue.component(IconFont.name, IconFont);
 Vue.component(Button.name, Button);
@@ -18,3 +19,4 @@ Vue.component(List.name, List);
 Vue.component(Card.name, Card);
 Vue.component(Modal.name, Modal);
 Vue.component(Slider.name, Slider);
+Vue.component(Popover.name, Popover);

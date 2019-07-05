@@ -80,14 +80,15 @@
                 class="recommedmv-recommedmvs-list-playcount-count"
               >{{transformW(recommedmv.playCount)}}</span>
             </span>
-            <img
+            <a-avatar
+              shape="square"
               :onerror="errorImg"
               class="recommedmv-recommedmvs-main-list-img"
               :src="recommedmv.picUrl"
               alt
             />
             <div class="recommedmv-recommedmvs-main-list-name">
-              <div>{{recommedmv.name}}</div>
+              <div>{{recommedmv.name.length>20?`${recommedmv.name.substring(0,18)}...`:recommedmv.name}}</div>
               <div style="color:#999">{{recommedmv.artistName}}</div>
             </div>
           </div>
@@ -98,16 +99,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
 @Component({})
 export default class Home extends Vue {
   public loadingRecommedmv = true;
   public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch('data')
+  @Watch("data")
   public handleChange(arg: any) {
-    if (arg.length > 0) { this.loadingRecommedmv = false; }
+    if (arg.length > 0) {
+      this.loadingRecommedmv = false;
+    }
   }
 
   /**

@@ -101,7 +101,7 @@
               <span class="newsong-newsong-list-left-tips">
                 <AIconfont class="newsong-newsong-list-left-tips-icon" type="icon-up1-copy" />
               </span>
-              <img
+              <a-avatar shape="square"
                 class="newsong-newsong-list-left-img"
                 :onerror="errorImg"
                 :src="newsong.song.album.picUrl"

@@ -7,17 +7,19 @@ export default [
     path: '/find',
     name: '发现音乐',
     // <a-icon type="customer-service" />
-    type: 'customer-service',
+    // type: 'customer-service',
+    type: 'icon-wangyiyunyinle',
     component: () => import('@/views/Find/index.vue'),
     meta: { title: '发现音乐', keepAlive: true, permission: ['dashboard'] },
     redirect: '/find/recommed',
-    children: [ ...findRouters ],
+    children: [...findRouters],
   },
   {
     path: '/private',
     name: '私人FM',
     // <a-icon type="coffee" />
-    type: 'coffee',
+    // type: 'coffee',
+    type: 'icon-FM',
     component: () => import('@/views/Private/index.vue'),
     meta: { title: '私人FM', keepAlive: true, permission: ['dashboard'] },
   },
@@ -25,7 +27,8 @@ export default [
     path: '/vedio',
     name: '视频',
     // <a-icon type="video-camera" />
-    type: 'video-camera',
+    // type: 'video-camera',
+    type: 'icon-youtube',
     component: () => import('@/views/Vedio/index.vue'),
     meta: { title: '视频', keepAlive: true, permission: ['dashboard'] },
   },
@@ -33,7 +36,8 @@ export default [
     path: '/friends',
     name: '朋友',
     // <a-icon type="team" />
-    type: 'team',
+    // type: 'team',
+    type: 'icon-friend',
     component: () => import('@/views/Friends/index.vue'),
     meta: { title: '朋友', keepAlive: true, permission: ['dashboard'] },
   },
@@ -41,7 +45,8 @@ export default [
     path: '/dowload',
     name: '下载管理',
     // <a-icon type="download" />
-    type: 'download',
+    // type: 'download',
+    type: 'icon-package-down',
     component: () => import('@/views/Dowload/index.vue'),
     meta: { title: '下载管理', keepAlive: true, permission: ['dashboard'] },
   },
@@ -49,7 +54,8 @@ export default [
     path: '/radio',
     name: '我的电台',
     // <a-icon type="fire" />
-    type: 'fire',
+    // type: 'fire',
+    type: 'icon-diantai2',
     component: () => import('@/views/Radio/index.vue'),
     meta: { title: '我的电台', keepAlive: true, permission: ['dashboard'] },
   },
@@ -57,7 +63,8 @@ export default [
     path: '/favorite',
     name: '我的收藏',
     // <a-icon type="heart" />
-    type: 'heart',
+    // type: 'heart',
+    type: 'icon-favoritestarrate',
     component: () => import('@/views/Favorite/index.vue'),
     meta: { title: '我的收藏', keepAlive: true, permission: ['dashboard'] },
   },

@@ -5,9 +5,25 @@ import {
   GET_NEW_SONG,
   GET_PERSONALIZED_MV,
   GET_DJ_PROGRAM,
+  GET_CAT_LIST,
+  GET_CAT_HOT,
+  GET_PLAY_HIGH_QUALITY,
 } from '@/constant/api';
 
 
+
+export const get_play_high_qualty = async (args: any) => {
+  const { response }: any = await http(`${GET_PLAY_HIGH_QUALITY}?${args}`);
+  return response;
+};
+export const get_cat_hot = async () => {
+  const { response }: any = await http(`${GET_CAT_HOT}`);
+  return response;
+};
+export const get_cat_list = async () => {
+  const { response }: any = await http(`${GET_CAT_LIST}`);
+  return response;
+};
 export const get_dj_program = async () => {
   const { response }: any = await http(`${GET_DJ_PROGRAM}`);
   return response;

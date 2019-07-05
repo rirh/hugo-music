@@ -69,8 +69,13 @@
         <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
           <a-icon type="right-circle" />
         </div>
-        <div class="swiper-swiper-list" v-for="(banner,index) in data" :key="index">
-          <img class="swiper-swiper-list-img" :src="banner.imageUrl" alt />
+        <div
+          @click="handleBanner(banner)"
+          class="swiper-swiper-list"
+          v-for="(banner,index) in data"
+          :key="index"
+        >
+          <a-avatar shape="square" class="swiper-swiper-list-img" :src="banner.imageUrl" alt />
           <span class="swiper-swiper-list-tips">{{banner.typeTitle}}</span>
         </div>
       </a-carousel>
@@ -79,15 +84,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { get_song_detail } from "@/actions";
 @Component({})
 export default class Home extends Vue {
   public loading = true;
   @Prop() private data!: any;
-  @Watch('data')
+  @Watch("data")
   public handleChange(arg: any) {
-    if (arg.length > 0) { this.loading = false; }
+    if (arg.length > 0) {
+      this.loading = false;
+    }
+  }
+  async handleBanner(item: any) {
+    if (item.targetType === 1) {
+      const { code, songs } = await get_song_detail(`${item.targetId}`);
+      if (code !== 200) return;
+      const [list]: any = songs;
+      const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
+      const params = {
+        id: item.targetId,
+        name: list.name,
+        auth: list.ar.reduce(reduceAuth, ""),
+        image: list.al.picUrl
+      };
+      this.$store.commit("updata_music_data", params);
+    }
   }
 }
 </script>

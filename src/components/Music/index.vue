@@ -3,7 +3,6 @@
   height: 100%;
   width: 100%;
   background-color: white;
-  border-top: 1px solid #f5f5f5;
   z-index: 4;
   position: relative;
 }
@@ -65,136 +64,286 @@
   }
   &-control {
     justify-content: center;
+    font-size: 24px;
+    &-heart {
+      font-size: 20px;
+      margin-right: 3vw;
+      color: var(--textColor);
+    }
+    &-previous {
+      color: var(--btnRed);
+    }
+    &-play {
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: var(--btnRed);
+      color: white;
+      margin: 0 2vw;
+      padding: 0 !important;
+      font-size: 24px;
+      line-height: 0;
+      border: none;
+    }
+    &-next {
+      color: var(--btnRed);
+    }
+    &-share {
+      margin-left: 3vw;
+      color: var(--textColor);
+    }
   }
   &-panel {
     justify-content: flex-end;
+    font-size: 22px;
+    color: var(--textColor);
+
+    &-play {
+      margin-right: 1vw;
+    }
+    &-plus {
+      margin-right: 1vw;
+    }
+    &-cibiaoquanyi {
+      font-size: 16px;
+      margin-right: 1vw;
+      font-weight: bold;
+    }
+    &-volume {
+      margin-right: 3vw;
+    }
   }
+}
+.ant-popover-inner-content {
+  padding: 1vw 5px;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 200ms;
+  -webkit-transform: opacity 200ms;
+  -moz-transform: opacity 200ms;
+  -ms-transform: opacity 200ms;
+  -o-transform: opacity 200ms;
 }
 </style>
 
 <template>
   <div class="wapper">
-    <a-slider id="progress" v-model="progress" :defaultValue="0" :tooltipVisible="false" />
+    <a-slider
+      id="progress"
+      v-model="progress"
+      @change="handleProgress"
+      :defaultValue="0"
+      :tooltipVisible="false"
+    />
     <div class="music">
-      <div class="music-flex music-info">
-        <span>
-          <img class="music-info-img" :src="img" alt />
-        </span>
-        <span class="music-info-base">
+      <div class="music-flex">
+        <div class="music-flex music-info" v-show="showinfo">
           <span>
-            <span class="music-info-base-name">{{name}}</span>
-            <span class="music-info-base-auth">&nbsp;-&nbsp;{{auth}}</span>
+            <img class="music-info-img" :src="img" alt />
           </span>
-          <span
-            class="music-info-base-duration"
-          >{{transformTimer(cursor)}}/{{transformTimer(duration)}}</span>
-        </span>
+          <span class="music-info-base">
+            <span>
+              <span class="music-info-base-name">{{name}}</span>
+              <span class="music-info-base-auth">&nbsp;-&nbsp;{{auth}}</span>
+            </span>
+            <span class="music-info-base-duration">
+              {{transformTimer(cursor)||'00:00'}}
+              &nbsp;/
+              &nbsp;
+              {{transformTimer(duration)||'00:00'}}
+            </span>
+          </span>
+        </div>
       </div>
       <div class="music-flex music-control">
-        <a-icon type="heart" />
-        <a-icon type="step-backward" />
-        <div @click="state==='playing'?pause:play">
-          <a-icon type="caret-right" />
-        </div>
-
-        <a-icon type="step-forward" />
+        <AIconfont class="music-control-heart" :type="true?'icon-heart-outline':'icon-heart'" />
+        <AIconfont class="music-control-previous" type="icon-skip-previous" />
+        <a-button type="primary" class="music-control-play" @click="handleStart">
+          <transition name="fade" mode="out-in">
+            <div>
+              <AIconfont v-show="state!=='playing'" type="icon-play" />
+              <AIconfont v-show="state==='playing'" type="icon-pause" />
+            </div>
+          </transition>
+        </a-button>
+        <AIconfont class="music-control-next" type="icon-skip-next" />
+        <AIconfont class="music-control-share" type="icon-share" />
       </div>
-      <div class="music-flex music-panel"></div>
+      <div class="music-flex music-panel">
+        <AIconfont class="music-panel-play" type="icon-playlist-play" />
+        <AIconfont class="music-panel-plus" type="icon-playlist-plus" />
+        <AIconfont class="music-panel-cibiaoquanyi" type="icon-cibiaoquanyi" />
+        <a-popover class="music-panel-pop">
+          <template slot="content">
+            <div style="height:100px;">
+              <a-slider vertical :defaultValue="100" v-model="volume" />
+            </div>
+          </template>
+          <AIconfont @click="handleVolumeType" class="music-panel-volume" :type="volumetype" />
+        </a-popover>
+      </div>
     </div>
-    <audio ref="player" :src="music"></audio>
+    <!-- <audio ref="player" :src="music"></audio> -->
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { get_song_url } from '@/actions';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { get_song_url, get_check_music } from "@/actions";
+import { notification } from "ant-design-vue";
+const player = new Audio();
 @Component
-export default class HelloWorld extends Vue {
+export default class Music extends Vue {
   get state() {
     return this.$store.state.music.state;
   }
+  public showinfo = false;
   public progress = 0;
-  public music = '';
-  public img = '';
-  public name = 'XXX';
-  public auth = 'XXX';
-  public player = {};
-  public cursor = '0';
-  public duration = '0';
-  @Prop() private msg!: string;
+  public music = "";
+  public img = "";
+  public name = "XXX";
+  public auth = "XXX";
+  public player = player;
+  public cursor = "0";
+  public duration = "0";
+  public volume = 100;
+  public volumecach = 100;
+  public volumetype = "icon-volume-high";
+  handleProgress(msg: any) {
+    const duration: any = this.duration;
+    this.player.currentTime = (msg / 100) * duration;
+  }
 
-  @Watch('$store.state.music.data', { deep: true })
+  @Watch("volume")
+  handleVolume(msg: any) {
+    if (msg === 100) {
+      this.volumetype = "icon-volume-high";
+    } else if (msg === 0) {
+      this.volumetype = "icon-volume-off";
+    } else {
+      this.volumetype = "icon-volume-medium";
+    }
+    if (msg && this.play) (this as any).player.volume = msg / 100;
+  }
+  @Prop() private msg!: string;
+  handleStart() {
+    if(this.cursor==='0')return;
+    if (this.player.play) {
+      const state = this.state;
+      if (state === "playing") {
+        this.pause();
+      } else {
+        this.play();
+      }
+    }
+  }
+
+  @Watch("$store.state.music.data", { deep: true })
   public async handleMusic({ id, image, name, auth }: any) {
+    this.showinfo = true;
     this.img = image;
-    this.name = name;
+    this.name = name.length > 27 ? `${name.substring(0, 22)}...` : name;
     this.auth = auth;
     this.handlePlay(id);
   }
-
-  public async handlePlay(id: any) {
-    if (!id) { return; }
-    const { code, data } = await get_song_url(id);
-    if (code === 200) {
-      const [music] = data;
-      (this as any).player.src = music.url;
-      // this.music = music.url;
-      this.play();
+  handleVolumeType() {
+    const type = this.volumetype;
+    if (this.volume != 0) this.volumecach = this.volume;
+    if (type === "icon-volume-off") {
+      this.volumetype = "icon-volume-medium";
+      this.player.muted = false;
+      this.volume = this.volumecach;
+    } else {
+      this.player.muted = true;
+      this.volume = 0;
+      this.volumetype = "icon-volume-off";
     }
   }
-  public play() {
-    if (this.player) {
-      const play = async () => {
-        const duration = (this as any).player.duration;
-        this.duration = duration;
-        this.$store.commit('updata_music_duration', duration);
-        this.$store.commit('updata_music_state', 'playing');
-        (this as any).player.play();
+  public async handlePlay(id: any) {
+    if (!id) {
+      return;
+    }
+    const { success, message }: any = await get_check_music(id);
+    if (!success) {
+      notification.error({
+        message: "提示",
+        description: message
+      });
+    }
+    const { code, data } = await get_song_url(id);
+    if (code !== 200) return;
+    const [music] = data;
+    (this as any).player.src = music.url;
 
+    (this as any).player.addEventListener("pause", this.pause());
+    (this as any).player.addEventListener("loadeddata", this.play());
+    (this as any).player.addEventListener("ended", this.stop());
+    (this as any).player.addEventListener("error", (error: any) => {
+      throw error;
+    });
+    // this.music = music.url;
+  }
+  public async play() {
+    if (this.player) {
+      let duration: any;
+      let currentTime: any;
+      this.$store.commit("updata_music_state", "playing");
+      (this as any).player.play();
+      //拿到总时长
+      (this as any).player.ondurationchange = () => {
+        duration = (this as any).player.duration;
+        this.duration = duration;
+        (this as any).player.volume = this.volume / 100;
+        this.$store.commit("updata_music_duration", duration);
+        // 拿到当前时长
         (this as any).player.ontimeupdate = () => {
-          const cursor = (this as any).player.currentTime;
-          this.cursor = cursor;
-          this.progress = (cursor / duration) * 100;
+          currentTime = (this as any).player.currentTime;
+          this.cursor = currentTime;
+          this.progress = (currentTime / duration) * 100;
         };
       };
-      (this as any).player.addEventListener('loadeddata', play);
-      (this as any).player.addEventListener('ended', this.stop);
-      (this as any).player.addEventListener('error', (error: any) => {
-        throw error;
-      });
     }
   }
   public pause() {
     const { state } = this.$store.state.music;
     if (this.player) {
-      if (state === 'playing') {
+      if (state === "playing") {
         (this as any).player.pause();
-        this.$store.commit('updata_music_state', 'pause');
+        this.$store.commit("updata_music_state", "pause");
       }
     }
   }
   public stop() {
-    const { state } = this.$store.state.music;
+    const state = this.state;
     if (this.player) {
-      if (state !== 'stop') {
-        (this as any).player.stop();
-        this.$store.commit('updata_music_state', 'stop');
+      if (state !== "stop") {
+        this.$store.commit("updata_music_state", "stop");
+        this.play();
       }
     }
   }
 
-  public mounted() {
-    this.player = this.$refs.player;
-    // localStorage.setItem("a", '123123123');
-    // const a= localStorage.getItem('a');
-  }
+  // public mounted() {
+  //   this.player = this.$refs.player;
+  //   // localStorage.setItem("a", '123123123');
+  //   // const a= localStorage.getItem('a');
+  // }
   public transformTimer(duration: any) {
     let result: any = 0;
     if (duration) {
       const min: any = `${Math.floor(duration / 60)}`;
       const sco: any = `${Math.floor(duration % 60)}`;
-      result = `${min.padStart(2, '0')}:${sco.padStart(2, '0')}`;
+      result = `${min.padStart(2, "0")}:${sco.padStart(2, "0")}`;
     }
-
     return result;
   }
 }

@@ -69,7 +69,13 @@
         <dl class="djprogram-lists">
           <dd class="djprogram-list" v-for="(djprogram,index) in data" :key="index">
             <div class="djprogram-list-left">
-              <img class="djprogram-list-left-img" :onerror="errorImg" :src="djprogram.picUrl" alt />
+              <a-avatar
+                shape="square"
+                class="djprogram-list-left-img"
+                :onerror="errorImg"
+                :src="djprogram.picUrl"
+                alt
+              />
             </div>
             <div class="djprogram-list-right">
               <div class="djprogram-list-right-name">{{djprogram.name}}</div>
@@ -83,17 +89,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
 
 @Component({})
 export default class Home extends Vue {
   public loadingDjProgram = true;
   public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch('data')
+  @Watch("data")
   public handleChange(arg: any) {
-    if (arg.length > 0) { this.loadingDjProgram = false; }
+    if (arg.length > 0) {
+      this.loadingDjProgram = false;
+    }
   }
 
   /**

@@ -77,7 +77,7 @@
             <span class="exclusive-exclusive-main-list-tips">
               <AIconfont type="icon-up1-copy" />
             </span>
-            <img
+            <a-avatar shape="square"
               class="exclusive-exclusive-main-list-img"
               :onerror="errorImg"
               :src="exclusive.picUrl"

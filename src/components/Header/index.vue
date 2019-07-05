@@ -6,6 +6,7 @@
   position: relative;
 
   &-menu:hover {
+    font-weight: bold;
   }
   &-menu {
     position: absolute;
@@ -99,6 +100,9 @@
     }
   }
 }
+.active {
+  font-weight: bold;
+}
 </style>
 
 <template>
@@ -141,12 +145,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import Menu from '@/components/Menu';
-import { ipcRenderer, remote } from 'electron';
-import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Menu from "@/components/Menu";
+import { ipcRenderer, remote } from "electron";
+import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from "@/constant/ipc";
 @Component({
-  components: { Menu },
+  components: { Menu }
 })
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
@@ -176,7 +180,7 @@ export default class HelloWorld extends Vue {
         } else {
           mainWindow.maximize();
         }
-      },
+      }
     };
     build[key]();
   }

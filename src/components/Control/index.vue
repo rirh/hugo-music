@@ -28,7 +28,7 @@
     justify-self: flex-start;
     display: flex;
     color: var(--tipsColor);
-    margin-left: 10px;
+    margin-left: 1vw;
   }
   &-main {
     margin-top: 10px;
@@ -40,7 +40,7 @@
       margin: 0;
       &-icon {
         font-size: 18px;
-        margin-left: 10px;
+        margin-left: 2vw;
       }
       &-link {
         margin-left: 10px;
@@ -80,7 +80,8 @@
         v-for="(menu,index) in menu1"
         :key="index"
       >
-        <a-icon class="wapper-main-list-icon" :type="menu.type" />
+        <AIconfont class="wapper-main-list-icon" :type="menu.type" />
+        <!-- <a-icon class="wapper-main-list-icon" :type="menu.type" /> -->
         <router-link class="wapper-main-list-link" tag="span" :to="menu.path">{{menu.name}}</router-link>
       </dd>
     </dl>
@@ -92,7 +93,8 @@
         v-for="(menu,index) in menu2"
         :key="index"
       >
-        <a-icon class="wapper-main-list-icon" :type="menu.type" />
+        <AIconfont class="wapper-main-list-icon" :type="menu.type" />
+        <!-- <a-icon class="wapper-main-list-icon" :type="menu.type" /> -->
         <router-link class="wapper-main-list-link" tag="span" :to="menu.path">{{menu.name}}</router-link>
       </dd>
     </dl>
@@ -100,8 +102,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import Nav from '@/routers';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Nav from "@/routers";
 
 @Component
 export default class HelloWorld extends Vue {
@@ -122,7 +124,9 @@ export default class HelloWorld extends Vue {
   public activeMenu(arg: any) {
     let result = false;
     const { fullPath } = this.$route;
-    if (~fullPath.indexOf(arg.path)) { result = true; }
+    if (~fullPath.indexOf(arg.path)) {
+      result = true;
+    }
     return result;
   }
 }

@@ -12,7 +12,7 @@
     }
   }
   &-recommed {
-    padding:4vw;
+    padding: 4vw;
     width: 100%;
     &-lists {
       margin-top: 10px;
@@ -54,7 +54,7 @@
       &-name {
         font-size: 13px;
         text-align: left;
-        padding: .5vw 0;
+        padding: 0.5vw 0;
         // word-break: break-all;
         width: 14vw;
         color: #333;
@@ -66,13 +66,9 @@
 </style>
 
 <template>
-  <a-skeleton :loading="loadingRecommed" active>
+  <a-skeleton :loading="loadingList" active>
     <div class="recommed">
       <div class="recommed-recommed">
-        <h3 class="recommed-tips">
-          推荐歌单
-          <AIconfont class="recommed-tips-icon" type="icon-right" />
-        </h3>
         <div type="flex" class="recommed-recommed-lists">
           <!-- <div
             class="recommed-recommed-list"           
@@ -88,7 +84,11 @@
               <div class="recommed-recommed-list-name">asdf</div>
             </div>
           </div>-->
-          <div class="recommed-recommed-list" v-for="(recommed,index) in data.slice(0,10)" :key="index">
+          <div
+            class="recommed-recommed-list"
+            v-for="(recommed,index) in data"
+            :key="index"
+          >
             <div class="recommed-recommed-list-main">
               <span class="recommed-recommed-list-playcount">
                 <AIconfont class="recommed-recommed-list-playcount-logo" type="icon-up1-copy" />
@@ -99,7 +99,7 @@
               <a-avatar
                 class="recommed-recommed-list-img"
                 :onerror="errorImg"
-                :src="recommed.picUrl"
+                :src="recommed.coverImgUrl"
                 alt
               />
               <div class="recommed-recommed-list-name">{{recommed.name}}</div>
@@ -112,18 +112,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
 
 @Component({})
 export default class Home extends Vue {
-  public loadingRecommed = true;
   public errorImg = ERROR_IMG;
-
-  @Prop() private data!: any;
-  @Watch('data')
+  public loadingList = true;
+  @Prop() data: any;
+  @Watch("data")
   public handleChange(arg: any) {
-    if (arg.length > 0) { this.loadingRecommed = false; }
+    if (arg.length > 0) {
+      this.loadingList = false;
+    }
   }
 
   /**

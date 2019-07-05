@@ -19,6 +19,28 @@ export const GET_DJ_PROGRAM = `${host}personalized/djprogram`;
 // 获取播放url
 export const GET_SONG_URL = `${host}song/url`;
 
+// 获取播放url
+export const GET_CHENK_MUSIC = `${host}check/music`;
+
+
+// 获取歌曲详情
+export const GET_SONG_DETAIL = `${host}song/detail`;
+
+// 获取歌曲详情
+export const GET_ALBUM = `${host}album`;
+
+// 获取歌单分类
+export const GET_CAT_LIST = `${host}playlist/catlist`;
+// 获取热门分类
+export const GET_CAT_HOT = `${host}playlist/hot`;
+// 获取精品电台
+export const GET_PLAY_HIGH_QUALITY = `${host}top/playlist/highquality`;
+
+
+
+
+
+
 
 // 独家放送
 // 说明 : 调用此接口 , 可获取独家放送

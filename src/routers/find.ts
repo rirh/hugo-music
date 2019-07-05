@@ -6,7 +6,8 @@ export default [
     path: '/find/recommed',
     name: '个性推荐',
     // <a-icon type="customer-service" />
-    type: 'customer-service',
+    // type: 'customer-service',
+    type: 'icon-wangyiyunyinle',
     component: () => import('@/views/Find/pages/Recommed/index.vue'),
     meta: { title: '个性推荐', keepAlive: true, permission: ['dashboard'] },
   },
