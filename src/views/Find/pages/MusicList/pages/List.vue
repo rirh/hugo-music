@@ -19,9 +19,10 @@
       display: flex;
       width: 100%;
       flex-wrap: wrap;
+      align-items: flex-start;
     }
     &-list {
-      flex: 1;
+      flex: 0 0 20%;
       cursor: pointer;
 
       &-main {
@@ -112,15 +113,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
   public loadingList = true;
-  @Prop() data: any;
-  @Watch("data")
+  @Prop() public data: any;
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg.length > 0) {
       this.loadingList = false;

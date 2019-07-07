@@ -99,14 +99,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 @Component({})
 export default class Home extends Vue {
   public loadingRecommedmv = true;
   public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch("data")
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg.length > 0) {
       this.loadingRecommedmv = false;

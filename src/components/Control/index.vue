@@ -102,8 +102,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Nav from "@/routers";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Nav from '@/routers';
 
 @Component
 export default class HelloWorld extends Vue {

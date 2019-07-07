@@ -2,7 +2,7 @@
 .tags {
   display: flex;
   align-items: center;
-  overflow: scroll;
+  overflow: hidden;
   &-left {
     display: flex;
     justify-content: center;
@@ -10,6 +10,8 @@
     padding: 3px 10px;
     border: 1px solid var(--borderColor);
     border-radius: 20px;
+    flex: 0 0 14%;
+
     &-text {
       font-weight: 400;
     }
@@ -33,6 +35,7 @@
   width: 73vw;
   flex-direction: column;
   overflow: scroll;
+  height: 30vw;
   &-dl {
     display: flex;
 
@@ -72,21 +75,21 @@
                   class="types-dl-list-dd"
                   v-for="(type,index) in values"
                   :key="index"
-                  @click="showhot=!showhot;$emit('on-type',type)"
+                  @click="handleType(type)"
                 >{{type.name}}</dd>
               </div>
             </dl>
           </div>
         </template>
         <div class="tags-left" type="primary">
-          <span class="tags-left-text">全部歌单</span>
+          <span class="tags-left-text">{{cursor}}</span>
           <AIconfont class="tags-left-icon" type="icon-chevron-right" />
         </div>
       </a-popover>
       <div class="tags-right">
         <span
           class="tags-right-tag"
-          @click="$emit('on-type',tag)"
+          @click="handleType(tag)"
           v-for="(tag,index) in data"
           :key="index"
         >{{tag.name}}</span>
@@ -96,10 +99,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
-import { get_cat_list } from "@/actions";
-import { groupBy } from "lodash";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
+import { get_cat_list } from '@/actions';
+import { groupBy } from 'lodash';
 
 @Component({})
 export default class Home extends Vue {
@@ -107,21 +110,27 @@ export default class Home extends Vue {
   public loadingTag = false;
   public showhot = false;
   public types = {};
-  @Prop() data: any;
-  @Watch("data")
+  public cursor = '全部歌单';
+  @Prop() public data: any;
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg.length > 0) {
       this.loadingTag = false;
     }
   }
-  async mounted() {
+  public handleType(type: any) {
+    if (this.showhot) { this.showhot = !this.showhot; }
+    this.cursor = type.name;
+    this.$emit('on-type', type);
+  }
+  public async mounted() {
     const { code, categories, sub } = await get_cat_list();
-    if (code !== 200) return;
+    if (code !== 200) { return; }
     this.types = this.mergeTypes(categories, sub);
   }
-  mergeTypes(categories: any, sub: any) {
-    let result: any = {};
-    const subs = groupBy(sub, "category");
+  public mergeTypes(categories: any, sub: any) {
+    const result: any = {};
+    const subs = groupBy(sub, 'category');
     for (const key in categories) {
       if (categories.hasOwnProperty(key)) {
         const element = categories[key];

@@ -1,10 +1,20 @@
 <style lang="less" scoped>
 .wapper {
   display: flex;
-  background-color: var(--red);
+  // background-color: var(--red);
   border-radius: 10px;
   align-items: center;
   padding: 2vw;
+  z-index: 0;
+
+  // -webkit-filter: blur(20px);
+  // -moz-filter: blur(20px);
+  // -ms-filter: blur(20px);
+  // -o-filter: blur(20px);
+  // filter: blur(20px);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
   &-left {
     display: flex;
     align-items: center;
@@ -46,11 +56,17 @@
     }
   }
 }
+.wapper:after {
+  content: "";
+  background: inherit;
+  filter: blur(20px);
+  z-index: 2;
+}
 </style>
 
 <template>
   <a-skeleton :loading="loadingPanel" active>
-    <div class="wapper">
+    <div class="wapper" :style="`background: url(${data&&data.coverImgUrl})`">
       <div class="wapper-left">
         <a-avatar
           shape="square"
@@ -73,15 +89,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
   public loadingPanel = true;
-  @Prop() data: any;
-  @Watch("data")
+  @Prop() public data: any;
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg.name) {
       this.loadingPanel = false;

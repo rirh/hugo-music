@@ -1,6 +1,7 @@
 <style lang="less" scoped>
 .musiclist {
-  padding: 2.2vw;
+  padding: 2.2vw 2.2vw 5.2vw 2.2vw;
+
 }
 </style>
 
@@ -15,41 +16,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { get_play_high_qualty, get_cat_hot, get_cat_list } from "@/actions";
-import axios from "axios";
+import { Component, Vue } from 'vue-property-decorator';
+import { get_play_high_qualty, get_cat_hot, get_cat_list } from '@/actions';
+import axios from 'axios';
 
-import Panel from "./pages/Panel.vue";
-import Tag from "./pages/Tag.vue";
-import List from "./pages/List.vue";
+import Panel from './pages/Panel.vue';
+import Tag from './pages/Tag.vue';
+import List from './pages/List.vue';
 
 @Component({ components: { Panel, Tag, List } })
 export default class Home extends Vue {
-  public limit = 101;
+  public limit = 102;
   public before = 0;
   public total = 0;
   public list = [];
   public tags = [];
   public panels = {};
-  public cat = "";
+  public cat = '';
 
-  async mounted() {
+  public async mounted() {
     const { code, tags } = await get_cat_hot();
-    if (code === 200) this.tags = tags;
+    if (code === 200) { this.tags = tags; }
     this.init();
     //  await axios.all([get_cat_hot(),get_play_high_qualty(`limit=${}`)])
   }
-  handleType(item: any) {
+  public handleType(item: any) {
     this.cat = item.name;
     this.init();
   }
-  async init() {
+  public async init() {
     let params = ``;
     params = params + `limit=${this.limit}`;
-    if (this.before) params += `&before=${this.before}`;
-    if (this.cat) params += `&cat=${this.cat}`;
+    if (this.before) { params += `&before=${this.before}`; }
+    if (this.cat) { params += `&cat=${this.cat}`; }
     const { code, lasttime, total, playlists } = await get_play_high_qualty(
-      params
+      params,
     );
     // this.before = lasttime;
     this.total = Math.floor(total / this.limit);
