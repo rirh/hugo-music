@@ -3,6 +3,10 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   &-left {
     display: flex;
     justify-content: center;
@@ -30,12 +34,24 @@
     }
   }
 }
+.types-all {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid var(--borderColor);
+  margin-bottom: 1vw;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .types {
   display: flex;
   width: 73vw;
   flex-direction: column;
   overflow: scroll;
-  height: 30vw;
+  height: 25vw;
   &-dl {
     display: flex;
 
@@ -56,6 +72,11 @@
         flex-direction: column;
         flex-wrap: wrap;
         width: 100px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
     }
   }
@@ -67,6 +88,7 @@
     <div class="tags">
       <a-popover placement="bottomLeft" v-model="showhot" trigger="click">
         <template slot="content">
+          <div class="types-all" @click="handleType({name:'全部歌单'})">全部歌单</div>
           <div class="types">
             <dl class="types-dl" v-for="(values,key) in types" :key="key">
               <dt class="types-dl-dt">{{key}}</dt>
@@ -119,13 +141,17 @@ export default class Home extends Vue {
     }
   }
   public handleType(type: any) {
-    if (this.showhot) { this.showhot = !this.showhot; }
+    if (this.showhot) {
+      this.showhot = !this.showhot;
+    }
     this.cursor = type.name;
     this.$emit('on-type', type);
   }
   public async mounted() {
     const { code, categories, sub } = await get_cat_list();
-    if (code !== 200) { return; }
+    if (code !== 200) {
+      return;
+    }
     this.types = this.mergeTypes(categories, sub);
   }
   public mergeTypes(categories: any, sub: any) {

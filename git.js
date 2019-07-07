@@ -18,6 +18,7 @@ const exe = (cmd) => {
   }
 };
 exe('say 开始提交git!');
+exe('yarn lint');
 exe('git add .');
 exe("git commit -m 'await' ");
 exe('git push');

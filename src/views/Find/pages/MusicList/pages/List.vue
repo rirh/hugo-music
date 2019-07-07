@@ -52,6 +52,11 @@
         overflow: hidden;
         object-fit: cover;
       }
+      &-img:hover {
+        cursor: pointer;
+        transition: filter 0.3s;
+        filter: brightness(1.1) contrast(110%);
+      }
       &-name {
         font-size: 13px;
         text-align: left;
@@ -85,11 +90,7 @@
               <div class="recommed-recommed-list-name">asdf</div>
             </div>
           </div>-->
-          <div
-            class="recommed-recommed-list"
-            v-for="(recommed,index) in data"
-            :key="index"
-          >
+          <div class="recommed-recommed-list" v-for="(recommed,index) in data" :key="index">
             <div class="recommed-recommed-list-main">
               <span class="recommed-recommed-list-playcount">
                 <AIconfont class="recommed-recommed-list-playcount-logo" type="icon-up1-copy" />

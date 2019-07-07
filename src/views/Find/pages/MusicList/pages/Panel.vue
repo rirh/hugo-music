@@ -11,10 +11,48 @@
   // -moz-filter: blur(20px);
   // -ms-filter: blur(20px);
   // -o-filter: blur(20px);
-  // filter: blur(20px);
+  // // filter: blur(20px);
   background-attachment: fixed;
-  background-position: center;
+  background-position: top;
   background-size: cover;
+  position: relative;
+  background-size: 100%;
+  &-bg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    // -webkit-filter: blur(20px);
+    // -moz-filter: blur(20px);
+    // -ms-filter: blur(20px);
+    // -o-filter: blur(20px);
+    // filter: blur(20px);
+    background-attachment: fixed;
+    background-position: top;
+    background-size: cover;
+    position: relative;
+    filter: blur(5px);
+  }
+  // &-left1 {
+  //   position: absolute;
+  //   height: 100%;
+  //   width: 100%;
+  //   top: 0;
+  //   left: 0;
+  //   border-radius: 10px;
+  //   // -webkit-filter: blur(20px);
+  //   // -moz-filter: blur(20px);
+  //   // -ms-filter: blur(20px);
+  //   // -o-filter: blur(20px);
+  //   // filter: blur(20px);
+  //   background-attachment: fixed;
+  //   background-position: center;
+  //   background-size: cover;
+  //   background-repeat: no-repeat;
+  //   filter: blur(5px);
+  // }
   &-left {
     display: flex;
     align-items: center;
@@ -56,17 +94,37 @@
     }
   }
 }
-.wapper:after {
-  content: "";
-  background: inherit;
-  filter: blur(20px);
-  z-index: 2;
-}
+// .wapper:after {
+//   content: "";
+//   background: inherit;
+//   filter: blur(20px);
+//   z-index: 2;
+// }
+// .ape{
+//     position: absolute;
+//     height: 100%;
+//     width: 100%;
+//     top: 0;
+//     left: 0;
+//     border-radius: 10px;
+//     // -webkit-filter: blur(20px);
+//     // -moz-filter: blur(20px);
+//     // -ms-filter: blur(20px);
+//     // -o-filter: blur(20px);
+//     // filter: blur(20px);
+//     background-attachment: fixed;
+//     background-position: center;
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     filter: blur(5px);
+
+// }
 </style>
 
 <template>
   <a-skeleton :loading="loadingPanel" active>
-    <div class="wapper" :style="`background: url(${data&&data.coverImgUrl})`">
+    <div class="wapper" :style="`background-image: url(${data&&data.coverImgUrl})`">
+      <div class="wapper-bg" :style="`background-image: url(${data&&data.coverImgUrl})`"></div>
       <div class="wapper-left">
         <a-avatar
           shape="square"

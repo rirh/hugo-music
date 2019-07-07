@@ -1,7 +1,6 @@
 <style lang="less" scoped>
 .musiclist {
   padding: 2.2vw 2.2vw 5.2vw 2.2vw;
-
 }
 </style>
 
@@ -36,7 +35,9 @@ export default class Home extends Vue {
 
   public async mounted() {
     const { code, tags } = await get_cat_hot();
-    if (code === 200) { this.tags = tags; }
+    if (code === 200) {
+      this.tags = tags;
+    }
     this.init();
     //  await axios.all([get_cat_hot(),get_play_high_qualty(`limit=${}`)])
   }
@@ -47,15 +48,21 @@ export default class Home extends Vue {
   public async init() {
     let params = ``;
     params = params + `limit=${this.limit}`;
-    if (this.before) { params += `&before=${this.before}`; }
-    if (this.cat) { params += `&cat=${this.cat}`; }
+    if (this.before) {
+      params += `&before=${this.before}`;
+    }
+    if (this.cat) {
+      params += `&cat=${this.cat}`;
+    }
     const { code, lasttime, total, playlists } = await get_play_high_qualty(
       params,
     );
-    // this.before = lasttime;
-    this.total = Math.floor(total / this.limit);
-    this.list = playlists.slice(1, playlists.length);
-    this.panels = playlists[0];
+    if (code === 200 && playlists.length > 0) {
+      // this.before = lasttime;
+      this.total = Math.floor(total / this.limit);
+      this.list = playlists.slice(1, playlists.length);
+      this.panels = playlists[0];
+    }
   }
 }
 </script>
