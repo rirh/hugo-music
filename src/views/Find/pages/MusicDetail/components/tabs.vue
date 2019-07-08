@@ -19,24 +19,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
-import { transformW, transformatDate } from "@/util/filters";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
+import { transformW, transformatDate } from '@/util/filters';
 
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
   public showDescription = false;
   public loadingDetail = true;
+  @Prop() public data: any;
   public transformW = (e: any) => transformW(e);
   public transformatDate = (e: any) => transformatDate(e, false);
-  @Prop() public data: any;
-  @Watch("data")
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg) {
       this.loadingDetail = false;
     }
   }
-  callback() {}
+  public callback() {}
 }
 </script>

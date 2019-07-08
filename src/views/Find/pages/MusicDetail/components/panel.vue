@@ -243,23 +243,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop,Watch } from "vue-property-decorator";
-import { get_play_list_detail } from "@/actions";
-import { ERROR_IMG } from "@/constant/api";
-import { transformW, transformatDate } from "@/util/filters";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { get_play_list_detail } from '@/actions';
+import { ERROR_IMG } from '@/constant/api';
+import { transformW, transformatDate } from '@/util/filters';
 
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
   @Prop() public data: any;
-  @Watch("data")
+  public showDescription = false;
+  public loadingDetail = true;
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg) {
       this.loadingDetail = false;
     }
   }
-  public showDescription = false;
-  public loadingDetail = true;
   public transformW = (e: any) => transformW(e);
   public transformatDate = (e: any) => transformatDate(e, false);
 }

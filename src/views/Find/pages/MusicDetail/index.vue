@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { get_play_list_detail } from "@/actions";
-import { ERROR_IMG } from "@/constant/api";
-import { transformW, transformatDate } from "@/util/filters";
-import Panel from "./components/panel.vue";
-import MusicTable from "./components/tabs.vue";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { get_play_list_detail } from '@/actions';
+import { ERROR_IMG } from '@/constant/api';
+import { transformW, transformatDate } from '@/util/filters';
+import Panel from './components/panel.vue';
+import MusicTable from './components/tabs.vue';
 @Component({ components: { Panel, MusicTable } })
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
@@ -36,7 +36,7 @@ export default class Home extends Vue {
 
   public async init(id: any) {
     const { code, playlist, privileges } = await get_play_list_detail(
-      `id=${id}`
+      `id=${id}`,
     );
     this.loadingDetail = false;
     if (code === 200) {
