@@ -35,8 +35,8 @@
   }
 }
 .types-all {
-  height: 40px;
-  line-height: 40px;
+  height: 41px;
+  line-height: 41px;
   border-bottom: 1px solid var(--borderColor);
   margin-bottom: 1vw;
   font-weight: bold;
