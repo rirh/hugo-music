@@ -32,6 +32,7 @@
       class="wapper-link"
       v-for="(menu,index) in router"
       tag="span"
+      v-show="!menu.show"
       :key="index"
       :to="menu.path"
     >{{menu.name}}</router-link>

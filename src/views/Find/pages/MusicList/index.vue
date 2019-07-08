@@ -86,7 +86,7 @@ export default class Home extends Vue {
         body: msg,
       });
       myNotification.onclick = () => {
-        console.log('通知被点击');
+        // console.log('通知被点击');
       };
     }
   }

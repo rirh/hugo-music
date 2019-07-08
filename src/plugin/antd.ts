@@ -1,5 +1,12 @@
 import Vue from 'vue';
-import { Button, Icon, Avatar, Row, Col, Carousel, Skeleton, List, Card, Modal, Slider, Popover, Pagination } from 'ant-design-vue';
+import {
+  Button,
+  Icon, Avatar,
+  Row, Col, Carousel,
+  Skeleton, List, Card,
+  Modal, Slider, Popover,
+  Pagination, Tabs,
+} from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
@@ -21,3 +28,5 @@ Vue.component(Modal.name, Modal);
 Vue.component(Slider.name, Slider);
 Vue.component(Popover.name, Popover);
 Vue.component(Pagination.name, Pagination);
+Vue.component(Tabs.name, Tabs);
+Vue.component(Tabs.TabPane.name, Tabs.TabPane);
