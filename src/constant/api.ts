@@ -35,7 +35,8 @@ export const GET_CAT_LIST = `${host}playlist/catlist`;
 export const GET_CAT_HOT = `${host}playlist/hot`;
 // 获取精品电台
 export const GET_PLAY_HIGH_QUALITY = `${host}top/playlist/highquality`;
-
+// 获取精品歌单详情
+export const GET_PLAY_LIST_DETAIL = `${host}playlist/detail`;
 
 
 

@@ -11,9 +11,7 @@ import { MAIN_DROP } from '@/constant/ipc';
 @Component({})
 export default class Home extends Vue {
   public preventDrop() {
-    (window as any).document.ondragstart = (
-      event: any,
-    ) => {
+    (window as any).document.ondragstart = (event: any) => {
       event.preventDefault();
       ipcRenderer.send(MAIN_DROP, event.dataTransfer.files[0].path);
     };
@@ -26,7 +24,6 @@ export default class Home extends Vue {
 
 <style lang="less">
 :root {
-  
   --red: #d5504b;
   --btnRed: #d33a31;
   --white: #f0c2c0;
@@ -34,10 +31,11 @@ export default class Home extends Vue {
   --bgColor: #ededed;
   --menuHover: #e2e2e2;
   --tipsColor: #888;
-  --textColor:#999;
-  --line:#efefef;
-  --yellow:#e3a860;
-  --borderColor:#efefef;
+  --textColor: #999;
+  --line: #efefef;
+  --yellow: #e3a860;
+  --borderColor: #efefef;
+  --link: #5782b0;
 }
 body {
   margin: 0;

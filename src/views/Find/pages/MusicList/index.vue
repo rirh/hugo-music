@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 .musiclist {
-  padding: 2.2vw 2.2vw 5.2vw 2.2vw;
+  padding: 2.2vw 2.2vw 5.6vw 2.2vw;
 }
 </style>
 
@@ -9,8 +9,8 @@
     <Panel :data="panels" />
     <br />
     <Tag :data="tags" @on-type="handleType" />
-    <br />
-    <List :data="list" />
+    <List :data="list" @on-item="handleDetail" />
+    <Pagination :data="total" @on-change="handlePage" />
   </div>
 </template>
 
@@ -22,17 +22,30 @@ import axios from 'axios';
 import Panel from './pages/Panel.vue';
 import Tag from './pages/Tag.vue';
 import List from './pages/List.vue';
+import Pagination from './pages/Pagination.vue';
 
-@Component({ components: { Panel, Tag, List } })
+@Component({ components: { Panel, Tag, List, Pagination } })
 export default class Home extends Vue {
-  public limit = 102;
+  public limit = 96;
   public before = 0;
-  public total = 0;
+  public total = { total: 0, lasttime: 0 };
   public list = [];
   public tags = [];
   public panels = {};
   public cat = '';
+  public lasttime = 0;
 
+  public handlePage(page: any) {
+    // this.before = 0;
+    this.before = this.total.lasttime;
+    this.init();
+  }
+  public handleDetail(item: any) {
+    this.$router.push({
+      path: '/find/music/detail',
+      query: { ...item },
+    });
+  }
   public async mounted() {
     const { code, tags } = await get_cat_hot();
     if (code === 200) {
@@ -43,6 +56,8 @@ export default class Home extends Vue {
   }
   public handleType(item: any) {
     this.cat = item.name;
+    this.limit = 100;
+    this.before = 0;
     this.init();
   }
   public async init() {
@@ -54,14 +69,25 @@ export default class Home extends Vue {
     if (this.cat) {
       params += `&cat=${this.cat}`;
     }
-    const { code, lasttime, total, playlists } = await get_play_high_qualty(
-      params,
-    );
+    const {
+      code,
+      lasttime,
+      total,
+      playlists,
+      msg,
+    } = await get_play_high_qualty(params);
     if (code === 200 && playlists.length > 0) {
       // this.before = lasttime;
-      this.total = Math.floor(total / this.limit);
+      this.total = { total, lasttime };
       this.list = playlists.slice(1, playlists.length);
       this.panels = playlists[0];
+    } else {
+      const myNotification = new Notification('提示', {
+        body: msg,
+      });
+      myNotification.onclick = () => {
+        console.log('通知被点击');
+      };
     }
   }
 }

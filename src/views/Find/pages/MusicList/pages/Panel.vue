@@ -32,8 +32,9 @@
     background-attachment: fixed;
     background-position: top;
     background-size: cover;
-    position: relative;
-    filter: blur(5px);
+    filter: blur(22px);
+    border: 1px solid var(--borderColor);
+    z-index: -1;
   }
   // &-left1 {
   //   position: absolute;
@@ -94,6 +95,7 @@
     }
   }
 }
+
 // .wapper:after {
 //   content: "";
 //   background: inherit;
@@ -123,9 +125,9 @@
 
 <template>
   <a-skeleton :loading="loadingPanel" active>
-    <div class="wapper" :style="`background-image: url(${data&&data.coverImgUrl})`">
-      <div class="wapper-bg" :style="`background-image: url(${data&&data.coverImgUrl})`"></div>
-      <div class="wapper-left">
+    <div class="wapper">
+      <span class="wapper-bg" :style="`background-image: url(${data&&data.coverImgUrl})`">&nbsp;</span>
+      <span class="wapper-left">
         <a-avatar
           shape="square"
           class="wapper-left-img"
@@ -133,15 +135,15 @@
           :src="data&&data.coverImgUrl"
           alt
         />
-      </div>
-      <div class="wapper-right">
+      </span>
+      <span class="wapper-right">
         <div class="wapper-right-title">
           <AIconfont class="wapper-right-title-icon" type="icon-crown" />
           <span>精品歌单</span>
         </div>
         <div class="wapper-right-name">{{data&&data.name}}</div>
         <div class="wapper-right-copywriter">{{data&&data.copywriter}}</div>
-      </div>
+      </span>
     </div>
   </a-skeleton>
 </template>

@@ -10,6 +10,16 @@ export default [
     type: 'icon-wangyiyunyinle',
     component: () => import('@/views/Find/pages/Recommed/index.vue'),
     meta: { title: '个性推荐', keepAlive: true, permission: ['dashboard'] },
+    children: [
+      {
+        path: '/find/music/detail',
+        name: '歌单详情',
+        // <a-icon type="customer-service" />
+        type: 'customer-service',
+        component: () => import('@/views/Find/pages/MusicDetail/index.vue'),
+        meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+      },
+    ],
   },
   {
     path: '/find/music',
@@ -50,4 +60,12 @@ export default [
     component: () => import('@/views/Find/pages/Latest/index.vue'),
     meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
   },
+  // {
+  //   path: '/find/music/detail',
+  //   name: '歌单详情',
+  //   // <a-icon type="customer-service" />
+  //   type: 'customer-service',
+  //   component: () => import('@/views/Find/pages/MusicDetail/index.vue'),
+  //   meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  // },
 ];
