@@ -44,20 +44,13 @@ export const transformatDate = (time: any, accurate: any) => {
   };
   return accurate ? isAcc() : `${y}-${m}-${d}`;
 };
-/**
- * 转化为万做单位函数
- */
-export const transformW2 = (args: any) => {
+
+export const transformTimer = (duration: any) => {
   let result: any = 0;
-  const batter = 10000;
-  const cursor = Number(args);
-  if (!isNaN(cursor)) {
-    if (cursor > batter) {
-      const value = Math.floor(cursor / batter);
-      result = `${value}万`;
-    } else {
-      result = cursor;
-    }
+  if (duration) {
+    const min: any = `${Math.floor(duration / 60)}`;
+    const sco: any = `${Math.floor(duration % 60)}`;
+    result = `${min.padStart(2, '0')}:${sco.padStart(2, '0')}`;
   }
   return result;
 };

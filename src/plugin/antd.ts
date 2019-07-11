@@ -5,7 +5,7 @@ import {
   Row, Col, Carousel,
   Skeleton, List, Card,
   Modal, Slider, Popover,
-  Pagination, Tabs,
+  Pagination, Tabs, Table,
 } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
@@ -30,3 +30,5 @@ Vue.component(Popover.name, Popover);
 Vue.component(Pagination.name, Pagination);
 Vue.component(Tabs.name, Tabs);
 Vue.component(Tabs.TabPane.name, Tabs.TabPane);
+Vue.component(Table.name, Table);
+

@@ -9,10 +9,15 @@ import {
   GET_CAT_HOT,
   GET_PLAY_HIGH_QUALITY,
   GET_PLAY_LIST_DETAIL,
+  GET_PLAY_SONG_DETAIL,
 } from '@/constant/api';
 
 
 
+export const get_play_song_detail = async (args: any) => {
+  const { response }: any = await http(`${GET_PLAY_SONG_DETAIL}?${args}`);
+  return response;
+};
 export const get_play_list_detail = async (args: any) => {
   const { response }: any = await http(`${GET_PLAY_LIST_DETAIL}?${args}`);
   return response;

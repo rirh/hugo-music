@@ -37,6 +37,8 @@ export const GET_CAT_HOT = `${host}playlist/hot`;
 export const GET_PLAY_HIGH_QUALITY = `${host}top/playlist/highquality`;
 // 获取精品歌单详情
 export const GET_PLAY_LIST_DETAIL = `${host}playlist/detail`;
+// 获取精品歌单详情
+export const GET_PLAY_SONG_DETAIL = `${host}song/detail`;
 
 
 

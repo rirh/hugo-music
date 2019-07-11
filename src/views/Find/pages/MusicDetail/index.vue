@@ -7,13 +7,13 @@
 <template>
   <div class="detail">
     <Panel :data="playlist" />
-    <MusicTable :data="privileges" />
+    <MusicTable :data="privileges" :playlist="playlist" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { get_play_list_detail } from '@/actions';
+import { get_play_list_detail, get_play_song_detail } from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
 import { transformW, transformatDate } from '@/util/filters';
 import Panel from './components/panel.vue';
@@ -23,6 +23,7 @@ export default class Home extends Vue {
   public errorImg = ERROR_IMG;
   public playlist = {};
   public privileges = {};
+  public songs = {};
   public showDescription = false;
   public loadingDetail = true;
   public transformW = (e: any) => transformW(e);
