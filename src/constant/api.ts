@@ -3,7 +3,8 @@ export const host = 'https://music.huzhihui.org.cn/';
 
 
 // 错误图片
-export const ERROR_IMG = `http://wx3.sinaimg.cn/large/006ARE9vgy1fwods66zi5g308c06wdfx.gif`;
+// tslint:disable-next-line:no-var-requires
+export const ERROR_IMG = require(`../assets/error.jpg`);
 // 无需登录
 /// banner
 export const GET_BANNER = `${host}banner`;
@@ -43,6 +44,9 @@ export const GET_PLAY_SONG_DETAIL = `${host}song/detail`;
 export const GET_PLAY_SONG_COMMENT = `${host}comment/playlist`;
 // 获取精品歌单收藏者
 export const GET_PLAY_SONG_SUBSCRIBERS = `${host}playlist/subscribers`;
+//建议搜索
+export const GET_SEARCH_SUGGEST = `${host}search/suggest`;
+
 
 
 

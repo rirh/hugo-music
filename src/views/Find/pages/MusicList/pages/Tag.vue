@@ -45,13 +45,15 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  padding: 0 1vw;;
 }
 .types {
   display: flex;
-  width: 73vw;
+  width: 74vw;
   flex-direction: column;
   overflow: scroll;
-  height: 25vw;
+  height: 23vw;
+  padding: 2vw;
   &-dl {
     display: flex;
 

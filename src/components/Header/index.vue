@@ -131,7 +131,13 @@
       <a-col :span="3" :offset="1" style="padding:0">
         <div class="wapper-main-seach">
           <AIconfont class="wapper-main-seach-icon" type="icon-iconseach" />
-          <input @focus="showDrawer" class="wapper-main-seach-input" placeholder="搜索" type="text" />
+          <input
+            v-model="keywords"
+            @focus="showDrawer"
+            class="wapper-main-seach-input"
+            placeholder="搜索"
+            type="text"
+          />
         </div>
       </a-col>
       <a-col :span="4" style="padding:0">
@@ -144,29 +150,42 @@
     </a-row>
     <a-drawer
       class="brawer"
-      title="Basic Drawer"
       placement="right"
       :closable="false"
       @close="onClose"
       :visible="visible"
     >
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <dl>
+        <div v-for="(order , key) in seachList.order" :key="key">
+          <dt>{{order}}</dt>
+          <dd
+            v-for="(song,index) in seachList[order]"
+            :key="index"
+            @click="handleGoSeach(song,order)"
+          >
+            {{song.name}}
+            <span v-for="(artist,aindex) in song.artists" :key="aindex">{{artist.name}}</span>
+          </dd>
+        </div>
+      </dl>
     </a-drawer>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import Menu from '@/components/Menu';
-import { ipcRenderer, remote } from 'electron';
-import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Menu from "@/components/Menu";
+import { ipcRenderer, remote } from "electron";
+import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from "@/constant/ipc";
+import { get_search_suggest } from "@/actions";
 @Component({
-  components: { Menu },
+  components: { Menu }
 })
 export default class HelloWorld extends Vue {
   public visible = false;
+  public keywords = "";
+  public seachList = {};
+
   @Prop() private msg!: string;
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
@@ -194,9 +213,28 @@ export default class HelloWorld extends Vue {
         } else {
           mainWindow.maximize();
         }
-      },
+      }
     };
     build[key]();
+  }
+  @Watch("keywords")
+  async handleSeach(keywords: any) {
+    const res = await get_search_suggest(`keywords=${keywords}`);
+    if (res.code === 200) {
+      this.seachList = res.result;
+    }
+  }
+  handleGoSeach(item: any, state: any) {
+    if (state === "songs") {
+      const params = {
+        id: item.id,
+        name: item.name,
+        auth: item.artists[0].name,
+        image: item.artists[0].img1v1Url
+      };
+      this.$store.commit("updata_music_data", params);
+      this.visible=false;
+    }
   }
   public showDrawer() {
     this.visible = true;
