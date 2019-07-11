@@ -36,6 +36,8 @@ export default class Home extends Vue {
   --yellow: #e3a860;
   --borderColor: #efefef;
   --link: #5782b0;
+  --striped: #fafafa;
+  --stripedHover: #f2f2f3;
 }
 body {
   margin: 0;

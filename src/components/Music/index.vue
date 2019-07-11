@@ -182,7 +182,9 @@
         <AIconfont class="music-panel-play" type="icon-playlist-play" />
         <AIconfont class="music-panel-plus" type="icon-playlist-plus" />
         <AIconfont class="music-panel-cibiaoquanyi" type="icon-cibiaoquanyi" />
-        <a-popover class="music-panel-pop">
+        <!-- trigger="click" -->
+        <a-popover class="music-panel-pop" 
+       >
           <template slot="content">
             <div style="height:100px;">
               <a-slider vertical :defaultValue="100" v-model="volume" />
@@ -233,10 +235,14 @@ export default class Music extends Vue {
     } else {
       this.volumetype = 'icon-volume-medium';
     }
-    if (msg && this.play) { (this as any).player.volume = msg / 100; }
+    if (msg && this.play) {
+      (this as any).player.volume = msg / 100;
+    }
   }
   public handleStart() {
-    if (this.cursor === '0') {return; }
+    if (this.cursor === '0') {
+      return;
+    }
     if (this.player.play) {
       const state = this.state;
       if (state === 'playing') {
@@ -257,7 +263,9 @@ export default class Music extends Vue {
   }
   public handleVolumeType() {
     const type = this.volumetype;
-    if (this.volume !== 0) { this.volumecach = this.volume; }
+    if (this.volume !== 0) {
+      this.volumecach = this.volume;
+    }
     if (type === 'icon-volume-off') {
       this.volumetype = 'icon-volume-medium';
       this.player.muted = false;
@@ -280,7 +288,9 @@ export default class Music extends Vue {
       });
     }
     const { code, data } = await get_song_url(id);
-    if (code !== 200) { return; }
+    if (code !== 200) {
+      return;
+    }
     const [music] = data;
     (this as any).player.src = music.url;
 

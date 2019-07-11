@@ -1,4 +1,4 @@
-<style lang="less" scoped>
+<style lang="less">
 .HolyGrail {
   display: flex;
   height: 100vh;
@@ -53,6 +53,18 @@ footer {
   .HolyGrail-content {
     flex: auto;
   }
+}
+
+.ant-drawer .ant-drawer-content-wrapper {
+  margin-top: 7.3vh;
+}
+
+.ant-drawer .ant-drawer-mask {
+  // opacity: 0!important;
+   margin-top: 7.3vh;
+}
+.ant-popover-inner-content{
+padding: 5px 0px!important;
 }
 </style>
 

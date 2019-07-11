@@ -100,6 +100,7 @@
     }
   }
 }
+
 .active {
   font-weight: bold;
 }
@@ -130,7 +131,7 @@
       <a-col :span="3" :offset="1" style="padding:0">
         <div class="wapper-main-seach">
           <AIconfont class="wapper-main-seach-icon" type="icon-iconseach" />
-          <input class="wapper-main-seach-input" placeholder="搜索" type="text" />
+          <input @focus="showDrawer" class="wapper-main-seach-input" placeholder="搜索" type="text" />
         </div>
       </a-col>
       <a-col :span="4" style="padding:0">
@@ -141,6 +142,18 @@
         </div>
       </a-col>
     </a-row>
+    <a-drawer
+      class="brawer"
+      title="Basic Drawer"
+      placement="right"
+      :closable="false"
+      @close="onClose"
+      :visible="visible"
+    >
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-drawer>
   </div>
 </template>
 
@@ -153,6 +166,7 @@ import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
   components: { Menu },
 })
 export default class HelloWorld extends Vue {
+  public visible = false;
   @Prop() private msg!: string;
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
@@ -183,6 +197,12 @@ export default class HelloWorld extends Vue {
       },
     };
     build[key]();
+  }
+  public showDrawer() {
+    this.visible = true;
+  }
+  public onClose() {
+    this.visible = false;
   }
   public handleBack() {
     this.$router.go(-1);

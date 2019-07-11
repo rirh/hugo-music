@@ -10,10 +10,20 @@ import {
   GET_PLAY_HIGH_QUALITY,
   GET_PLAY_LIST_DETAIL,
   GET_PLAY_SONG_DETAIL,
+  GET_PLAY_SONG_COMMENT,
+  GET_PLAY_SONG_SUBSCRIBERS,
 } from '@/constant/api';
 
 
 
+export const get_play_song_subscribers = async (args: any) => {
+  const { response }: any = await http(`${GET_PLAY_SONG_SUBSCRIBERS}?${args}`);
+  return response;
+};
+export const get_play_song_comment = async (args: any) => {
+  const { response }: any = await http(`${GET_PLAY_SONG_COMMENT}?${args}`);
+  return response;
+};
 export const get_play_song_detail = async (args: any) => {
   const { response }: any = await http(`${GET_PLAY_SONG_DETAIL}?${args}`);
   return response;
