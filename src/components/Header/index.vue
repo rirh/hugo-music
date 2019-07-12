@@ -167,18 +167,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import Menu from "@/components/Menu";
-import { ipcRenderer, remote } from "electron";
-import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from "@/constant/ipc";
-import { get_search_suggest } from "@/actions";
-import Drawer from "@/components/Drawer";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import Menu from '@/components/Menu';
+import { ipcRenderer, remote } from 'electron';
+import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
+import { get_search_suggest } from '@/actions';
+import Drawer from '@/components/Drawer';
 @Component({
-  components: { Menu, Drawer }
+  components: { Menu, Drawer },
 })
 export default class HelloWorld extends Vue {
   public visible = false;
-  public keywords = "";
+  public keywords = '';
   public seachList = {};
 
   @Prop() private msg!: string;
@@ -208,11 +208,11 @@ export default class HelloWorld extends Vue {
         } else {
           mainWindow.maximize();
         }
-      }
+      },
     };
     build[key]();
   }
-  @Watch("keywords")
+  @Watch('keywords')
   public async handleSeach(keywords: any) {
     if (keywords) {
       const res = await get_search_suggest(`keywords=${keywords}`);
@@ -222,16 +222,16 @@ export default class HelloWorld extends Vue {
     }
   }
   public handleGoSeach(item: any, state: any) {
-    if (state === "songs") {
-      const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
+    if (state === 'songs') {
+      const reduceAuth = (a: any, b: any) => a.name || '' + b.name || '';
       const params = {
         id: item.id,
         name: item.name,
-        auth: item.artists.reduce(reduceAuth, ""),
+        auth: item.artists.reduce(reduceAuth, ''),
         image: item.artists[0].img1v1Url,
-        duration: item.duration
+        duration: item.duration,
       };
-      this.$store.commit("updata_music_data", params);
+      this.$store.commit('updata_music_data', params);
       this.visible = false;
     }
   }

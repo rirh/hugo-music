@@ -198,15 +198,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
-import { get_play_song_detail } from "@/actions";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
+import { get_play_song_detail } from '@/actions';
 import {
   transformTimer,
   leftpad,
   scliceValue,
-  transformatDate
-} from "@/util/filters";
+  transformatDate,
+} from '@/util/filters';
 
 @Component({})
 export default class Home extends Vue {
@@ -214,36 +214,36 @@ export default class Home extends Vue {
   @Prop() public data: any;
   public showDescription = false;
   public loadingComment = true;
-  public comment = "";
+  public comment = '';
 
   public columns = [
     {
-      name: "",
-      key: "icon"
+      name: '',
+      key: 'icon',
     },
     {
-      name: "音乐标题",
-      key: "name"
+      name: '音乐标题',
+      key: 'name',
     },
     {
-      name: "歌手",
-      key: "ar"
+      name: '歌手',
+      key: 'ar',
     },
     {
-      name: "专辑",
-      key: "name"
+      name: '专辑',
+      key: 'name',
     },
     {
-      name: "时长",
-      key: "name"
-    }
+      name: '时长',
+      key: 'name',
+    },
   ];
   public transformTimer = (e: any) => transformTimer(e);
   public leftpad = (e: any) => leftpad(e, 2, 0);
   public scliceValue = (e: any, len: any) => scliceValue(e, len);
   public transformatDate = (e: any) => transformatDate(e, true);
 
-  @Watch("data")
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg) {
       this.loadingComment = false;

@@ -20,21 +20,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch, Model } from "vue-property-decorator";
-import { os } from "@/util/filters";
+import { Component, Prop, Vue, Watch, Model } from 'vue-property-decorator';
+import { os } from '@/util/filters';
 @Component({})
 export default class Drawer extends Vue {
   public seachList = {};
+  public os = os();
   @Prop({ default: 0.364 }) private width!: number;
   @Prop()
-  @Model("change")
+  @Model('change')
   private visible!: boolean;
   public showDrawer() {
     this.visible = true;
   }
-  public os = os();
   public onClose() {
-    this.$emit("change", false);
+    this.$emit('change', false);
   }
 }
 </script>

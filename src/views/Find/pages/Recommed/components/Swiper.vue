@@ -84,13 +84,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { get_song_detail } from "@/actions";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { get_song_detail } from '@/actions';
 @Component({})
 export default class Home extends Vue {
   public loading = true;
   @Prop() private data!: any;
-  @Watch("data")
+  @Watch('data')
   public handleChange(arg: any) {
     if (arg.length > 0) {
       this.loading = false;
@@ -103,15 +103,15 @@ export default class Home extends Vue {
         return;
       }
       const [list]: any = songs;
-      const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
+      const reduceAuth = (a: any, b: any) => a.name || '' + b.name || '';
       const params = {
         id: item.targetId,
         name: list.name,
-        auth: list.ar.reduce(reduceAuth, ""),
+        auth: list.ar.reduce(reduceAuth, ''),
         image: list.al.picUrl,
-        duration: list.dt
+        duration: list.dt,
       };
-      this.$store.commit("updata_music_data", params);
+      this.$store.commit('updata_music_data', params);
     }
   }
 }
