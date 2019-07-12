@@ -57,11 +57,13 @@ footer {
 
 .ant-drawer .ant-drawer-content-wrapper {
   margin-top: 7.3vh;
+  height: 83.6vh!important;
 }
 
 .ant-drawer .ant-drawer-mask {
   // opacity: 0!important;
    margin-top: 7.3vh;
+  height: 83.6vh!important;
 }
 .ant-popover-inner-content{
 padding: 5px 0px!important;

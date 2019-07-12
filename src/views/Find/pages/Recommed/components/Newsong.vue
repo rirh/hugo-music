@@ -101,7 +101,8 @@
               <span class="newsong-newsong-list-left-tips">
                 <AIconfont class="newsong-newsong-list-left-tips-icon" type="icon-up1-copy" />
               </span>
-              <a-avatar shape="square"
+              <a-avatar
+                shape="square"
                 class="newsong-newsong-list-left-img"
                 :onerror="errorImg"
                 :src="newsong.song.album.picUrl"
@@ -121,28 +122,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
 
 @Component({})
 export default class Home extends Vue {
   public loading = true;
   public errorImg = ERROR_IMG;
   @Prop() private data!: any;
-  @Watch('data')
+  @Watch("data")
   public handleChange(arg: any) {
     if (arg.length > 0) {
       this.loading = false;
     }
   }
   public handlePlay(args: any) {
+    const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
+
     const params = {
       id: args.id,
       name: args.name,
-      auth: args.song.artists[0].name,
+      auth: args.song.artistsreduce(reduceAuth, ""),
       image: args.song.album.picUrl,
+      duration: args.song.duration
     };
-    this.$store.commit('updata_music_data', params);
+    this.$store.commit("updata_music_data", params);
   }
 }
 </script>

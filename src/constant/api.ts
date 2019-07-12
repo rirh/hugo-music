@@ -44,7 +44,7 @@ export const GET_PLAY_SONG_DETAIL = `${host}song/detail`;
 export const GET_PLAY_SONG_COMMENT = `${host}comment/playlist`;
 // 获取精品歌单收藏者
 export const GET_PLAY_SONG_SUBSCRIBERS = `${host}playlist/subscribers`;
-//建议搜索
+// 建议搜索
 export const GET_SEARCH_SUGGEST = `${host}search/suggest`;
 
 

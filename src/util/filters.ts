@@ -1,4 +1,14 @@
 
+export const os = () => {
+  let result;
+  const height = window.document.documentElement.clientHeight;
+  const width = window.document.documentElement.clientWidth;
+  result = {
+    height, width,
+  };
+  return result;
+};
+
 /**
  * 转化为万做单位函数
  */

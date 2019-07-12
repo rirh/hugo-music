@@ -22,10 +22,10 @@
     color: var(--black);
   }
   &-auth {
-    color: var(--tipsColor);
+    color: var(--black);
   }
   &-dj {
-    color: var(--tipsColor);
+    color: var(--black);
   }
   &-dt {
     color: var(--tipsColor);
@@ -75,7 +75,7 @@
           />&nbsp;
           <AIconfont class="table-tips-down" type="icon-package-down" />
         </td>
-        <td class="table-song">{{scliceValue(item.al&&item.al.name,22)}}</td>
+        <td class="table-song">{{scliceValue(item&&item.al.name,22)}}</td>
         <td class="table-auth">{{scliceValue(item.al&&item.ar[0].name,9)}}</td>
         <td class="table-dj">{{scliceValue(item&&item.name,22)}}</td>
         <td class="table-dt">{{transformTimer(item&&item.dt/1000)}}</td>
@@ -85,10 +85,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
-import { get_play_song_detail } from '@/actions';
-import { transformTimer, leftpad, scliceValue } from '@/util/filters';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
+import { get_play_song_detail } from "@/actions";
+import { transformTimer, leftpad, scliceValue } from "@/util/filters";
 
 @Component({})
 export default class Home extends Vue {
@@ -99,44 +99,47 @@ export default class Home extends Vue {
 
   public columns = [
     {
-      name: '',
-      key: 'icon',
+      name: "",
+      key: "icon"
     },
     {
-      name: '音乐标题',
-      key: 'name',
+      name: "音乐标题",
+      key: "name"
     },
     {
-      name: '歌手',
-      key: 'ar',
+      name: "歌手",
+      key: "ar"
     },
     {
-      name: '专辑',
-      key: 'name',
+      name: "专辑",
+      key: "name"
     },
     {
-      name: '时长',
-      key: 'name',
-    },
+      name: "时长",
+      key: "name"
+    }
   ];
   public transformTimer = (e: any) => transformTimer(e);
   public leftpad = (e: any) => leftpad(e, 2, 0);
   public scliceValue = (e: any, len: any) => scliceValue(e, len);
 
-  @Watch('data')
+  @Watch("data")
   public handleChange(arg: any) {
     if (arg) {
       this.loadingSongs = false;
     }
   }
   public handleSong(item: any) {
+    const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
+
     const params = {
       id: item.id,
       name: item.al.name,
-      auth: item.al && item.ar[0].name,
+      auth: item.ar.reduce(reduceAuth, ""),
       image: item.al.picUrl,
+      duration: item.dt
     };
-    this.$store.commit('updata_music_data', params);
+    this.$store.commit("updata_music_data", params);
   }
 }
 </script>

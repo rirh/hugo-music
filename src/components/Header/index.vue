@@ -148,14 +148,8 @@
         </div>
       </a-col>
     </a-row>
-    <a-drawer
-      class="brawer"
-      placement="right"
-      :closable="false"
-      @close="onClose"
-      :visible="visible"
-    >
-      <dl>
+    <Drawer v-model="visible">
+      <dl slot="content">
         <div v-for="(order , key) in seachList.order" :key="key">
           <dt>{{order}}</dt>
           <dd
@@ -168,7 +162,7 @@
           </dd>
         </div>
       </dl>
-    </a-drawer>
+    </Drawer>
   </div>
 </template>
 
@@ -178,8 +172,9 @@ import Menu from "@/components/Menu";
 import { ipcRenderer, remote } from "electron";
 import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from "@/constant/ipc";
 import { get_search_suggest } from "@/actions";
+import Drawer from "@/components/Drawer";
 @Component({
-  components: { Menu }
+  components: { Menu, Drawer }
 })
 export default class HelloWorld extends Vue {
   public visible = false;
@@ -218,30 +213,32 @@ export default class HelloWorld extends Vue {
     build[key]();
   }
   @Watch("keywords")
-  async handleSeach(keywords: any) {
-    const res = await get_search_suggest(`keywords=${keywords}`);
-    if (res.code === 200) {
-      this.seachList = res.result;
+  public async handleSeach(keywords: any) {
+    if (keywords) {
+      const res = await get_search_suggest(`keywords=${keywords}`);
+      if (res.code === 200) {
+        this.seachList = res.result;
+      }
     }
   }
-  handleGoSeach(item: any, state: any) {
+  public handleGoSeach(item: any, state: any) {
     if (state === "songs") {
+      const reduceAuth = (a: any, b: any) => a.name || "" + b.name || "";
       const params = {
         id: item.id,
         name: item.name,
-        auth: item.artists[0].name,
-        image: item.artists[0].img1v1Url
+        auth: item.artists.reduce(reduceAuth, ""),
+        image: item.artists[0].img1v1Url,
+        duration: item.duration
       };
       this.$store.commit("updata_music_data", params);
-      this.visible=false;
+      this.visible = false;
     }
   }
   public showDrawer() {
     this.visible = true;
   }
-  public onClose() {
-    this.visible = false;
-  }
+
   public handleBack() {
     this.$router.go(-1);
   }

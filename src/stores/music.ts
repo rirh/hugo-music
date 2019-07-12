@@ -6,8 +6,16 @@ const music = {
     state: 'stop',
     mode: '',
     data: {},
+    list: [],
   },
   mutations: {
+
+    updata_music_list(state: any, params: any) {
+      const isalive = state.list.some((e: any) => e.id === params.id)
+      if (!isalive) {
+        state.list.push(params);
+      }
+    },
     updata_music_cursor(state: any, params: any) {
       state.cursor = params;
     },
