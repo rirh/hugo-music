@@ -309,7 +309,7 @@ export default class Music extends Vue {
       duration,
     });
     this.handlePlay(id);
-    this.visible=false;
+    this.visible = false;
   }
   public handleVolumeType() {
     const type = this.volumetype;
@@ -327,7 +327,9 @@ export default class Music extends Vue {
     }
   }
   public async handlePlay(id: any) {
-    if (!id) { return; }
+    if (!id) {
+      return;
+    }
 
     const { success, message }: any = await get_check_music(id);
     if (!success) {
@@ -337,7 +339,9 @@ export default class Music extends Vue {
       });
     }
     const { code, data } = await get_song_url(id);
-    if (code !== 200) { return; }
+    if (code !== 200) {
+      return;
+    }
 
     const [music] = data;
     (this as any).player.src = music.url;
