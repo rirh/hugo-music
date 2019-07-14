@@ -142,7 +142,7 @@ export default class Home extends Vue {
     const params = {
       id: args.id,
       name: args.name,
-      auth: args.song.artistsreduce(reduceAuth, ''),
+      auth: args.song.artists.reduce(reduceAuth, ''),
       image: args.song.album.picUrl,
       duration: args.song.duration,
     };

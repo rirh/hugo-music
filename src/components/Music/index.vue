@@ -348,6 +348,7 @@ export default class Music extends Vue {
 
     (this as any).player.addEventListener('pause', this.pause());
     (this as any).player.addEventListener('loadeddata', this.play());
+
     (this as any).player.addEventListener('ended', this.stop());
     (this as any).player.addEventListener('error', (error: any) => {
       throw error;
@@ -360,6 +361,8 @@ export default class Music extends Vue {
       let currentTime: any;
       this.$store.commit('updata_music_state', 'playing');
       (this as any).player.play();
+      (this as any).player.οnended = this.stop();
+
       // 拿到总时长
       (this as any).player.ondurationchange = () => {
         duration = (this as any).player.duration;
