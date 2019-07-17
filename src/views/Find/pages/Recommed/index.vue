@@ -78,6 +78,8 @@
     }
     &-lists {
       width: 100%;
+      position: relative;
+      overflow: hidden;
     }
     &-list {
       display: flex;
@@ -87,6 +89,12 @@
       width: 100%;
       border-bottom: 1px solid var(--line);
       font-size: 13px;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.5s;
+      cursor: pointer;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
       &-logo {
         font-size: 14px;
       }
@@ -94,6 +102,27 @@
     &-list:hover {
       background-color: var(--line);
     }
+  }
+}
+.select {
+  position: absolute;
+  background-color: #00a1d6;
+  color: #fff;
+  box-shadow: 0 4px 4px #ccc;
+  z-index: 999;
+}
+.hold {
+  cursor: inherit;
+  border: 1px dashed #ccc;
+  box-sizing: border-box;
+  animation: hold-higther 200ms ease-in;
+}
+@keyframes hold-higther {
+  0% {
+    transform: scale(0.4);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
@@ -128,8 +157,13 @@
       </template>
       <div class="ordermodal-main">
         <p class="ordermodal-main-tips">想调整首页栏目的顺序?按住右边的按钮拖动即可</p>
-        <dl class="ordermodal-main-lists">
-          <dd class="ordermodal-main-list" v-for="(template,index) in templates" :key="index">
+        <dl ref="lists" class="ordermodal-main-lists" @mousedown="handleMouseDown">
+          <dd
+            ref="list"
+            class="ordermodal-main-list"
+            v-for="(template,index) in templates"
+            :key="index"
+          >
             <span>{{template.name}}</span>
             <a-icon class="ordermodal-main-list-logo" type="align-right" />
           </dd>
@@ -197,6 +231,63 @@ export default class Home extends Vue {
       data: [],
     },
   ];
+  public handleMouseDown(event: any) {
+    // let currenIndex: any, previousIndex: any;
+    // const startY = event.clientY;
+    // const dragObj = event.target;
+    // const listLength = this.templates.length;
+    // const holdItemDom = document.createElement("div");
+    // holdItemDom.classList.add("item", "hold");
+    // const listsDom: any = this.$refs.lists;
+    // const listDom: any = this.$refs.list;
+    // const findCrr = (e: any) => e === event.target;
+    // const selectIndex = Array.from(listDom).findIndex(findCrr);
+    // dragObj.after(holdItemDom);
+    // dragObj.classList.add("select");
+    // dragObj.style.top = dragObj.clientHeight * selectIndex + "px";
+
+    // const itemHeight = dragObj.clientHeight;
+    // let topIndex = selectIndex;
+    // const startTop = dragObj.style.top;
+    // previousIndex = Math.ceil(
+    //   (parseInt(startTop) - itemHeight / 2) / itemHeight
+    // );
+
+    // // dragObj.style.top = dragObj.clientHeight * selectIndex + "px";
+
+    // document.onmousemove = (e: any) => {
+    //   dragObj.classList.add("select");
+    //   const moveY = event.clientY;
+    //   const presentTop = parseInt(startTop) + (moveY - startY);
+    //   dragObj.style.top = presentTop + "px";
+    //   currenIndex = Math.ceil((presentTop - itemHeight / 2) / itemHeight);
+    //   if (currenIndex < 0) currenIndex = 0;
+    //   if (currenIndex > listLength - 1) currenIndex = listLength - 1;
+    //   if (previousIndex !== currenIndex) {
+    //     holdItemDom.remove();
+    //     if (previousIndex > currenIndex && currenIndex < topIndex) {
+    //       dragObj.remove();
+    //       listDom[currenIndex].before(dragObj);
+    //       dragObj.after(holdItemDom);
+    //     } else {
+    //       listsDom[currenIndex].after(holdItemDom);
+    //     }
+    //     previousIndex = currenIndex;
+    //     if (currenIndex < topIndex) topIndex = currenIndex;
+    //   }
+    // };
+
+    // document.onmousedown = (e: any) => {
+    //   if (currenIndex > topIndex) {
+    //     listsDom[currenIndex].after(dragObj);
+    //   }
+    //   holdItemDom.remove();
+    //   dragObj.classList.remove("select");
+    //   dragObj.removeAttribute("style");
+    //   document.onmousemove = null;
+    //   document.onmouseup = null;
+    // };
+  }
 
   public async mounted() {
     this.init();

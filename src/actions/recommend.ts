@@ -12,10 +12,15 @@ import {
   GET_PLAY_SONG_DETAIL,
   GET_PLAY_SONG_COMMENT,
   GET_PLAY_SONG_SUBSCRIBERS,
+  GET_TOP_LIST,
 } from '@/constant/api';
 
 
 
+export const get_top_list = async () => {
+  const { response }: any = await http(`${GET_TOP_LIST}`);
+  return response;
+};
 export const get_play_song_subscribers = async (args: any) => {
   const { response }: any = await http(`${GET_PLAY_SONG_SUBSCRIBERS}?${args}`);
   return response;

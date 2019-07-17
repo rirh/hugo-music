@@ -186,7 +186,7 @@
       </div>
       <div class="music-flex music-control">
         <AIconfont class="music-control-heart" :type="true?'icon-heart-outline':'icon-heart'" />
-        <AIconfont class="music-control-previous" type="icon-skip-previous" />
+        <AIconfont class="music-control-previous" @click="handlePrev" type="icon-skip-previous" />
         <a-button type="primary" class="music-control-play" @click="handleStart">
           <transition name="fade" mode="out-in">
             <div>
@@ -195,7 +195,7 @@
             </div>
           </transition>
         </a-button>
-        <AIconfont class="music-control-next" type="icon-skip-next" />
+        <AIconfont class="music-control-next" @click="handleNext" type="icon-skip-next" />
         <AIconfont class="music-control-share" type="icon-share" />
       </div>
       <div class="music-flex music-panel">
@@ -243,25 +243,33 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { get_song_url, get_check_music } from '@/actions';
 import { notification } from 'ant-design-vue';
 import Drawer from '@/components/Drawer';
+
 const player = new Audio();
 @Component({ components: { Drawer } })
 export default class Music extends Vue {
+  // 播放状态
   get state() {
     return this.$store.state.music.state;
   }
+  // 显示歌曲信息
   public showinfo = false;
+  // 进度条
   public progress = 0;
+  // 音乐信息
   public music = '';
   public img = '';
   public name = 'XXX';
   public auth = 'XXX';
+  // 缓存实体
   public player = player;
   public cursor = '0';
   public duration = '0';
   public volume = 100;
   public volumecach = 100;
   public volumetype = 'icon-volume-high';
+  // 音量弹窗显示
   public visible = false;
+  // 抛出进度可以外部控制
   @Prop() private msg!: string;
   public handleProgress(msg: any) {
     const duration: any = this.duration;
@@ -281,6 +289,7 @@ export default class Music extends Vue {
       (this as any).player.volume = msg / 100;
     }
   }
+  // 播放暂停按钮
   public handleStart() {
     if (this.cursor === '0') {
       return;
@@ -308,8 +317,31 @@ export default class Music extends Vue {
       auth,
       duration,
     });
-    this.handlePlay(id);
-    this.visible = false;
+    await this.asyncPlay(id);
+    // this.visible = false;
+  }
+
+  public handlePrev() {
+    const current = this.$store.state.music.data;
+    const list = this.$store.state.music.list;
+    let index = list.findIndex((e: any) => e.id === current.id);
+    // index = index - 1 < 0 ? list.length - 1 : index - 1;
+    index = index - 1;
+
+    if (index < 0) { index = list.length - 1; }
+    if (list[index]) {
+      this.$store.commit('updata_music_data', list[index]);
+    }
+  }
+  public handleNext() {
+    const current = this.$store.state.music.data;
+    const list = this.$store.state.music.list;
+    let index = list.findIndex((e: any) => e.id === current.id);
+    index = index + 1;
+    if (index > list.length - 1) { index = 0; }
+    if (list[index]) {
+      this.$store.commit('updata_music_data', list[index]);
+    }
   }
   public handleVolumeType() {
     const type = this.volumetype;
@@ -326,7 +358,7 @@ export default class Music extends Vue {
       this.volumetype = 'icon-volume-off';
     }
   }
-  public async handlePlay(id: any) {
+  public async asyncPlay(id: any) {
     if (!id) {
       return;
     }
@@ -349,11 +381,11 @@ export default class Music extends Vue {
     (this as any).player.addEventListener('pause', this.pause());
     (this as any).player.addEventListener('loadeddata', this.play());
 
-    (this as any).player.addEventListener('ended', this.stop());
+    // (this as any).player.addEventListener("ended", this.stop());
     (this as any).player.addEventListener('error', (error: any) => {
       throw error;
     });
-    // this.music = music.url;
+    this.music = music.url;
   }
   public async play() {
     if (this.player) {
@@ -361,7 +393,10 @@ export default class Music extends Vue {
       let currentTime: any;
       this.$store.commit('updata_music_state', 'playing');
       (this as any).player.play();
-      (this as any).player.οnended = this.stop();
+      this.player.onended = () => {
+        this.stop();
+        this.handleNext();
+      };
 
       // 拿到总时长
       (this as any).player.ondurationchange = () => {
@@ -391,8 +426,11 @@ export default class Music extends Vue {
     const state = this.state;
     if (this.player) {
       if (state !== 'stop') {
+        // this.showinfo = false;
+        this.progress = 0;
+        this.cursor = '0';
         this.$store.commit('updata_music_state', 'stop');
-        this.play();
+        // this.play();
       }
     }
   }

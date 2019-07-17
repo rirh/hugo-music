@@ -13,7 +13,9 @@ export default class Home extends Vue {
   public preventDrop() {
     (window as any).document.ondragstart = (event: any) => {
       event.preventDefault();
-      ipcRenderer.send(MAIN_DROP, event.dataTransfer.files[0].path);
+      if (event.dataTransfer.files) {
+        ipcRenderer.send(MAIN_DROP, event.dataTransfer.files[0].path);
+      }
     };
   }
   public mounted() {

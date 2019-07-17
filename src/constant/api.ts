@@ -46,6 +46,8 @@ export const GET_PLAY_SONG_COMMENT = `${host}comment/playlist`;
 export const GET_PLAY_SONG_SUBSCRIBERS = `${host}playlist/subscribers`;
 // 建议搜索
 export const GET_SEARCH_SUGGEST = `${host}search/suggest`;
+// 歌单top
+export const GET_TOP_LIST = `${host}toplist/detail`;
 
 
 
