@@ -1,24 +1,27 @@
 <style lang="less" scoped>
-.wapper{
+.wapper {
   display: flex;
   flex-direction: column;
+  padding: 2vw;
 
-  &-list{
+  &-list {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
     flex: 1;
-    &-img{
+    margin-left: 3vw;
+    &-img {
       height: 14vw;
       width: 14vw;
     }
-    &-top{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    flex-direction: column;
+    &-top {
+      
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      flex-direction: column;
     }
   }
 }
@@ -26,20 +29,30 @@
 
 <template>
   <a-skeleton :loading="loadingTop" active>
-      <dl  class="wapper">
-        <dt></dt>
-        <dd class="wapper-list" v-for="(item,index) in list" :key="index">
+    <dl class="wapper">
+      <dt style="text-align:left">
+        <h3>官方榜</h3>
+      </dt>
+      <dd v-for="(item,index) in list" :key="index">
+        <div class="wapper-list" v-if="item.tracks.length">
           <span class="wapper-list-img">
-            <a-avatar class="wapper-list-img" shape="square" :onerror="errorImg" :src="item&&item.coverImgUrl" alt />
+            <a-avatar
+              class="wapper-list-img"
+              shape="square"
+              :onerror="errorImg"
+              :src="item&&item.coverImgUrl"
+              alt
+            />
           </span>
-          <span class="wapper-list-top">
-            <span class="wapper-list-top-list" v-for="(top,tindex) in item.tracks" :key="tindex">
+          <dl class="wapper-list-top">
+            <dd class="wapper-list-top-list" v-for="(top,tindex) in item.tracks" :key="tindex">
               <span>{{top.first}}</span>
               <span>{{top.second}}</span>
-            </span>
-          </span>
-        </dd>
-      </dl>
+            </dd>
+          </dl>
+        </div>
+      </dd>
+    </dl>
   </a-skeleton>
 </template>
 
@@ -56,7 +69,9 @@ export default class Home extends Vue {
   @Prop() public data: any;
   public async mounted() {
     const { code, list } = await get_top_list();
-    if (code === 200) { this.list = list; }
+    if (code === 200) {
+      this.list = list;
+    }
   }
   @Watch('data')
   public handleChange(arg: any) {

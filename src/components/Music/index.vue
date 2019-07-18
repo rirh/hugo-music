@@ -317,6 +317,10 @@ export default class Music extends Vue {
       auth,
       duration,
     });
+    const myNotification = new Notification(this.name, {
+      body: this.auth,
+      icon: this.img,
+    });
     await this.asyncPlay(id);
     // this.visible = false;
   }
@@ -328,7 +332,9 @@ export default class Music extends Vue {
     // index = index - 1 < 0 ? list.length - 1 : index - 1;
     index = index - 1;
 
-    if (index < 0) { index = list.length - 1; }
+    if (index < 0) {
+      index = list.length - 1;
+    }
     if (list[index]) {
       this.$store.commit('updata_music_data', list[index]);
     }
@@ -338,7 +344,9 @@ export default class Music extends Vue {
     const list = this.$store.state.music.list;
     let index = list.findIndex((e: any) => e.id === current.id);
     index = index + 1;
-    if (index > list.length - 1) { index = 0; }
+    if (index > list.length - 1) {
+      index = 0;
+    }
     if (list[index]) {
       this.$store.commit('updata_music_data', list[index]);
     }
@@ -451,7 +459,3 @@ export default class Music extends Vue {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-</style>

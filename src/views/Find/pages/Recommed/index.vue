@@ -157,7 +157,7 @@
       </template>
       <div class="ordermodal-main">
         <p class="ordermodal-main-tips">想调整首页栏目的顺序?按住右边的按钮拖动即可</p>
-        <dl ref="lists" class="ordermodal-main-lists" @mousedown="handleMouseDown">
+        <!-- <dl ref="lists" class="ordermodal-main-lists" @mousedown="handleMouseDown">
           <dd
             ref="list"
             class="ordermodal-main-list"
@@ -167,7 +167,22 @@
             <span>{{template.name}}</span>
             <a-icon class="ordermodal-main-list-logo" type="align-right" />
           </dd>
-        </dl>
+        </dl>-->
+        <SortableList
+          class="ordermodal-main-lists"
+          @sort-end="init"
+          lockAxis="y"
+          v-model="templates"
+        >
+          <SortableItem
+            class="ordermodal-main-list"
+            v-for="(item, index) in templates"
+            :index="index"
+            :key="index"
+            :item="item"
+          />
+        </SortableList>
+
         <a class="ordermodal-main-def">恢复默认排序</a>
         <a-button class="ordermodal-main-btn">确认</a-button>
       </div>
@@ -187,6 +202,9 @@ import Exclusive from './components/Exclusive.vue';
 import Newsong from './components/Newsong.vue';
 import RecommedMv from './components/RecommedMv.vue';
 import DjProgram from './components/DjProgram.vue';
+import SortableItem from './SortableItem.vue';
+import SortableList from './SortableList.vue';
+
 import { Component, Vue } from 'vue-property-decorator';
 import {
   get_banner,
@@ -199,7 +217,16 @@ import {
 import axios from 'axios';
 
 @Component({
-  components: { Swiper, Recommed, Exclusive, Newsong, RecommedMv, DjProgram },
+  components: {
+    Swiper,
+    Recommed,
+    Exclusive,
+    Newsong,
+    RecommedMv,
+    DjProgram,
+    SortableItem,
+    SortableList,
+  },
 })
 export default class Home extends Vue {
   public showOrder = false;
@@ -245,16 +272,13 @@ export default class Home extends Vue {
     // dragObj.after(holdItemDom);
     // dragObj.classList.add("select");
     // dragObj.style.top = dragObj.clientHeight * selectIndex + "px";
-
     // const itemHeight = dragObj.clientHeight;
     // let topIndex = selectIndex;
     // const startTop = dragObj.style.top;
     // previousIndex = Math.ceil(
     //   (parseInt(startTop) - itemHeight / 2) / itemHeight
     // );
-
     // // dragObj.style.top = dragObj.clientHeight * selectIndex + "px";
-
     // document.onmousemove = (e: any) => {
     //   dragObj.classList.add("select");
     //   const moveY = event.clientY;
@@ -276,7 +300,6 @@ export default class Home extends Vue {
     //     if (currenIndex < topIndex) topIndex = currenIndex;
     //   }
     // };
-
     // document.onmousedown = (e: any) => {
     //   if (currenIndex > topIndex) {
     //     listsDom[currenIndex].after(dragObj);
