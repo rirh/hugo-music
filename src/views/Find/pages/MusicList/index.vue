@@ -6,7 +6,7 @@
 
 <template>
   <div class="musiclist">
-    <Panel :data="panels" />
+    <Panel :data="panels" @click.native="handleDetail(panels)" />
     <br />
     <Tag :data="tags" @on-type="handleType" />
     <List :data="list" @on-item="handleDetail" />

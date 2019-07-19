@@ -48,6 +48,13 @@ export const GET_PLAY_SONG_SUBSCRIBERS = `${host}playlist/subscribers`;
 export const GET_SEARCH_SUGGEST = `${host}search/suggest`;
 // 歌单top
 export const GET_TOP_LIST = `${host}toplist/detail`;
+// 歌单
+export const GET_ARTIST_LISY = `${host}artist/list`;
+// 新歌速递
+export const GET_TOP_SONG = `${host}top/song`;
+// 新碟上架
+export const GET_TOP_ALBUM = `${host}top/album`;
+
 
 
 

@@ -13,10 +13,25 @@ import {
   GET_PLAY_SONG_COMMENT,
   GET_PLAY_SONG_SUBSCRIBERS,
   GET_TOP_LIST,
+  GET_ARTIST_LISY,
+  GET_TOP_SONG,
+  GET_TOP_ALBUM,
 } from '@/constant/api';
 
 
 
+export const get_top_album = async (args: any) => {
+  const { response }: any = await http(`${GET_TOP_ALBUM}?${args}`);
+  return response;
+};
+export const get_top_song = async (args: any) => {
+  const { response }: any = await http(`${GET_TOP_SONG}?${args}`);
+  return response;
+};
+export const get_artist_list = async (args: any) => {
+  const { response }: any = await http(`${GET_ARTIST_LISY}?${args}`);
+  return response;
+};
 export const get_top_list = async () => {
   const { response }: any = await http(`${GET_TOP_LIST}`);
   return response;
