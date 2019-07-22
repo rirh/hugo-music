@@ -47,6 +47,7 @@ footer {
   .HolyGrail-body {
     flex-direction: column;
     flex: 1;
+    -webkit-overflow-scrolling: touch;
   }
   .HolyGrail-nav,
   .HolyGrail-ads,
@@ -57,16 +58,16 @@ footer {
 
 .ant-drawer .ant-drawer-content-wrapper {
   margin-top: 7.3vh;
-  height: 83.6vh!important;
+  height: 83.6vh !important;
 }
 
 .ant-drawer .ant-drawer-mask {
   // opacity: 0!important;
-   margin-top: 7.3vh;
-  height: 83.6vh!important;
+  margin-top: 7.3vh;
+  height: 83.6vh !important;
 }
-.ant-popover-inner-content{
-padding: 5px 0px!important;
+.ant-popover-inner-content {
+  padding: 5px 0px !important;
 }
 </style>
 

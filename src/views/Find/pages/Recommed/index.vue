@@ -3,6 +3,7 @@
 .wapper {
   width: 100%;
   padding-bottom: 10vh;
+
   &-order {
     display: flex;
     flex-direction: column;

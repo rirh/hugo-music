@@ -26,7 +26,7 @@ import Pagination from './pages/Pagination.vue';
 
 @Component({ components: { Panel, Tag, List, Pagination } })
 export default class Home extends Vue {
-  public limit = 96;
+  public limit = 29;
   public before = 0;
   public total = { total: 0, lasttime: 0 };
   public list = [];
@@ -56,7 +56,7 @@ export default class Home extends Vue {
   }
   public handleType(item: any) {
     this.cat = item.name;
-    this.limit = 100;
+    this.limit = 29;
     this.before = 0;
     this.init();
   }

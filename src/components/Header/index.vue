@@ -104,6 +104,17 @@
 .active {
   font-weight: bold;
 }
+.content {
+  &-title {
+    color: var(--textColor);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    &-icon {
+      font-size: 18px;
+    }
+  }
+}
 </style>
 
 <template>
@@ -151,7 +162,11 @@
     <Drawer v-model="visible">
       <dl slot="content">
         <div v-for="(order , key) in seachList.order" :key="key">
-          <dt>{{order}}</dt>
+          <dt class="content-title">
+            <AIconfont class="content-title-icon" :type="types[order]&&types[order].icon||' '"></AIconfont>&nbsp;&nbsp;
+            <span>{{types[order]&&types[order].name}}</span>
+          </dt>
+          <br />
           <dd
             v-for="(song,index) in seachList[order]"
             :key="index"
@@ -160,6 +175,7 @@
             {{song.name}}
             <span v-for="(artist,aindex) in song.artists" :key="aindex">{{artist.name}}</span>
           </dd>
+          <br />
         </div>
       </dl>
     </Drawer>
@@ -180,6 +196,28 @@ export default class HelloWorld extends Vue {
   public visible = false;
   public keywords = '';
   public seachList = {};
+  public types = {
+    artists: {
+      name: '歌手',
+      icon: 'icon-account',
+    },
+    songs: {
+      name: '歌曲',
+      icon: 'icon-music-note',
+    },
+    albums: {
+      name: '专辑',
+      icon: 'icon-music-circle',
+    },
+    mvs: {
+      name: '视频',
+      icon: 'icon-youtube-play',
+    },
+    playlists: {
+      name: '歌单',
+      icon: 'icon-playlist-play',
+    },
+  };
 
   @Prop() private msg!: string;
   public handleMenu(key: any) {
@@ -222,18 +260,30 @@ export default class HelloWorld extends Vue {
     }
   }
   public handleGoSeach(item: any, state: any) {
+    // 歌曲
     if (state === 'songs') {
-      const reduceAuth = (a: any, b: any) => a.name || '' + b.name || '';
       const params = {
         id: item.id,
         name: item.name,
-        auth: item.artists.reduce(reduceAuth, ''),
+        auth: item.artists
+          .map((e: any) => e.name)
+          .toString()
+          .split(',')
+          .join('/'),
         image: item.artists[0].img1v1Url,
         duration: item.duration,
       };
       this.$store.commit('updata_music_data', params);
-      this.visible = false;
     }
+    // 歌单
+
+    if (state === 'playlists') {
+      this.$router.push({
+        path: '/find/music/detail',
+        query: item,
+      });
+    }
+    this.visible = false;
   }
   public showDrawer() {
     this.visible = true;

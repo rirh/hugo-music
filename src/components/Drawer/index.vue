@@ -10,7 +10,7 @@
     :width="os.width*width"
     class="brawer"
     placement="right"
-    :closable="false"
+    :closable="true"
     @close="onClose"
     :visible="visible"
     :destroyOnClose="true"

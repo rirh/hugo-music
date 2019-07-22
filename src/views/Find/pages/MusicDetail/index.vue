@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { get_play_list_detail, get_play_song_detail } from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
 import { transformW, transformatDate } from '@/util/filters';
@@ -34,7 +34,12 @@ export default class Home extends Vue {
       this.init(params.id);
     }
   }
-
+  @Watch('$route.query')
+  public handleChange(params: any) {
+    if (params.id) {
+      this.init(params.id);
+    }
+  }
   public async init(id: any) {
     const { code, playlist, privileges } = await get_play_list_detail(
       `id=${id}`,

@@ -7,7 +7,7 @@
 <template>
   <div class="pagination">
     <a-skeleton :loading="loadingPagination" active>
-      <a-pagination @change="onchange" v-model="current" :defaultPageSize="100" :total="data.total" />
+      <a-pagination @change="onchange" v-model="current" :defaultPageSize="30" :total="data.total" />
     </a-skeleton>
   </div>
 </template>

@@ -34,6 +34,23 @@
 .wapper-list:hover {
   background-color: var(--stripedHover);
 }
+.imgbox {
+  position: relative;
+}
+.play {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  color: var(--red);
+  background: rgba(255, 255, 255, 0.6);
+  transform: translate(50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 25px;
+  padding: 1vw;
+}
 </style>
 
 <template>
@@ -48,17 +65,23 @@
       >
         <div class="wapper-list-name">
           <span class="wapper-list-name-index">{{leftpad(index+1)}}</span>
-          <a-avatar
-            class="wapper-list-name-img"
-            shape="square"
-            :onerror="errorImg"
-            :src="item.album.picUrl"
-            alt
-          />
+          <span class="imgbox">
+            <a-avatar
+              class="wapper-list-name-img"
+              shape="square"
+              :onerror="errorImg"
+              :src="item.album.picUrl"
+              alt
+            />
+            <span class="play">
+              <AIconfont type="icon-up1-copy" />
+            </span>
+          </span>
+
           <strong>{{item.name}}</strong>
         </div>
         <div>
-          <span>{{item.artists.reduce((a, b) => a.name || '' +b.name || '','') }}</span>
+          <span>{{item.artists.map(e=>e.name).toString().split(',').join('/') }}</span>
           <span>{{item.album.name}}</span>
         </div>
         <div>
@@ -101,12 +124,10 @@ export default class Home extends Vue {
     }
   }
   public handleMusic(item: any) {
-    const reduceAuth = (a: any, b: any) => a.name || '' + b.name || '';
-
     const params = {
       id: item.id,
       name: item.name,
-      auth: item.artists.reduce(reduceAuth, ''),
+      auth: item.artists.map((e: any) => e.name).toString().split(',').join('/'),
       image: item.album.picUrl,
       duration: item.duration,
     };

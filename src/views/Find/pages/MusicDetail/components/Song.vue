@@ -130,12 +130,11 @@ export default class Home extends Vue {
     }
   }
   public handleSong(item: any) {
-    const reduceAuth = (a: any, b: any) => a.name || '' + b.name || '';
 
     const params = {
       id: item.id,
       name: item.al.name,
-      auth: item.ar.reduce(reduceAuth, ''),
+      auth: item.ar.map((e: any) => e.name).toString().split(',').join('/'),
       image: item.al.picUrl,
       duration: item.dt,
     };
