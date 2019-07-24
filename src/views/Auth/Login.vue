@@ -8,19 +8,19 @@
       :visible="show"
       :width="380"
       :mask="false"
-      :maskClosable="false"
+      :maskClosable="true"
       centered
       :footer="null"
     >
       <div class="login">
         <div>
           <a-input v-model="user" placeholder="请输入账号">
-            <a-select slot="addonBefore" v-model="selected" @change="handleChange">
-              <a-select-option v-for="(item) in CountryCode" :key="`${item.phone_code}-${item.cn}`"  >
+            <!-- <a-select slot="addonBefore" v-model="selected" @change="handleChange">
+              <a-select-option v-for="(item) in CountryCode" :key="`${item}`"  >
                 <span>{{item.phone_code}}&nbsp;</span>
-                <!-- <span>{{item.cn}}</span> -->
+                <span>{{item.cn}}</span>
               </a-select-option>
-            </a-select>
+            </a-select> -->
           </a-input>
         </div>
         <br />

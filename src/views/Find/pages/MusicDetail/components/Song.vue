@@ -68,11 +68,12 @@
       >
         <td class="table-tips">
           <span class="table-tips-index">{{leftpad(index+1)}}&nbsp;&nbsp;&nbsp;</span>
-          <AIconfont
+          <!-- <AIconfont
             :style="{color:item.mark?'':'var(--red)'}"
             class="table-tips-heart"
             :type="item.mark?'icon-heart-outline':'icon-heart'"
-          />&nbsp;
+          /> -->
+          &nbsp;
           <AIconfont class="table-tips-down" type="icon-package-down" />
         </td>
         <td class="table-song">{{scliceValue(item&&item.al.name,22)}}</td>

@@ -4,6 +4,7 @@
   width: 100%;
   background-color: var(--bgColor);
   overflow-y: scroll;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 9.3vh;
 
