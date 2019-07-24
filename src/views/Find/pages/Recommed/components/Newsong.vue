@@ -85,8 +85,8 @@
 <template>
   <a-skeleton :loading="loading" active>
     <div class="newsong">
-      <div class="newsong-newsong">
-        <h3 class="newsong-tips">
+      <div class="newsong-newsong" >
+        <h3 class="newsong-tips"  @click="$router.push({path:'/find/latest'})" > 
           最新音乐
           <AIconfont class="newsong-tips-icon" type="icon-right" />
         </h3>

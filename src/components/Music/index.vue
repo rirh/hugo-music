@@ -309,7 +309,7 @@ export default class Music extends Vue {
     this.showinfo = true;
     this.img = image;
     this.name = name.length > 27 ? `${name.substring(0, 22)}...` : name;
-    this.auth = auth;
+    this.auth = auth.length > 5 ? `${auth.substring(0, 6)}...` : auth;
     this.$store.commit('updata_music_list', {
       id,
       image,

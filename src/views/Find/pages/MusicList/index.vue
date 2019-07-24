@@ -42,7 +42,7 @@ export default class Home extends Vue {
   }
   public handleDetail(item: any) {
     this.$router.push({
-      path: '/find/music/detail',
+      path: '/music-detail',
       query: { ...item },
     });
   }

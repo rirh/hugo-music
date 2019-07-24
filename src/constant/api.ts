@@ -4,7 +4,9 @@ export const host = 'https://music.huzhihui.org.cn/';
 
 // 错误图片
 // tslint:disable-next-line:no-var-requires
-export const ERROR_IMG = require(`../assets/error.jpg`);
+// export const ERROR_IMG = require(`../assets/error.jpg`);
+export const ERROR_IMG = 'https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg';
+
 // 无需登录
 /// banner
 export const GET_BANNER = `${host}banner`;
@@ -54,8 +56,10 @@ export const GET_ARTIST_LISY = `${host}artist/list`;
 export const GET_TOP_SONG = `${host}top/song`;
 // 新碟上架
 export const GET_TOP_ALBUM = `${host}top/album`;
-
-
+// 新碟详情
+export const GET_ALBUM_DETAIL = `${host}album`;
+// 专辑评论
+export const GET_ALBUM_COMMENT = `${host}comment/album`;
 
 
 
@@ -89,3 +93,6 @@ export const GET_CELL_PHONE = `${host}login/cellphone`;
 export const GET_LOGIN = `${host}login`;
 /// /personalized
 export const GET_RECOMMEND_RESOURCE = `${host}recommend/resource`;
+/// 获取用户歌单
+export const GET_USRE_PLAY_LIST = `${host}user/playlist`;
+// /user/playlist?uid=32953014

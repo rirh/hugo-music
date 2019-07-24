@@ -196,7 +196,7 @@ export default class Home extends Vue {
   }
   public handleMusicDetail(item: any) {
     this.$router.push({
-      path: '/find/music/detail',
+      path: '/music-detail',
       query: { ...item },
     });
   }

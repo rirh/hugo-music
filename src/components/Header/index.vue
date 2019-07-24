@@ -279,7 +279,13 @@ export default class HelloWorld extends Vue {
 
     if (state === 'playlists') {
       this.$router.push({
-        path: '/find/music/detail',
+        path: '/music-detail',
+        query: item,
+      });
+    }
+    if (state === 'albums') {
+      this.$router.push({
+        path: '/album-detail',
         query: item,
       });
     }

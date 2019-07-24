@@ -12,9 +12,21 @@
     align-items: center;
     justify-content: space-between;
     padding: 1vw 1vw;
+    &-auth {
+      flex: 0 0 20%;
+      text-align: left;
+    }
+    &-al {
+      flex: 0 0 25%;
+      text-align: left;
+    }
+    &-dt {
+      flex: 0 0 10%;
+    }
   }
 
   &-list-name {
+    flex: 0 0 45%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -22,8 +34,8 @@
       color: var(--textColor);
     }
     &-img {
-      height: 7vw;
-      width: 7vw;
+      height: 5.5vw;
+      width: 5.5vw;
       margin: 0.4vw 1vw;
     }
   }
@@ -48,7 +60,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 25px;
+  font-size: 20px;
   padding: 1vw;
 }
 </style>
@@ -78,13 +90,15 @@
             </span>
           </span>
 
-          <strong>{{item.name}}</strong>
+          <strong>{{item.name.length > 32 ? `${item.name.substring(0, 25)}...` : item.name}}</strong>
         </div>
-        <div>
-          <span>{{item.artists.map(e=>e.name).toString().split(',').join('/') }}</span>
-          <span>{{item.album.name}}</span>
+        <div class="wapper-list-auth">
+          <span>{{ subAr(item.artists)}}</span>
         </div>
-        <div>
+        <div class="wapper-list-al">
+          <span>{{item.album.name.length > 15 ? `${item.album.name.substring(0, 15)}...` : item.album.name}}</span>
+        </div>
+        <div class="wapper-list-dt">
           <span>{{transformTimer(item.duration/1000)}}</span>
         </div>
       </div>
@@ -111,9 +125,19 @@ import {
 @Component({ components: {} })
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
-  public loadingDetail = false;
+  public loadingDetail = true;
 
   @Prop() public data: any;
+
+  public subAr(msg: any) {
+    let result = msg
+      .map((e: any) => e.name)
+      .toString()
+      .split(',')
+      .join('/');
+    result = result.length > 14 ? `${result.substring(0, 14)}...` : result;
+    return result;
+  }
   public leftpad = (e: any) => leftpad(e, 2, 0);
 
   public transformTimer = (e: any) => transformTimer(e);
@@ -127,7 +151,11 @@ export default class Home extends Vue {
     const params = {
       id: item.id,
       name: item.name,
-      auth: item.artists.map((e: any) => e.name).toString().split(',').join('/'),
+      auth: item.artists
+        .map((e: any) => e.name)
+        .toString()
+        .split(',')
+        .join('/'),
       image: item.album.picUrl,
       duration: item.duration,
     };

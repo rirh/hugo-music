@@ -69,7 +69,7 @@
   <a-skeleton :loading="loadingRecommed" active>
     <div class="recommed">
       <div class="recommed-recommed">
-        <h3 class="recommed-tips">
+        <h3 class="recommed-tips" @click="$router.push({path:'/find/music'})">
           推荐歌单
           <AIconfont class="recommed-tips-icon" type="icon-right" />
         </h3>
@@ -133,7 +133,7 @@ export default class Home extends Vue {
   }
   public handleDetail(item: any) {
     this.$router.push({
-      path: '/find/music/detail',
+      path: '/music-detail',
       query: { ...item },
     });
   }

@@ -47,7 +47,6 @@ footer {
   .HolyGrail-body {
     flex-direction: column;
     flex: 1;
-    -webkit-overflow-scrolling: touch;
   }
   .HolyGrail-nav,
   .HolyGrail-ads,

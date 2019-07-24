@@ -6,7 +6,8 @@ import {
   Skeleton, List, Card,
   Modal, Slider, Popover,
   Pagination, Tabs, Table,
-  Divider, Drawer, Tag,
+  Divider, Drawer, Tag, Select,
+  Input, Form, Collapse,
 } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
@@ -36,4 +37,15 @@ Vue.component(Divider.name, Divider);
 Vue.component(Drawer.name, Drawer);
 Vue.component(Tag.name, Tag);
 Vue.component(Tag.CheckableTag.name, Tag.CheckableTag);
+Vue.component(Select.name, Select);
+Vue.component(Select.Option.name, Select.Option);
+Vue.component(Input.name, Input);
+Vue.component(Input.Group.name, Input.Group);
+Vue.component(Form.name, Form);
+Vue.component(Form.Item.name, Form.Item);
+Vue.component(Collapse.name, Collapse);
+Vue.component(Collapse.Panel.name, Collapse.Panel);
+
+
+
 

@@ -16,9 +16,21 @@ import {
   GET_ARTIST_LISY,
   GET_TOP_SONG,
   GET_TOP_ALBUM,
+  GET_ALBUM_DETAIL,
+  GET_ALBUM_COMMENT,
 } from '@/constant/api';
 
 
+
+export const get_album_comment = async (args: any) => {
+  const { response }: any = await http(`${GET_ALBUM_COMMENT}?${args}`);
+  return response;
+};
+
+export const get_album_detail = async (args: any) => {
+  const { response }: any = await http(`${GET_ALBUM_DETAIL}?${args}`);
+  return response;
+};
 
 export const get_top_album = async (args: any) => {
   const { response }: any = await http(`${GET_TOP_ALBUM}?${args}`);

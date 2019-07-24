@@ -9,26 +9,39 @@
     display: flex;
     align-content: center;
     justify-content: center;
-    flex-wrap: wrap;
   }
   &-capps {
     display: flex;
     align-content: center;
     justify-content: center;
-    flex-wrap: wrap;
+    margin-top: 10px;
+    &-title {
+      flex: 0 0 10%;
+      text-align: right;
+    }
+    &-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
+}
+.singer-types {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
 }
 </style>
 
 <template>
   <a-skeleton :loading="loadingSinger" active>
     <div class="singer">
-      <div class="singer-types">
-        <div>
+      <div style="display: flex;" class="singer-types">
+        <div style="flex: 0 0 10%;text-align: right;">
           <strong>分类：</strong>
         </div>
-        <div>
-          <span v-for="(type,tindex) in types" :key="tindex">
+        <div style="display: flex;flex-wrap: wrap;">
+          <span class="height:1.2vw" v-for="(type,tindex) in types" :key="tindex">
             <a-checkable-tag
               :key="tindex"
               :checked="type.key===selectedTypes"
@@ -39,10 +52,10 @@
         </div>
       </div>
       <div class="singer-capps">
-        <div>
+        <div class="singer-capps-title">
           <strong>筛选：</strong>
         </div>
-        <div>
+        <div class="singer-capps-list">
           <span>
             <a-checkable-tag :key="''" :checked="''===selectedCapps" @change="selectedCapps=''">全部</a-checkable-tag>
             <a-divider type="vertical" />
@@ -159,7 +172,7 @@ export default class Singer extends Vue {
   @Watch('selectedTypes')
   public async init() {
     const { code, artists } = await get_artist_list(
-      `limit=100&cat=${this.selectedTypes}&initial=${this.selectedCapps}`,
+      `limit=30&cat=${this.selectedTypes}&initial=${this.selectedCapps}`,
     );
     this.loadingSinger = false;
     if (code === 200) {
@@ -169,10 +182,12 @@ export default class Singer extends Vue {
 
   public handleMusicDetail(item: any) {
     this.$router.push({
-      path: '/find/music/detail',
+      path: '/music-detail',
       query: { ...item },
     });
   }
-  public handleMusic(item: any) {return false; }
+  public handleMusic(item: any) {
+    return false;
+  }
 }
 </script>

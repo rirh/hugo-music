@@ -72,3 +72,53 @@ export const scliceValue = (str: any, len: any) => {
   result = str.length > len ? `${str.substring(0, len)}...` : str;
   return result;
 };
+
+
+const uzStorage = () => {
+  let ls: any;
+  // let isAndroid = /android/gi.test(navigator.appVersion);
+  ls = localStorage;
+  return ls;
+};
+
+export const setStorage = (key: any, value: any) => {
+  let v = value;
+  if (typeof v === 'object') {
+    v = JSON.stringify(v);
+    v = 'obj-' + v;
+  } else {
+    v = 'str-' + v;
+  }
+  let ls = uzStorage();
+  if (ls) {
+    ls.setItem(key, v);
+    ls = null;
+  }
+};
+
+export const getStorage = (key: any) => {
+  let ls = uzStorage();
+  if (ls) {
+    let v = ls.getItem(key);
+    ls = null;
+    if (!v) { return; }
+    if (v.indexOf('obj-') === 0) {
+      v = v.slice(4);
+      return JSON.parse(v);
+    } else if (v.indexOf('str-') === 0) {
+      return v.slice(4);
+    }
+  }
+};
+
+export const rmStorage = (key: any) => {
+  const ls = uzStorage();
+  if (ls && key) {
+    ls.removeItem(key);
+  }
+};
+
+export const clearStorage = () => {
+  const ls = uzStorage();
+  ls.clear();
+};

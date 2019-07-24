@@ -68,6 +68,24 @@ export default [
     component: () => import('@/views/Favorite/index.vue'),
     meta: { title: '我的收藏', keepAlive: true, permission: ['dashboard'] },
   },
+  {
+    path: '/music-detail',
+    name: '歌单详情',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Find/pages/MusicDetail/index.vue'),
+    meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  },
+  {
+    path: '/album-detail',
+    name: '专辑详情',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Find/pages/AlbumDetail/index.vue'),
+    meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  },
 
 
 

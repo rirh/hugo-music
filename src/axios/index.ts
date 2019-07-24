@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { notification } from 'ant-design-vue';
+
 
 export default (url = '', datas = {}, method = 'GET') => {
   return new Promise(async (resolve, reject) => {
@@ -17,9 +19,12 @@ export default (url = '', datas = {}, method = 'GET') => {
         // LoadingBar.finish();
         resolve({ response: data });
       } else {
+
         reject(data);
+
       }
     } catch (error) {
+
       throw error;
       // console.error(error);
     }
