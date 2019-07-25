@@ -16,7 +16,6 @@
     // justify-items: center;
     align-items: center;
     padding: 10px;
-    color: var(--textColor);
     &-nickname {
       font-weight: 500;
       margin-left: 10px;
@@ -97,10 +96,26 @@
       <a-avatar
         class="wapper-avatar-img"
         :size="40"
+        @click.stop="handleGoUser"
         icon="user"
         :src="user.profile&&user.profile.avatarUrl"
       />
-      <span class="wapper-avatar-nickname">{{user.profile?user.profile.nickname:'未登录'}}</span>
+      <a-popover placement="topRight" v-show="user.profile" trigger="click" v-model="visible">
+        <span
+          class="wapper-avatar-nickname"
+          :style="{color:user.profile?'var(--black)':''}"
+          @click="handleShowPersonInfo"
+        >{{user.profile?user.profile.nickname:'未登录'}}</span>
+        <PersonInfo @on-sign="visible=false" slot="content" />
+      </a-popover>
+      <a-popover v-show="!user.profile" placement="topRight" trigger="click" :visible="visible">
+        <span
+          class="wapper-avatar-nickname"
+          :style="{color:user.profile?'var(--black)':''}"
+          @click="handleShowPersonInfo"
+        >{{user.profile?user.profile.nickname:'未登录'}}</span>
+        <PersonInfo @on-sign="visible=false" slot="content" />
+      </a-popover>
       <a-icon class="wapper-avatar-icon" type="caret-right" />
     </div>
     <dl class="wapper-main">
@@ -139,7 +154,7 @@
       </dd>
     </dl>
     <div class="playlist">
-      <a-collapse>
+      <a-collapse v-show="playlist.create.length">
         <a-collapse-panel v-for="(v,k) in playlist" :key="k" :header="k==='create'?'创建的歌单':'收藏的歌单'">
           <dd
             :class="{'active':activeMenu(menu)}"
@@ -156,7 +171,7 @@
                path: '/music-detail',
                query: menu 
             }"
-            >{{menu.name.length>10?`${menu.name.substring(0,8)}...`:menu.name}}</router-link>
+            >{{menu.name.length>12?`${menu.name.substring(0,10)}...`:menu.name}}</router-link>
           </dd>
         </a-collapse-panel>
       </a-collapse>
@@ -169,17 +184,21 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Nav from '@/routers';
 import Login from '@/views/Auth/Login.vue';
+import PersonInfo from '@/views/Auth/PersonInfo.vue';
 import { getStorage } from '@/util/filters';
 
 @Component({
-  components: { Login },
+  components: { Login, PersonInfo },
 })
-export default class HelloWorld extends Vue {
+export default class Control extends Vue {
   get user() {
     return this.$store.state.user.user;
   }
   get playlist() {
-    let result: any = {};
+    let result: any = {
+      create: [],
+      marked: [],
+    };
     const playlist = this.$store.state.user.playlist;
     if (playlist.length) {
       const userId = this.user.profile.userId;
@@ -192,11 +211,8 @@ export default class HelloWorld extends Vue {
         marked: markedList,
       };
     }
-
     return result;
   }
-
-  public show = false;
   get menu1() {
     let result = [];
     const menus = JSON.parse(JSON.stringify(this.menus));
@@ -209,13 +225,29 @@ export default class HelloWorld extends Vue {
     result = menus.slice(4, menus.length);
     return result;
   }
+  public visible = false;
+
+  public show = false;
   public menus = Nav;
   @Prop() private msg!: string;
+  public handleShowPersonInfo() {
+    if (this.user.profile) {
+      this.visible = true;
+    }
+  }
+  public handleGoUser() {
+    const isLogin = this.user.profile;
+    if (isLogin) {
+      this.$router.push({
+        path: '/userinfo',
+      });
+    }
+  }
   public showLogin() {
     const isLogin = this.user.profile;
-    // if (!isLogin) {
-    this.show = true;
-    // }
+    if (!isLogin) {
+      this.show = true;
+    }
   }
   public activeMenu(arg: any) {
     let result = false;

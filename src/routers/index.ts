@@ -85,6 +85,14 @@ export default [
     type: 'customer-service',
     component: () => import('@/views/Find/pages/AlbumDetail/index.vue'),
     meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  }, {
+    path: '/userinfo',
+    name: '用户详情',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Auth/User.vue'),
+    meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
   },
 
 

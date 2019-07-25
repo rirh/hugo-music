@@ -96,3 +96,14 @@ export const GET_RECOMMEND_RESOURCE = `${host}recommend/resource`;
 /// 获取用户歌单
 export const GET_USRE_PLAY_LIST = `${host}user/playlist`;
 // /user/playlist?uid=32953014
+/// 获取用户详情
+export const GET_USRE_DETAIL = `${host}user/detail`;
+// /user/detail
+/// 签到
+export const GET_DAILY_SIGNIN = `${host}daily_signin`;
+// /daily_signin
+/// 退出
+export const GET_LOGOUT = `${host}logout`;
+/// 获取用户信息 , 歌单，收藏，mv, dj 数量
+export const GET_SUBCOUNT = `${host}user/subcount`;
+// /user/subcount

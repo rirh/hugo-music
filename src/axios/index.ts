@@ -14,12 +14,11 @@ export default (url = '', datas = {}, method = 'GET') => {
       //   data: datas,
       // };
       // const { status, data } = await axios(params);
-      const { status, data } = await axios.get(url);
+      const { status, data } = await axios.get(url, { withCredentials: true });
       if (status === 200) {
         // LoadingBar.finish();
         resolve({ response: data });
       } else {
-
         reject(data);
 
       }

@@ -3,15 +3,7 @@
 
 <template>
   <div>
-    <a-modal
-      title="登录"
-      :visible="show"
-      :width="380"
-      :mask="false"
-      :maskClosable="true"
-      centered
-      :footer="null"
-    >
+    <a-modal title="登录" :visible="show" :width="380" :mask="false" centered :footer="null">
       <div class="login">
         <div>
           <a-input v-model="user" placeholder="请输入账号">
@@ -20,7 +12,7 @@
                 <span>{{item.phone_code}}&nbsp;</span>
                 <span>{{item.cn}}</span>
               </a-select-option>
-            </a-select> -->
+            </a-select>-->
           </a-input>
         </div>
         <br />
@@ -36,9 +28,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Model } from 'vue-property-decorator';
+import axios from 'axios';
 import routers from '@/routers';
 import CountryCode from '@/lib/countrycode';
-import { get_phone_login, get_user_playlist } from '@/actions';
+import { get_phone_login, get_user_playlist, get_user_detail } from '@/actions';
 import { notification } from 'ant-design-vue';
 import { setStorage } from '@/util/filters';
 
@@ -62,12 +55,19 @@ export default class Tags extends Vue {
     if (res.code === 200) {
       setStorage('user', res);
       this.$store.commit('updata_user', res);
-      const { code, playlist } = await get_user_playlist(
-        `uid=${res.profile.userId}`,
-      );
-      if (code === 200) {
-        this.$store.commit('updata_playlist', playlist);
+      const userId = `uid=${res.profile.userId}`;
+      const resAll = await axios.all([
+        get_user_playlist(userId),
+        get_user_detail(userId),
+      ]);
+      const [playlist, userdetail]: any = resAll;
+      if (playlist.code === 200) {
+        this.$store.commit('updata_playlist', playlist.playlist);
       }
+      if (userdetail.code === 200) {
+        this.$store.commit('updata_user_detail', userdetail);
+      }
+      this.$router.push('/');
       this.$emit('on-visible', false);
     }
   }

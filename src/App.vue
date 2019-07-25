@@ -58,6 +58,7 @@ export default class Home extends Vue {
   --link: #5782b0;
   --striped: #fafafa;
   --stripedHover: #f2f2f3;
+  --tagBg: #aeaeae;
 }
 body {
   margin: 0;
