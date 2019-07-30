@@ -1,4 +1,38 @@
 # 更新日志
+### 3.19.0 | 2019.07.24
+- 新增`检测手机号码是否已注册`和`初始化昵称`接口[#540](https://github.com/Binaryify/NeteaseCloudMusicApi/pull/540)
+
+### 3.18.6 | 2019.07.15
+- 修复注册异常的问题 [#532](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/532)
+
+### 3.18.5 | 2019.07.14
+- 修复部分歌曲无法获得播放链接的问题 [#531](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/531)
+
+### 3.18.3 | 2019.07.04
+- 修复全部 mv`/mv/all` 接口分页参数错误的问题 [#524](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/524)
+
+### 3.18.2 | 2019.07.03
+- 修复听歌打卡接口 `/scrobble` 失效问题
+
+### 3.18.1 | 2019.06.30
+- 评论接口增加 `before` 参数以获取超过5000条评论数据 [#521](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/521)
+
+- 修复 `/msg/comments` 传入参数和文档描述不一致问题
+
+
+### 3.18.0 | 2019.06.29
+- 新增 `更换绑定手机接口`
+
+#### Breaking change
+1. 调整注册接口由 `/captch/register` 修改为 `/register/cellphone`
+
+2. 调整发送短信接口由 `/captch/sent` 修改为 `/captcha/sent`
+
+3. 调整短信验证接口由 `/captch/verify` 修改为 `/captcha/verify`
+
+### 3.17.0 | 2019.06.29
+- 新增 `专辑动态信息` `热搜列表(详细)` 接口,更新文档
+
 ### 3.16.0 | 2019.06.27
 - 新增 `收藏/取消收藏专辑` 接口
 

@@ -81,7 +81,7 @@
 63. 电台 - 节目
 64. 给评论点赞
 65. 获取动态
-66. 获取热搜
+66. 热搜列表(简略)
 67. 发送私信
 68. 发送私信歌单
 69. 新建歌单
@@ -101,7 +101,7 @@
 83. 所有榜单
 84. 所有榜单内容摘要
 85. 收藏视频
-86. 收藏/取消收藏 MV
+86. 收藏 MV
 87. 视频详情
 88. 相关视频
 89. 关注用户
@@ -136,6 +136,11 @@
 118. 全部mv
 119. 网易出品mv
 120. 收藏/取消收藏专辑
+121. 专辑动态信息
+122. 热搜列表(详细)
+123. 更换绑定手机
+124. 检测手机号码是否已注册
+125. 初始化昵称
 
 ## 安装
 
@@ -303,9 +308,9 @@ Cookies
 **可选参数 :**
 `ctcode`:  国家区号,默认86即中国
 
-**接口地址 :** `/captch/sent`
+**接口地址 :** `/captcha/sent`
 
-**调用例子 :** `/captch/sent?phone=13xxx`
+**调用例子 :** `/captcha/sent?phone=13xxx`
 
 
 
@@ -321,16 +326,16 @@ Cookies
 
 `ctcode`:  国家区号,默认86即中国
 
-**接口地址 :** `/captch/verify`
+**接口地址 :** `/captcha/verify`
 
-**调用例子 :** `/captch/verify?phone=13xxx&captcha=1597`
+**调用例子 :** `/captcha/verify?phone=13xxx&captcha=1597`
 
 
 ### 注册(修改密码)
 
 说明 : 调用此接口 ,传入手机号码和验证码,密码,昵称, 可注册网易云音乐账号(同时可修改密码)
 
-**必选参数 :** `phone`: 手机号码  
+**必选参数 :** 
 
 `captcha`: 验证码
 
@@ -340,9 +345,43 @@ Cookies
 
 `nickname`: 昵称
 
-**接口地址 :** `/captch/register`
+**接口地址 :** `/register/cellphone`
 
-**调用例子 :** `/captch/register?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345`
+**调用例子 :** `/register/cellphone?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345`
+
+### 检测手机号码是否已注册
+说明 : 调用此接口 ,可检测手机号码是否已注册
+**必选参数 :** 
+`phone` :  手机号码  
+
+**接口地址 :** `/cellphone/existence/check`
+
+**调用例子 :** `/cellphone/existence/check?phone=13xxx`
+
+### 初始化昵称
+说明 : 刚注册的账号(需登录),调用此接口 ,可初始化昵称
+**必选参数 :** 
+`nickname` :  昵称  
+
+**接口地址 :** `/activate/initProfile`
+
+**调用例子 :** `/activate/initProfile?nickname=testUser2019`
+
+### 更换绑定手机
+说明 : 调用此接口 ,可更换绑定手机(流程:先发送验证码到原手机号码,再发送验证码到新手机号码然后再调用此接口)
+
+**必选参数 :** 
+`oldcaptcha`: 原手机验证码
+
+`captcha`: 新手机验证码
+
+`phone` :  手机号码  
+
+`ctcode` :  国家区号,默认86即中国
+
+**接口地址 :** `/rebind`
+
+**调用例子 :** `/rebind?phone=xxx&oldcaptcha=1234&captcha=5678`
 
 ### 退出登录
 
@@ -847,13 +886,21 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 返回数据如下图 :
 ![搜索音乐](https://raw.githubusercontent.com/Binaryify/NeteaseCloudMusicApi/master/static/%E6%90%9C%E7%B4%A2.png)
 
-### 热搜
+### 热搜列表(简略)
 
 说明 : 调用此接口,可获取热门搜索列表
 
 **接口地址 :** `/search/hot`
 
 **调用例子 :** `/search/hot`
+
+### 热搜列表(详细)
+
+说明 : 调用此接口,可获取热门搜索列表
+
+**接口地址 :** `/search/hot/detail`
+
+**调用例子 :** `/search/hot/detail`
 
 ### 搜索建议
 
@@ -985,7 +1032,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/music`
 
@@ -1003,7 +1052,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)  
 
 **接口地址 :** `/comment/album`
 
@@ -1018,7 +1069,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/playlist`
 
@@ -1033,7 +1086,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/mv`
 
@@ -1048,7 +1103,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/dj`
 
@@ -1063,7 +1120,9 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **可选参数 :** `limit`: 取出评论数量 , 默认为 20
 
-`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/video`
 
@@ -1092,6 +1151,12 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 5: 视频
 ```
+
+**可选参数 :** `limit`: 取出评论数量 , 默认为 20
+
+`offset`: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)\*20, 其中 20 为 limit 的值  
+
+`before`: 分页参数,取上一页最后一项的 `time` 获取下一页数据(获取超过5000条评论的时候需要用到)
 
 **接口地址 :** `/comment/hot`
 
@@ -1283,6 +1348,16 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 返回数据如下图 :
 ![获取专辑内容](https://raw.githubusercontent.com/Binaryify/NeteaseCloudMusicApi/master/static/%E4%B8%93%E8%BE%91.png)
+
+
+## 专辑动态信息
+说明 : 调用此接口 , 传入专辑 id, 可获得专辑动态信息,如是否收藏,收藏数,评论数,分享数
+
+**必选参数 :** `id`: 专辑 id
+
+**接口地址 :** `/album/detail/dynamic`
+
+**调用例子 :** `/album/detail/dynamic?id=32311`
 
 ### 收藏/取消收藏专辑
 
@@ -1541,11 +1616,11 @@ mp3url 不能直接用 , 可通过 `/song/url` 接口传入歌曲 id 获取具�
 
 **必选参数 :** `id`: 歌曲 id, `sourceid`: 歌单或专辑 id
 
-**可选参数 :** `time`: 歌曲播放时间
+**可选参数 :** `time`: 歌曲播放时间,单位为秒
 
 **接口地址 :** `/scrobble`
 
-**调用例子 :** `/scrobble?id=482369360&&sourceid=35571977`
+**调用例子 :** `/scrobble?id=518066366&sourceid=36780169&time=291`
 
 ### 热门歌手
 
