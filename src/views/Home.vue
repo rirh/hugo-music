@@ -76,7 +76,7 @@ footer {
     <Header />
   </header>
   <div class="HolyGrail-body">
-    <main class="HolyGrail-content">
+    <main @scroll="handleScroll" class="HolyGrail-content">
       <Contant />
     </main>
     <nav class="HolyGrail-nav">
@@ -97,5 +97,10 @@ import Music from '@/components/Music';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({ components: { Header, Control, Contant, Music } })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  public handleScroll(e: any) {
+    // console.log(e);
+    return false;
+  }
+}
 </script>

@@ -93,7 +93,9 @@
           <span>&nbsp;&nbsp;等级</span>
         </span>
         <span class="detail-lists-list">
-          <span class="lv" style="color:var(--textColor)"><strong>lv&nbsp;{{detail.level}}</strong></span>
+          <span class="lv" style="color:var(--textColor)">
+            <strong>lv&nbsp;{{detail.level}}</strong>
+          </span>
           <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
         </span>
       </dd>
@@ -160,15 +162,16 @@ export default class Tags extends Vue {
     return this.$store.state.user.userDetail;
   }
   public async handleSignin() {
-
-    if (this.detail.mobileSign) { return; }
+    if (this.detail.mobileSign) {
+      return;
+    }
 
     const userId = `uid=${this.detail.profile.userId}`;
     const { code, point, msg } = await get_daily_signin();
     if (code === 200) {
       notification.success({
         message: '恭喜',
-        description: `签到成功！积分${point}`,
+        description: `签到成功！积分+${point}`,
       });
       const userdetail = await get_user_detail(userId);
       if (userdetail.code === 200) {

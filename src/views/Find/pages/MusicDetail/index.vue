@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <div class="detail">
+  <div class="detail" >
     <Panel :data="playlist" />
     <MusicTable :data="privileges" :playlist="playlist" />
   </div>
@@ -28,6 +28,7 @@ export default class Home extends Vue {
   public loadingDetail = true;
   public transformW = (e: any) => transformW(e);
   public transformatDate = (e: any) => transformatDate(e, false);
+
   public mounted() {
     const params = this.$route.query;
     if (params.id) {

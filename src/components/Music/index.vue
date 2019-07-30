@@ -225,7 +225,9 @@
                 @dblclick="handleMusic(song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
-                <span class="playlist-list-auth">{{song.auth}}</span>
+                <span
+                  class="playlist-list-auth"
+                >{{ song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
                 <span class="playlist-list-duration">{{transformTimer(song.duration/1000)}}</span>
               </dd>
             </dl>
@@ -245,6 +247,7 @@ import { notification } from 'ant-design-vue';
 import Drawer from '@/components/Drawer';
 
 const player = new Audio();
+
 @Component({ components: { Drawer } })
 export default class Music extends Vue {
   // 播放状态
@@ -271,6 +274,39 @@ export default class Music extends Vue {
   public visible = false;
   // 抛出进度可以外部控制
   @Prop() private msg!: string;
+  public mounted() {
+    // const { Howl, Howler } = require("howler");
+    // const sound = new Howl({
+    //   src: [
+    //     // '',
+    //     `http://m10.music.126.net/20190726115052/06a1706
+    // d69314af28bb7f34b409ccb54/ymusic/ddb8/1c79/6efe/e805c67fb5a6a8ea9f19e945f8025585.mp3`
+    //   ]
+    // });
+    // setTimeout(() => {
+    //   console.log(1);
+    //   var index = 1;
+    //   // sound.rate(1.0, id2);
+    //   // sound.seek(1, id2);
+    //   sound.unload(true);
+    //   sound._src =
+    //     " http://m701.music.126.net/20190726121
+    // 120/f4f7c616ea03287f58dcfda300ab2fd8/jdymusic/5452/565e/0309/c8db991f98a45b9ee5f44ccbc3c88a75.mp3";
+    //   // console.log(1);
+    //   // // sound.playString(
+    //   // //   "http://m701.music.126.net/20190726121120/
+    // f4f7c616ea03287f58dcfda300ab2fd8/jdymusic/5452/565e/0309/c8db991f98a45b9ee5f44ccbc3c88a75.mp3"
+    //   // // );
+    //   sound.load();
+    // }, 10000);
+    // console.log(sound);
+    // // Howl._src =
+
+    // //   "http://m10.music.126.net/20190726115052/06a17
+    // 06d69314af28bb7f34b409ccb54/ymusic/ddb8/1c79/6efe/e805c67fb5a6a8ea9f19e945f8025585.mp3";
+    // var id1 = sound.play();
+    // var id2 = sound.play();
+  }
   public handleProgress(msg: any) {
     const duration: any = this.duration;
     this.player.currentTime = (msg / 100) * duration;
