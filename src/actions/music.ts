@@ -7,10 +7,26 @@ import {
   GET_ALBUM,
   GET_CHENK_MUSIC,
   GET_SEARCH_SUGGEST,
+  GET_LYRIC,
+  GET_LIKE,
+  GET_LIKELIST,
 } from '@/constant/api';
+import { getStorage } from '@/util/filters';
 
 
 
+
+
+// 收藏
+export const get_like = async (arg: any) => {
+  const { response }: any = await http(`${GET_LIKE}?${arg}`);
+  return response;
+};
+// 歌词
+export const get_lyric = async (arg: any) => {
+  const { response }: any = await http(`${GET_LYRIC}?id=${arg}`);
+  return response;
+};
 // 搜索
 export const get_search_suggest = async (arg: any) => {
   const { response }: any = await http(`${GET_SEARCH_SUGGEST}?${arg}`);

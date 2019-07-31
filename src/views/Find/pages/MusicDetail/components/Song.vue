@@ -134,7 +134,7 @@ export default class Home extends Vue {
 
     const params = {
       id: item.id,
-      name: item.al.name,
+      name: item.name,
       auth: item.ar.map((e: any) => e.name).toString().split(',').join('/'),
       image: item.al.picUrl,
       duration: item.dt,

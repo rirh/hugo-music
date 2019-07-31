@@ -153,6 +153,49 @@
     }
   }
 }
+
+.music-img-box {
+  position: relative;
+  &-up {
+    font-weight: bold;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+  }
+  &-down {
+    font-weight: bold;
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+  }
+}
+
+// .music-info-img:hover {
+//   cursor: pointer;
+//   // transition: filter 0.1s;
+//   // filter: brightness(1.1) contrast(110%);
+//   filter: blur(2px);
+// }
+.show {
+  display: none;
+}
+.music-img-box:hover .music-info-img {
+  cursor: pointer;
+  // transition: filter 0.1s;
+  // filter: brightness(1.1) contrast(110%);
+  filter: blur(2px);
+}
+.music-img-box:hover .show {
+  display: block;
+}
 </style>
 
 <template>
@@ -167,8 +210,17 @@
     <div class="music">
       <div class="music-flex">
         <div class="music-flex music-info" v-show="showinfo">
-          <span>
-            <img class="music-info-img" :src="img" alt />
+          <span class="music-img-box" @click="handleShowConrtal">
+            <!-- <img class="music-info-img" :src="img" alt /> -->
+            <a-avatar shape="square" class="music-info-img" :onerror="errorImg" :src="img" alt />
+            <AIconfont
+              class="music-img-box-up show"
+              :type="`icon-arrow-${$store.state.music.showPanel?'down':'up'}`"
+            />
+            <AIconfont
+              class="music-img-box-down show"
+              :type="`icon-arrow-${$store.state.music.showPanel?'up':'down'}`"
+            />
           </span>
           <span class="music-info-base">
             <span>
@@ -222,7 +274,7 @@
                 class="playlist-list"
                 v-for="(song,index) in $store.state.music.list"
                 :key="index"
-                @dblclick="handleMusic(song)"
+                @dblclick="$store.commit('updata_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
                 <span
@@ -245,11 +297,14 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { get_song_url, get_check_music } from '@/actions';
 import { notification } from 'ant-design-vue';
 import Drawer from '@/components/Drawer';
+import { ERROR_IMG } from '@/constant/api';
 
 const player = new Audio();
 
 @Component({ components: { Drawer } })
 export default class Music extends Vue {
+  public errorImg = ERROR_IMG;
+
   // 播放状态
   get state() {
     return this.$store.state.music.state;
@@ -301,11 +356,14 @@ export default class Music extends Vue {
     // }, 10000);
     // console.log(sound);
     // // Howl._src =
-
     // //   "http://m10.music.126.net/20190726115052/06a17
     // 06d69314af28bb7f34b409ccb54/ymusic/ddb8/1c79/6efe/e805c67fb5a6a8ea9f19e945f8025585.mp3";
     // var id1 = sound.play();
     // var id2 = sound.play();
+  }
+  public handleShowConrtal() {
+    const showPanel = this.$store.state.music.showPanel;
+    this.$store.commit('updata_show_panel', !showPanel);
   }
   public handleProgress(msg: any) {
     const duration: any = this.duration;
@@ -451,6 +509,7 @@ export default class Music extends Vue {
         // 拿到当前时长
         (this as any).player.ontimeupdate = () => {
           currentTime = (this as any).player.currentTime;
+          this.$store.commit('updata_music_cursor', currentTime);
           this.cursor = currentTime;
           this.progress = (currentTime / duration) * 100;
         };

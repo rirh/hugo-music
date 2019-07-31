@@ -7,9 +7,12 @@ const music = {
     mode: '',
     data: {},
     list: [],
+    showPanel: false,
   },
   mutations: {
-
+    updata_show_panel(state: any, params: any) {
+      state.showPanel = params;
+    },
     updata_music_list(state: any, params: any) {
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {

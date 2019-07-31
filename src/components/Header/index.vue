@@ -94,7 +94,7 @@
       justify-content: flex-start;
       &-icon {
         margin-left: 20px;
-        font-size: 18px;
+        font-size: 23px;
         color: var(--white);
       }
     }
@@ -118,7 +118,10 @@
 </style>
 
 <template>
-  <div class="wapper">
+  <div
+    class="wapper"
+    :style="{'background-color':$store.state.music.showPanel?'white':'var(--red)'}"
+  >
     <div class="wapper-menu">
       <span @click="handleMenu('close')" class="wapper-menu-tips wapper-menu-close">
         <!-- <strong>x</strong> -->
@@ -131,21 +134,32 @@
       </span>
     </div>
     <a-row :gutter="14" type="flex" class="wapper-main" justify="space-around" align="middle">
-      <a-col :span="5" style="text-align:right">
+      <a-col :span="4" :offset="1" v-show="$store.state.music.showPanel">
+        <AIconfont style="font-size:32px" type="icon-chevron-down" @click="handleShowConrtal" />
+      </a-col>
+      <a-col v-show="!$store.state.music.showPanel" :span="5" style="text-align:right">
         <a-icon @click="handleBack" type="left" class="wapper-main-icon wapper-main-icon-left" />
         <a-icon type="right" class="wapper-main-icon wapper-main-icon-right" />
       </a-col>
       <a-col :span="10" class="wapper-main-menu">
-        <Menu />
+        <Menu v-show="!$store.state.music.showPanel" />
       </a-col>
 
       <a-col :span="3" :offset="1" style="padding:0">
-        <div class="wapper-main-seach">
-          <AIconfont class="wapper-main-seach-icon" type="icon-iconseach" />
+        <div
+          class="wapper-main-seach"
+          :style="{'background-color':$store.state.music.showPanel?'var(--bgColor)':'#db6965'}"
+        >
+          <AIconfont
+            class="wapper-main-seach-icon"
+            type="icon-iconseach"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+          />
           <input
             v-model="keywords"
             @focus="showDrawer"
             class="wapper-main-seach-input"
+            style
             placeholder="搜索"
             type="text"
           />
@@ -153,9 +167,21 @@
       </a-col>
       <a-col :span="4" style="padding:0">
         <div class="wapper-main-set">
-          <a-icon type="setting" class="wapper-main-set-icon" />
-          <AIconfont class="wapper-main-set-icon" type="icon-185078emailmailstreamline" />
-          <AIconfont class="wapper-main-set-icon" type="icon-pifu" />
+          <AIconfont
+            type="icon-settings"
+            class="wapper-main-set-icon"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+          />
+          <AIconfont
+            class="wapper-main-set-icon"
+            type="icon-email"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+          />
+          <AIconfont
+            class="wapper-main-set-icon"
+            type="icon-tshirt-crew"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+          />
         </div>
       </a-col>
     </a-row>
@@ -218,8 +244,11 @@ export default class HelloWorld extends Vue {
       icon: 'icon-playlist-play',
     },
   };
-
   @Prop() private msg!: string;
+  public handleShowConrtal() {
+    const showPanel = this.$store.state.music.showPanel;
+    this.$store.commit('updata_show_panel', !showPanel);
+  }
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
     // remote.getCurrentWindow().minimize();

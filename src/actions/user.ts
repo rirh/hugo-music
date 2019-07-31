@@ -6,12 +6,18 @@ import {
   GET_DAILY_SIGNIN,
   GET_LOGOUT,
   GET_SUBCOUNT,
+  GET_LIKELIST,
 } from '@/constant/api';
 import { clearStorage } from '@/util/filters';
 import store from '@/store';
 import router from '@/router';
 
-
+// 收藏
+export const get_likelist = async () => {
+  const uid = (store as any).state.user.user.account.id;
+  const { response }: any = await http(`${GET_LIKELIST}?uid=${uid}`);
+  store.commit('updata_likelist', response);
+};
 
 // 获取用户信息 , 歌单，收藏，mv, dj 数量
 export const get_subcount = async () => {

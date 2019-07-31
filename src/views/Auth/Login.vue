@@ -31,7 +31,12 @@ import { Component, Prop, Vue, Model } from 'vue-property-decorator';
 import axios from 'axios';
 import routers from '@/routers';
 import CountryCode from '@/lib/countrycode';
-import { get_phone_login, get_user_playlist, get_user_detail } from '@/actions';
+import {
+  get_phone_login,
+  get_user_playlist,
+  get_user_detail,
+  get_likelist,
+} from '@/actions';
 import { notification } from 'ant-design-vue';
 import { setStorage } from '@/util/filters';
 
@@ -59,6 +64,7 @@ export default class Tags extends Vue {
       const resAll = await axios.all([
         get_user_playlist(userId),
         get_user_detail(userId),
+        get_likelist(),
       ]);
       const [playlist, userdetail]: any = resAll;
       if (playlist.code === 200) {

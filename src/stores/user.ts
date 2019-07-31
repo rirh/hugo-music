@@ -6,8 +6,13 @@ const user = {
     playlist: [],
     // 用户详细信息
     userDetail: {},
+    // 喜欢列表
+    likelist: {},
   },
   mutations: {
+    updata_likelist(state: any, params: any) {
+      state.likelist = params;
+    },
     updata_user_detail(state: any, params: any) {
       state.userDetail = params;
     },

@@ -108,3 +108,10 @@ export const GET_LOGOUT = `${host}logout`;
 /// 获取用户信息 , 歌单，收藏，mv, dj 数量
 export const GET_SUBCOUNT = `${host}user/subcount`;
 // /user/subcount
+/// 获取歌曲歌词
+export const GET_LYRIC = `${host}lyric`;
+/// 喜欢
+export const GET_LIKE = `${host}like`;
+// /like?id=347230
+/// 喜欢的歌曲
+export const GET_LIKELIST = `${host}likelist`;
