@@ -1,7 +1,7 @@
 'use strict';
 
-import { ipcMain, remote } from 'electron';
-const { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE, MAIN_DROP } = require('./constant/ipc');
+import { ipcMain, remote, shell } from 'electron';
+const { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE, MAIN_DROP, FORGET_PWD } = require('./constant/ipc');
 
 const _minimize = () => {
   const mainWindow = remote.getCurrentWindow();
@@ -48,3 +48,6 @@ ipcMain.on(MAIN_CLOSE, () => {
 ipcMain.on(MAIN_DROP, (e: any) => {
   console.log(e)
 });
+ipcMain.on(FORGET_PWD, () => {
+  shell.openExternal('http://reg.163.com/naq/findPassword')
+})

@@ -1,12 +1,54 @@
-<style lang="less" scoped>
+<style lang="less" >
+.login /deep/ .ant-modal-body {
+  padding: 1.2rem 2rem 2rem 2rem;
+  border-top: 0.8rem solid var(--red);
+  border-radius: 0.26rem;
+}
+.login {
+  position: relative;
+  &-input {
+    font-weight: bold;
+  }
+  &-close {
+    position: absolute;
+    left: 0;
+    top: -40px;
+    font-size: 20px;
+  }
+  &-close:hover {
+    color: var(--tipsColor);
+  }
+  &-body {
+    margin-top: 2rem;
+    &-radio {
+      margin: 10px 0 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      color: var(--link);
+    }
+  }
+}
 </style>
 
 <template>
   <div>
-    <a-modal title="登录" :visible="show" :width="380" :mask="false" centered :footer="null">
-      <div class="login">
-        <div>
-          <a-input v-model="user" placeholder="请输入账号">
+    <a-modal
+      class="login"
+      :visible="show"
+      :width="370"
+      :mask="false"
+      :closable="false"
+      centered
+      :footer="null"
+      @keyup.enter="handleSumit"
+    >
+      <a-spin class="login-body" :spinning="spinning">
+        <AIconfont class="login-close" type="icon-close1" @click="$emit('change',false)" />
+        <div v-show="logintype==='手机登录'">
+          <a-input size="large" class="login-input" v-model="user" placeholder="请输入手机号"></a-input>
+        </div>
+        <div v-show="logintype!=='手机登录'">
+          <a-input size="large" class="login-input" v-model="email" placeholder="请输入邮箱">
             <!-- <a-select slot="addonBefore" v-model="selected" @change="handleChange">
               <a-select-option v-for="(item) in CountryCode" :key="`${item}`"  >
                 <span>{{item.phone_code}}&nbsp;</span>
@@ -15,13 +57,25 @@
             </a-select>-->
           </a-input>
         </div>
-        <br />
-        <div>
-          <a-input v-model="passowrd" placeholder="请输入密码"></a-input>
+        <div style="margin-top:10px">
+          <a-input
+            type="password"
+            size="large"
+            class="login-input"
+            v-model="passowrd"
+            placeholder="请输入密码"
+          ></a-input>
         </div>
-        <br />
+        <div class="login-body-radio">
+          <a-radio-group v-model="logintype" size="small">
+            <a-radio value="手机登录">手机</a-radio>
+            <a-radio value="邮箱登录">邮箱</a-radio>
+          </a-radio-group>
+          <span @click="handleIpcForget">忘记密码</span>
+        </div>
+
         <a-button type="primary" block @click="handleSumit">登录</a-button>
-      </div>
+      </a-spin>
     </a-modal>
   </div>
 </template>
@@ -39,24 +93,50 @@ import {
 } from '@/actions';
 import { notification } from 'ant-design-vue';
 import { setStorage } from '@/util/filters';
+import { FORGET_PWD } from '@/constant/ipc';
+import { ipcRenderer, remote } from 'electron';
 
 @Component
 export default class Tags extends Vue {
   public selected: any = '+86';
   public CountryCode = CountryCode;
+  public spinning = false;
   public user = '';
   public passowrd = '';
+  public email = '';
+  public logintype = '手机登录';
   @Prop() private data!: string;
   @Prop() private show!: string;
-  @Model('change')
   private visible!: boolean;
   public handleChange(msg: any) {
     this.CountryCode = msg;
   }
+  // handleClose(){
+  //   this.$emit('change',false)
+  // }
+  public handleIpcForget() {
+    ipcRenderer.send(FORGET_PWD);
+  }
   public async handleSumit() {
-    const res = await get_phone_login(
-      `phone=${this.user}&password=${this.passowrd}`,
-    );
+    const user = this.user;
+    const email = this.email;
+    const passowrd = this.passowrd;
+    let params: any;
+    this.spinning = true;
+    if (this.logintype === '手机登录') {
+      if (!user) { return; }
+      if (user.length !== 11) { return; }
+      params = `/cellphone?phone=${user}&password=${passowrd}`;
+    } else {
+      if (!email) { return; }
+      if (!~email.indexOf('@')) { return; }
+      if (!~email.indexOf('163')) { return; }
+      params = `?email=${email}&password=${passowrd}`;
+    }
+    if (!passowrd) { return; }
+    if (passowrd.length < 6) { return; }
+    const res = await get_phone_login(params);
+    this.spinning = false;
     if (res.code === 200) {
       setStorage('user', res);
       this.$store.commit('updata_user', res);
@@ -74,7 +154,7 @@ export default class Tags extends Vue {
         this.$store.commit('updata_user_detail', userdetail);
       }
       this.$router.push('/');
-      this.$emit('on-visible', false);
+      this.$emit('change', false);
     }
   }
 }

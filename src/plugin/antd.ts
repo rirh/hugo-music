@@ -8,6 +8,7 @@ import {
   Pagination, Tabs, Table,
   Divider, Drawer, Tag, Select,
   Input, Form, Collapse, Progress,
+  Radio, Spin,
 } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
@@ -46,6 +47,10 @@ Vue.component(Form.Item.name, Form.Item);
 Vue.component(Collapse.name, Collapse);
 Vue.component(Collapse.Panel.name, Collapse.Panel);
 Vue.component(Progress.name, Progress);
+Vue.component(Radio.Group.name, Radio.Group);
+Vue.component(Radio.Button.name, Radio.Button);
+Vue.component(Radio.name, Radio);
+Vue.component(Spin.name, Spin);
 
 
 

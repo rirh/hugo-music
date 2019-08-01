@@ -3,7 +3,7 @@
   background-color: white;
   width: 100%;
   position: relative;
-  &-commet{
+  &-commet {
     display: flex;
   }
   &-panel {
@@ -56,7 +56,6 @@
         }
       }
     }
-
 
     &-lyrics {
       flex: 0 0 50%;
@@ -179,8 +178,10 @@
       </div>
       <div class="wapper-panel-lyrics">
         <h1 class="name">
-          {{$store.state.music.data.name}}
-          <span class="name-tips">标准音质</span>
+          {{$store.state.music.data.name.length>20?`${$store.state.music.data.name.substring(0,10)}...`:$store.state.music.data.name}}
+          <span
+            class="name-tips"
+          >标准音质</span>
         </h1>
         <div class="name-alia">
           <strong>{{songs.alia&&songs.alia.toString()}}</strong>
@@ -194,7 +195,7 @@
                  path: '/album-detail',
                  query: songs.al,
               }"
-              @click="$store.commit('updata_show_panel',false)"
+              @click.native="handleTogglePanel"
             >{{songs.al&&(songs.al.name.length>10?`${songs.al.name.substring(0,8)}...`:songs.al.name)}}</router-link>
           </div>
           <div class="auth-item">
@@ -270,12 +271,18 @@ export default class Panel extends Vue {
     }
     return result;
   }
+  public handleTogglePanel() {
+    const showPanel = this.$store.state.music.showPanel;
+    this.$store.commit('updata_show_panel', !showPanel);
+  }
   public async handleDown() {
     // StreamDownload=new StreamDownload();
     const id = this.$store.state.music.data.id;
     const name = this.$store.state.music.data.name;
     const { code, data } = await get_song_url(id);
-    if (code !== 200) { return; }
+    if (code !== 200) {
+      return;
+    }
     const [music] = data;
     download(
       music.url,

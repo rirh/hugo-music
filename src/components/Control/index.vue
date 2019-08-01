@@ -19,6 +19,7 @@
     &-nickname {
       font-weight: 500;
       margin-left: 10px;
+      color: var(--textColor);
     }
     &-icon {
       color: var(--textColor);
@@ -92,7 +93,7 @@
 
 <template>
   <div class="wapper">
-    <div class="wapper-avatar" @click="showLogin">
+    <div class="wapper-avatar">
       <a-avatar
         class="wapper-avatar-img"
         :size="40"
@@ -100,19 +101,11 @@
         icon="user"
         :src="user.profile&&user.profile.avatarUrl"
       />
-      <a-popover placement="topRight" v-show="user.profile" trigger="click" v-model="visible">
+      <span v-show="!user.profile" class="wapper-avatar-nickname" @click="handleShow">{{'未登录'}}</span>
+      <a-popover v-show="user.profile" placement="topRight" trigger="click" >
         <span
           class="wapper-avatar-nickname"
           :style="{color:user.profile?'var(--black)':''}"
-          @click="handleShowPersonInfo"
-        >{{user.profile?user.profile.nickname:'未登录'}}</span>
-        <PersonInfo @on-sign="visible=false" slot="content" />
-      </a-popover>
-      <a-popover v-show="!user.profile" placement="topRight" trigger="click" :visible="visible">
-        <span
-          class="wapper-avatar-nickname"
-          :style="{color:user.profile?'var(--black)':''}"
-          @click="handleShowPersonInfo"
         >{{user.profile?user.profile.nickname:'未登录'}}</span>
         <PersonInfo @on-sign="visible=false" slot="content" />
       </a-popover>
@@ -176,7 +169,7 @@
         </a-collapse-panel>
       </a-collapse>
     </div>
-    <Login :show="show" @on-visible="show=false" />
+    <Login :show="showlogin" @change="showlogin=false" />
   </div>
 </template>
 
@@ -229,10 +222,18 @@ export default class Control extends Vue {
 
   public show = false;
   public menus = Nav;
+
+  public showlogin = false;
   @Prop() private msg!: string;
+  public handleShow() {
+    const isLogin = this.user.profile;
+    if (!isLogin) {
+      this.showlogin = true;
+    }
+  }
   public handleShowPersonInfo() {
     if (this.user.profile) {
-      this.visible = true;
+      this.show = true;
     }
   }
   public handleGoUser() {
@@ -243,12 +244,7 @@ export default class Control extends Vue {
       });
     }
   }
-  public showLogin() {
-    const isLogin = this.user.profile;
-    if (!isLogin) {
-      this.show = true;
-    }
-  }
+
   public activeMenu(arg: any) {
     let result = false;
     const { fullPath } = this.$route;

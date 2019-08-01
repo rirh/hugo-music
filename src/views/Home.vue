@@ -3,7 +3,7 @@
   display: flex;
   height: 100vh;
   flex-direction: column;
-  background-color: antiquewhite;
+  // background-color: antiquewhite;
   text-align: center;
   overflow: hidden;
 }
@@ -68,6 +68,16 @@ footer {
 .ant-popover-inner-content {
   padding: 5px 0px !important;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 1s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  transform: translateY(100%);
+}
 </style>
 
 <template>
@@ -75,7 +85,8 @@ footer {
   <header>
     <Header />
   </header>
-  <div v-show="!$store.state.music.showPanel" class="HolyGrail-body">
+
+  <div v-if="!$store.state.music.showPanel" class="HolyGrail-body">
     <main @scroll="handleScroll" class="HolyGrail-content">
       <Contant />
     </main>
@@ -83,7 +94,9 @@ footer {
       <Control />
     </nav>
   </div>
-  <LyricsPanel class="HolyGrail-body" v-show="$store.state.music.showPanel" />
+  <transition name="fade" mode="out-in">
+    <LyricsPanel v-show="$store.state.music.showPanel" class="HolyGrail-body" />
+  </transition>
   <footer>
     <Music />
   </footer>

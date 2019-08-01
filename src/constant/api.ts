@@ -89,7 +89,7 @@ export const GET_NEW_SONG = `${host}personalized/newsong`;
 // 可选参数 : countrycode: 国家码，用于国外手机号登陆，例如美国传入：1
 
 // 调用例子 : /login/cellphone?phone=xxx&password=yyy
-export const GET_CELL_PHONE = `${host}login/cellphone`;
+export const GET_CELL_PHONE = `${host}login`;
 // 2.邮箱登录
 export const GET_LOGIN = `${host}login`;
 /// /personalized

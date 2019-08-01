@@ -413,7 +413,7 @@ export default class Music extends Vue {
   public async handleMusic({ id, image, name, auth, duration }: any) {
     this.showinfo = true;
     this.img = image;
-    this.name = name.length > 27 ? `${name.substring(0, 22)}...` : name;
+    this.name = name.length > 20 ? `${name.substring(0, 10)}...` : name;
     this.auth = auth.length > 5 ? `${auth.substring(0, 6)}...` : auth;
     this.$store.commit('updata_music_list', {
       id,

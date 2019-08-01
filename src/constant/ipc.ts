@@ -7,3 +7,5 @@ export const MAIN_ZOOM = `0x0002`;
 export const MAIN_CLOSE = `0x0003`;
 // 关闭窗口
 export const MAIN_DROP = `0x0004`;
+// 忘记密码
+export const FORGET_PWD = `0x0005`;
