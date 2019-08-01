@@ -74,9 +74,9 @@
           />&nbsp;
           <AIconfont class="table-tips-down" type="icon-package-down" />
         </td>
-        <td class="table-song">{{scliceValue(item&&item.al.name,22)}}</td>
+        <td class="table-song">{{scliceValue(item&&item.name,22)}}</td>
         <td class="table-auth">{{scliceValue(item.al&&item.ar[0].name,9)}}</td>
-        <td class="table-dj">{{scliceValue(item&&item.name,22)}}</td>
+        <td class="table-dj">{{scliceValue(item&&item.al.name,22)}}</td>
         <td class="table-dt">{{transformTimer(item&&item.dt/1000)}}</td>
       </tr>
     </table>
@@ -131,7 +131,7 @@ export default class Home extends Vue {
   public handleSong(item: any) {
     const params = {
       id: item.id,
-      name: item.al.name,
+      name: item.name,
       auth: item.ar
         .map((e: any) => e.name)
         .toString()

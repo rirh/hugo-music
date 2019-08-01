@@ -14,9 +14,11 @@ import router from '@/router';
 
 // 收藏
 export const get_likelist = async () => {
-  const uid = (store as any).state.user.user.account.id;
-  const { response }: any = await http(`${GET_LIKELIST}?uid=${uid}`);
-  store.commit('updata_likelist', response);
+  const account = (store as any).state.user.user.account;
+  if (account) {
+    const { response }: any = await http(`${GET_LIKELIST}?uid=${account.id}`);
+    store.commit('updata_likelist', response);
+  }
 };
 
 // 获取用户信息 , 歌单，收藏，mv, dj 数量

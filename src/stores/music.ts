@@ -7,9 +7,13 @@ const music = {
     mode: '',
     data: {},
     list: [],
+    like: false,
     showPanel: false,
   },
   mutations: {
+    updata_like(state: any, params: any) {
+      state.list = params;
+    },
     updata_show_panel(state: any, params: any) {
       state.showPanel = params;
     },

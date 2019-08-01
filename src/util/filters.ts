@@ -1,4 +1,8 @@
 
+import { get_likelist } from '@/actions';
+import store from '@/store';
+
+
 export const os = () => {
   let result;
   const height = window.document.documentElement.clientHeight;
@@ -122,3 +126,50 @@ export const clearStorage = () => {
   const ls = uzStorage();
   ls.clear();
 };
+
+export const mergeLike = async (id: any) => {
+  let result = false;
+  await get_likelist();
+  const list = (store as any).state.user.likelist.ids;
+  id = id || (store as any).state.music.data.id;
+  if (list) {
+    result = list.some((e: any) => e === id);
+  }
+  return result;
+};
+
+
+export const download = (patch: any, downloadFile: any, callback: any) => {
+  const request = require('request');
+
+  let receivedBytes = 0;
+  let totalBytes = 0;
+
+  const req = request({
+    method: 'GET',
+    uri: patch,
+  });
+  const fs = require('fs');
+  const path = require('path');
+
+  const out = fs.createWriteStream(path.join('/Users/tigerzh/Desktop/', downloadFile));
+  req.pipe(out);
+
+  req.on('response', (data: any) => {
+    // 更新总文件字节大小
+    totalBytes = parseInt(data.headers['content-length'], 10);
+  });
+
+  req.on('data', (chunk: any) => {
+    // 更新下载的文件块字节大小
+    receivedBytes += chunk.length;
+    callback('progress', receivedBytes, totalBytes);
+  });
+
+  req.on('end', () => {
+    callback('finished');
+    // TODO: 检查文件，部署文件，删除文件
+  });
+
+};
+

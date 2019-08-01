@@ -2,6 +2,10 @@
 .wapper {
   background-color: white;
   width: 100%;
+  position: relative;
+  &-commet{
+    display: flex;
+  }
   &-panel {
     display: flex;
     width: 100%;
@@ -52,6 +56,7 @@
         }
       }
     }
+
 
     &-lyrics {
       flex: 0 0 50%;
@@ -122,10 +127,23 @@
     margin: 0.5rem 0;
   }
 }
+.pos {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 </style>
 
 <template>
   <div class="wapper">
+    <a-progress
+      class="pos"
+      :percent="percent"
+      :showInfo="false"
+      v-show="percent!==0"
+      status="active"
+      :strokeWidth="1"
+    />
     <div class="wapper-panel">
       <div class="wapper-panel-music">
         <div class="roate" ref="roate">
@@ -151,7 +169,7 @@
           <a-button class="wapper-panel-music-action-btn">
             <AIconfont type="icon-playlist-plus" />
           </a-button>
-          <a-button class="wapper-panel-music-action-btn">
+          <a-button @click="handleDown" class="wapper-panel-music-action-btn">
             <AIconfont type="icon-package-down" />
           </a-button>
           <a-button class="wapper-panel-music-action-btn">
@@ -172,7 +190,11 @@
             <label for>专辑：</label>
             <router-link
               class="auth-item-val"
-              to
+              :to="{
+                 path: '/album-detail',
+                 query: songs.al,
+              }"
+              @click="$store.commit('updata_show_panel',false)"
             >{{songs.al&&(songs.al.name.length>10?`${songs.al.name.substring(0,8)}...`:songs.al.name)}}</router-link>
           </div>
           <div class="auth-item">
@@ -197,16 +219,26 @@
         </div>
       </div>
     </div>
-    <div></div>
+    <div class="wapper-commet">
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import routers from '@/routers';
-import { get_song_detail, get_lyric, get_like, get_likelist } from '@/actions';
+import {
+  get_song_detail,
+  get_lyric,
+  get_like,
+  get_likelist,
+  get_song_url,
+} from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
-import { notification } from 'ant-design-vue';
+import { notification, message } from 'ant-design-vue';
+import { download } from '@/util/filters';
 
 @Component
 export default class Panel extends Vue {
@@ -214,6 +246,7 @@ export default class Panel extends Vue {
   public errorImg = ERROR_IMG;
   public isPress = false;
   public like = false;
+  public percent = 0;
   @Prop() private msg!: string;
   public async init() {
     const id = this.$store.state.music.data.id;
@@ -237,6 +270,28 @@ export default class Panel extends Vue {
     }
     return result;
   }
+  public async handleDown() {
+    // StreamDownload=new StreamDownload();
+    const id = this.$store.state.music.data.id;
+    const name = this.$store.state.music.data.name;
+    const { code, data } = await get_song_url(id);
+    if (code !== 200) { return; }
+    const [music] = data;
+    download(
+      music.url,
+      `${name}.${music.type}`,
+      (arg: any, percentage: any, total: any) => {
+        if (arg === 'progress') {
+          // 显示进度
+          this.percent = (percentage / total) * 100;
+        } else if (arg === 'finished') {
+          // 通知完成
+          this.percent = 0;
+          message.success('下载成功！');
+        }
+      },
+    );
+  }
 
   public async handleLike() {
     const id = this.$store.state.music.data.id;
@@ -248,7 +303,6 @@ export default class Panel extends Vue {
         message: '恭喜',
         description: `操作成功！`,
       });
-
     }
   }
   public highLightLyric(item: any, index: any) {
@@ -314,7 +368,9 @@ export default class Panel extends Vue {
         timerArr = h.split(':');
         const [a, b] = timerArr;
         let time: any = `${Number(a) * 60 + Number(b)}.${s}`;
-        if (isNaN(time)) { time = ''; }
+        if (isNaN(time)) {
+          time = '';
+        }
         // if (!contant) { contant = ''; }
         return { time, contant };
       };

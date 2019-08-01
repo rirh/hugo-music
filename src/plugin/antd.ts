@@ -7,7 +7,7 @@ import {
   Modal, Slider, Popover,
   Pagination, Tabs, Table,
   Divider, Drawer, Tag, Select,
-  Input, Form, Collapse,
+  Input, Form, Collapse, Progress,
 } from 'ant-design-vue';
 
 const IconFont: any = Icon.createFromIconfontCN({
@@ -45,6 +45,7 @@ Vue.component(Form.name, Form);
 Vue.component(Form.Item.name, Form.Item);
 Vue.component(Collapse.name, Collapse);
 Vue.component(Collapse.Panel.name, Collapse.Panel);
+Vue.component(Progress.name, Progress);
 
 
 

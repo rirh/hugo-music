@@ -237,7 +237,7 @@
         </div>
       </div>
       <div class="music-flex music-control">
-        <AIconfont class="music-control-heart" :type="true?'icon-heart-outline':'icon-heart'" />
+        <AIconfont class="music-control-heart" :type="isLike?'icon-heart-outline':'icon-heart'" />
         <AIconfont class="music-control-previous" @click="handlePrev" type="icon-skip-previous" />
         <a-button type="primary" class="music-control-play" @click="handleStart">
           <transition name="fade" mode="out-in">
@@ -325,6 +325,17 @@ export default class Music extends Vue {
   public volume = 100;
   public volumecach = 100;
   public volumetype = 'icon-volume-high';
+  public like = false;
+  get isLike() {
+    let result = this.like;
+    const id = this.$store.state.music.data.id;
+    const list = this.$store.state.user.likelist.ids;
+    if (id && list) {
+      result = list.some((e: any) => e === id);
+    }
+    return result;
+  }
+
   // 音量弹窗显示
   public visible = false;
   // 抛出进度可以外部控制
@@ -461,9 +472,7 @@ export default class Music extends Vue {
     }
   }
   public async asyncPlay(id: any) {
-    if (!id) {
-      return;
-    }
+    if (!id) { return; }
 
     const { success, message }: any = await get_check_music(id);
     if (!success) {
@@ -473,9 +482,7 @@ export default class Music extends Vue {
       });
     }
     const { code, data } = await get_song_url(id);
-    if (code !== 200) {
-      return;
-    }
+    if (code !== 200) { return; }
 
     const [music] = data;
     (this as any).player.src = music.url;
