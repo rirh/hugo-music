@@ -86,7 +86,7 @@ footer {
     <Header />
   </header>
 
-  <div v-if="!$store.state.music.showPanel" class="HolyGrail-body">
+  <div v-show="!$store.state.music.showPanel" class="HolyGrail-body">
     <main @scroll="handleScroll" class="HolyGrail-content">
       <Contant />
     </main>
