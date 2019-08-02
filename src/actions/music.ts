@@ -9,14 +9,33 @@ import {
   GET_SEARCH_SUGGEST,
   GET_LYRIC,
   GET_LIKE,
-  GET_LIKELIST,
+  GET_COMMENT_MUSIC,
+  GET_SIMI_SONG,
+  GET_RESOURCE_LIKE,
+  GET_COMMENT_LIKE,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
 
-
-
-
-
+// 给评论点赞
+export const get_comment_like = async (arg: any) => {
+  const { response }: any = await http(`${GET_COMMENT_LIKE}?${arg}`);
+  return response;
+};
+// 给资源点赞
+export const get_resource_like = async (arg: any) => {
+  const { response }: any = await http(`${GET_RESOURCE_LIKE}?${arg}`);
+  return response;
+};
+// 获取相似音乐
+export const get_simi_song = async (arg: any) => {
+  const { response }: any = await http(`${GET_SIMI_SONG}?${arg}`);
+  return response;
+};
+// 歌曲评价
+export const get_comment_music = async (arg: any) => {
+  const { response }: any = await http(`${GET_COMMENT_MUSIC}?${arg}`);
+  return response;
+};
 // 收藏
 export const get_like = async (arg: any) => {
   const { response }: any = await http(`${GET_LIKE}?${arg}`);

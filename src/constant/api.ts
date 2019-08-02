@@ -115,3 +115,14 @@ export const GET_LIKE = `${host}like`;
 // /like?id=347230
 /// 喜欢的歌曲
 export const GET_LIKELIST = `${host}likelist`;
+/// 获得歌曲评论
+export const GET_COMMENT_MUSIC = `${host}comment/music`;
+/// 获得歌曲评论
+export const GET_SIMI_SONG = `${host}simi/song`;
+// /simi/song
+/// 评论点赞
+export const GET_COMMENT_LIKE = `${host}comment/like`;
+// /resource/like
+/// 资源点赞
+export const GET_RESOURCE_LIKE = `${host}resource/like`;
+// /resource/like

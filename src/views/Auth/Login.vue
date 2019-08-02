@@ -1,8 +1,8 @@
 <style lang="less" >
 .login /deep/ .ant-modal-body {
-  padding: 1.2rem 2rem 2rem 2rem;
-  border-top: 0.8rem solid var(--red);
-  border-radius: 0.26rem;
+  padding: 1.5vw 3vw 3vw 3vw;
+  border-top: 1vw solid var(--red);
+  border-radius: 0.26vw;
 }
 .login {
   position: relative;
@@ -11,17 +11,17 @@
   }
   &-close {
     position: absolute;
-    left: 0;
-    top: -40px;
+    left: -2vw;
+    top: -3vw;
     font-size: 20px;
   }
   &-close:hover {
     color: var(--tipsColor);
   }
   &-body {
-    margin-top: 2rem;
+    margin-top: 2vw;
     &-radio {
-      margin: 10px 0 2rem 0;
+      margin: .8vw 0 2vw 0;
       display: flex;
       justify-content: space-between;
       color: var(--link);
@@ -124,17 +124,31 @@ export default class Tags extends Vue {
     let params: any;
     this.spinning = true;
     if (this.logintype === '手机登录') {
-      if (!user) { return; }
-      if (user.length !== 11) { return; }
+      if (!user) {
+        return;
+      }
+      if (user.length !== 11) {
+        return;
+      }
       params = `/cellphone?phone=${user}&password=${passowrd}`;
     } else {
-      if (!email) { return; }
-      if (!~email.indexOf('@')) { return; }
-      if (!~email.indexOf('163')) { return; }
+      if (!email) {
+        return;
+      }
+      if (!~email.indexOf('@')) {
+        return;
+      }
+      if (!~email.indexOf('163')) {
+        return;
+      }
       params = `?email=${email}&password=${passowrd}`;
     }
-    if (!passowrd) { return; }
-    if (passowrd.length < 6) { return; }
+    if (!passowrd) {
+      return;
+    }
+    if (passowrd.length < 6) {
+      return;
+    }
     const res = await get_phone_login(params);
     this.spinning = false;
     if (res.code === 200) {

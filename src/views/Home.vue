@@ -71,7 +71,7 @@ footer {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 1s ease;
+  transition: all .7s ease;
 }
 
 .fade-enter,
@@ -86,7 +86,7 @@ footer {
     <Header />
   </header>
 
-  <div v-show="!$store.state.music.showPanel" class="HolyGrail-body">
+  <div class="HolyGrail-body" v-show="!$store.state.music.showPanel">
     <main @scroll="handleScroll" class="HolyGrail-content">
       <Contant />
     </main>
@@ -95,8 +95,11 @@ footer {
     </nav>
   </div>
   <transition name="fade" mode="out-in">
-    <LyricsPanel v-show="$store.state.music.showPanel" class="HolyGrail-body" />
+    <LyricsPanel v-show="$store.state.music.showPanel" />
   </transition>
+  <!-- <transition name="fade" mode="out-in">
+    <LyricsPanel v-show="$store.state.music.showPanel" />
+  </transition>-->
   <footer>
     <Music />
   </footer>
