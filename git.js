@@ -7,6 +7,7 @@ const CFonts = require('cfonts');
 // eslint-disable-next-line consistent-return
 const exe = (cmd) => {
   let result;
+  
   try {
     result = shell.exec(cmd);
     if (result.code) {
