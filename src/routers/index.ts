@@ -94,6 +94,15 @@ export default [
     component: () => import('@/views/Auth/User.vue'),
     meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
   },
+  {
+    path: '/edit-user-info',
+    name: '编辑用户信息',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Auth/Edit.vue'),
+    meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  },
 
 
 

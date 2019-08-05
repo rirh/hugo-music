@@ -126,3 +126,5 @@ export const GET_COMMENT_LIKE = `${host}comment/like`;
 /// 资源点赞
 export const GET_RESOURCE_LIKE = `${host}resource/like`;
 // /resource/like
+export const GET_UPDATE = `${host}user/update`;
+// /user/GET_UPDATE

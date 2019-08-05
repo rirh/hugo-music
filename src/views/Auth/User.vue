@@ -106,7 +106,7 @@
             />
           </div>
           <div>
-            <a-button size="small" type="primary" class="wapper-user-info-edit">编辑个人信息</a-button>
+            <a-button @click="handleGoEdit" size="small" type="primary" class="wapper-user-info-edit">编辑个人信息</a-button>
           </div>
         </div>
         <div>
@@ -198,6 +198,9 @@ export default class Tags extends Vue {
       };
     }
     return result;
+  }
+  public handleGoEdit() {
+    this.$router.push('/edit-user-info');
   }
   public async mounted() {
     const res = await get_subcount();

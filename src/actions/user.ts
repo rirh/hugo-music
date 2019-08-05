@@ -7,11 +7,17 @@ import {
   GET_LOGOUT,
   GET_SUBCOUNT,
   GET_LIKELIST,
+  GET_UPDATE,
 } from '@/constant/api';
 import { clearStorage } from '@/util/filters';
 import store from '@/store';
 import router from '@/router';
 
+// 修改用户信息
+export const get_update = async (args: any) => {
+  const { response }: any = await http(`${GET_UPDATE}?${args}`);
+  return response;
+};
 // 收藏
 export const get_likelist = async () => {
   const account = (store as any).state.user.user.account;

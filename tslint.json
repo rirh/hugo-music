@@ -25,7 +25,8 @@
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
     "no-bitwise": false,
-    "variable-name":false,
-    "noImplicitAny": false
+    "variable-name": false,
+    "noImplicitAny": false,
+    "no-shadowed-variable": false
   }
 }

@@ -21,7 +21,7 @@
   &-body {
     margin-top: 2vw;
     &-radio {
-      margin: .8vw 0 2vw 0;
+      margin: 0.8vw 0 2vw 0;
       display: flex;
       justify-content: space-between;
       color: var(--link);
@@ -71,7 +71,9 @@
             <a-radio value="手机登录">手机</a-radio>
             <a-radio value="邮箱登录">邮箱</a-radio>
           </a-radio-group>
-          <span @click="handleIpcForget">忘记密码</span>
+          <span>
+            <span @click="handleIpcForget">忘记密码&nbsp;</span>
+          </span>
         </div>
 
         <a-button type="primary" block @click="handleSumit">登录</a-button>
