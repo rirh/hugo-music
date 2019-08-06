@@ -107,7 +107,7 @@
           class="wapper-avatar-nickname"
           :style="{color:user.profile?'var(--black)':''}"
         >{{user.profile?user.profile.nickname:'未登录'}}</span>
-        <PersonInfo @on-sign="visible=false" slot="content" />
+        <PersonInfo @on-go="()=>{debugger;visible=false}" @on-sign="visible=false" slot="content" />
       </a-popover>
       <a-icon class="wapper-avatar-icon" type="caret-right" />
     </div>

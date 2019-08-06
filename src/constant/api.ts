@@ -1,6 +1,6 @@
 // 服务器
 export const host = 'https://music.huzhihui.org.cn/';
-// export const host = 'http://localhost:3000/';
+// export const host = 'http://localhost:3002/';
 
 
 // 错误图片
@@ -128,3 +128,31 @@ export const GET_RESOURCE_LIKE = `${host}resource/like`;
 // /resource/like
 export const GET_UPDATE = `${host}user/update`;
 // /user/GET_UPDATE
+// 发送验证码
+export const GET_CAPTCHA_SENT = `${host}captcha/sent`;
+// /captcha/sent
+// 验证验证码
+export const GET_CAPTCHA_VERIFY = `${host}captcha/verify`;
+// /captcha/sent
+// 绑定验证码
+export const GET_REDBIND = `${host}rebind`;
+// /captcha/sent
+// /rebind
+// 用户电台
+export const GET_USER_DJ = `${host}user/dj`;
+// /user/dj
+// 用户电台
+export const GET_DJ_SUBLISY = `${host}dj/sublist`;
+// /user/dj
+// /dj/sublist
+// 用户关注列表
+export const GET_USER_FOLLOWS = `${host}user/follows`;
+// /user/follows
+
+// 用户粉丝列表
+export const GET_USER_FOLLOWEDS = `${host}user/followeds`;
+// /user/followeds
+
+// 关注/取消关注
+export const GET_FOLLOW = `${host}follow`;
+// /follow

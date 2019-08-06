@@ -28,6 +28,7 @@
   &-lists {
     border-bottom: 1px solid var(--bgColor);
     padding: 0.5vw 1vw 0.5vw 2vw;
+    // margin: 0.5vw 1vw 0.5vw 2vw;
     &-list {
       display: flex;
       justify-content: center;
@@ -119,7 +120,11 @@
           <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
         </span>
       </dd>
-      <dd class="detail-lists-list" style="justify-content: space-between">
+      <dd
+        class="detail-lists-list"
+        @click="handleGoUserSetting"
+        style="justify-content: space-between"
+      >
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-cellphone-iphone" />
           <span>&nbsp;&nbsp;绑定社交账号</span>
@@ -157,6 +162,10 @@ export default class Tags extends Vue {
   public async handleSignOut(msg: any) {
     await sign_out();
     this.$emit('on-sign');
+  }
+  public handleGoUserSetting() {
+    this.$emit('on-go');
+    this.$router.push('/rebind-user-info');
   }
   get detail() {
     return this.$store.state.user.userDetail;

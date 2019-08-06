@@ -1,4 +1,6 @@
 import findRouters from './find';
+import radioRouters from './radio';
+import followsRouters from './follows';
 /**
  * 网易云音乐nav导航
  */
@@ -39,6 +41,7 @@ export default [
     // type: 'team',
     type: 'icon-friend',
     component: () => import('@/views/Friends/index.vue'),
+    children: [],
     meta: { title: '朋友', keepAlive: true, permission: ['dashboard'] },
   },
   {
@@ -56,8 +59,11 @@ export default [
     // <a-icon type="fire" />
     // type: 'fire',
     type: 'icon-diantai2',
+    redirect: '/radio/index',
     component: () => import('@/views/Radio/index.vue'),
     meta: { title: '我的电台', keepAlive: true, permission: ['dashboard'] },
+    children: [...radioRouters],
+
   },
   {
     path: '/favorite',
@@ -104,6 +110,28 @@ export default [
     meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
   },
 
+  {
+    path: '/rebind-user-info',
+    name: '用户信息设置',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Auth/UserSetting.vue'),
+    meta: { title: '最新音乐', keepAlive: true, permission: ['dashboard'] },
+  },
+  {
+    path: '/follows',
+    name: '我的关注',
+    // <a-icon type="fire" />
+    // type: 'fire',
+    type: 'icon-diantai2',
+    show: true,
+    redirect: '/follows/index',
+    component: () => import('@/views/Follows/index.vue'),
+    meta: { title: '我的电台', keepAlive: true, permission: ['dashboard'] },
+    children: [...followsRouters],
+
+  },
 
 
 ];

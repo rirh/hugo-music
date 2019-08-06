@@ -106,7 +106,12 @@
             />
           </div>
           <div>
-            <a-button @click="handleGoEdit" size="small" type="primary" class="wapper-user-info-edit">编辑个人信息</a-button>
+            <a-button
+              @click="handleGoEdit"
+              size="small"
+              type="primary"
+              class="wapper-user-info-edit"
+            >编辑个人信息</a-button>
           </div>
         </div>
         <div>
@@ -118,14 +123,14 @@
               <span style="font-size:12px;">动态</span>
             </span>
             <a-divider type="vertical" />
-            <span class="detail-header-item">
+            <span class="detail-header-item" @click="handleGoFollows('关注')">
               <span
                 style="font-size:24px;font-weight:bold;"
               >{{detail.profile&&detail.profile.follows}}</span>
               <span style="font-size:12px;">关注</span>
             </span>
             <a-divider type="vertical" />
-            <span class="detail-header-item">
+            <span class="detail-header-item" @click="handleGoFollows('粉丝')">
               <span
                 style="font-size:24px;font-weight:bold;"
               >{{detail.profile&&detail.profile.followeds}}</span>
@@ -142,7 +147,7 @@
     <div class="wapper-lists">
       <h2>我创建的歌单({{playlist.create.length}})</h2>
       <dl class="wapper-lists-list">
-        <dd   style="flex:0 0 25%;" v-for="(item,index) in playlist.create" :key="index">
+        <dd style="flex:0 0 25%;" v-for="(item,index) in playlist.create" :key="index">
           <span>
             <a-avatar :size="150" icon="user" shape="square" :src="item.coverImgUrl" />
           </span>
@@ -198,6 +203,13 @@ export default class Tags extends Vue {
       };
     }
     return result;
+  }
+  public handleGoFollows(args: any) {
+    const userId = this.detail.profile.userId;
+    this.$router.push({
+      path: '/follows/index',
+      query: { type: args, uid: userId },
+    });
   }
   public handleGoEdit() {
     this.$router.push('/edit-user-info');
