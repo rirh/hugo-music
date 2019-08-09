@@ -158,3 +158,6 @@ export const GET_FOLLOW = `${host}follow`;
 // 播放历史记录
 export const GET_USER_RECORD = `${host}user/record`;
 // /user/record
+// 私人fm
+export const GET_PERSONAL_FM = `${host}personal_fm`;
+// /personal_fm

@@ -2,3 +2,4 @@
 export * from './user';
 export * from './music';
 export * from './recommend';
+export * from './private';

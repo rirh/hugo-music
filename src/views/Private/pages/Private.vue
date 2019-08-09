@@ -54,7 +54,6 @@
       }
 
       &-box {
-        background-image: url("../../assets/coverall.png");
         background-position: -518px 916px;
         text-align: left;
         position: relative;
@@ -66,8 +65,8 @@
           position: absolute;
           left: 50%;
           top: 50%;
-          height: 13.2vw;
-          width: 13.2vw;
+          height: 17.5vw;
+          width: 17.5vw;
           transform: translate(-50%, -50%);
         }
       }
@@ -171,7 +170,7 @@
   left: 0;
 }
 .commet {
-  flex: 0 0 65%;
+  flex: 1;
   text-align: left;
   padding: 0vw 2vw 0 6vw;
 
@@ -220,27 +219,6 @@
         }
       }
     }
-  }
-}
-.simi {
-  flex: 0 0 35%;
-  text-align: left;
-  padding: 2vw;
-  &-item {
-    display: flex;
-    &-auth {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      margin-left: 1vw;
-      &-name {
-        font-size: 12px;
-      }
-    }
-  }
-  &-item:hover {
-    background-color: var(--stripedHover);
   }
 }
 .avatar {
@@ -306,16 +284,12 @@
     />
     <div class="wapper-panel">
       <div class="wapper-panel-music">
-        <img
-          :class="{'playneedle-in':$store.state.music.state==='playing','playneedle-out':$store.state.music.state!=='playing'}"
-          class="wapper-panel-music-playneedle"
-          src="../../assets/play_needle.png"
-          alt
-        />
-        <div class="roate" ref="roate">
+        <img class="wapper-panel-music-playneedle" alt />
+        <div>
           <div class="wapper-panel-music-box">
             <a-avatar
               class="wapper-panel-music-box-img"
+              shape="square"
               :onerror="errorImg"
               :src="$store.state.music.data.image"
               alt
@@ -333,13 +307,13 @@
             />
           </a-button>
           <a-button class="wapper-panel-music-action-btn">
-            <AIconfont type="icon-playlist-plus" />
+            <AIconfont type="icon-delete" />
+          </a-button>
+          <a-button @click="handleNext" class="wapper-panel-music-action-btn">
+            <AIconfont type="icon-skip-next" />
           </a-button>
           <a-button @click="handleDown" class="wapper-panel-music-action-btn">
-            <AIconfont type="icon-package-down" />
-          </a-button>
-          <a-button class="wapper-panel-music-action-btn">
-            <AIconfont type="icon-share" />
+            <AIconfont type="icon-more" />
           </a-button>
         </div>
       </div>
@@ -365,7 +339,6 @@
                  path: '/album-detail',
                  query: songs.al,
               }"
-              @click.native="handleTogglePanel"
             >{{songs.al&&(songs.al.name.length>10?`${songs.al.name.substring(0,6)}...`:songs.al.name)}}</router-link>
           </div>
           <div class="auth-item">
@@ -554,40 +527,6 @@
           </div>
         </a-skeleton>
       </div>
-      <div class="simi" v-show="simis.songs&&simis.songs.length!==0">
-        <a-skeleton active :loading="similoading">
-          <dl>
-            <dt style="margin:1vw 0vw;font-size:15px;">
-              <h3>相似歌曲</h3>
-            </dt>
-            <dd
-              class="simi-item"
-              @click="handleMusic(sitem)"
-              v-for="(sitem,sindex) in simis.songs"
-              :key="sindex"
-            >
-              <span class="avatar">
-                <a-avatar
-                  style="height:5vw;width:5vw;"
-                  shape="square"
-                  :onerror="errorImg"
-                  :src="sitem.album&&sitem.album.picUrl"
-                  alt
-                />
-                <span class="avatar-tips">
-                  <AIconfont class="avatar-tips-icon" type="icon-up1-copy" />
-                </span>
-              </span>
-              <span class="simi-item-auth">
-                <h4 style="margin:0">{{sitem.name}}</h4>
-                <div
-                  class="simi-item-auth-name"
-                >{{sitem.artists.map((e) => e.name).toString().split(',').join('/')}}</div>
-              </span>
-            </dd>
-          </dl>
-        </a-skeleton>
-      </div>
     </div>
   </div>
 </template>
@@ -604,6 +543,7 @@ import {
   get_comment_music,
   get_simi_song,
   get_comment_like,
+  get_personal_fm,
 } from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
 import { notification, message } from 'ant-design-vue';
@@ -650,6 +590,8 @@ export default class Panel extends Vue {
 
     return result;
   }
+  public data: any = [];
+
   public songs: any = {};
   public comments: any = {};
   public simis: any = {};
@@ -664,6 +606,27 @@ export default class Panel extends Vue {
   public percent = 0;
 
   @Prop() private msg!: string;
+  public async mounted() {
+    this.initPrivate();
+  }
+  public async initPrivate() {
+    const res = await get_personal_fm();
+    if (res.code === 200) {
+      this.data = res.data;
+      this.handleMusic(res.data[0]);
+    }
+  }
+  public handleNext() {
+    const music = this.$store.state.music.data;
+    const index = this.data.findIndex((e: any) => e.name === music.name);
+    if (index >= 0) {
+      if (index + 1 >= this.data.length) {
+        this.initPrivate();
+      } else {
+        this.handleMusic(this.data[index + 1]);
+      }
+    }
+  }
   public transformatDate = (e: any) => transformatDate(e, true);
   public async init() {
     const id = this.$store.state.music.data.id;
@@ -817,18 +780,6 @@ export default class Panel extends Vue {
       return;
     }
     this.init();
-  }
-  @Watch('$store.state.music', { deep: true })
-  public handleChange(params: any) {
-    const roateDom: any = this.$refs.roate;
-    if (!params) {
-      return;
-    }
-    if (params.state === 'playing') {
-      roateDom.style.webkitAnimationPlayState = 'running';
-    } else {
-      roateDom.style.webkitAnimationPlayState = 'paused';
-    }
   }
 }
 </script>

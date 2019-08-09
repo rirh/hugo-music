@@ -1,6 +1,8 @@
 import findRouters from './find';
 import radioRouters from './radio';
 import followsRouters from './follows';
+import privateRouters from './private';
+
 /**
  * 网易云音乐nav导航
  */
@@ -24,6 +26,8 @@ export default [
     type: 'icon-FM',
     component: () => import('@/views/Private/index.vue'),
     meta: { title: '私人FM', keepAlive: true, permission: ['dashboard'] },
+    redirect: '/private/index',
+    children: [...privateRouters],
   },
   {
     path: '/vedio',
