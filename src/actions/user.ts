@@ -16,11 +16,17 @@ import {
   GET_USER_FOLLOWS,
   GET_USER_FOLLOWEDS,
   GET_FOLLOW,
+  GET_USER_RECORD,
 } from '@/constant/api';
 import { clearStorage } from '@/util/filters';
 import store from '@/store';
 import router from '@/router';
 
+// 用户历史列表
+export const get_user_record = async (args: any) => {
+  const { response }: any = await http(`${GET_USER_RECORD}?${args}`);
+  return response;
+};
 // 关注/取消关注
 export const get_follow = async (args: any) => {
   const { response }: any = await http(`${GET_FOLLOW}?${args}`);

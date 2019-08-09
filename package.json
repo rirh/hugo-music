@@ -10,6 +10,7 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
+    "electron":"yarn electron:serve",
     "git": "node git.js"
   },
   "main": "background.js",
@@ -20,6 +21,7 @@
     "babel-plugin-import": "^1.12.0",
     "cfonts": "^2.4.3",
     "core-js": "^2.6.5",
+    "electron-config": "^2.0.0",
     "howler": "^2.1.2",
     "node-sass": "^4.12.0",
     "register-service-worker": "^1.6.2",

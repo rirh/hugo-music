@@ -142,14 +142,18 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    padding: 0.5vw;
     &-name {
       flex: 0 0 50%;
     }
     &-auth {
-      flex: 0 0 25%;
+      flex: 0 0 30%;
     }
     &-duration {
-      flex: 0 0 25%;
+      flex: 0 0 20%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }
@@ -196,14 +200,34 @@
 .music-img-box:hover .show {
   display: block;
 }
+.striped {
+  background-color: var(--striped);
+}
+.playlist-list:hover {
+  background-color: var(--stripedHover);
+}
+.delete {
+  opacity: 0;
+  font-size: 22px;
+}
+.playlist-list:hover .delete {
+  opacity: 1;
+}
+.drawer /deep/ .ant-drawer-body {
+  padding: 0;
+}
+.drawer /deep/ .ant-tabs-bar {
+  margin: 0;
+}
 </style>
 
 <template>
   <div class="wapper">
     <a-slider
+      autofocus
       id="progress"
       v-model="progress"
-      @change="handleProgress"
+      @afterChange="handleProgress"
       :defaultValue="0"
       :tooltipVisible="false"
     />
@@ -265,7 +289,7 @@
         </a-popover>
       </div>
     </div>
-    <Drawer v-model="visible" :width="0.42">
+    <Drawer class="drawer" v-model="visible" :width="0.42">
       <div slot="content">
         <a-tabs defaultActiveKey="1">
           <a-tab-pane tab="播放列表" key="1">
@@ -274,17 +298,45 @@
                 class="playlist-list"
                 v-for="(song,index) in $store.state.music.list"
                 :key="index"
+                :class="{'striped':index%2===0}"
                 @dblclick="$store.commit('updata_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
                 <span
                   class="playlist-list-auth"
                 >{{ song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
-                <span class="playlist-list-duration">{{transformTimer(song.duration/1000)}}</span>
+                <span class="playlist-list-duration">
+                  {{transformTimer(song.duration/1000)}}
+                  <AIconfont class="delete" type="icon-delete" @click="handleDelete(index)" />
+                </span>
               </dd>
             </dl>
           </a-tab-pane>
-          <a-tab-pane tab="历史记录" key="2" forceRender>Content of Tab Pane 2</a-tab-pane>
+          <a-tab-pane tab="历史记录" key="2" forceRender>
+            <dl class="playlist">
+              <dd
+                class="playlist-list"
+                v-for="(song,index) in $store.state.music.history"
+                :key="index"
+                :class="{'striped':index%2===0}"
+                @dblclick="$store.commit('updata_music_data', song)"
+              >
+                <span class="playlist-list-name">{{song.name}}</span>
+                <span
+                  class="playlist-list-auth"
+                >{{ song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
+                <span class="playlist-list-duration">
+                  {{transformTimer(song.duration/1000)}}
+                  <AIconfont class="delete" type="icon-delete" @click="handleDelete(index)" />
+                </span>
+              </dd>
+            </dl>
+          </a-tab-pane>
+          <span slot="tabBarExtraContent">
+            <span @click="handleEmptyList">
+              <AIconfont type="icon-delete"></AIconfont>清空
+            </span>
+          </span>
         </a-tabs>
       </div>
     </Drawer>
@@ -294,8 +346,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { get_song_url, get_check_music } from '@/actions';
-import { notification } from 'ant-design-vue';
+import { get_song_url, get_check_music, get_user_record } from '@/actions';
+import { notification, Modal } from 'ant-design-vue';
 import Drawer from '@/components/Drawer';
 import { ERROR_IMG } from '@/constant/api';
 
@@ -303,12 +355,23 @@ const player = new Audio();
 
 @Component({ components: { Drawer } })
 export default class Music extends Vue {
-  public errorImg = ERROR_IMG;
-
   // 播放状态
   get state() {
     return this.$store.state.music.state;
   }
+  get isLike() {
+    let result = this.like;
+    const id = this.$store.state.music.data.id;
+    const list = this.$store.state.user.likelist.ids;
+    if (id && list) {
+      result = list.some((e: any) => e === id);
+    }
+    return result;
+  }
+  get detail() {
+    return this.$store.state.user.userDetail;
+  }
+  public errorImg = ERROR_IMG;
   // 显示歌曲信息
   public showinfo = false;
   // 进度条
@@ -326,20 +389,25 @@ export default class Music extends Vue {
   public volumecach = 100;
   public volumetype = 'icon-volume-high';
   public like = false;
-  get isLike() {
-    let result = this.like;
-    const id = this.$store.state.music.data.id;
-    const list = this.$store.state.user.likelist.ids;
-    if (id && list) {
-      result = list.some((e: any) => e === id);
-    }
-    return result;
-  }
 
   // 音量弹窗显示
   public visible = false;
   // 抛出进度可以外部控制
   @Prop() private msg!: string;
+  public handleDelete(index: any) {
+    this.$store.commit('delete_music_list_item', index);
+  }
+  public handleEmptyList() {
+    Modal.confirm({
+      title: '确定清空列表？',
+      content: '清空以后需要重新添加',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        this.$store.commit('clear_music_list');
+      },
+    });
+  }
   public mounted() {
     // const { Howl, Howler } = require("howler");
     // const sound = new Howl({
@@ -472,7 +540,9 @@ export default class Music extends Vue {
     }
   }
   public async asyncPlay(id: any) {
-    if (!id) { return; }
+    if (!id) {
+      return;
+    }
 
     const { success, message }: any = await get_check_music(id);
     if (!success) {
@@ -482,7 +552,9 @@ export default class Music extends Vue {
       });
     }
     const { code, data } = await get_song_url(id);
-    if (code !== 200) { return; }
+    if (code !== 200) {
+      return;
+    }
 
     const [music] = data;
     (this as any).player.src = music.url;

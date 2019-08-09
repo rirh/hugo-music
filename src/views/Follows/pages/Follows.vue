@@ -109,6 +109,12 @@ export default class Follows extends Vue {
     const args = `uid=${params.query.uid}`;
     this.init(args);
   }
+  @Watch('$route.query', { deep: true })
+  public handleChangeQuery() {
+    const params = this.$route;
+    const args = `uid=${params.query.uid}`;
+    this.init(args);
+  }
   public async init(args: any) {
     this.loading = true;
     const params = this.$route;
@@ -116,11 +122,15 @@ export default class Follows extends Vue {
     if (params.query && params.query.type === '关注') {
       res = await get_use_follows(args);
       this.loading = false;
-      if (res.code === 200) { this.data = res.follow; }
+      if (res.code === 200) {
+        this.data = res.follow;
+      }
     } else {
       res = await get_use_followeds(args);
       this.loading = false;
-      if (res.code === 200) { this.data = res.followeds; }
+      if (res.code === 200) {
+        this.data = res.followeds;
+      }
     }
   }
 }

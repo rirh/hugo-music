@@ -152,7 +152,9 @@ export const GET_USER_FOLLOWS = `${host}user/follows`;
 // 用户粉丝列表
 export const GET_USER_FOLLOWEDS = `${host}user/followeds`;
 // /user/followeds
-
 // 关注/取消关注
 export const GET_FOLLOW = `${host}follow`;
 // /follow
+// 播放历史记录
+export const GET_USER_RECORD = `${host}user/record`;
+// /user/record

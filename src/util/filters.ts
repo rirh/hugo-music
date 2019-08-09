@@ -172,4 +172,8 @@ export const download = (patch: any, downloadFile: any, callback: any) => {
   });
 
 };
+// tslint:disable-next-line:no-var-requires
+const Config: any = require('electron-config');
+export const config = new Config();
+
 

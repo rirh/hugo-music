@@ -51,3 +51,15 @@ ipcMain.on(MAIN_DROP, (e: any) => {
 ipcMain.on(FORGET_PWD, () => {
   shell.openExternal('http://reg.163.com/naq/findPassword')
 })
+
+ipcMain.on(FORGET_PWD, () => {
+  shell.openExternal('https://music.163.com/#/user/level')
+})
+
+ipcMain.on(FORGET_PWD, () => {
+  shell.openExternal('https://music.163.com/store/product')
+})
+
+ipcMain.on(FORGET_PWD, () => {
+  shell.openExternal('http://reg.163.com/naq/findPassword')
+})

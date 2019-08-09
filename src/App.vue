@@ -38,6 +38,8 @@ export default class Home extends Vue {
   public mounted() {
     this.preventDrop();
     this.bindStoreRefrse();
+
+
   }
 }
 </script>

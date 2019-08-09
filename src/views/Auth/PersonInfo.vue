@@ -59,12 +59,12 @@
         <span style="font-size:12px;">动态</span>
       </span>
       <a-divider type="vertical" />
-      <span class="detail-header-item">
+      <span class="detail-header-item" @click="handleGoFollows('关注')">
         <span style="font-size:28px;font-weight:bold;">{{detail.profile&&detail.profile.follows}}</span>
         <span style="font-size:12px;">关注</span>
       </span>
       <a-divider type="vertical" />
-      <span class="detail-header-item">
+      <span class="detail-header-item" @click="handleGoFollows('粉丝')">
         <span style="font-size:28px;font-weight:bold;">{{detail.profile&&detail.profile.followeds}}</span>
         <span style="font-size:12px;">粉丝</span>
       </span>
@@ -110,7 +110,7 @@
         </span>
       </dd>
     </dl>
-    <dl class="detail-lists">
+    <dl class="detail-lists" @click="handleGoSetting">
       <dd class="detail-lists-list" style="justify-content: space-between">
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-settings" />
@@ -162,6 +162,17 @@ export default class Tags extends Vue {
   public async handleSignOut(msg: any) {
     await sign_out();
     this.$emit('on-sign');
+  }
+  public handleGoSetting() {
+    this.$router.push('/edit-user-info');
+  }
+
+  public handleGoFollows(args: any) {
+    const userId = this.detail.profile.userId;
+    this.$router.push({
+      path: '/follows/index',
+      query: { type: args, uid: userId },
+    });
   }
   public handleGoUserSetting() {
     this.$emit('on-go');

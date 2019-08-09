@@ -7,6 +7,7 @@ const music = {
     mode: '',
     data: {},
     list: [],
+    history: [],
     like: false,
     showPanel: false,
   },
@@ -21,7 +22,14 @@ const music = {
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {
         state.list.push(params);
+        state.history.push(params);
       }
+    },
+    clear_music_list(state: any) {
+      state.list = [];
+    },
+    delete_music_list_item(state: any, params: any) {
+      state.list.splice(params, 1);
     },
     updata_music_cursor(state: any, params: any) {
       state.cursor = params;
