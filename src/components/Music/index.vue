@@ -3,7 +3,7 @@
   height: 100%;
   width: 100%;
   background-color: white;
-  z-index: 4;
+  z-index: 5;
   position: relative;
 }
 #progress {
