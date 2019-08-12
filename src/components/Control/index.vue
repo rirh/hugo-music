@@ -102,7 +102,7 @@
         :src="user.profile&&user.profile.avatarUrl"
       />
       <span v-show="!user.profile" class="wapper-avatar-nickname" @click="handleShow">{{'未登录'}}</span>
-      <a-popover v-show="user.profile" placement="topRight" trigger="click" >
+      <a-popover v-show="user.profile" placement="topRight" trigger="click">
         <span
           class="wapper-avatar-nickname"
           :style="{color:user.profile?'var(--black)':''}"
@@ -116,7 +116,7 @@
         :class="{'active':activeMenu(menu)}"
         class="wapper-main-list"
         v-for="(menu,index) in menu1"
-        v-show="!menu.show"
+        v-show="filtershow(menu)"
         :key="index"
       >
         <AIconfont class="wapper-main-list-icon" :type="menu.type" />
@@ -134,7 +134,7 @@
         :class="{'active':activeMenu(menu)}"
         class="wapper-main-list"
         v-for="(menu,index) in menu2"
-        v-show="!menu.show"
+        v-show="filtershow(menu)"
         :key="index"
       >
         <AIconfont class="wapper-main-list-icon" :type="menu.type" />
@@ -230,6 +230,17 @@ export default class Control extends Vue {
     if (!isLogin) {
       this.showlogin = true;
     }
+  }
+  public filtershow(args: any) {
+    let result = true;
+    const isLogin = this.user.profile;
+    if (!isLogin) {
+      result = !args.show;
+      if (~args.name.indexOf('我的')) { result = !~args.name.indexOf('我的'); }
+    } else {
+      result = !args.show;
+    }
+    return result;
   }
   public handleShowPersonInfo() {
     if (this.user.profile) {
