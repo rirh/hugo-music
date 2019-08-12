@@ -372,7 +372,11 @@
             <label for>歌手：</label>
             <router-link
               class="auth-item-val"
-              to
+              :to="{
+                 path: '/singer',
+                 query:songs.ar&&songs.ar[0],
+              }"
+              @click.native="handleTogglePanel"
             >{{leftPadauth(songs).length>10?`${leftPadauth(songs).substring(0,8)}...`:leftPadauth(songs)}}</router-link>
           </div>
           <div class="auth-item">
