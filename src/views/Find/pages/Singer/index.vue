@@ -29,7 +29,14 @@
   display: flex;
   align-content: center;
   justify-content: center;
-
+}
+.tags {
+  min-width: 100px;
+  font-weight: 400;
+}
+.stags {
+  min-width: 38px;
+  font-weight: 400;
 }
 </style>
 
@@ -41,8 +48,9 @@
           <strong>分类：</strong>
         </div>
         <div style="display: flex;flex-wrap: wrap;">
-          <span class="height:1.2vw" v-for="(type,tindex) in types" :key="tindex">
+          <span v-for="(type,tindex) in types" :key="tindex">
             <a-checkable-tag
+              class="tags"
               :key="tindex"
               :checked="type.key===selectedTypes"
               @change="selectedTypes=type.key"
@@ -57,11 +65,17 @@
         </div>
         <div class="singer-capps-list">
           <span>
-            <a-checkable-tag :key="''" :checked="''===selectedCapps" @change="selectedCapps=''">全部</a-checkable-tag>
+            <a-checkable-tag
+              class="tags"
+              :key="''"
+              :checked="''===selectedCapps"
+              @change="selectedCapps=''"
+            >全部</a-checkable-tag>
             <a-divider type="vertical" />
           </span>
           <span v-for="(type,cindex) in Capps" :key="cindex">
             <a-checkable-tag
+              class="stags"
               :key="type"
               :checked="type===selectedCapps"
               @change="selectedCapps=type"

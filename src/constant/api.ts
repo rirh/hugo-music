@@ -161,3 +161,12 @@ export const GET_USER_RECORD = `${host}user/record`;
 // 私人fm
 export const GET_PERSONAL_FM = `${host}personal_fm`;
 // /personal_fm
+// 描述详情
+export const GET_ARTIST_DESC = `${host}artist/desc`;
+// /artist/desc
+// 歌手专辑
+export const GET_ARTIST_ALBUM = `${host}artist/album`;
+// /artist/desc
+// 相似歌手
+export const GET_SIMI_ARTIST = `${host}simi/artist`;
+// simi/artist

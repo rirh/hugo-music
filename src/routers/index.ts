@@ -136,6 +136,16 @@ export default [
     children: [...followsRouters],
 
   },
+  {
+    path: '/singer',
+    name: '歌手详情',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Find/pages/Singer/pages/singer-detail.vue'),
+    meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
+  },
+
 
 
 ];

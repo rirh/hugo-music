@@ -21,12 +21,16 @@
 .singer-item-img {
   height: 14vw;
   width: 14vw;
+  filter: brightness(80%);
 }
 .singer-item-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 14vw;
+}
+.singer-item-img:hover {
+  filter: brightness(95%);
 }
 </style>
 
@@ -65,6 +69,12 @@ export default class Singers extends Vue {
   @Emit('on-item')
   public handleitem(item: any) {
     return item;
+  }
+  public handleMusicDetail(item: any) {
+    this.$router.push({
+      path: '/singer',
+      query: item,
+    });
   }
 }
 </script>

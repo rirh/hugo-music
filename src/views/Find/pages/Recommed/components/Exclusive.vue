@@ -12,7 +12,6 @@
     }
   }
   &-exclusive {
-    
     &-main {
       width: 100%;
       display: flex;
@@ -48,6 +47,7 @@
           width: 90%;
           overflow: hidden;
           object-fit: cover;
+          filter: brightness(80%);
         }
         &-name {
           font-size: 13px;
@@ -61,6 +61,9 @@
       }
     }
   }
+}
+.exclusive-exclusive-main-list:hover .exclusive-exclusive-main-list-img {
+  filter: brightness(95%);
 }
 </style>
 
@@ -77,7 +80,8 @@
             <span class="exclusive-exclusive-main-list-tips">
               <AIconfont type="icon-up1-copy" />
             </span>
-            <a-avatar shape="square"
+            <a-avatar
+              shape="square"
               class="exclusive-exclusive-main-list-img"
               :onerror="errorImg"
               :src="exclusive.picUrl"
@@ -102,7 +106,9 @@ export default class Home extends Vue {
   @Prop() private data!: any;
   @Watch('data')
   public handleChange(arg: any) {
-    if (arg.length > 0) { this.loadingExclusive = false; }
+    if (arg.length > 0) {
+      this.loadingExclusive = false;
+    }
   }
 }
 </script>

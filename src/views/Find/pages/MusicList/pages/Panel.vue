@@ -6,6 +6,7 @@
   align-items: center;
   padding: 2vw;
   z-index: 0;
+  font-weight: bold;
 
   // -webkit-filter: blur(20px);
   // -moz-filter: blur(20px);
@@ -32,7 +33,7 @@
     background-attachment: fixed;
     background-position: top;
     background-size: cover;
-    filter: blur(22px);
+    filter: blur(3px) brightness(80%);
     border: 1px solid var(--borderColor);
     z-index: -1;
   }
@@ -62,6 +63,7 @@
       height: 14vw;
       width: 14vw;
       border-radius: 10px;
+      border-radius: 5px;
     }
   }
   &-right {
@@ -89,9 +91,10 @@
       font-size: 16px;
     }
     &-copywriter {
-      color: var(--white);
+      color: white;
       margin-top: 1vw;
       font-size: 13px;
+      opacity: .7;
     }
   }
 }
@@ -121,6 +124,7 @@
 //     filter: blur(5px);
 
 // }
+
 </style>
 
 <template>

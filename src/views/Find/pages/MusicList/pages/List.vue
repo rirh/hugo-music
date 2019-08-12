@@ -77,6 +77,7 @@
         overflow: hidden;
         object-fit: cover;
         background-size: 100%;
+        filter: brightness(80%);
       }
       &-img:hover {
         cursor: pointer;

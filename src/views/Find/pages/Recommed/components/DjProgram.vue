@@ -56,6 +56,9 @@
     }
   }
 }
+.djprogram-list:hover {
+  background-color: var(--stripedHover);
+}
 </style>
 
 <template>

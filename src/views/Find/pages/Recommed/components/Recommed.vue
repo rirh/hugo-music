@@ -36,6 +36,7 @@
         right: 1.4vw;
         top: 0;
         color: white;
+        z-index: 1;
         &-logo {
           font-size: 14px;
         }
@@ -50,6 +51,23 @@
         width: 14vw;
         overflow: hidden;
         object-fit: cover;
+        position: relative;
+        filter: brightness(80%);
+        &-play {
+          position: absolute;
+          right: 50%;
+          top: 50%;
+          color: var(--red);
+          background: rgba(255, 255, 255, 0.6);
+          transform: translate(50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          font-size: 25px;
+          padding: 1vw;
+          opacity: 0;
+        }
       }
       &-name {
         font-size: 13px;
@@ -62,6 +80,12 @@
       }
     }
   }
+}
+.recommed-recommed-list:hover .recommed-recommed-list-img-play {
+  opacity: 1;
+}
+.recommed-recommed-list:hover .recommed-recommed-list-img {
+  filter: brightness(95%);
 }
 </style>
 
@@ -100,12 +124,18 @@
                   class="recommed-recommed-list-playcount-count"
                 >{{transformW(recommed.playCount)}}</span>
               </span>
-              <a-avatar
-                class="recommed-recommed-list-img"
-                :onerror="errorImg"
-                :src="recommed.picUrl"
-                alt
-              />
+              <span class="recommed-recommed-list-img">
+                <a-avatar
+                  class="recommed-recommed-list-img"
+                  :onerror="errorImg"
+                  :src="recommed.picUrl"
+                  alt
+                />
+                <span class="recommed-recommed-list-img-play">
+                  <AIconfont type="icon-up1-copy" />
+                </span>
+              </span>
+
               <div class="recommed-recommed-list-name">{{recommed.name}}</div>
             </div>
           </div>

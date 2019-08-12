@@ -44,6 +44,7 @@
           width: 90%;
           overflow: hidden;
           object-fit: cover;
+          filter: brightness(80%);
         }
         &-name {
           font-size: 13px;
@@ -57,6 +58,9 @@
       }
     }
   }
+}
+.recommedmv-recommedmvs-main-list:hover .recommedmv-recommedmvs-main-list-img {
+  filter: brightness(95%);
 }
 </style>
 

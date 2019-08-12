@@ -209,8 +209,8 @@
         </div>-->
         <div class="panel-right-tags">
           <strong>歌手&nbsp;:&nbsp;</strong>
-          <span v-for="(tag,index) in data.artists" :key="index">
-            <span class="panel-right-tags-list">&nbsp;{{tag.name}}&nbsp;</span>
+          <span  v-for="(tag,index) in data.artists" :key="index">
+            <span  @click="handleGoSinger(tag)" class="panel-right-tags-list">&nbsp;{{tag.name}}&nbsp;</span>
             <span v-show="index!==data.artists.length-1">/</span>
           </span>
         </div>
@@ -272,6 +272,12 @@ export default class Home extends Vue {
     if (arg) {
       this.loadingDetail = false;
     }
+  }
+  public handleGoSinger(item: any) {
+    this.$router.push({
+      path: '/singer',
+      query: item,
+    });
   }
   public transformW = (e: any) => transformW(e);
   public transformatDate = (e: any) => transformatDate(e, false);

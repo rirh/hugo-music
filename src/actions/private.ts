@@ -1,9 +1,28 @@
 import http from '@/axios';
 import {
   GET_PERSONAL_FM,
+  GET_ARTIST_DESC,
+  GET_ARTIST_ALBUM,
+  GET_SIMI_ARTIST,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
 
+
+// 相似歌手
+export const get_simi_artist = async (arg: any) => {
+  const { response }: any = await http(`${GET_SIMI_ARTIST}?${arg}`);
+  return response;
+};
+// 歌手专辑
+export const get_artist_album = async (arg: any) => {
+  const { response }: any = await http(`${GET_ARTIST_ALBUM}?${arg}`);
+  return response;
+};
+// 歌手详情
+export const get_artist_desc = async (arg: any) => {
+  const { response }: any = await http(`${GET_ARTIST_DESC}?${arg}`);
+  return response;
+};
 // 私人fm
 export const get_personal_fm = async () => {
   const { response }: any = await http(`${GET_PERSONAL_FM}`);

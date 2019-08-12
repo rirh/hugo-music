@@ -783,5 +783,3 @@ export default class Panel extends Vue {
   }
 }
 </script>
-
-
