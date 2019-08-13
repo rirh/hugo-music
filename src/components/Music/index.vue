@@ -476,6 +476,14 @@ export default class Music extends Vue {
       }
     }
   }
+  @Watch('$store.state.music.state')
+  public handleChangeState(state: any) {
+    if (state === 'playing') {
+      (this as any).player.play();
+    } else {
+      (this as any).player.pause();
+    }
+  }
 
   @Watch('$store.state.music.data', { deep: true })
   public async handleMusic({ id, image, name, auth, duration }: any) {

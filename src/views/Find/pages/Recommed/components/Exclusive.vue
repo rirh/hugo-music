@@ -76,7 +76,12 @@
           <AIconfont class="exclusive-tips-icon" type="icon-right" />
         </h3>
         <div class="exclusive-exclusive-main">
-          <div v-for="(exclusive,index) in data" :key="index" class="exclusive-exclusive-main-list">
+          <div
+            @click="handleItem(exclusive)"
+            v-for="(exclusive,index) in data"
+            :key="index"
+            class="exclusive-exclusive-main-list"
+          >
             <span class="exclusive-exclusive-main-list-tips">
               <AIconfont type="icon-up1-copy" />
             </span>
@@ -98,12 +103,25 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { ERROR_IMG } from '@/constant/api';
+import { get_video_detail } from '@/actions';
 
 @Component({})
 export default class Home extends Vue {
   public loadingExclusive = true;
   public errorImg = ERROR_IMG;
   @Prop() private data!: any;
+
+  public async handleItem(item: any) {
+    const res = await get_video_detail(`id=${item.videoId}`);
+    if (res.code === 200) {
+      this.$router.push({
+        path: '/vedio-detail',
+        query: res,
+      });
+      this.$store.commit('updata_vedio_cursor', res);
+      this.$store.commit('updata_show_vedio_page', true);
+    }
+  }
   @Watch('data')
   public handleChange(arg: any) {
     if (arg.length > 0) {

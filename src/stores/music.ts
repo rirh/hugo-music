@@ -41,7 +41,9 @@ const music = {
       state.state = params;
     },
     updata_music_data(state: any, params: any) {
-      state.data = params;
+      if (params.id !== state.data.id) {
+        state.data = params;
+      }
     },
   },
 };

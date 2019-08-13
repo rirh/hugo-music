@@ -72,7 +72,7 @@
 </style>
 
 <template>
-  <a-skeleton :loading="!data" active>
+  <a-skeleton :loading="data.length===0" active>
     <div class="lists">
       <div class="lists-item" @click="handleItem(item)" v-for="(item,index) in data" :key="index">
         <div class="lists-item-box">

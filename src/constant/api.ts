@@ -179,3 +179,10 @@ export const GET_VIDEO_GROUP_LIST = `${host}video/group/list`;
 // 获取视频标签下的视频
 export const GET_VIDEO_GROUP = `${host}video/group`;
 // video/group
+// 获取视频详情
+export const GET_VIDEO_DETAIL = `${host}video/detail`;
+// video/group
+// 获取视频详情
+export const GET_VIDEO_URL = `${host}video/url`;
+// /video/url
+

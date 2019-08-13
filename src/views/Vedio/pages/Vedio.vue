@@ -1,6 +1,6 @@
 <style lang="less" scoped>
 .wapper {
-  padding: 1vw;
+  padding: 1vw 1vw 5vw 1vw;
 }
 </style>
 
@@ -15,33 +15,46 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { get_video_group_list, get_video_group } from '@/actions';
+import {
+  get_video_group_list,
+  get_video_group,
+  get_video_detail,
+} from '@/actions';
 import Tags from './vedio/Tag.vue';
 import Lists from './vedio/List.vue';
 @Component({ components: { Tags, Lists } })
 export default class Radio extends Vue {
   public loading = false;
-  public data = {};
+  public data = [];
   public tags = {};
   public async mounted() {
-    this.initTags();
-    this.init({});
+    await this.initTags();
+    this.init((this as any).tags[1]);
   }
   public async init(item: any) {
+    this.data = [];
     const res = await get_video_group(item ? `id=${item.id}` : '');
-    if (res.code === 200) { this.data = res.datas; }
+    if (res.code === 200) {
+      this.data = res.datas;
+    }
   }
   public async initTags() {
     const res = await get_video_group_list();
-    if (res.code === 200) { this.tags = res.data; }
+    if (res.code === 200) {
+      this.tags = res.data;
+    }
   }
-  public handleItem(item: any) {
-    this.$router.push({
-      path: '/vedio',
-      query: item,
-    });
-    this.$store.commit('updata_vedio_cursor', item);
-    this.$store.commit('updata_show_vedio_page', true);
+  public async handleItem(item: any) {
+    const res = await get_video_detail(`id=${item.data.vid}`);
+    if (res.code === 200) {
+      this.$router.push({
+        path: '/vedio-detail',
+        query: res,
+      });
+
+      this.$store.commit('updata_vedio_cursor', res);
+      this.$store.commit('updata_show_vedio_page', true);
+    }
   }
 
   public handleType(item: any) {

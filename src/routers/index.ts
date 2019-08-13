@@ -148,12 +148,12 @@ export default [
     component: () => import('@/views/Find/pages/Singer/pages/singer-detail.vue'),
     meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
   }, {
-    path: '/vedio',
+    path: '/vedio-detail',
     name: '视频播放页面',
     show: true,
     // <a-icon type="customer-service" />
     type: 'customer-service',
-    component: () => import('@/components/Vedio/index.vue'),
+    component: () => import('@/views/Vedio/pages/detail/index.vue'),
     meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
   },
 

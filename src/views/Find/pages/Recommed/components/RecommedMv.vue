@@ -74,6 +74,7 @@
         </h3>
         <div class="recommedmv-recommedmvs-main">
           <div
+            @click="handleItem(recommedmv)"
             v-for="(recommedmv,index) in data"
             :key="index"
             class="recommedmv-recommedmvs-main-list"
@@ -105,6 +106,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { ERROR_IMG } from '@/constant/api';
+import { get_video_detail } from '@/actions';
 @Component({})
 export default class Home extends Vue {
   public loadingRecommedmv = true;
@@ -117,6 +119,17 @@ export default class Home extends Vue {
     }
   }
 
+  public async handleItem(item: any) {
+    const res = await get_video_detail(`id=${item.data.vid}`);
+    if (res.code === 200) {
+      this.$router.push({
+        path: '/vedio-detail',
+        query: res,
+      });
+      this.$store.commit('updata_vedio_cursor', res);
+      this.$store.commit('updata_show_vedio_page', true);
+    }
+  }
   /**
    * 转化为万做单位函数
    */

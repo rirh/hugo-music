@@ -100,7 +100,7 @@ footer {
   <!-- <transition name="fade" mode="out-in">
     <LyricsPanel v-show="$store.state.music.showPanel" />
   </transition>-->
-  <footer>
+  <footer  v-show="!$store.state.vedio.show">
     <Music />
   </footer>
 </body>
