@@ -57,12 +57,12 @@
         class="panel-img"
         :size="200"
         :onerror="errorImg"
-        :src="$route.query&&$route.query.img1v1Url"
+        :src="data&&data.img1v1Url"
         alt
       />
       <span class="panel-con">
-        <h2 class="panel-con-name">{{$route.query&&$route.query.name}}</h2>
-        <strong class="panel-con-alias">{{filterName($route.query&&$route.query.alias)}}</strong>
+        <h2 class="panel-con-name">{{data&&data.name}}</h2>
+        <strong class="panel-con-alias">{{filterName(data&&data.alias)}}</strong>
         <span class="panel-con-action">
           <a-button type="primary" @click="$router.push('/userinfo')">
             <a-icon style="font-size: 18px;" type="folder-add" />收藏
@@ -73,10 +73,10 @@
         </span>
         <span class="panel-con-num">
           <label>单曲数：</label>
-          <span>{{$route.query&&$route.query.musicSize}}</span>
+          <span>{{data&&data.musicSize}}</span>
           &nbsp;&nbsp;
           <label>专辑数：</label>
-          <span>{{$route.query&&$route.query.albumSize}}</span>
+          <span>{{data&&data.albumSize}}</span>
         </span>
       </span>
     </div>
@@ -96,7 +96,12 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { get_artist_desc, get_artist_album, get_simi_artist } from '@/actions';
+import {
+  get_artist_desc,
+  get_artist_album,
+  get_simi_artist,
+  get_artists,
+} from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
 import Singerdesc from './singer-detail-desc.vue';
 import Singeralbum from './singer-detail-album.vue';
@@ -110,6 +115,7 @@ export default class Radio extends Vue {
   public artist = {};
   public album = {};
   public simi = {};
+  public data = {};
   public async mounted() {
     this.handleReload(this.$route.query);
   }
@@ -119,8 +125,12 @@ export default class Radio extends Vue {
     this.album = {};
     this.simi = {};
     this.currtab = '1';
+    const arres: any = await get_artists(`id=${args.id}`);
+    if (arres.code === 200) { this.data = arres.artist; }
     const res = await get_artist_desc(`id=${args.id}`);
-    if (res.code === 200) { this.artist = res; }
+    if (res.code === 200) {
+      this.artist = res;
+    }
   }
   public filterName(args: any) {
     let result = '';
@@ -142,12 +152,16 @@ export default class Radio extends Vue {
     if (args === 2) {
       if (JSON.stringify(this.album) === '{}') {
         const res = await get_artist_album(`id=${this.$route.query.id}`);
-        if (res.code === 200) { this.album = res; }
+        if (res.code === 200) {
+          this.album = res;
+        }
       }
     } else if (args === 3) {
-      if (JSON.stringify(this.album) === '{}') {
+      if (JSON.stringify(this.simi) === '{}') {
         const res = await get_simi_artist(`id=${this.$route.query.id}`);
-        if (res.code === 200) { this.simi = res; }
+        if (res.code === 200) {
+          this.simi = res;
+        }
       }
     }
   }

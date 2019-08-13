@@ -4,10 +4,16 @@ import {
   GET_ARTIST_DESC,
   GET_ARTIST_ALBUM,
   GET_SIMI_ARTIST,
+  GET_ARTISTS,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
 
 
+// 相似歌手
+export const get_artists = async (arg: any) => {
+  const { response }: any = await http(`${GET_ARTISTS}?${arg}`);
+  return response;
+};
 // 相似歌手
 export const get_simi_artist = async (arg: any) => {
   const { response }: any = await http(`${GET_SIMI_ARTIST}?${arg}`);

@@ -172,8 +172,22 @@ export const download = (patch: any, downloadFile: any, callback: any) => {
   });
 
 };
+
 // tslint:disable-next-line:no-var-requires
 const Config: any = require('electron-config');
 export const config = new Config();
 
 
+
+
+export const transformSongTime = (str: any) => {
+  let result = '';
+  if (str) {
+    // tslint:disable-next-line:radix
+    const m = leftpad(parseInt(`${str / 60}`), 2, 0);
+    // tslint:disable-next-line:radix
+    const s = leftpad(parseInt(`${str % 60}`) + 1, 2, 0);
+    result = `${m}:${s}`;
+  }
+  return result;
+};

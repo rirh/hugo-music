@@ -170,3 +170,12 @@ export const GET_ARTIST_ALBUM = `${host}artist/album`;
 // 相似歌手
 export const GET_SIMI_ARTIST = `${host}simi/artist`;
 // simi/artist
+// 歌手单曲
+export const GET_ARTISTS = `${host}artists`;
+// // simi/artist
+// 获取视频标签列表
+export const GET_VIDEO_GROUP_LIST = `${host}video/group/list`;
+// // simi/artist
+// 获取视频标签下的视频
+export const GET_VIDEO_GROUP = `${host}video/group`;
+// video/group

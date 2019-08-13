@@ -7,7 +7,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   &-link {
     color: var(--white);
     font-weight: 500;
@@ -26,10 +26,18 @@
 </style>
 
 <template>
-  <div class="wapper">
+  <div
+    class="wapper"
+    :style="{
+    'justify-content':router.length>=4?'space-between':'flex-start'
+  }"
+  >
     <router-link
       :class="{'active':activeMenu(menu)}"
       class="wapper-link"
+      :style="{
+    'margin-left':router.length>=4?'0':'2vw'
+  }"
       v-for="(menu,index) in router"
       tag="span"
       v-show="!menu.show"

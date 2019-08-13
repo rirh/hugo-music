@@ -67,6 +67,7 @@
           font-size: 25px;
           padding: 1vw;
           opacity: 0;
+          transition: opacity 0.3s;
         }
       }
       &-name {

@@ -6,6 +6,10 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+const {
+  HAVE_BLUR,
+  HAVE_FOCUS
+} = require('./constant/ipc');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -18,7 +22,10 @@ let win: BrowserWindow | null
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1000, height: 670, webPreferences: {
+    width: 1000,
+    height: 670,
+    backgroundColor: '#fff',
+    webPreferences: {
       nodeIntegration: true
     },
     frame: false,
@@ -26,6 +33,12 @@ function createWindow() {
     // icon: path.join(__static, 'icon.png')
   })
   win.setMenu(null);
+  win.on('blur', (e: any, cmd: any) => {
+    win && win.webContents.send(HAVE_BLUR)
+  })
+  win.on('focus', (e: any, cmd: any) => {
+    win && win.webContents.send(HAVE_FOCUS)
+  })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
@@ -35,9 +48,9 @@ function createWindow() {
     win.webContents.openDevTools();
     createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')  
-  }      
-          
+    win.loadURL('app://./index.html')
+  }
+
   win.on('closed', () => {
     win = null
   })

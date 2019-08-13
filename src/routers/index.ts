@@ -2,6 +2,7 @@ import findRouters from './find';
 import radioRouters from './radio';
 import followsRouters from './follows';
 import privateRouters from './private';
+import vedioRouters from './vedio';
 
 /**
  * 网易云音乐nav导航
@@ -31,12 +32,14 @@ export default [
   },
   {
     path: '/vedio',
-    name: '视频',
+    name: '视频 ',
     // <a-icon type="video-camera" />
     // type: 'video-camera',
     type: 'icon-youtube',
+    redirect: '/vedio/index',
     component: () => import('@/views/Vedio/index.vue'),
     meta: { title: '视频', keepAlive: true, permission: ['dashboard'] },
+    children: [...vedioRouters],
   },
   {
     path: '/friends',
@@ -143,6 +146,14 @@ export default [
     // <a-icon type="customer-service" />
     type: 'customer-service',
     component: () => import('@/views/Find/pages/Singer/pages/singer-detail.vue'),
+    meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
+  }, {
+    path: '/vedio',
+    name: '视频播放页面',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/components/Vedio/index.vue'),
     meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
   },
 

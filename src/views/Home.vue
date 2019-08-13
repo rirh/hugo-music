@@ -71,7 +71,7 @@ footer {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all .7s ease;
+  transition: all 0.7s ease;
 }
 
 .fade-enter,
@@ -90,7 +90,7 @@ footer {
     <main @scroll="handleScroll" class="HolyGrail-content">
       <Contant />
     </main>
-    <nav class="HolyGrail-nav">
+    <nav v-show="!$store.state.vedio.show" class="HolyGrail-nav">
       <Control />
     </nav>
   </div>

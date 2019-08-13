@@ -115,6 +115,9 @@
     }
   }
 }
+.focus {
+  background-color: var(--tagBg);
+}
 </style>
 
 <template>
@@ -123,13 +126,25 @@
     :style="{'background-color':$store.state.music.showPanel?'white':'var(--red)'}"
   >
     <div class="wapper-menu">
-      <span @click="handleMenu('close')" class="wapper-menu-tips wapper-menu-close">
+      <span
+        @click="handleMenu('close')"
+        :class="{'focus':focus}"
+        class="wapper-menu-tips wapper-menu-close"
+      >
         <!-- <strong>x</strong> -->
       </span>
-      <span @click="handleMenu('min')" class="wapper-menu-tips wapper-menu-min">
+      <span
+        @click="handleMenu('min')"
+        :class="{'focus':focus}"
+        class="wapper-menu-tips wapper-menu-min"
+      >
         <!-- <strong>+</strong> -->
       </span>
-      <span @click="handleMenu('zoom')" class="wapper-menu-tips wapper-menu-zoom">
+      <span
+        @click="handleMenu('zoom')"
+        :class="{'focus':focus}"
+        class="wapper-menu-tips wapper-menu-zoom"
+      >
         <!-- <strong>🤓</strong> -->
       </span>
     </div>
@@ -212,9 +227,16 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Menu from '@/components/Menu';
 import { ipcRenderer, remote } from 'electron';
-import { MAIN_MIN, MAIN_ZOOM, MAIN_CLOSE } from '@/constant/ipc';
+import {
+  MAIN_MIN,
+  MAIN_ZOOM,
+  MAIN_CLOSE,
+  HAVE_BLUR,
+  HAVE_FOCUS,
+} from '@/constant/ipc';
 import { get_search_suggest } from '@/actions';
 import Drawer from '@/components/Drawer';
+
 @Component({
   components: { Menu, Drawer },
 })
@@ -222,6 +244,7 @@ export default class HelloWorld extends Vue {
   public visible = false;
   public keywords = '';
   public seachList = {};
+  public focus = false;
   public types = {
     artists: {
       name: '歌手',
@@ -245,6 +268,14 @@ export default class HelloWorld extends Vue {
     },
   };
   @Prop() private msg!: string;
+  public mounted() {
+    ipcRenderer.on(HAVE_BLUR, () => {
+      this.focus = true;
+    });
+    ipcRenderer.on(HAVE_FOCUS, () => {
+      this.focus = false;
+    });
+  }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
     this.$store.commit('updata_show_panel', !showPanel);

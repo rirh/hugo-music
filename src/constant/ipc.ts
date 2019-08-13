@@ -9,5 +9,13 @@ export const MAIN_CLOSE = `0x0003`;
 export const MAIN_DROP = `0x0004`;
 // 忘记密码
 export const FORGET_PWD = `0x0005`;
+// 会员中心
+export const VIP_CENTER = `0x0006`;
 // 会员等级
-export const USER_LEVER = `0x0005`;
+export const USER_LEVER = `0x0007`;
+// 商城
+export const HSOP_SEND = `0x0008`;
+// 失去焦点
+export const HAVE_BLUR = `0x0009`;
+// 得到焦点
+export const HAVE_FOCUS = `0x0010`;
