@@ -4,9 +4,21 @@ import {
   GET_VIDEO_GROUP,
   GET_VIDEO_DETAIL,
   GET_VIDEO_URL,
+  GET_RELATED_ALLVIDEO,
+  GET_COMMENT_VIDEO,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
 
+// 相关视频评论
+export const get_comment_video = async (arg: any) => {
+  const { response }: any = await http(`${GET_COMMENT_VIDEO}?${arg}`);
+  return response;
+};
+// 相关视频推荐
+export const get_related_allvideo = async (arg: any) => {
+  const { response }: any = await http(`${GET_RELATED_ALLVIDEO}?${arg}`);
+  return response;
+};
 // 获取视频链接
 export const get_video_url = async (arg: any) => {
   const { response }: any = await http(`${GET_VIDEO_URL}?${arg}`);

@@ -3,12 +3,16 @@ const user = {
     show: false,
     cursor: {},
     state: 'ready',
-    currtime: '',
+    currtime: 0,
+    duration: 0,
 
   },
   mutations: {
     updata_show_vedio_page(state: any, params: any) {
       state.show = params;
+    },
+    updata_vedio_duration(state: any, params: any) {
+      state.duration = params;
     },
     updata_vedio_state(state: any, params: any) {
       state.state = params;

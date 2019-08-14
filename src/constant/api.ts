@@ -185,4 +185,9 @@ export const GET_VIDEO_DETAIL = `${host}video/detail`;
 // 获取视频详情
 export const GET_VIDEO_URL = `${host}video/url`;
 // /video/url
-
+// 获取相关视频
+export const GET_RELATED_ALLVIDEO = `${host}related/allvideo`;
+// /related/allvideo
+// 获取视频评论
+export const GET_COMMENT_VIDEO = `${host}comment/video`;
+// /comment/video

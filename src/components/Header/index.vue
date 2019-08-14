@@ -310,6 +310,11 @@ export default class HelloWorld extends Vue {
     };
     build[key]();
   }
+  // 历史记录功能待完善TODO
+  // @Watch('$route')
+  // public handleHistory(args: any) {
+
+  // }
   @Watch('keywords')
   public async handleSeach(keywords: any) {
     if (keywords) {

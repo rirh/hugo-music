@@ -1,130 +1,244 @@
 <style lang="less" scoped>
-.wapper {
-  padding: 1vw 2vw 1vw 3vw;
-  display: flex;
-  overflow: scroll;
-  &-left {
-    flex: 0 0 65%;
-    text-align: left;
-    &-vediobox {
-      position: relative;
-    }
-    &-vedio {
-      outline: none;
-      // object-fit: fill;
-      filter: brightness(80%), blur(20px);
-      width: 100%;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.6);
-
-      &-play {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: var(--red);
-        background: rgba(255, 255, 255, 0.6);
-        transform: translate(50%, -50%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-size: 40px;
-        padding: 1vw;
-        opacity: 0;
-        transition: opacity 0.3s, right 0.3s, top 0.3s;
-      }
-      &-controls {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        color: var(--red);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        opacity: 1;
-        transition: opacity 0.3s;
-      }
+.comments {
+  font-size: 13px;
+  text-align: left;
+  &-textarea {
+    width: 100%;
+    border-color: var(--bgColor);
+    border-radius: 10px;
+    margin: 1vw 0;
+    padding: 0.5vw;
+    outline: none;
+    &-commit {
+      border-radius: 20px;
+      color: var(--bgColor);
+      border: none;
+      background: -webkit-linear-gradient(180deg, var(--btnRed), var(--red));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 1vw;
+      width: 55px;
+      font-weight: bold;
     }
   }
-  &-right {
-    flex: 0 0 35%;
+  &-title {
+    font-size: 13px;
+    margin: 1vw 0;
+  }
+  &-list {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 1.2vw 0;
+    &-img {
+    }
+    &-content {
+      width: 100%;
+      border-bottom: 1px solid #e8e8e8;
+      color: var(--black);
+      font-weight: 500;
+      margin: 0 2vw;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+      &-name {
+        color: var(--link);
+      }
+      &-time {
+        color: var(--textColor);
+        margin: 1vw 0;
+        font-size: 12px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start;
+        &-tips {
+          font-size: 14px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &-report {
+            font-size: 12px;
+            opacity: 0;
+          }
+        }
+      }
+      &-ber {
+        background-color: var(--stripedHover);
+        padding: 0.5vw;
+        width: 100%;
+        margin: 0.5vw;
+        text-align: left;
+      }
+    }
   }
 }
-.wapper-left-vediobox:hover .wapper-left-vedio-play {
+.comments-list:hover .comments-list-content-time-tips-report {
   opacity: 1;
-  right: 50%;
-  top: 50%;
+}
+.more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3vw 0;
+}
+.more-hot {
+  border-radius: 20px;
+  width: 140px;
+  color: var(--bgColor);
+  border: none;
+  background: -webkit-linear-gradient(180deg, var(--btnRed), var(--red));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
 <template>
-  <a-skeleton :loading="loading" active>
-    <div class="wapper">
-      <div class="wapper-left">
-        <h3>视频详情</h3>
-        <div class="wapper-left-vediobox">
-          <video
-            id="notevedio"
-            @click="handlePlay"
-            class="wapper-left-vedio"
-            ref="vedio"
-            :height="data.height/2<300?'300':data.height/2"
-            :style="{
-              'object-fit':data.height>data.width?'contain':'fill',
-               'background-image': `url(${data.coverUrl})`
-            }"
-            autoplay
-            v-for="(item,index) in data.urls"
-            :key="index"
-            :src="item.url"
-          ></video>
-          <span @click.stop="handlePlay" class="wapper-left-vedio-play">
-            <AIconfont type="icon-up1-copy" />
+    <dl class="comments">
+      <dd>
+        <textarea
+          class="comments-textarea"
+          autofocus
+          v-model="comment"
+          placeholder="输入评论或@朋友"
+          rows="3"
+        ></textarea>
+        <span>
+          <a-button class="comments-textarea-commit" size="small">评论</a-button>
+        </span>
+      </dd>
+      <dt class="comments-title">
+        <h3>精彩评论</h3>
+      </dt>
+      <dd v-for="(item,index) in data.hotComments" :key="index">
+        <div class="comments-list">
+          <a-avatar class="comments-list-img" :onerror="errorImg" :src="item.user.avatarUrl" alt />
+          <span class="comments-list-content">
+            <span>
+              <a class="comments-list-content-name">{{item.user.nickname}}:</a>
+              <span class="comments-list-content-con">{{item.content}}</span>
+            </span>
+            <span
+              class="comments-list-content-ber"
+              v-for="(ber,bindex) in item.beReplied"
+              :key="bindex"
+            >
+              <a class="comments-list-content-name">@{{ber.user.nickname}}:</a>
+              <span class="comments-list-content-con">{{ber.content}}</span>
+            </span>
+            <span class="comments-list-content-time">
+              <span>{{transformatDate(item.time)}}</span>
+              <span class="comments-list-content-time-tips">
+                <span class="comments-list-content-time-tips-report">举报&nbsp;&nbsp;&nbsp;</span>
+                <AIconfont type="icon-thumb-up-outline" />
+                <span v-show="item.likedCount>0">&nbsp;{{item.likedCount}}</span>
+                <a-divider type="vertical" />
+                <AIconfont type="icon-share" />
+                <a-divider type="vertical" />
+                <AIconfont type="icon-comment-text-outline" />
+              </span>
+            </span>
           </span>
-          <span class="wapper-left-vedio-controls">123</span>
         </div>
+      </dd>
+      <div class="more">
+        <a-button class="more-hot">
+          更多精彩评论
+          <AIconfont type="icon-right" style="font-size:20px;margin-top: 3px;" />
+        </a-button>
       </div>
-      <div class="wapper-right"></div>
-    </div>
-  </a-skeleton>
+      <dt class="comments-title">
+        <h3>最新评论({{data.total}})</h3>
+      </dt>
+      <dd v-for="(item) in data.comments" :key="item.id">
+        <div class="comments-list">
+          <a-avatar class="comments-list-img" :onerror="errorImg" :src="item.user.avatarUrl" alt />
+          <span class="comments-list-content">
+            <span>
+              <a class="comments-list-content-name">{{item.user.nickname}}:</a>
+              <span class="comments-list-content-con">{{item.content}}</span>
+            </span>
+            <span class="comments-list-content-ber" v-for="(ber) in item.beReplied" :key="ber.id">
+              <a class="comments-list-content-name">@{{ber.user.nickname}}:</a>
+              <span class="comments-list-content-con">{{ber.content}}</span>
+            </span>
+            <span class="comments-list-content-time">
+              <span>{{transformatDate(item.time)}}</span>
+              <span class="comments-list-content-time-tips">
+                <span class="comments-list-content-time-tips-report">举报&nbsp;&nbsp;&nbsp;</span>
+                <AIconfont type="icon-thumb-up-outline" />
+                <span v-show="item.likedCount>0">&nbsp;{{item.likedCount}}</span>
+                <a-divider type="vertical" />
+                <AIconfont type="icon-share" />
+                <a-divider type="vertical" />
+                <AIconfont type="icon-comment-text-outline" />
+              </span>
+            </span>
+          </span>
+        </div>
+      </dd>
+      <!-- <dt class="comments-title">
+        <h3>最新评论</h3>
+      </dt>
+      <dd v-for="(item,index) in data.comments" :key="index">
+        <div class="comments-list">
+          <a-avatar class="comments-list-img" :onerror="errorImg" :src="item.user.avatarUrl" alt />
+          <span class="comments-list-content">
+            <a class="comments-list-content-name">{{item.user.nickname}}:</a>
+            <span class="comments-list-content-con">{{item.content}}</span>
+          </span>
+        </div>
+      </dd>-->
+    </dl>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { get_video_url, get_video_group } from '@/actions';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
+import { get_play_song_detail } from '@/actions';
+import {
+  transformTimer,
+  leftpad,
+  scliceValue,
+  transformatDate,
+} from '@/util/filters';
 
-@Component({ components: {} })
-export default class Radio extends Vue {
-  public loading = false;
-  public data = {};
-  public tags = {};
-  public vedio: any = {};
-  get state() {
-    return this.$store.state.vedio;
-  }
-  public handlePlay() {
-    const state = this.state.state;
-    const vedio: any = document.getElementById('notevedio');
-    if (state === 'playing') {
-      vedio.pause();
-      this.$store.commit('updata_vedio_state', 'pause');
-    } else {
-      vedio.play();
-      this.$store.commit('updata_vedio_state', 'playing');
-    }
-  }
-  public destroyed() {
-    this.$store.commit('updata_show_vedio_page', false);
-  }
-  public async mounted() {
-    const data = this.$store.state.vedio.cursor.data;
-    const res = await get_video_url(`id=${data.vid}`);
-    if (res.code === 200) {
-      this.data = { ...data, urls: res.urls };
-    }
-    this.$store.commit('updata_vedio_state', 'playing');
-    this.$store.commit('updata_music_state', 'pause');
-  }
+@Component({})
+export default class Home extends Vue {
+  public errorImg = ERROR_IMG;
+  @Prop() public data: any;
+  public showDescription = false;
+  public comment = '';
+
+  public columns = [
+    {
+      name: '',
+      key: 'icon',
+    },
+    {
+      name: '音乐标题',
+      key: 'name',
+    },
+    {
+      name: '歌手',
+      key: 'ar',
+    },
+    {
+      name: '专辑',
+      key: 'name',
+    },
+    {
+      name: '时长',
+      key: 'name',
+    },
+  ];
+  public transformTimer = (e: any) => transformTimer(e);
+  public leftpad = (e: any) => leftpad(e, 2, 0);
+  public scliceValue = (e: any, len: any) => scliceValue(e, len);
+  public transformatDate = (e: any) => transformatDate(e, true);
+
 }
 </script>
