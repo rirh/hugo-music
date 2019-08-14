@@ -11,18 +11,15 @@ const exe = (cmd) => {
   try {
     result = shell.exec(cmd);
     if (result.code) {
-      shell.exec(`say ${result.stderr}`)
       console.error(result);
-      return;
     }
-    shell.exec(`say ${cmd}`)
     return result;
   } catch (error) {
-    shell.exec(`say ${error.stderr}`)
     console.log(error);
+    shell.exec(`say ${error}`)
   }
 };
-exe('开始提交git')
+exe('say 开始提交git!');
 exe('git add .');
 exe("git commit -m 'await' ");
 exe('git push');
@@ -36,3 +33,5 @@ CFonts.say('TigerZH!', {
   space: true, // define if the output text should have empty lines on top and on the bottom
   maxLength: '0', // define how many character can be on one line
 });
+
+exe('say all done!');
