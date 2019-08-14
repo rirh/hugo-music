@@ -11,17 +11,21 @@ const exe = (cmd) => {
   try {
     result = shell.exec(cmd);
     if (result.code) {
+      shell.exec(`say ${result.stderr}`)
       console.error(result);
+      return;
     }
+    shell.exec(`say ${cmd}`)
     return result;
   } catch (error) {
+    shell.exec(`say ${error.stderr}`)
     console.log(error);
   }
 };
-exe('say 开始提交git!');
+exe('开始提交git')
 exe('git add .');
 exe("git commit -m 'await' ");
-var res = exe('git push');
+exe('git push');
 CFonts.say('TigerZH!', {
   font: 'block', // define the font face
   align: 'left', // define text alignment
@@ -32,11 +36,3 @@ CFonts.say('TigerZH!', {
   space: true, // define if the output text should have empty lines on top and on the bottom
   maxLength: '0', // define how many character can be on one line
 });
-var done = "";
-console.log(res);
-
-if (res.code) {
-  done = res
-
-}
-exe(done);
