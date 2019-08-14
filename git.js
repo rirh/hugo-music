@@ -21,8 +21,8 @@ const exe = (cmd) => {
 exe('say 开始提交git!');
 exe('git add .');
 exe("git commit -m 'await' ");
-exe('git push');
-var res = CFonts.say('TigerZH!', {
+var res = exe('git push');
+CFonts.say('TigerZH!', {
   font: 'block', // define the font face
   align: 'left', // define text alignment
   colors: ['#fff', '#ff8344'], // define all colors
