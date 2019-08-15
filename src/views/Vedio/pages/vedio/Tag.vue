@@ -1,3 +1,4 @@
+
 <style lang="less" scoped>
 .tags {
   display: flex;
@@ -15,7 +16,6 @@
     border: 1px solid var(--borderColor);
     border-radius: 20px;
     flex: 0 0 14%;
-
     &-text {
       font-weight: 400;
     }
@@ -56,7 +56,6 @@
   padding: 2vw;
   &-dl {
     display: flex;
-
    
     &-list {
       display: flex;
@@ -122,7 +121,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { ERROR_IMG } from '@/constant/api';
 import { get_cat_list } from '@/actions';
 import { groupBy } from 'lodash';
-
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;

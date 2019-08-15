@@ -36,7 +36,7 @@
         justify-content: center;
         border-radius: 50%;
         font-size: 40px;
-        padding: 1vw;
+        padding: .5vw;
         opacity: 0;
         transition: opacity 0.3s;
       }
