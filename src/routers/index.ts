@@ -156,6 +156,15 @@ export default [
     component: () => import('@/views/Vedio/pages/detail/index.vue'),
     meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
   },
+  {
+    path: '/mv-detail',
+    name: 'MV播放页面',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Vedio/pages/detailmv/index.vue'),
+    meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
+  },
 
 
 

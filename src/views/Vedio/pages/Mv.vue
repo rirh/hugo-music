@@ -1,77 +1,142 @@
 <style lang="less" scoped>
 .wapper {
-  padding: 2vw 0;
-  margin-left: 1px;
-}
-.list {
-  margin-top: 2vw;
-}
-.item {
-  display: flex;
-  align-items: center;
-  padding: 0.5vw 3vw;
-  &-con {
-    margin: 0 0 0 1vw;
-    display: flex;
-    flex: 1;
+  padding: 1vw 2vw 5vw 2vw;
+  &-item {
+    &-dt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &-tags {
+        flex: 0 0 50%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+    }
   }
-}
-.item:hover {
-  background-color: var(--stripedHover);
-}
-.striped {
-  background-color: var(--striped);
 }
 </style>
 
 <template>
   <a-skeleton :loading="loading" active>
     <div class="wapper">
-      <h3 style="text-align:left;font-size:14px;margin:0 3vw">
-        我订阅的电台
-        <span style="color:var(--textColor);font-size:12px">({{data.count}})</span>
-      </h3>
-      <dl class="list">
-        <dd
-          class="item"
-          :class="{'striped':index%2===0}"
-          v-for="(item,index) in data.djRadios"
-          :key="index"
-        >
-          <a-avatar :size="60" icon="user" shape="square" :src="item&&item.picUrl" />
-          <div class="item-con">
-            <span style="color:var(--black);flex:1;text-align:left">{{item.name}}</span>
-            <span style="flex:0 0 21%;text-align:left">
-              <span style="color:var(--textColor);font-size:12px">by</span>
-              {{item.dj&&item.dj.nickname}}
-            </span>
-            <span style="flex:0 0 18%;color:var(--textColor);font-size:12px">节目{{item.programCount}}</span>
-          </div>
-        </dd>
-      </dl>
+      <div class="wapper-item">
+        <div class="wapper-item-dt">
+          <h3>最新MV</h3>
+          <span class="wapper-item-dt-tags">
+            <span
+              @click="initFirstMv(item.name==='全部'?'':item.name)"
+              v-for="(item,index) in tags"
+              :key="index"
+            >{{item.name}}</span>
+          </span>
+        </div>
+        <Lists :data="firstmv" @on-item="handleItem" />
+      </div>
+      <div class="wapper-item">
+        <div class="wapper-item-dt">
+          <h3>网易出品</h3>
+        </div>
+        <Lists :data="exclusicve" @on-item="handleItem" />
+      </div>
+      <div class="wapper-item">
+        <div class="wapper-item-dt">
+          <h3>MV排行榜</h3>
+          <span class="wapper-item-dt-tags">
+            <span
+              @click="iniTopMV(item.name==='全部'?'':item.name)"
+              v-for="(item,index) in tags"
+              :key="index"
+            >{{item.name}}</span>
+          </span>
+        </div>
+        <Top :data="top" @on-item="handleItem" />
+      </div>
     </div>
   </a-skeleton>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { get_dj_sublist } from '@/actions';
-@Component({})
+import {
+  get_video_group_list,
+  get_video_group,
+  get_video_detail,
+  get_mv_first,
+  get_mv_exclusicve_rcmd,
+  get_top_mv,
+  get_mv_detail,
+} from '@/actions';
+import Tags from './vedio/Tag.vue';
+import Lists from './mv/List.vue';
+import Top from './mv/Top.vue';
+import axios from 'axios';
+@Component({ components: { Tags, Lists, Top } })
 export default class Radio extends Vue {
-  public loading = true;
-  public data = {};
+  public loading = false;
+  public data = [];
+  public firstmv = {};
+  public exclusicve = {};
+  public top = {};
+  public tags = [
+    {
+      name: '全部',
+    },
+    {
+      name: '内地',
+    },
+    {
+      name: '港台',
+    },
+    {
+      name: '欧美',
+    },
+    {
+      name: '日本',
+    },
+    {
+      name: '韩国',
+    },
+  ];
   public async mounted() {
-    this.init();
-  }
-  public async init() {
     this.loading = true;
-    const userId = `uid=${this.detail.profile.userId}`;
-    const res = await get_dj_sublist(userId);
+    await axios.all([
+      this.initFirstMv(''),
+      this.initExclusicveRcmd(30),
+      this.iniTopMV(''),
+    ]);
     this.loading = false;
-    if (res.code === 200) { this.data = res; }
   }
-  get detail() {
-    return this.$store.state.user.userDetail;
+
+  public async initFirstMv(args: any) {
+    const res = await get_mv_first(`area=${args}`);
+    if (res.code === 200) {
+      this.firstmv = res;
+    }
+  }
+  public async initExclusicveRcmd(args: any) {
+    const res = await get_mv_exclusicve_rcmd(``);
+    if (res.code === 200) {
+      this.exclusicve = res;
+    }
+  }
+  public async iniTopMV(args: any) {
+    const res = await get_top_mv(`area=${args}`);
+    if (res.code === 200) {
+      this.top = res;
+    }
+  }
+  public async handleItem(item: any) {
+    const res = await get_mv_detail(`mvid=${item.id}`);
+    if (res.code === 200) {
+      this.$store.commit('updata_vedio_cursor', res);
+      this.$store.commit('updata_show_vedio_page', true);
+      this.$router.push({
+        path: '/mv-detail',
+        query: res,
+      });
+    }
   }
 }
 </script>

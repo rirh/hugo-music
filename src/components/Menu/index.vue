@@ -29,14 +29,14 @@
   <div
     class="wapper"
     :style="{
-    'justify-content':router.length>=4?'space-between':'flex-start'
+    'justify-content':filterJust(router)?'space-between':'flex-start'
   }"
   >
     <router-link
       :class="{'active':activeMenu(menu)}"
       class="wapper-link"
       :style="{
-    'margin-left':router.length>=4?'0':'2vw'
+    'margin-left':filterJust(router)?'0':'2vw'
   }"
       v-for="(menu,index) in router"
       tag="span"
@@ -54,6 +54,13 @@ import routers from '@/routers';
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+  public filterJust(args: any) {
+    let result = false;
+    if (args) {
+      result = args && args.length > 4;
+    }
+    return result;
+  }
   get router() {
     let result: any = [];
     const router: any = routers;

@@ -191,3 +191,24 @@ export const GET_RELATED_ALLVIDEO = `${host}related/allvideo`;
 // 获取视频评论
 export const GET_COMMENT_VIDEO = `${host}comment/video`;
 // /comment/video
+// 最新mv
+export const GET_MV_FIRST = `${host}mv/first`;
+// /mv/first
+// 网易出品mv
+export const GET_MV_EXCLUSICVE_RCMD = `${host}mv/exclusive/rcmd`;
+// /mv/exclusive/rcmd
+// 排行榜mv
+export const GET_TOP_MV = `${host}top/mv`;
+// /top/mv
+// mv 详情
+export const GET_MV_DETAIL = `${host}mv/detail`;
+// /mv/detail
+// mv 地址
+export const GET_MV_URL = `${host}mv/url`;
+// /mv/url
+// 相似mv
+export const GET_SIMI_MV = `${host}simi/mv`;
+// /simi/mv
+// mv评论
+export const GET_COMMENT_MV = `${host}comment/mv`;
+// /comment/mv

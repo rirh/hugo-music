@@ -89,14 +89,12 @@
               ref="vedio"
               :height="filterHeight(data.height)"
               :style="{
-              'object-fit':data.height>data.width?'contain':'fill',
-               'background-image': `url(${data.coverUrl})`,
+              'object-fit':'fill',
+               'background-image': `url(${data.cover})`,
                'filter':'brightness(60%), blur(20px)'
             }"
               autoplay
-              v-for="(item,index) in data.urls"
-              :key="index"
-              :src="item.url"
+              :src="data.urls&&data.urls.url"
             ></video>
           </a-spin>
           <span
@@ -147,6 +145,7 @@
             autofocus
             id="progress"
             v-model="progress"
+            @change="handleChangePro"
             @afterChange="handleProgress"
             :defaultValue="0"
             :tooltipVisible="false"
@@ -171,6 +170,10 @@ import {
   get_related_allvideo,
   get_video_detail,
   get_comment_video,
+  get_mv_url,
+  get_simi_mv,
+  get_comment_mv,
+  get_mv_detail,
 } from '@/actions';
 import { transformW, transformatDate, transformSongTime } from '@/util/filters';
 import AuthInfo from './AuthInfo.vue';
@@ -202,7 +205,7 @@ export default class Radio extends Vue {
   public transformatDate = (e: any) => transformatDate(e, 1);
   public transformSongTime = (e: any) => transformSongTime(e);
   public filterHeight(args: any) {
-    let result = 0;
+    let result = 400;
     const min = 300;
     const max = 500;
     const cur = args / 2;
@@ -214,10 +217,19 @@ export default class Radio extends Vue {
     }
     return result;
   }
+  public handleChangePro() {
+    if (this.state.state === 'playing') {
+      const vedio: any = document.getElementById('notevedio');
+      vedio.pause();
+      this.$store.commit('updata_vedio_state', 'pause');
+    }
+  }
   public handleProgress(msg: any) {
     const vedio: any = document.getElementById('notevedio');
     const duration: any = this.duration;
     vedio.currentTime = (msg / 100) * duration;
+    vedio.play();
+    this.$store.commit('updata_vedio_state', 'playing');
   }
   public handleFull() {
     const document: any = window.document;
@@ -277,7 +289,7 @@ export default class Radio extends Vue {
     }
   }
   public async handleSimi(item: any) {
-    const res = await get_video_detail(`id=${item.vid}`);
+    const res = await get_mv_detail(`mvid=${item.id}`);
     if (res.code === 200) {
       this.$store.commit('updata_vedio_cursor', res);
     }
@@ -309,15 +321,15 @@ export default class Radio extends Vue {
   }
   public async init(data: any) {
     this.loading = true;
-    const params = `id=${data.vid}`;
-    const res = await get_video_url(params);
-    const simi = await get_related_allvideo(params);
-    const comment = await get_comment_video(params);
+    const params = `id=${data.id}`;
+    const res = await get_mv_url(params);
+    const simi = await get_simi_mv(`mv${params}`);
+    const comment = await get_comment_mv(params);
 
     this.loading = false;
     if (res.code === 200) {
-      this.data = { ...data, urls: res.urls };
-      //  console.log(.log(this.data);
+      this.data = { ...data, urls: res.data };
+      // console.log(this.data);
     }
     if (simi.code === 200) {
       this.simis = simi;
@@ -325,6 +337,7 @@ export default class Radio extends Vue {
     if (comment.code === 200) {
       this.comments = comment;
     }
+
     this.$store.commit('updata_vedio_state', 'playing');
     this.$store.commit('updata_music_state', 'pause');
 
