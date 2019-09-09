@@ -10,7 +10,7 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "electron":"yarn electron:serve",
+    "electron": "yarn electron:serve",
     "git": "node git.js"
   },
   "main": "background.js",
@@ -23,6 +23,8 @@
     "core-js": "^2.6.5",
     "electron-config": "^2.0.0",
     "howler": "^2.1.2",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-webpack-plugin": "^2.4.2",
     "node-sass": "^4.12.0",
     "register-service-worker": "^1.6.2",
     "request": "^2.88.0",
@@ -58,18 +60,6 @@
     "> 1%",
     "last 2 versions"
   ],
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
+  
   "__npminstall_done": false
 }

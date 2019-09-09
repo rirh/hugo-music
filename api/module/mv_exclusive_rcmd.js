@@ -2,15 +2,15 @@
 
 module.exports = (query, request) => {
   const data = {
-    offset: query.limit || 0,
+    offset: query.offset || 0,
     limit: query.limit || 30
   };
   return request(
-    "POST",
+    'POST',
     `https://interface.music.163.com/api/mv/exclusive/rcmd`,
     data,
     {
-      crypto: "weapi",
+      crypto: 'weapi',
       cookie: query.cookie,
       proxy: query.proxy
     }

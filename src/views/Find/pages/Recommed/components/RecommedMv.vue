@@ -106,7 +106,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { ERROR_IMG } from '@/constant/api';
-import { get_video_detail } from '@/actions';
+import { get_video_detail, get_mv_detail } from '@/actions';
 @Component({})
 export default class Home extends Vue {
   public loadingRecommedmv = true;
@@ -120,10 +120,10 @@ export default class Home extends Vue {
   }
 
   public async handleItem(item: any) {
-    const res = await get_video_detail(`id=${item.data.vid}`);
+    const res = await get_mv_detail(`mvid=${item.id}`);
     if (res.code === 200) {
       this.$router.push({
-        path: '/vedio-detail',
+        path: '/mv-detail',
         query: res,
       });
       this.$store.commit('updata_vedio_cursor', res);

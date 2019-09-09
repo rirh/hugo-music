@@ -7,22 +7,33 @@ const path = require("path");
 // .BundleAnalyzerPlugin;
 // const { env } = argv;
 
+const ImageminPlugin = require("imagemin-webpack-plugin").default;
+const ImageminMozjpeg = require("imagemin-mozjpeg");
+
 const config = {
-  // configureWebpack: config => {
-  //   return {
-  //     plugins: [
-  //       // Ignore all locale files of moment.js
-  //       // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  //       // 依赖大小分析工具
-  //       // new BundleAnalyzerPlugin(),
-  //       new CompressionPlugin({
-  //         test: /\.js$|\.html$|.\css/, //匹配文件名
-  //         threshold: 10240, //对超过10k的数据压缩
-  //         deleteOriginalAssets: false //不删除源文件
-  //       })
-  //     ]
-  //   };
-  // },
+  configureWebpack: config => {
+    return {
+      plugins: [
+        // Ignore all locale files of moment.js
+        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // 依赖大小分析工具
+        // new BundleAnalyzerPlugin(),
+        // new CompressionPlugin({
+        //   test: /\.js$|\.html$|.\css/, //匹配文件名
+        //   threshold: 10240, //对超过10k的数据压缩
+        //   deleteOriginalAssets: false //不删除源文件
+        // })
+        new ImageminPlugin({
+          plugins: [
+             ImageminMozjpeg({
+              quality: 100,
+              progressive: true
+            })
+          ]
+        })
+      ]
+    };
+  },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
 
