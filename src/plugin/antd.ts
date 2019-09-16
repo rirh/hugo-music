@@ -14,8 +14,8 @@ import {
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
   // scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',
-  // scriptUrl: '//at.alicdn.com/t/font_1272441_evj5r6r4oe7.js',
-  scriptUrl: '//at.alicdn.com/t/font_1272441_wqmr9itup3j.js',
+  scriptUrl: 'https://at.alicdn.com/t/font_1272441_wqmr9itup3j.js',
+  // scriptUrl: 'icon.js',
 });
 Vue.component(IconFont.name, IconFont);
 Vue.component(Button.name, Button);

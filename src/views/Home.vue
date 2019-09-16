@@ -1,7 +1,8 @@
 <style lang="less">
 .HolyGrail {
   display: flex;
-  height: 100vh;
+  width: 1000px;
+  height: 670px;
   flex-direction: column;
   // background-color: antiquewhite;
   text-align: center;
