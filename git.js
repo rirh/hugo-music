@@ -6,16 +6,9 @@ const CFonts = require('cfonts');
 
 // eslint-disable-next-line consistent-return
 const exe = (cmd) => {
-  return new Promise((resolve, reject) => {
-    shell.exec(cmd, (err, stdout, stderr) => {
-      if (!err) {
-        reject(stdout)
-        exe(`say ${stdout.trim()}`);
-      } else {
-        resolve()
-      }
-    });
+  shell.exec(cmd, (err, stdout, stderr) => {
   });
+
 };
 exe('say 开始提交git!');
 exe('git add .');
