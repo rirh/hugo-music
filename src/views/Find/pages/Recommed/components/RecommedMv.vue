@@ -54,6 +54,12 @@
           width: 90%;
           color: #333;
           font-weight: 450;
+          &-title {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
       }
     }
@@ -93,7 +99,9 @@
               alt
             />
             <div class="recommedmv-recommedmvs-main-list-name">
-              <div>{{recommedmv.name.length>20?`${recommedmv.name.substring(0,18)}...`:recommedmv.name}}</div>
+              <div
+                class="recommedmv-recommedmvs-main-list-name-title"
+              >{{recommedmv.name.length>20?`${recommedmv.name.substring(0,20)}...`:recommedmv.name}}</div>
               <div style="color:#999">{{recommedmv.artistName}}</div>
             </div>
           </div>

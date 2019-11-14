@@ -173,19 +173,19 @@
           class="ordermodal-main-lists"
           @sort-end="init"
           lockAxis="y"
-          v-model="templates"
+          v-model="order_tempates"
         >
           <SortableItem
             class="ordermodal-main-list"
-            v-for="(item, index) in templates"
+            v-for="(item, index) in order_tempates"
             :index="index"
             :key="index"
             :item="item"
           />
         </SortableList>
 
-        <a class="ordermodal-main-def">恢复默认排序</a>
-        <a-button class="ordermodal-main-btn">确认</a-button>
+        <a class="ordermodal-main-def" @click="handleDefaultTempates">恢复默认排序</a>
+        <a-button class="ordermodal-main-btn" @click="handleSortTempates">确认</a-button>
       </div>
     </a-modal>
     <!-- <Recommed :data="recommeds" />
@@ -232,6 +232,8 @@ import axios from 'axios';
 export default class Home extends Vue {
   public showOrder = false;
   private banners = [];
+  // 调整顺序
+  private order_tempates = [];
   private templates = [
     {
       name: '推荐歌单',
@@ -259,6 +261,13 @@ export default class Home extends Vue {
       data: [],
     },
   ];
+  public handleDefaultTempates() {
+    this.templates = this.order_tempates;
+  }
+  public handleSortTempates() {
+    this.templates = this.order_tempates;
+    this.showOrder = !this.showOrder;
+  }
   public handleMouseDown(event: any) {
     // let currenIndex: any, previousIndex: any;
     // const startY = event.clientY;
@@ -353,6 +362,9 @@ export default class Home extends Vue {
       }
     };
     respone.forEach(mergeData);
+    Object.assign(this.order_tempates, this.templates);
+    // console.log(this.order_tempates);
+
     // const [
     //   bannersRes,
     //   personaRes,

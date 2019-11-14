@@ -49,6 +49,7 @@
       margin-left: 1vw;
       text-align: left;
       overflow: hidden;
+      text-overflow: ellipsis;
       &-name {
         font-weight: bold;
       }
@@ -322,9 +323,7 @@
                 @dblclick="$store.commit('updata_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
-                <span
-                  class="playlist-list-auth"
-                >{{ song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
+                <span class="playlist-list-auth">{{ song.auth}}</span>
                 <span class="playlist-list-duration">
                   {{transformTimer(song.duration/1000)}}
                   <AIconfont class="delete" type="icon-delete" @click="handleDelete(index)" />
@@ -489,8 +488,8 @@ export default class Music extends Vue {
   public async handleMusic({ id, image, name, auth, duration }: any) {
     this.showinfo = true;
     this.img = image;
-    this.name = name.length > 20 ? `${name.substring(0, 10)}...` : name;
-    this.auth = auth.length > 5 ? `${auth.substring(0, 6)}...` : auth;
+    this.name = name;
+    this.auth = auth;
     this.$store.commit('updata_music_list', {
       id,
       image,

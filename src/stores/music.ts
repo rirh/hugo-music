@@ -41,9 +41,26 @@ const music = {
       state.state = params;
     },
     updata_music_data(state: any, params: any) {
-      if (params.id !== state.data.id) {
-        state.data = params;
+      switch (state.state) {
+        case 'playing':
+          if (params.id !== state.data.id) {
+            state.data = params;
+          }
+          break;
+        case 'pause':
+          if (params.id !== state.data.id) {
+            state.data = params;
+          }
+          break;
+        case 'stop':
+          state.data = {};
+          state.data = params;
+          break;
+
+        default:
+          break;
       }
+
     },
   },
 };

@@ -73,6 +73,18 @@ const config = {
       }
     }
 
+  },
+  devServer: {
+    proxy: {
+      'https://music.huzhihui.org.cn': {
+        target: 'https://music.huzhihui.org.cn',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   }
   // ...other config
 

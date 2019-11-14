@@ -13,6 +13,8 @@ export default class Home extends Vue {
   public preventDrop() {
     (window as any).document.ondragstart = (event: any) => {
       event.preventDefault();
+      // console.log(event.dataTransfer.files);
+
       if (event.dataTransfer.files) {
         // ipcRenderer.send(MAIN_DROP, event.dataTransfer.files[0].path);
       }
@@ -38,8 +40,6 @@ export default class Home extends Vue {
   public mounted() {
     this.preventDrop();
     this.bindStoreRefrse();
-
-
   }
 }
 </script>
