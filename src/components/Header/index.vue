@@ -64,6 +64,15 @@
         color: #f2cbc9;
         margin-left: 10px;
       }
+      &-close1 {
+        color: #f2cbc9;
+        margin-right: 10px;
+        z-index: 2;
+      }
+      &-close1:hover {
+        color: var(--stripedHover);
+      }
+
       &-input {
         outline: none;
         border: none;
@@ -71,6 +80,8 @@
         color: #f2cbc9;
         font-size: 13px;
         margin-left: 5px;
+        // flex: 1;
+        width: 60%;
       }
       &-input::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -115,6 +126,29 @@
     }
   }
 }
+.hot {
+}
+.name {
+  color: var(--tipsColor);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.tag-con {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tag {
+  padding: 5px 15px;
+  margin: 3px;
+  border: 1px solid var(--borderColor);
+  border-radius: 20px;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+.tag:hover {
+  background-color: var(--stripedHover);
+}
+
 .focus {
   background-color: var(--tagBg);
 }
@@ -172,11 +206,17 @@
           />
           <input
             v-model="keywords"
-            @focus="showDrawer"
             class="wapper-main-seach-input"
-            style
             placeholder="搜索"
             type="text"
+            @focus="showDrawer"
+          />
+          <AIconfont
+            v-show="keywords!==''"
+            class="wapper-main-close1-icon"
+            type="icon-close1"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            @click.stop="handleClear"
           />
         </div>
       </a-col>
@@ -202,7 +242,21 @@
     </a-row>
     <Drawer v-model="visible">
       <dl slot="content">
-        <div v-for="(order , key) in seachList.order" :key="key">
+        <!-- 搜索热词 -->
+
+        <div class="hot">
+          <div class="name">热门搜索</div>
+          <div class="tag-con">
+            <span
+              v-show="!seachList.order"
+              class="tag"
+              v-for="(hot,index) in hotSearchList.hots"
+              :key="index"
+              @click="keywords=hot.first"
+            >{{hot.first}}</span>
+          </div>
+        </div>
+        <div v-show="seachList.order" v-for="(order , key) in seachList.order" :key="key">
           <dt class="content-title">
             <AIconfont class="content-title-icon" :type="types[order]&&types[order].icon||' '"></AIconfont>&nbsp;&nbsp;
             <span>{{types[order]&&types[order].name}}</span>
@@ -224,49 +278,50 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import Menu from '@/components/Menu';
-import { ipcRenderer, remote } from 'electron';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Menu from "@/components/Menu";
+import { ipcRenderer, remote } from "electron";
 import {
   MAIN_MIN,
   MAIN_ZOOM,
   MAIN_CLOSE,
   HAVE_BLUR,
-  HAVE_FOCUS,
-} from '@/constant/ipc';
-import { get_search_suggest } from '@/actions';
-import Drawer from '@/components/Drawer';
+  HAVE_FOCUS
+} from "@/constant/ipc";
+import { get_search_suggest, get_search_hot } from "@/actions";
+import Drawer from "@/components/Drawer";
 
 @Component({
-  components: { Menu, Drawer },
+  components: { Menu, Drawer }
 })
 export default class HelloWorld extends Vue {
   public visible = false;
-  public keywords = '';
+  public keywords = "";
   public seachList = {};
   public focus = false;
   public types = {
     artists: {
-      name: '歌手',
-      icon: 'icon-account',
+      name: "歌手",
+      icon: "icon-account"
     },
     songs: {
-      name: '歌曲',
-      icon: 'icon-music-note',
+      name: "歌曲",
+      icon: "icon-music-note"
     },
     albums: {
-      name: '专辑',
-      icon: 'icon-music-circle',
+      name: "专辑",
+      icon: "icon-music-circle"
     },
     mvs: {
-      name: '视频',
-      icon: 'icon-youtube-play',
+      name: "视频",
+      icon: "icon-youtube-play"
     },
     playlists: {
-      name: '歌单',
-      icon: 'icon-playlist-play',
-    },
+      name: "歌单",
+      icon: "icon-playlist-play"
+    }
   };
+  public hotSearchList = [];
   @Prop() private msg!: string;
   public mounted() {
     ipcRenderer.on(HAVE_BLUR, () => {
@@ -275,10 +330,21 @@ export default class HelloWorld extends Vue {
     ipcRenderer.on(HAVE_FOCUS, () => {
       this.focus = false;
     });
+    this.init();
+  }
+  public async init() {
+    const { code, result } = await get_search_hot();
+    if (code === 200) {
+      this.hotSearchList = result;
+    }
+  }
+  public handleClear() {
+    this.keywords = "";
+    this.seachList = [];
   }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('updata_show_panel', !showPanel);
+    this.$store.commit("updata_show_panel", !showPanel);
   }
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
@@ -306,7 +372,7 @@ export default class HelloWorld extends Vue {
         } else {
           mainWindow.maximize();
         }
-      },
+      }
     };
     build[key]();
   }
@@ -315,7 +381,7 @@ export default class HelloWorld extends Vue {
   // public handleHistory(args: any) {
 
   // }
-  @Watch('keywords')
+  @Watch("keywords")
   public async handleSeach(keywords: any) {
     if (keywords) {
       const res = await get_search_suggest(`keywords=${keywords}`);
@@ -326,32 +392,32 @@ export default class HelloWorld extends Vue {
   }
   public handleGoSeach(item: any, state: any) {
     // 歌曲
-    if (state === 'songs') {
+    if (state === "songs") {
       const params = {
         id: item.id,
         name: item.name,
         auth: item.artists
           .map((e: any) => e.name)
           .toString()
-          .split(',')
-          .join('/'),
+          .split(",")
+          .join("/"),
         image: item.artists[0].img1v1Url,
-        duration: item.duration,
+        duration: item.duration
       };
-      this.$store.commit('updata_music_data', params);
+      this.$store.commit("updata_music_data", params);
     }
     // 歌单
 
-    if (state === 'playlists') {
+    if (state === "playlists") {
       this.$router.push({
-        path: '/music-detail',
-        query: item,
+        path: "/music-detail",
+        query: item
       });
     }
-    if (state === 'albums') {
+    if (state === "albums") {
       this.$router.push({
-        path: '/album-detail',
-        query: item,
+        path: "/album-detail",
+        query: item
       });
     }
     this.visible = false;

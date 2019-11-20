@@ -13,8 +13,15 @@ import {
   GET_SIMI_SONG,
   GET_RESOURCE_LIKE,
   GET_COMMENT_LIKE,
+  GET_SEARCH_HOT,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
+
+// 获取热门搜索
+export const get_search_hot = async (arg: any = '') => {
+  const { response }: any = await http(`${GET_SEARCH_HOT}?${arg}`);
+  return response;
+};
 
 // 给评论点赞
 export const get_comment_like = async (arg: any) => {

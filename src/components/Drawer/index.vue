@@ -5,6 +5,9 @@
 .brawer /deep/ .ant-drawer-body {
   padding: 0;
 }
+.ant-drawer.ant-drawer-open .ant-drawer-mask {
+  opacity: 0;
+}
 </style>
 
 <template>
@@ -17,7 +20,7 @@
     @close="onClose"
     :visible="visible"
     :destroyOnClose="true"
-    :maskStyle="{'display':showMake?'block':'none'}"
+    :maskStyle="{'display':showMake?'block':'none',}"
   >
     <slot name="content" class="contant"></slot>
   </a-drawer>

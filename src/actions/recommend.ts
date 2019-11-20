@@ -1,3 +1,6 @@
+/**
+ * 个性推荐接口
+ */
 import http from '@/axios';
 import {
   GET_PERSONALIZED,
