@@ -175,6 +175,9 @@
 .focus {
   background-color: var(--tagBg);
 }
+.pointer {
+  cursor: pointer;
+}
 </style>
 
 <template>
@@ -186,32 +189,41 @@
       <span
         @click="handleMenu('close')"
         :class="{'focus':focus}"
-        class="wapper-menu-tips wapper-menu-close"
+        class="wapper-menu-tips wapper-menu-close pointer"
       >
         <!-- <strong>x</strong> -->
       </span>
       <span
         @click="handleMenu('min')"
         :class="{'focus':focus}"
-        class="wapper-menu-tips wapper-menu-min"
+        class="wapper-menu-tips wapper-menu-min pointer"
       >
         <!-- <strong>+</strong> -->
       </span>
       <span
         @click="handleMenu('zoom')"
         :class="{'focus':focus}"
-        class="wapper-menu-tips wapper-menu-zoom"
+        class="wapper-menu-tips wapper-menu-zoom pointer"
       >
         <!-- <strong>🤓</strong> -->
       </span>
     </div>
     <a-row :gutter="14" type="flex" class="wapper-main" justify="space-around" align="middle">
       <a-col :span="4" :offset="1" v-show="$store.state.music.showPanel">
-        <AIconfont style="font-size:32px" type="icon-chevron-down" @click="handleShowConrtal" />
+        <AIconfont
+          class="pointer"
+          style="font-size:32px"
+          type="icon-chevron-down"
+          @click="handleShowConrtal"
+        />
       </a-col>
       <a-col v-show="!$store.state.music.showPanel" :span="5" style="text-align:right">
-        <a-icon @click="handleBack" type="left" class="wapper-main-icon wapper-main-icon-left" />
-        <a-icon type="right" class="wapper-main-icon wapper-main-icon-right" />
+        <a-icon
+          @click="handleBack"
+          type="left"
+          class="wapper-main-icon wapper-main-icon-left pointer"
+        />
+        <a-icon type="right" class="wapper-main-icon wapper-main-icon-right pointer" />
       </a-col>
       <a-col :span="10" class="wapper-main-menu">
         <Menu v-show="!$store.state.music.showPanel" />
@@ -223,7 +235,7 @@
           :style="{'background-color':$store.state.music.showPanel?'var(--bgColor)':'#db6965'}"
         >
           <AIconfont
-            class="wapper-main-seach-icon"
+            class="wapper-main-seach-icon pointer"
             type="icon-iconseach"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
           />
@@ -236,7 +248,7 @@
           />
           <AIconfont
             v-show="keywords!==''"
-            class="wapper-main-close1-icon"
+            class="wapper-main-close1-icon pointer"
             type="icon-close1"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
             @click.stop="handleClear"
@@ -244,19 +256,19 @@
         </div>
       </a-col>
       <a-col :span="4" style="padding:0">
-        <div class="wapper-main-set">
+        <div class="wapper-main-set pointer">
           <AIconfont
             type="icon-settings"
             class="wapper-main-set-icon"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
           />
           <AIconfont
-            class="wapper-main-set-icon"
+            class="wapper-main-set-icon pointer"
             type="icon-email"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
           />
           <AIconfont
-            class="wapper-main-set-icon"
+            class="wapper-main-set-icon pointer"
             type="icon-tshirt-crew"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
           />
@@ -271,7 +283,7 @@
           <div class="name">热门搜索</div>
           <div class="tag-con">
             <span
-              class="tag"
+              class="tag pointer"
               v-for="(hot,index) in hotSearchList.hots"
               :key="index"
               @click="keywords=hot.first"
@@ -283,7 +295,7 @@
           </div>
           <div class="tag-con">
             <span
-              class="tag"
+              class="tag pointer"
               v-for="(his,index) in hislist"
               :key="index"
               @click="keywords=his"
@@ -293,13 +305,16 @@
 
         <div v-show="seachList.order" v-for="(order , key) in seachList.order" :key="key">
           <dt class="content-title">
-            <AIconfont class="content-title-icon" :type="types[order]&&types[order].icon||' '"></AIconfont>&nbsp;&nbsp;
+            <AIconfont
+              class="content-title-icon pointer"
+              :type="types[order]&&types[order].icon||' '"
+            ></AIconfont>&nbsp;&nbsp;
             <span>{{types[order]&&types[order].name}}</span>
           </dt>
           <br />
           <dd
             v-for="(song,index) in seachList[order]"
-            class="content-con"
+            class="content-con pointer"
             :key="index"
             @click="handleGoSeach(song,order)"
           >
@@ -475,7 +490,9 @@ export default class HelloWorld extends Vue {
   public asyncHisStore(item: any = '') {
     let list = electron_store.get(STORE_HISTORY_LIST) || [];
     const hasName = list.some((e: any) => e === item.name);
-    if (item.name !== '' && !hasName) { list.push(item.name); }
+    if (item.name !== '' && !hasName) {
+      list.push(item.name);
+    }
     list = list.filter((e: any) => e);
     electron_store.set(STORE_HISTORY_LIST, list);
     this.hislist = list;

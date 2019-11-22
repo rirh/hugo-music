@@ -23,6 +23,9 @@
   font-weight: bold;
   color: white;
 }
+.pointer {
+  cursor: pointer;
+}
 </style>
 
 <template>
@@ -34,7 +37,7 @@
   >
     <router-link
       :class="{'active':activeMenu(menu)}"
-      class="wapper-link"
+      class="wapper-link pointer"
       :style="{
     'margin-left':filterJust(router)?'0':'2vw'
   }"
