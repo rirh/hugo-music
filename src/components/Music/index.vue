@@ -300,7 +300,7 @@
                 v-for="(song,index) in $store.state.music.list"
                 :key="index"
                 :class="{'striped':index%2===0}"
-                @dblclick="$store.commit('updata_music_data', song)"
+                @dblclick="$store.commit('update_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
                 <span
@@ -320,7 +320,7 @@
                 v-for="(song,index) in $store.state.music.history"
                 :key="index"
                 :class="{'striped':index%2===0}"
-                @dblclick="$store.commit('updata_music_data', song)"
+                @dblclick="$store.commit('update_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
                 <span class="playlist-list-auth">{{ song.auth}}</span>
@@ -441,7 +441,7 @@ export default class Music extends Vue {
   }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('updata_show_panel', !showPanel);
+    this.$store.commit('update_show_panel', !showPanel);
   }
   public handleProgress(msg: any) {
     const duration: any = this.duration;
@@ -490,7 +490,7 @@ export default class Music extends Vue {
     this.img = image;
     this.name = name;
     this.auth = auth;
-    this.$store.commit('updata_music_list', {
+    this.$store.commit('update_music_list', {
       id,
       image,
       name,
@@ -516,7 +516,7 @@ export default class Music extends Vue {
       index = list.length - 1;
     }
     if (list[index]) {
-      this.$store.commit('updata_music_data', list[index]);
+      this.$store.commit('update_music_data', list[index]);
     }
   }
   public handleNext() {
@@ -528,7 +528,7 @@ export default class Music extends Vue {
       index = 0;
     }
     if (list[index]) {
-      this.$store.commit('updata_music_data', list[index]);
+      this.$store.commit('update_music_data', list[index]);
     }
   }
   public handleVolumeType() {
@@ -552,12 +552,12 @@ export default class Music extends Vue {
     }
 
     const { success, message }: any = await get_check_music(id);
-    if (!success) {
-      notification.error({
-        message: '提示',
-        description: message,
-      });
-    }
+    // if (!success) {
+    //   notification.error({
+    //     message: '提示',
+    //     description: message,
+    //   });
+    // }
     const { code, data } = await get_song_url(id);
     if (code !== 200) {
       return;
@@ -579,7 +579,7 @@ export default class Music extends Vue {
     if (this.player) {
       let duration: any;
       let currentTime: any;
-      this.$store.commit('updata_music_state', 'playing');
+      this.$store.commit('update_music_state', 'playing');
       (this as any).player.play();
       this.player.onended = () => {
         this.stop();
@@ -591,11 +591,11 @@ export default class Music extends Vue {
         duration = (this as any).player.duration;
         this.duration = duration;
         (this as any).player.volume = this.volume / 100;
-        this.$store.commit('updata_music_duration', duration);
+        this.$store.commit('update_music_duration', duration);
         // 拿到当前时长
         (this as any).player.ontimeupdate = () => {
           currentTime = (this as any).player.currentTime;
-          this.$store.commit('updata_music_cursor', currentTime);
+          this.$store.commit('update_music_cursor', currentTime);
           this.cursor = currentTime;
           this.progress = (currentTime / duration) * 100;
         };
@@ -607,7 +607,7 @@ export default class Music extends Vue {
     if (this.player) {
       if (state === 'playing') {
         (this as any).player.pause();
-        this.$store.commit('updata_music_state', 'pause');
+        this.$store.commit('update_music_state', 'pause');
       }
     }
   }
@@ -618,7 +618,7 @@ export default class Music extends Vue {
         // this.showinfo = false;
         this.progress = 0;
         this.cursor = '0';
-        this.$store.commit('updata_music_state', 'stop');
+        this.$store.commit('update_music_state', 'stop');
         // this.play();
       }
     }

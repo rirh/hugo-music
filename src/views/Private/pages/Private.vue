@@ -697,11 +697,11 @@ export default class Panel extends Vue {
       image: item.album.picUrl,
       duration: item.duration,
     };
-    this.$store.commit('updata_music_data', params);
+    this.$store.commit('update_music_data', params);
   }
   public handleTogglePanel() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('updata_show_panel', !showPanel);
+    this.$store.commit('update_show_panel', !showPanel);
   }
   public async handleDown() {
     // StreamDownload=new StreamDownload();

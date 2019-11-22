@@ -279,7 +279,7 @@ export default class Radio extends Vue {
   public async handleSimi(item: any) {
     const res = await get_video_detail(`id=${item.vid}`);
     if (res.code === 200) {
-      this.$store.commit('updata_vedio_cursor', res);
+      this.$store.commit('update_vedio_cursor', res);
     }
   }
   public handlePlay() {
@@ -287,15 +287,15 @@ export default class Radio extends Vue {
     const vedio: any = document.getElementById('notevedio');
     if (state === 'playing') {
       vedio.pause();
-      this.$store.commit('updata_vedio_state', 'pause');
+      this.$store.commit('update_vedio_state', 'pause');
     } else {
       vedio.play();
-      this.$store.commit('updata_vedio_state', 'playing');
+      this.$store.commit('update_vedio_state', 'playing');
     }
   }
   @Watch('$route', { deep: true })
   public handleToggleShow() {
-    this.$store.commit('updata_show_vedio_page', false);
+    this.$store.commit('update_show_vedio_page', false);
     this.$destroy();
   }
   public destroyed() {
@@ -325,8 +325,8 @@ export default class Radio extends Vue {
     if (comment.code === 200) {
       this.comments = comment;
     }
-    this.$store.commit('updata_vedio_state', 'playing');
-    this.$store.commit('updata_music_state', 'pause');
+    this.$store.commit('update_vedio_state', 'playing');
+    this.$store.commit('update_music_state', 'pause');
 
     this.$nextTick(() => {
       const vedio: any = document.getElementById('notevedio');
@@ -339,11 +339,11 @@ export default class Radio extends Vue {
       };
       vedio.onplaying = () => {
         this.spinning = false;
-        this.$store.commit('updata_vedio_state', 'playing');
+        this.$store.commit('update_vedio_state', 'playing');
       };
       vedio.ontimeupdate = () => {
         this.currtime = vedio.currentTime;
-        this.$store.commit('updata_vedio_currtime', vedio.currentTime);
+        this.$store.commit('update_vedio_currtime', vedio.currentTime);
         this.progress = (vedio.currentTime / this.duration) * 100;
         //       //  console.log(.log("---------" + this.currtime, vedio.duration);
       };
@@ -352,12 +352,12 @@ export default class Radio extends Vue {
         //   `获取视频meta信息完毕，这个时候播放器已经获取到了视频时长和视频资源的文件大小。 `
         // );
         this.duration = vedio.duration;
-        this.$store.commit('updata_vedio_duration', vedio.duration);
+        this.$store.commit('update_vedio_duration', vedio.duration);
       };
       vedio.onended = () => {
         this.progress = 0;
         vedio.pause();
-        this.$store.commit('updata_vedio_state', 'pause');
+        this.$store.commit('update_vedio_state', 'pause');
         //       //  console.log(.log(` //播放结束 loop 的情况下不会触发  `);
       };
       vedio.onerror = function() {

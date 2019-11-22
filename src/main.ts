@@ -24,5 +24,6 @@ new Vue({
   render: (h) => h(App),
   mounted() {
     this.$router.push('/');
+
   },
 }).$mount('#app');

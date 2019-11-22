@@ -19,13 +19,21 @@ export default (url = '', datas = {}, method = 'GET') => {
       if (status === 200) {
         // LoadingBar.finish();
         resolve({ response: data });
-      } else {
-        reject(data);
-
       }
-    } catch (error) {
-      resolve({ response: { code: 400, msg: '请求错误！' } });
-      throw error;
+    } catch (err) {
+      if (err.response.data.message) {
+        notification.error({
+          message: '提示',
+          description: err.response.data.message,
+        });
+      }
+
+      // console.error("Error response:");
+      // console.error(err.response.data);    // ***
+      // console.error(err.response.status);  // ***
+      // console.error(err.response.headers); // ***
+      // resolve({ response: { code: 400, msg: '请求错误！' } });
+      throw err;
     }
   });
 };

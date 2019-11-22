@@ -159,7 +159,7 @@ export default class Home extends Vue {
       image: item.album.picUrl,
       duration: item.duration,
     };
-    this.$store.commit('updata_music_data', params);
+    this.$store.commit('update_music_data', params);
   }
 }
 </script>

@@ -155,7 +155,7 @@ export default class Tags extends Vue {
     this.spinning = false;
     if (res.code === 200) {
       setStorage('user', res);
-      this.$store.commit('updata_user', res);
+      this.$store.commit('update_user', res);
       const userId = `uid=${res.profile.userId}`;
       const resAll = await axios.all([
         get_user_playlist(userId),
@@ -164,10 +164,10 @@ export default class Tags extends Vue {
       ]);
       const [playlist, userdetail]: any = resAll;
       if (playlist.code === 200) {
-        this.$store.commit('updata_playlist', playlist.playlist);
+        this.$store.commit('update_playlist', playlist.playlist);
       }
       if (userdetail.code === 200) {
-        this.$store.commit('updata_user_detail', userdetail);
+        this.$store.commit('update_user_detail', userdetail);
       }
       this.$router.push('/');
       this.$emit('change', false);

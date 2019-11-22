@@ -10,16 +10,16 @@ const user = {
     likelist: {},
   },
   mutations: {
-    updata_likelist(state: any, params: any) {
+    update_likelist(state: any, params: any) {
       state.likelist = params;
     },
-    updata_user_detail(state: any, params: any) {
+    update_user_detail(state: any, params: any) {
       state.userDetail = params;
     },
-    updata_user(state: any, params: any) {
+    update_user(state: any, params: any) {
       state.user = params;
     },
-    updata_playlist(state: any, params: any) {
+    update_playlist(state: any, params: any) {
       state.playlist = params;
     },
   },

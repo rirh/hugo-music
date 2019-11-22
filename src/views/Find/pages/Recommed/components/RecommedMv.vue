@@ -134,8 +134,8 @@ export default class Home extends Vue {
         path: '/mv-detail',
         query: res,
       });
-      this.$store.commit('updata_vedio_cursor', res);
-      this.$store.commit('updata_show_vedio_page', true);
+      this.$store.commit('update_vedio_cursor', res);
+      this.$store.commit('update_show_vedio_page', true);
     }
   }
   /**

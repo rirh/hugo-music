@@ -169,7 +169,7 @@ export default class Tags extends Vue {
           const userId = `uid=${this.detail.profile.userId}`;
           const resdetail = await get_user_detail(userId);
           if (resdetail.code === 200) {
-            this.$store.commit('updata_user_detail', resdetail);
+            this.$store.commit('update_user_detail', resdetail);
           }
         }
       }

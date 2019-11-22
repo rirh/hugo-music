@@ -79,7 +79,7 @@ export const get_likelist = async () => {
   const account = (store as any).state.user.user.account;
   if (account) {
     const { response }: any = await http(`${GET_LIKELIST}?uid=${account.id}`);
-    store.commit('updata_likelist', response);
+    store.commit('update_likelist', response);
   }
 };
 
@@ -115,9 +115,9 @@ export const sign_out = async () => {
   const { response }: any = await http(`${GET_LOGOUT}`);
   if (response.code === 200) {
     clearStorage();
-    store.commit('updata_user', {});
-    store.commit('updata_user_detail', {});
-    store.commit('updata_playlist', []);
+    store.commit('update_user', {});
+    store.commit('update_user_detail', {});
+    store.commit('update_playlist', []);
     router.push({ path: '/' });
   }
 };

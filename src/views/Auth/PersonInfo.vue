@@ -206,7 +206,7 @@ export default class Tags extends Vue {
       });
       const userdetail = await get_user_detail(userId);
       if (userdetail.code === 200) {
-        this.$store.commit('updata_user_detail', userdetail);
+        this.$store.commit('update_user_detail', userdetail);
       }
     } else {
       notification.warning({

@@ -47,8 +47,8 @@ export default class Radio extends Vue {
   public async handleItem(item: any) {
     const res = await get_video_detail(`id=${item.data.vid}`);
     if (res.code === 200) {
-      this.$store.commit('updata_vedio_cursor', res);
-      this.$store.commit('updata_show_vedio_page', true);
+      this.$store.commit('update_vedio_cursor', res);
+      this.$store.commit('update_show_vedio_page', true);
       this.$router.push({
         path: '/vedio-detail',
         query: res,

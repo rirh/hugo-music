@@ -111,7 +111,7 @@ export default class Home extends Vue {
         image: list.al.picUrl,
         duration: list.dt,
       };
-      this.$store.commit('updata_music_data', params);
+      this.$store.commit('update_music_data', params);
     }
   }
 }

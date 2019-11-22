@@ -121,9 +121,23 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    font-size: 12px;
+    font-weight: 400;
     &-icon {
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: 100;
     }
+  }
+  &-con {
+    padding: 3px 15px;
+    width: 100%;
+    color: var(--textColor);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+  &-con:hover {
+    background-color: var(--stripedHover);
   }
 }
 .hot {
@@ -132,6 +146,15 @@
   color: var(--tipsColor);
   font-size: 13px;
   margin-bottom: 10px;
+}
+
+.history {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.trash {
+  cursor: pointer;
 }
 .tag-con {
   display: flex;
@@ -244,18 +267,30 @@
       <dl slot="content">
         <!-- 搜索热词 -->
 
-        <div class="hot">
+        <div class="hot" v-show="!seachList.order">
           <div class="name">热门搜索</div>
           <div class="tag-con">
             <span
-              v-show="!seachList.order"
               class="tag"
               v-for="(hot,index) in hotSearchList.hots"
               :key="index"
               @click="keywords=hot.first"
             >{{hot.first}}</span>
           </div>
+          <div v-show="hislist.length" style="margin-top:10px" class="name history">
+            搜索历史
+            <AIconfont class="trash" type="icon-delete" @click="handleClearStore" />
+          </div>
+          <div class="tag-con">
+            <span
+              class="tag"
+              v-for="(his,index) in hislist"
+              :key="index"
+              @click="keywords=his"
+            >{{his}}</span>
+          </div>
         </div>
+
         <div v-show="seachList.order" v-for="(order , key) in seachList.order" :key="key">
           <dt class="content-title">
             <AIconfont class="content-title-icon" :type="types[order]&&types[order].icon||' '"></AIconfont>&nbsp;&nbsp;
@@ -264,6 +299,7 @@
           <br />
           <dd
             v-for="(song,index) in seachList[order]"
+            class="content-con"
             :key="index"
             @click="handleGoSeach(song,order)"
           >
@@ -278,50 +314,54 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import Menu from "@/components/Menu";
-import { ipcRenderer, remote } from "electron";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import Menu from '@/components/Menu';
+import { ipcRenderer, remote } from 'electron';
 import {
   MAIN_MIN,
   MAIN_ZOOM,
   MAIN_CLOSE,
   HAVE_BLUR,
-  HAVE_FOCUS
-} from "@/constant/ipc";
-import { get_search_suggest, get_search_hot } from "@/actions";
-import Drawer from "@/components/Drawer";
+  HAVE_FOCUS,
+} from '@/constant/ipc';
+import { get_search_suggest, get_search_hot } from '@/actions';
+import { STORE_HISTORY_LIST } from '@/constant/store';
+import Drawer from '@/components/Drawer';
+import Store from 'electron-store';
+const electron_store = new Store();
 
 @Component({
-  components: { Menu, Drawer }
+  components: { Menu, Drawer },
 })
 export default class HelloWorld extends Vue {
   public visible = false;
-  public keywords = "";
+  public keywords = '';
   public seachList = {};
   public focus = false;
   public types = {
     artists: {
-      name: "歌手",
-      icon: "icon-account"
+      name: '歌手',
+      icon: 'icon-account',
     },
     songs: {
-      name: "歌曲",
-      icon: "icon-music-note"
+      name: '单曲',
+      icon: 'icon-music-note',
     },
     albums: {
-      name: "专辑",
-      icon: "icon-music-circle"
+      name: '歌单',
+      icon: 'icon-music-circle',
     },
     mvs: {
-      name: "视频",
-      icon: "icon-youtube-play"
+      name: '视频',
+      icon: 'icon-youtube-play',
     },
     playlists: {
-      name: "歌单",
-      icon: "icon-playlist-play"
-    }
+      name: '歌单',
+      icon: 'icon-playlist-play',
+    },
   };
   public hotSearchList = [];
+  public hislist = [];
   @Prop() private msg!: string;
   public mounted() {
     ipcRenderer.on(HAVE_BLUR, () => {
@@ -331,6 +371,7 @@ export default class HelloWorld extends Vue {
       this.focus = false;
     });
     this.init();
+    this.asyncHisStore();
   }
   public async init() {
     const { code, result } = await get_search_hot();
@@ -339,12 +380,12 @@ export default class HelloWorld extends Vue {
     }
   }
   public handleClear() {
-    this.keywords = "";
+    this.keywords = '';
     this.seachList = [];
   }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit("updata_show_panel", !showPanel);
+    this.$store.commit('update_show_panel', !showPanel);
   }
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
@@ -372,7 +413,7 @@ export default class HelloWorld extends Vue {
         } else {
           mainWindow.maximize();
         }
-      }
+      },
     };
     build[key]();
   }
@@ -381,46 +422,67 @@ export default class HelloWorld extends Vue {
   // public handleHistory(args: any) {
 
   // }
-  @Watch("keywords")
+  @Watch('keywords')
   public async handleSeach(keywords: any) {
     if (keywords) {
       const res = await get_search_suggest(`keywords=${keywords}`);
       if (res.code === 200) {
         this.seachList = res.result;
       }
+    } else {
+      this.handleClear();
     }
   }
-  public handleGoSeach(item: any, state: any) {
-    // 歌曲
-    if (state === "songs") {
-      const params = {
-        id: item.id,
-        name: item.name,
-        auth: item.artists
-          .map((e: any) => e.name)
-          .toString()
-          .split(",")
-          .join("/"),
-        image: item.artists[0].img1v1Url,
-        duration: item.duration
-      };
-      this.$store.commit("updata_music_data", params);
-    }
-    // 歌单
 
-    if (state === "playlists") {
-      this.$router.push({
-        path: "/music-detail",
-        query: item
-      });
+  public handleGoSeach(item: any, state: any) {
+    switch (state) {
+      case 'songs':
+        const params = {
+          id: item.id,
+          name: item.name,
+          auth: item.artists
+            .map((e: any) => e.name)
+            .toString()
+            .split(',')
+            .join('/'),
+          image: item.artists[0].img1v1Url,
+          duration: item.duration,
+        };
+        this.$store.commit('update_music_data', params);
+        break;
+      case 'playlists':
+        this.$router.push({
+          path: '/music-detail',
+          query: item,
+        });
+        break;
+      case 'albums':
+        this.$router.push({
+          path: '/album-detail',
+          query: item,
+        });
+        break;
+      case 'songs':
+        break;
+
+      default:
+        break;
     }
-    if (state === "albums") {
-      this.$router.push({
-        path: "/album-detail",
-        query: item
-      });
-    }
+    this.handleClear();
+    this.asyncHisStore(item);
     this.visible = false;
+  }
+  public asyncHisStore(item: any = '') {
+    let list = electron_store.get(STORE_HISTORY_LIST) || [];
+    const hasName = list.some((e: any) => e === item.name);
+    if (item.name !== '' && !hasName) { list.push(item.name); }
+    list = list.filter((e: any) => e);
+    electron_store.set(STORE_HISTORY_LIST, list);
+    this.hislist = list;
+  }
+  public handleClearStore() {
+    electron_store.set(STORE_HISTORY_LIST, []);
+    this.hislist = [];
   }
   public showDrawer() {
     this.visible = true;
