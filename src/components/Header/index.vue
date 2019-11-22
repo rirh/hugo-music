@@ -286,7 +286,7 @@
               class="tag pointer"
               v-for="(hot,index) in hotSearchList.hots"
               :key="index"
-              @click="keywords=hot.first"
+              @click="keywords=hot.first"          
             >{{hot.first}}</span>
           </div>
           <div v-show="hislist.length" style="margin-top:10px" class="name history">
@@ -317,6 +317,7 @@
             class="content-con pointer"
             :key="index"
             @click="handleGoSeach(song,order)"
+
           >
             {{song.name}}
             <span v-for="(artist,aindex) in song.artists" :key="aindex">{{artist.name}}</span>
