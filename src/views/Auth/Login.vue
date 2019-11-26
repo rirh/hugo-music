@@ -83,30 +83,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Model } from "vue-property-decorator";
-import axios from "axios";
-import routers from "@/routers";
-import CountryCode from "@/lib/countrycode";
+import { Component, Prop, Vue, Model } from 'vue-property-decorator';
+import axios from 'axios';
+import routers from '@/routers';
+import CountryCode from '@/lib/countrycode';
 import {
   get_phone_login,
   get_user_playlist,
   get_user_detail,
-  get_likelist
-} from "@/actions";
-import { notification } from "ant-design-vue";
-import { setStorage } from "@/util/filters";
-import { FORGET_PWD } from "@/constant/ipc";
-import { ipcRenderer, remote } from "electron";
+  get_likelist,
+} from '@/actions';
+import { notification } from 'ant-design-vue';
+import { setStorage } from '@/util/filters';
+import { FORGET_PWD } from '@/constant/ipc';
+import { ipcRenderer, remote } from 'electron';
 
 @Component
 export default class Tags extends Vue {
-  public selected: any = "+86";
+  public selected: any = '+86';
   public CountryCode = CountryCode;
   public spinning = false;
-  public user = "";
-  public passowrd = "";
-  public email = "";
-  public logintype = "手机登录";
+  public user = '';
+  public passowrd = '';
+  public email = '';
+  public logintype = '手机登录';
   @Prop() private data!: string;
   @Prop() private show!: string;
   private visible!: boolean;
@@ -125,7 +125,7 @@ export default class Tags extends Vue {
     const passowrd = this.passowrd;
     let params: any;
     this.spinning = true;
-    if (this.logintype === "手机登录") {
+    if (this.logintype === '手机登录') {
       if (!user) {
         return;
       }
@@ -137,10 +137,10 @@ export default class Tags extends Vue {
       if (!email) {
         return;
       }
-      if (!~email.indexOf("@")) {
+      if (!~email.indexOf('@')) {
         return;
       }
-      if (!~email.indexOf("163")) {
+      if (!~email.indexOf('163')) {
         return;
       }
       params = `?email=${email}&password=${passowrd}`;
@@ -155,23 +155,23 @@ export default class Tags extends Vue {
       const res = await get_phone_login(params);
       this.spinning = false;
       if (res.code === 200) {
-        setStorage("user", res);
-        this.$store.commit("update_user", res);
+        setStorage('user', res);
+        this.$store.commit('update_user', res);
         const userId = `uid=${res.profile.userId}`;
         const resAll = await axios.all([
           get_user_playlist(userId),
           get_user_detail(userId),
-          get_likelist()
+          get_likelist(),
         ]);
         const [playlist, userdetail]: any = resAll;
         if (playlist.code === 200) {
-          this.$store.commit("update_playlist", playlist.playlist);
+          this.$store.commit('update_playlist', playlist.playlist);
         }
         if (userdetail.code === 200) {
-          this.$store.commit("update_user_detail", userdetail);
+          this.$store.commit('update_user_detail', userdetail);
         }
-        this.$router.push("/");
-        this.$emit("change", false);
+        this.$router.push('/');
+        this.$emit('change', false);
       }
     } catch (error) {
       this.spinning = false;

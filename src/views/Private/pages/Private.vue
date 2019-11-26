@@ -536,8 +536,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import routers from "@/routers";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import routers from '@/routers';
 import {
   get_song_detail,
   get_lyric,
@@ -547,12 +547,12 @@ import {
   get_comment_music,
   get_simi_song,
   get_comment_like,
-  get_personal_fm
-} from "@/actions";
-import { ERROR_IMG } from "@/constant/api";
-import { notification, message } from "ant-design-vue";
-import { download, transformatDate } from "@/util/filters";
-import axios from "axios";
+  get_personal_fm,
+} from '@/actions';
+import { ERROR_IMG } from '@/constant/api';
+import { notification, message } from 'ant-design-vue';
+import { download, transformatDate } from '@/util/filters';
+import axios from 'axios';
 
 @Component
 export default class Panel extends Vue {
@@ -572,18 +572,18 @@ export default class Panel extends Vue {
     if (this.songs.lyric) {
       if (this.songs.lyric.lrc) {
         const lyric = this.songs.lyric.lrc.lyric;
-        const ly = lyric.split("\n");
+        const ly = lyric.split('\n');
         const splitLyric = (e: any) => {
-          const crr = e.split("]");
+          const crr = e.split(']');
           const [tit, contant] = crr;
-          const timer = tit.split("[")[1];
-          let timerArr: any = `${timer}`.split(".");
+          const timer = tit.split('[')[1];
+          let timerArr: any = `${timer}`.split('.');
           const [h, s] = timerArr;
-          timerArr = h.split(":");
+          timerArr = h.split(':');
           const [a, b] = timerArr;
           let time: any = `${Number(a) * 60 + Number(b)}.${s}`;
           if (isNaN(time)) {
-            time = "";
+            time = '';
           }
           // if (!contant) { contant = ''; }
           return { time, contant };
@@ -642,7 +642,7 @@ export default class Panel extends Vue {
       get_lyric(`${id}`),
       get_comment_music(`id=${id}`),
       get_simi_song(`id=${id}`),
-      get_likelist()
+      get_likelist(),
     ]);
     const [{ code, privileges, songs }, lyricres, commentres, simis] = res;
     this.comloading = false;
@@ -664,7 +664,7 @@ export default class Panel extends Vue {
     this.like = this.isLike;
   }
   public handleReport() {
-    message.success("操作失败！社会注意核心价值观！");
+    message.success('操作失败！社会注意核心价值观！');
   }
   public handleHideShare() {
     this.visibleshare = false;
@@ -676,17 +676,17 @@ export default class Panel extends Vue {
   public async handleResLike(item: any, index: any, state: any) {
     const id = this.$store.state.music.data.id;
     const { code } = await get_comment_like(
-      `id=${id}&cid=${item.commentId}&t=${item.liked ? 0 : 1}&type=0`
+      `id=${id}&cid=${item.commentId}&t=${item.liked ? 0 : 1}&type=0`,
     );
     if (code === 200) {
-      if (state === "hot") {
+      if (state === 'hot') {
         // this.$set(this.comments.hotComments[index], "liked", !item.liked);
         this.comments.hotComments[index].liked = !item.liked;
       } else {
         this.comments.comments[index].liked = !item.liked;
         // this.$set(this.comments.comments[index], "liked", !item.liked);
       }
-      message.success("操作成功！");
+      message.success('操作成功！');
     }
   }
   public handleMusic(item: any) {
@@ -696,16 +696,16 @@ export default class Panel extends Vue {
       auth: item.artists
         .map((e: any) => e.name)
         .toString()
-        .split(",")
-        .join("/"),
+        .split(',')
+        .join('/'),
       image: item.album.picUrl,
-      duration: item.duration
+      duration: item.duration,
     };
-    this.$store.commit("update_music_data", params);
+    this.$store.commit('update_music_data', params);
   }
   public handleTogglePanel() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit("update_show_panel", !showPanel);
+    this.$store.commit('update_show_panel', !showPanel);
   }
   public async handleDown() {
     // StreamDownload=new StreamDownload();
@@ -720,15 +720,15 @@ export default class Panel extends Vue {
       music.url,
       `${name}.${music.type}`,
       (arg: any, percentage: any, total: any) => {
-        if (arg === "progress") {
+        if (arg === 'progress') {
           // 显示进度
           this.percent = (percentage / total) * 100;
-        } else if (arg === "finished") {
+        } else if (arg === 'finished') {
           // 通知完成
           this.percent = 0;
-          message.success("下载成功！");
+          message.success('下载成功！');
         }
-      }
+      },
     );
   }
 
@@ -739,8 +739,8 @@ export default class Panel extends Vue {
       await get_likelist();
       this.like = !this.like;
       notification.success({
-        message: "恭喜",
-        description: `操作成功！`
+        message: '恭喜',
+        description: `操作成功！`,
       });
     }
   }
@@ -761,24 +761,24 @@ export default class Panel extends Vue {
     if (tempTime) {
       if (item.time === tempTime.time) {
         result = {
-          color: "var(--black)"
+          color: 'var(--black)',
         };
       }
     }
     return result;
   }
   public leftPadauth(songs: any) {
-    let result = "";
+    let result = '';
     if (songs.ar) {
       result = songs.ar
         .map((e: any) => e.name)
         .toString()
-        .split(",")
-        .join("/");
+        .split(',')
+        .join('/');
     }
     return result;
   }
-  @Watch("$store.state.music.data", { deep: true })
+  @Watch('$store.state.music.data', { deep: true })
   public handleInit(args: any) {
     if (!args) {
       return;
