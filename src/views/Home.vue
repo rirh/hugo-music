@@ -88,8 +88,8 @@ footer {
   </header>
 
   <div class="HolyGrail-body" v-show="!$store.state.music.showPanel">
-    <main @scroll="handleScroll" class="HolyGrail-content">
-      <Contant />
+    <main  class="HolyGrail-content">
+      <Contant   />
     </main>
     <nav v-show="!$store.state.vedio.show" class="HolyGrail-nav">
       <Control />
@@ -118,7 +118,6 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component({ components: { Header, Control, Contant, Music, LyricsPanel } })
 export default class Home extends Vue {
   public handleScroll(e: any) {
-    // console.log(e);
     return false;
   }
 }

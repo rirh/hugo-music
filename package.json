@@ -11,7 +11,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "electron": "yarn electron:serve",
-    "git": "node git.js"
+    "git": "node git run"
   },
   "main": "background.js",
   "dependencies": {

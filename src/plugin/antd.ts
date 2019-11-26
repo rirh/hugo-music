@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import {
   Button,
-  Icon, Avatar,
+  Icon,
+  // Avatar,
   Row, Col, Carousel,
   Skeleton, List, Card,
   Modal, Slider, Popover,
@@ -10,17 +11,20 @@ import {
   Input, Form, Collapse, Progress,
   Radio, Spin,
 } from 'ant-design-vue';
-
+import Avatar from './components/avatar.vue';
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
   // scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',
   scriptUrl: 'https://at.alicdn.com/t/font_1272441_wqmr9itup3j.js',
   // scriptUrl: 'icon.js',
 });
+
+
 Vue.component(IconFont.name, IconFont);
 Vue.component(Button.name, Button);
 Vue.component(Icon.name, Icon);
-Vue.component(Avatar.name, Avatar);
+// Vue.component(Avatar.name, Avatar);
+Vue.component('AAvatar', Avatar);
 Vue.component(Row.name, Row);
 Vue.component(Col.name, Col);
 Vue.component(Carousel.name, Carousel);
