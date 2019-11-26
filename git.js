@@ -108,5 +108,5 @@ program
         })
     })
 
-
-program.parse(process.argv)
+    AR.git();
+// program.parse(process.argv)
