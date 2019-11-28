@@ -314,12 +314,7 @@
         />
         <div class="roate" ref="roate">
           <div class="wapper-panel-music-box">
-            <a-avatar
-              class="wapper-panel-music-box-img"
-              :src="$store.state.music.data.image"
-              :onerror="errorImg"
-              alt
-            />
+            <a-avatar class="wapper-panel-music-box-img" :src="img" alt />
           </div>
         </div>
         <div class="wapper-panel-music-action">
@@ -666,14 +661,17 @@ export default class Panel extends Vue {
   public isPress = false;
   public like = false;
   public percent = 0;
+  public img = '';
 
   @Prop() private msg!: string;
+
   public transformatDate = (e: any) => transformatDate(e, true);
   public async init() {
     const id = this.$store.state.music.data.id;
     this.comloading = true;
     this.sonloading = true;
     this.similoading = true;
+
     const res = await axios.all([
       get_song_detail(`${id}`),
       get_lyric(`${id}`),
@@ -820,6 +818,7 @@ export default class Panel extends Vue {
     if (!args) {
       return;
     }
+    this.img = args.image;
     this.init();
   }
   @Watch('$store.state.music', { deep: true })
