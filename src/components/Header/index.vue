@@ -286,7 +286,7 @@
               class="tag pointer"
               v-for="(hot,index) in hotSearchList.hots"
               :key="index"
-              @click="keywords=hot.first"          
+              @click="keywords=hot.first"
             >{{hot.first}}</span>
           </div>
           <div v-show="hislist.length" style="margin-top:10px" class="name history">
@@ -317,7 +317,6 @@
             class="content-con pointer"
             :key="index"
             @click="handleGoSeach(song,order)"
-
           >
             {{song.name}}
             <span v-for="(artist,aindex) in song.artists" :key="aindex">{{artist.name}}</span>
@@ -340,7 +339,7 @@ import {
   HAVE_BLUR,
   HAVE_FOCUS,
 } from '@/constant/ipc';
-import { get_search_suggest, get_search_hot } from '@/actions';
+import { get_search_suggest, get_search_hot, get_song_detail } from '@/actions';
 import { STORE_HISTORY_LIST } from '@/constant/store';
 import Drawer from '@/components/Drawer';
 import Store from 'electron-store';
@@ -450,9 +449,12 @@ export default class HelloWorld extends Vue {
     }
   }
 
-  public handleGoSeach(item: any, state: any) {
+  public async handleGoSeach(item: any, state: any) {
     switch (state) {
       case 'songs':
+        const { code, songs } = await get_song_detail(`${item.id}`);
+        const [song] = songs;
+        const image = song.al.picUrl;
         const params = {
           id: item.id,
           name: item.name,
@@ -461,7 +463,7 @@ export default class HelloWorld extends Vue {
             .toString()
             .split(',')
             .join('/'),
-          image: item.artists[0].img1v1Url,
+          image: image || item.artists[0].img1v1Url,
           duration: item.duration,
         };
         this.$store.commit('update_music_data', params);

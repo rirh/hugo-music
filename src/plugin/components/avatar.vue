@@ -13,8 +13,6 @@
  * 使用高阶组件对avatar进行封装
  * 监听图片是否在可见视图中 对可见的图片进行网络请求实现懒加载
  *
- *
- *
  */
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import ant from 'ant-design-vue';

@@ -591,11 +591,11 @@ export default class Music extends Vue {
         duration = (this as any).player.duration;
         this.duration = duration;
         (this as any).player.volume = this.volume / 100;
-        this.$store.commit('update_music_duration', duration);
+        // this.$store.commit('update_music_duration', duration);
         // 拿到当前时长
         (this as any).player.ontimeupdate = () => {
           currentTime = (this as any).player.currentTime;
-          this.$store.commit('update_music_cursor', currentTime);
+          // this.$store.commit('update_music_cursor', currentTime);
           this.cursor = currentTime;
           this.progress = (currentTime / duration) * 100;
         };

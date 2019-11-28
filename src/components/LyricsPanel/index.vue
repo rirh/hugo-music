@@ -316,8 +316,8 @@
           <div class="wapper-panel-music-box">
             <a-avatar
               class="wapper-panel-music-box-img"
-              :onerror="errorImg"
               :src="$store.state.music.data.image"
+              :onerror="errorImg"
               alt
             />
           </div>
