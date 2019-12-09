@@ -107,9 +107,15 @@
         margin-left: 20px;
         font-size: 23px;
         color: var(--white);
+        padding: 2px;
       }
     }
   }
+}
+.wapper-main-set-icon:hover {
+  background-color: #bd5448;
+  border-radius: 50%;
+  // padding: 3px;
 }
 
 .active {
@@ -209,7 +215,7 @@
       </span>
     </div>
     <a-row :gutter="14" type="flex" class="wapper-main" justify="space-around" align="middle">
-      <a-col :span="4" :offset="1" v-show="$store.state.music.showPanel">
+      <a-col style="padding-left:50px" :span="4" :offset="1" v-show="$store.state.music.showPanel">
         <AIconfont
           class="pointer"
           style="font-size:32px"
@@ -261,6 +267,7 @@
             type="icon-settings"
             class="wapper-main-set-icon"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            @click="$router.push('/setting/index')"
           />
           <AIconfont
             class="wapper-main-set-icon pointer"

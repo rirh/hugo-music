@@ -213,4 +213,4 @@ export const GET_COMMENT_MV = `${host}comment/mv`;
 // /comment/mv
 // /search/hot
 // 热门搜索
-export const GET_SEARCH_HOT = `${host}/search/hot`;
+export const GET_SEARCH_HOT = `${host}search/hot`;

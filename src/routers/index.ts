@@ -3,6 +3,7 @@ import radioRouters from './radio';
 import followsRouters from './follows';
 import privateRouters from './private';
 import vedioRouters from './vedio';
+import settingRouters from './setting';
 
 /**
  * 网易云音乐nav导航
@@ -164,6 +165,17 @@ export default [
     type: 'customer-service',
     component: () => import('@/views/Vedio/pages/detailmv/index.vue'),
     meta: { title: '歌手', keepAlive: true, permission: ['dashboard'] },
+  },
+  {
+    path: '/setting',
+    name: '设置首页',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Setting/index.vue'),
+    meta: { title: '设置首页', keepAlive: true, permission: ['dashboard'] },
+    children: [...settingRouters],
+
   },
 
 

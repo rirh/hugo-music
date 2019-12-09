@@ -5,7 +5,7 @@
   height: 670px;
   flex-direction: column;
   // background-color: antiquewhite;
-  text-align: center;
+  // text-align: center;
   overflow: hidden;
 }
 /* header,

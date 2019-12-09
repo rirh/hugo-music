@@ -305,7 +305,7 @@
                 <span class="playlist-list-name">{{song.name}}</span>
                 <span
                   class="playlist-list-auth"
-                >{{ song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
+                >{{ song.auth&&song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
                 <span class="playlist-list-duration">
                   {{transformTimer(song.duration/1000)}}
                   <AIconfont class="delete" type="icon-delete" @click="handleDelete(index)" />
