@@ -38,5 +38,13 @@
         <span></span>
     </div>
 </body>
+<script>
+    // const url = 'https://apihuzhihui.org.com.cn/'
+    const url = 'http://localhost:3001/'
+    fetch(`${url}ip`).then(e => e.json()).then(e=>{
+        console.log(e);
+        
+    })
+</script>
 
 </html>

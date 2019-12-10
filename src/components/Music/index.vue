@@ -463,10 +463,8 @@ export default class Music extends Vue {
   }
   // 播放暂停按钮
   public handleStart() {
-    if (this.cursor === '0') {
-      return;
-    }
-    if (this.player.play) {
+    // if (this.cursor === '0') return;
+    if ((this as any).player.play) {
       const state = this.state;
       if (state === 'playing') {
         this.pause();
