@@ -68,7 +68,6 @@ const AR = {
 program
     .version('1.0.0')
     .parse(process.argv)
-
 program
     .command('runner')
     .alias('run')
@@ -107,6 +106,5 @@ program
             }
         })
     })
-
     AR.git();
 // program.parse(process.argv)

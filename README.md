@@ -1,4 +1,16 @@
-# netease
+## netease
+
+**技术栈**
+
+- [Electron](https://electronjs.org/)
+- [electron-vue](https://simulatedgreg.gitbooks.io/electron-vue/content/cn/) 
+- [electron-builder](https://www.electron.build/) 
+- [Vue](https://vuejs.org/)
+- [VueX](https://vuex.vuejs.org/)
+- [ant-design-vue](https://www.antdv.com/docs/vue/introduce-cn/)
+- [howler](https://howlerjs.com/)
+
+
 
 ## Project setup
 ```
