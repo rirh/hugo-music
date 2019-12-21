@@ -28,5 +28,6 @@
     "variable-name": false,
     "noImplicitAny": false,
     "no-shadowed-variable": false
-  }
+  },
+  "params":{}
 }

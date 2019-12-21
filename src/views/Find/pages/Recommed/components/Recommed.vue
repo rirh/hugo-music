@@ -55,8 +55,8 @@
         filter: brightness(80%);
         &-play {
           position: absolute;
-          right: 50%;
-          top: 50%;
+          right: 2.2vw;
+          bottom: -1vw;
           color: var(--red);
           background: rgba(255, 255, 255, 0.6);
           transform: translate(50%, -50%);
@@ -65,7 +65,7 @@
           justify-content: center;
           border-radius: 50%;
           font-size: 25px;
-          padding: 1vw;
+          padding: 0.4vw;
           opacity: 0;
           transition: opacity 0.3s;
         }
@@ -133,7 +133,7 @@
                   alt
                 />
                 <span class="recommed-recommed-list-img-play">
-                  <AIconfont type="icon-up1-copy" />
+                  <AIconfont @click.stop="handleRandomPlay(recommed)" type="icon-up1-copy" />
                 </span>
               </span>
 
@@ -147,7 +147,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+import { get_play_list_detail, get_play_song_detail } from '@/actions';
 import { ERROR_IMG } from '@/constant/api';
 
 @Component({})
@@ -167,6 +168,27 @@ export default class Home extends Vue {
       path: '/music-detail',
       query: { ...item },
     });
+  }
+  public async handleRandomPlay(list: any) {
+    const { playlist, privileges } = await get_play_list_detail(
+      `id=${list.id}`,
+    );
+    const ids = privileges.map(({ id }: any) => id);
+    const { songs } = await get_play_song_detail(`ids=${ids.toString()}`);
+    const current: any = Math.floor(Math.random() * songs.length - 1);
+    const item = songs[current];
+    const params = {
+      id: item.id,
+      name: item.name,
+      auth: item.ar
+        .map((e: any) => e.name)
+        .toString()
+        .split(',')
+        .join('/'),
+      image: item.al.picUrl,
+      duration: item.dt,
+    };
+    (this as any).$store.commit('update_music_data', params);
   }
 
   /**

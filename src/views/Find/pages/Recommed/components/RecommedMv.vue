@@ -18,7 +18,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       &-list {
         flex: 1;
         display: flex;
@@ -37,6 +37,25 @@
           align-items: center;
           z-index: 1;
           color: white;
+        }
+        &-toptips {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 90%;
+          padding: 10px 7px;
+          color: #fff;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-all;
+          opacity: 0;
+          margin-left: 5%;
+          background: rgba(9, 0, 0, 0.8);
+          font-size: 12px;
+          z-index: 1;
+          font-weight: 450;
+          transition: all linear 300ms;
+          border-radius: 5px;
         }
         &-img {
           border-radius: 5px;
@@ -68,6 +87,14 @@
 .recommedmv-recommedmvs-main-list:hover .recommedmv-recommedmvs-main-list-img {
   filter: brightness(95%);
 }
+.recommedmv-recommedmvs-main-list:hover .recommedmv-recommedmvs-main-list-tips {
+  opacity: 0;
+}
+.recommedmv-recommedmvs-main-list:hover
+  .recommedmv-recommedmvs-main-list-toptips {
+  opacity: 0.7;
+   top: 0;
+}
 </style>
 
 <template>
@@ -91,6 +118,7 @@
                 class="recommedmv-recommedmvs-list-playcount-count"
               >{{transformW(recommedmv.playCount)}}</span>
             </span>
+            <span class="recommedmv-recommedmvs-main-list-toptips">{{recommedmv.copywriter}}</span>
             <a-avatar
               shape="square"
               :onerror="errorImg"
@@ -98,6 +126,7 @@
               :src="recommedmv.picUrl"
               alt
             />
+
             <div class="recommedmv-recommedmvs-main-list-name">
               <div
                 class="recommedmv-recommedmvs-main-list-name-title"

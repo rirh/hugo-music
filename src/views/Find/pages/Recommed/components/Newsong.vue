@@ -21,15 +21,14 @@
       flex-wrap: wrap;
     }
     &-list {
-      flex: 0 0 44%;
+      flex: 0 0 46%;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       border-top: 1px solid #efefef;
-      margin: 0 3%;
-      padding: 1vw 0;
+      margin: 0 2%;
+      padding: 1vw 1vw;
       cursor: pointer;
-
       &-left {
         position: relative;
         &-tips {
@@ -61,20 +60,24 @@
       &-index {
         width: 10%;
         color: #999;
+        text-align: center;
       }
       &-right {
-        // display: flex;
-        // justify-content: flex-start;
-        // align-items: flex-start;
-        // flex-direction: column;
-        align-self: flex-start;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        // align-self: flex-start;
+
         &-name {
           text-align: left;
           font-size: 14px;
           font-weight: 500;
+          color: #333;
         }
         &-auth {
           text-align: left;
+          font-size: 13px;
         }
       }
     }
@@ -82,6 +85,10 @@
 }
 .newsong-newsong-list:hover {
   background-color: var(--stripedHover);
+  border-radius: 10px;
+}
+.border-bottom {
+  border-bottom: 1px solid #efefef;
 }
 </style>
 
@@ -99,6 +106,7 @@
             @click="handlePlay(newsong)"
             v-for="(newsong,index) in data"
             :key="index"
+            :class="{'border-bottom':(index===data.length-1||index===data.length-2)}"
           >
             <div class="newsong-newsong-list-left">
               <span class="newsong-newsong-list-left-tips">
@@ -112,7 +120,7 @@
                 alt
               />
             </div>
-            <div class="newsong-newsong-list-index">{{index+1}}</div>
+            <div class="newsong-newsong-list-index">{{(index+1>=10?index+1:`0${index+1}`)}}</div>
             <div class="newsong-newsong-list-right">
               <div class="newsong-newsong-list-right-name">{{newsong.name}}</div>
               <div class="newsong-newsong-list-right-auth">{{newsong.song.artists[0].name}}</div>

@@ -1,13 +1,16 @@
 <style lang="less" scoped>
 .pagination {
   margin-bottom: 4vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
 <template>
   <div class="pagination">
     <a-skeleton :loading="loadingPagination" active>
-      <a-pagination @change="onchange" v-model="current" :defaultPageSize="30" :total="data.total" />
+      <a-pagination @change="onchange" v-model="current" :defaultPageSize="30" hideOnSinglePage :total="data.total" />
     </a-skeleton>
   </div>
 </template>

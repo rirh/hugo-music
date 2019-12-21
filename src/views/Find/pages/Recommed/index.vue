@@ -134,7 +134,7 @@
     <Swiper :data="banners" />
     <br />
     <div v-for="(template,index) in templates" :key="index">
-      <component :data="template.data" :is="template.component" />
+      <component :data="template.data" :is="template.component"  />
     </div>
     <div class="wapper-order">
       <p class="wapper-order-tips">现在可以根据个人喜好, 自由调整首页栏目顺序啦~</p>
@@ -214,6 +214,8 @@ import {
   get_new_song,
   get_personalized_mv,
   get_dj_program,
+  get_play_list_detail,
+  get_play_song_detail,
 } from '@/actions';
 import axios from 'axios';
 
@@ -239,6 +241,7 @@ export default class Home extends Vue {
       name: '推荐歌单',
       component: Recommed,
       data: [],
+
     },
     {
       name: '独家放送',

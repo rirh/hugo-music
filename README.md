@@ -11,7 +11,6 @@
 - [howler](https://howlerjs.com/)
 
 
- **感谢api**
 ## Project setup
 ```
 yarn install

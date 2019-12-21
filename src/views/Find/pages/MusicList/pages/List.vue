@@ -24,6 +24,7 @@
     &-list {
       flex: 0 0 25%;
       cursor: pointer;
+      margin: 5px 0;
 
       &-main {
         position: relative;
@@ -89,10 +90,14 @@
         font-size: 13px;
         text-align: left;
         padding: 0.5vw 0;
-        // word-break: break-all;
         width: 14vw;
         color: #333;
-        font-weight: 450;
+        font-weight: 400;
+        word-break: break-all;
+        text-align: left;
+        width: 95%;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -138,7 +143,7 @@
                 <a-icon type="user" />
                 {{recommed.creator.nickname}}
               </span>
-              <span class="recommed-recommed-list-play">
+              <span class="recommed-recommed-list-play" @click.stop="handleRandomPlay(recommed)">
                 <AIconfont type="icon-up1-copy" />
               </span>
               <a-avatar
@@ -175,6 +180,11 @@ export default class Home extends Vue {
   public handleitem(item: any) {
     return item;
   }
+  @Emit('on-random-item')
+  public handleRandomPlay(item: any) {
+    return item;
+  }
+
 
   /**
    * 转化为万做单位函数

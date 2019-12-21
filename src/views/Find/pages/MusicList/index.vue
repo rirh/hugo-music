@@ -9,14 +9,20 @@
     <Panel :data="panels" @click.native="handleDetail(panels)" />
     <br />
     <Tag :data="tags" @on-type="handleType" />
-    <List :data="list" @on-item="handleDetail" />
+    <List :data="list" @on-item="handleDetail" @on-random-item="handleRandomDetail" />
     <Pagination :data="total" @on-change="handlePage" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { get_play_high_qualty, get_cat_hot, get_cat_list } from '@/actions';
+import {
+  get_play_high_qualty,
+  get_cat_hot,
+  get_cat_list,
+  get_play_list_detail,
+  get_play_song_detail,
+} from '@/actions';
 import axios from 'axios';
 
 import Panel from './pages/Panel.vue';
@@ -45,6 +51,27 @@ export default class Home extends Vue {
       path: '/music-detail',
       query: { ...item },
     });
+  }
+  public async handleRandomDetail(list: any) {
+    const { playlist, privileges } = await get_play_list_detail(
+      `id=${list.id}`,
+    );
+    const ids = privileges.map(({ id }: any) => id);
+    const {  songs } = await get_play_song_detail(`ids=${ids.toString()}`);
+    const current: any = Math.floor(Math.random() * songs.length - 1);
+    const item = songs[current];
+    const params = {
+      id: item.id,
+      name: item.name,
+      auth: item.ar
+        .map((e: any) => e.name)
+        .toString()
+        .split(',')
+        .join('/'),
+      image: item.al.picUrl,
+      duration: item.dt,
+    };
+    this.$store.commit('update_music_data', params);
   }
   public async mounted() {
     const { code, tags } = await get_cat_hot();

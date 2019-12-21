@@ -16,7 +16,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       &-list {
         flex: 1;
         display: flex;

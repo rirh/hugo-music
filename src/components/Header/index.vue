@@ -285,7 +285,6 @@
     <Drawer v-model="visible">
       <dl slot="content">
         <!-- 搜索热词 -->
-
         <div class="hot" v-show="!seachList.order">
           <div class="name">热门搜索</div>
           <div class="tag-con">
@@ -486,8 +485,6 @@ export default class HelloWorld extends Vue {
           path: '/album-detail',
           query: item,
         });
-        break;
-      case 'songs':
         break;
 
       default:

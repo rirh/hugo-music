@@ -20,7 +20,7 @@
     @close="onClose"
     :visible="visible"
     :destroyOnClose="true"
-    :maskStyle="{'display':showMake?'block':'none',}"
+    :maskStyle="{'display':showMake?'block':'none','margin-top':'7.3vh'}"
   >
     <slot name="content" class="contant"></slot>
   </a-drawer>
