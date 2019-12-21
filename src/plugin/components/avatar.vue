@@ -41,8 +41,8 @@ export default class Avatars extends Vue {
     const observer = new IntersectionObserver((entries: any) => {
       entries.forEach((el: any) => {
         const isintersecting = el.isIntersecting;
-
-        if (isintersecting) {
+        // 解决不可见元素 重新打开时空白问题
+        if (isintersecting && this.realadder) {
           this.src = this.realadder;
         }
       });
