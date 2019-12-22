@@ -56,14 +56,17 @@ footer {
   }
 }
 
-.ant-drawer .ant-drawer-content-wrapper {
+.ant-drawer {
   margin-top: 7.3vh;
+}
+.ant-drawer .ant-drawer-content-wrapper {
+  // margin-top: 7.3vh;
   height: 83.6vh !important;
 }
 
 .ant-drawer .ant-drawer-mask {
   // opacity: 0!important;
-  margin-top: 7.3vh;
+  // margin-top: 7.3vh;
   height: 83.6vh !important;
 }
 .ant-popover-inner-content {
@@ -88,8 +91,8 @@ footer {
   </header>
 
   <div class="HolyGrail-body" v-show="!$store.state.music.showPanel">
-    <main  class="HolyGrail-content">
-      <Contant   />
+    <main class="HolyGrail-content">
+      <Contant />
     </main>
     <nav v-show="!$store.state.vedio.show" class="HolyGrail-nav">
       <Control />
@@ -101,7 +104,7 @@ footer {
   <!-- <transition name="fade" mode="out-in">
     <LyricsPanel v-show="$store.state.music.showPanel" />
   </transition>-->
-  <footer  v-show="!$store.state.vedio.show">
+  <footer v-show="!$store.state.vedio.show">
     <Music />
   </footer>
 </body>

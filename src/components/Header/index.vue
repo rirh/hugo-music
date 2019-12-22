@@ -105,7 +105,7 @@
       justify-content: flex-start;
       &-icon {
         margin-left: 20px;
-        font-size: 23px;
+        font-size: 18px;
         color: var(--white);
         padding: 2px;
       }
@@ -183,6 +183,67 @@
 }
 .pointer {
   cursor: pointer;
+}
+.radio-group {
+  width: 100%;
+  border-radius: 20px;
+  border: solid 1px #efefef;
+  overflow: hidden;
+}
+.radio-group .ant-radio-button-wrapper {
+  width: 25%;
+  text-align: center;
+  border: none;
+  background: none;
+}
+
+#less {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #f4f4f4;
+
+  border: 1px solid #efefef;
+}
+#red {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: var(--red);
+  border: 1px solid #efefef;
+}
+
+#black {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: var(--black);
+  border: 1px solid #efefef;
+}
+
+#auto {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: linear-gradient(white, black);
+  border: 1px solid #efefef;
+}
+.skin-wapper {
+  display: flex;
+  padding: 10px 15px;
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 5px;
+    .text {
+      font-size: 12px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+  }
 }
 </style>
 
@@ -273,16 +334,39 @@
             class="wapper-main-set-icon pointer"
             type="icon-email"
             :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            @click="email_visible=true"
           />
-          <AIconfont
-            class="wapper-main-set-icon pointer"
-            type="icon-tshirt-crew"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
-          />
+          <a-popover placement="bottomRight" trigger="click">
+            <template slot="content">
+              <div class="skin-wapper">
+                <div class="item">
+                  <div id="less">&nbsp;</div>
+                  <div for="less" class="text">浅色</div>
+                </div>
+                <div class="item">
+                  <div id="red">&nbsp;</div>
+                  <div for="red" class="text">红色</div>
+                </div>
+                <div class="item">
+                  <div id="black">&nbsp;</div>
+                  <div for="black" class="text">黑色</div>
+                </div>
+                <div class="item">
+                  <div id="auto">&nbsp;</div>
+                  <div for="auto" class="text">自动</div>
+                </div>
+              </div>
+            </template>
+            <AIconfont
+              class="wapper-main-set-icon pointer"
+              type="icon-tshirt-crew"
+              :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            />
+          </a-popover>
         </div>
       </a-col>
     </a-row>
-    <Drawer v-model="visible">
+    <Drawer v-model="seach_visible">
       <dl slot="content">
         <!-- 搜索热词 -->
         <div class="hot" v-show="!seachList.order">
@@ -331,6 +415,19 @@
         </div>
       </dl>
     </Drawer>
+    <Drawer v-model="email_visible">
+      <dl slot="content">
+        <div>
+          <a-radio-group class="radio-group" defaultValue="a" buttonStyle="solid">
+            <a-radio-button value="a">私信</a-radio-button>
+            <a-radio-button value="b">评论</a-radio-button>
+            <a-radio-button value="c">@我</a-radio-button>
+            <a-radio-button value="d">通知</a-radio-button>
+          </a-radio-group>
+        </div>
+        <div></div>
+      </dl>
+    </Drawer>
   </div>
 </template>
 
@@ -355,7 +452,10 @@ const electron_store = new Store();
   components: { Menu, Drawer },
 })
 export default class HelloWorld extends Vue {
-  public visible = false;
+  public seach_visible = false;
+  public email_visible = false;
+  // public skin_visible = false;
+
   public keywords = '';
   public seachList = {};
   public focus = false;
@@ -400,6 +500,7 @@ export default class HelloWorld extends Vue {
       this.hotSearchList = result;
     }
   }
+
   public handleClear() {
     this.keywords = '';
     this.seachList = [];
@@ -492,7 +593,7 @@ export default class HelloWorld extends Vue {
     }
     this.handleClear();
     this.asyncHisStore(item);
-    this.visible = false;
+    this.seach_visible = false;
   }
   public asyncHisStore(item: any = '') {
     let list = electron_store.get(STORE_HISTORY_LIST) || [];
@@ -509,7 +610,7 @@ export default class HelloWorld extends Vue {
     this.hislist = [];
   }
   public showDrawer() {
-    this.visible = true;
+    this.seach_visible = true;
   }
 
   public handleBack() {
