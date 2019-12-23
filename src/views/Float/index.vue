@@ -99,17 +99,17 @@
       width: 40vw;
       // paddin g: 8px 0 0 0;
 
-      justify-content: center;
+      justify-content: space-evenly;
       align-items: center;
       display: none;
-      font-size: 25px;
+      font-size: 22px;
       color: var(--red);
       .skip-previous {
         color: var(--red);
       }
       .play {
-        height: 30px;
-        width: 30px;
+        height: 27px;
+        width: 27px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -118,7 +118,7 @@
         color: white;
         margin: 0 2vw;
         padding: 0 !important;
-        font-size: 24px;
+        font-size: 20px;
         line-height: 0;
         border: none;
       }
@@ -182,19 +182,13 @@
         <AIconfont class="icon" type="icon-application" />
       </div>
       <div class="image">
-        <a-avatar
-          class="img"
-          :size="35"
-          shape="square"
-          icon="user"
-          src="http://p2.music.126.net/Dz-IlMInzYLkRxuPCP4f9w==/109951164572397262.jpg"
-        />
+        <a-avatar class="img" :size="35" shape="square" icon="user" :src="music.image" />
       </div>
       <div class="con">
         <div class="info">
           <div class="tit">
-            <div class="name">归去来兮</div>
-            <div class="ar">花粥--一碗</div>
+            <div class="name">{{music.name}}</div>
+            <div class="ar">{{music.auth}}</div>
           </div>
           <div class="playcon">
             <AIconfont class="icon skip-previous" type="icon-skip-previous" />
@@ -224,12 +218,34 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ipcRenderer } from 'electron';
+import { ACCEPT_STORE } from '@/constant/ipc';
 @Component({})
 export default class Float extends Vue {
   @Prop() public data: any;
   public state = 'playing';
+  public music = {
+    image: '',
+    name: '',
+    auth: '',
+  };
+  public mounted() {
+    ipcRenderer.on(ACCEPT_STORE, (event: any, arg: any) => {
+      // console.log("pong2", arg);
+      this.asyncMusic(arg.data); // prints "pong"
+    });
+  }
   public handleStart() {
-    if (this.state === 'playing') { this.state = 'stop'; } else { this.state = 'playing'; }
+    if (this.state === 'playing') {
+      this.state = 'stop';
+    } else {
+      this.state = 'playing';
+    }
+  }
+  public asyncMusic({ id, image, name, auth, duration }: any) {
+    this.music.image = image;
+    this.music.name = name;
+    this.music.auth = auth;
   }
 }
 </script>

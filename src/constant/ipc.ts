@@ -26,4 +26,8 @@ export const HAVE_FOCUS = `0x0010`;
 export const OPEN_FLOAT = `0x0011`;
 // 关闭悬浮窗
 export const CLOSE_FLOAT = `0x0012`;
+// 发送数据同步
+export const SEND_STORE = `0x0013`;
+// 接受数据同步
+export const ACCEPT_STORE = `0x0014`;
 

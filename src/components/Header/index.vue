@@ -448,6 +448,7 @@ import {
   HAVE_BLUR,
   HAVE_FOCUS,
   OPEN_FLOAT,
+  SEND_STORE,
 } from '@/constant/ipc';
 import { get_search_suggest, get_search_hot, get_song_detail } from '@/actions';
 import { STORE_HISTORY_LIST } from '@/constant/store';
@@ -508,6 +509,10 @@ export default class HelloWorld extends Vue {
     }
   }
   public handleFloatFrame() {
+    ipcRenderer.send(
+      SEND_STORE,
+      this.$store.state.music && this.$store.state.music,
+    );
     ipcRenderer.send(OPEN_FLOAT);
   }
 

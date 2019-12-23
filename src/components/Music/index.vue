@@ -495,6 +495,7 @@ export default class Music extends Vue {
       auth,
       duration,
     });
+
     const myNotification = new Notification(this.name, {
       body: this.auth,
       icon: this.img,

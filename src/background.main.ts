@@ -15,9 +15,12 @@ const {
   HSOP_SEND,
   HAVE_BLUR,
   HAVE_FOCUS,
-  OPEN_FLOAT
+  OPEN_FLOAT,
+  SEND_STORE,
+  ACCEPT_STORE,
 } = require('./constant/ipc');
-
+let win: any;
+let data: any;
 
 const _minimize = () => {
   const mainWindow = remote.getCurrentWindow();
@@ -80,13 +83,23 @@ ipcMain.on(HSOP_SEND, () => {
   shell.openExternal('https://music.163.com/store/product')
 })
 
+ipcMain.on(SEND_STORE, (event: any, args: any) => {
+  // console.log(event);
+  data = {};
+  data = args;
+  if (win) win.webContents.send(ACCEPT_STORE, data)
+})
 ipcMain.on(OPEN_FLOAT, () => {
-  let win = new BrowserWindow({
+  if (win) {
+    win.show();
+    return;
+  }
+  win = new BrowserWindow({
     width: 310,
     height: 50,
     show: false,
-    minWidth:200,
-    minHeight:40,
+    minWidth: 200,
+    minHeight: 40,
     x: 1000,
     y: 200,
     backgroundColor: '#fff',
@@ -98,8 +111,13 @@ ipcMain.on(OPEN_FLOAT, () => {
   win.once('ready-to-show', () => {
     win.show()
   })
+  win.webContents.on('did-finish-load', function () {
+    win.webContents.send(ACCEPT_STORE, data)
+  })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
+
     win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}float`);
+
   } else {
     createProtocol('app');
     // Load the index.html when not in development
