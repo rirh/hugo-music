@@ -23,7 +23,7 @@ yarn electron
 
 ### Compiles and minifies for production
 ```
-yarn  electron:build
+yarn build
 ```
 
 ### Run your tests
