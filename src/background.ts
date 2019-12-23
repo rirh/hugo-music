@@ -31,10 +31,14 @@ function createWindow() {
       nodeIntegration: true
     },
     frame: false,
+    show: false,
     // icon: path.join(__static, 'icon.png')
     // icon: path.join(__static, 'icon.png')
   })
   win.setMenu(null);
+  win.once('ready-to-show', () => {
+    (win as any).show()
+  })
   win.on('blur', (e: any, cmd: any) => {
     win && win.webContents.send(HAVE_BLUR)
   })
@@ -44,7 +48,8 @@ function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
 
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
+    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}` as string)
+    // win.loadURL(`https://www.huzhihui.org.cn` as string)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
     // win.webContents.openDevTools();
   } else {

@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, ipcMain, protocol, remote, shell, BrowserWindow } from 'electron';
+import { app, ipcMain, remote, shell, BrowserWindow } from 'electron';
 import {
   createProtocol,
 } from 'vue-cli-plugin-electron-builder/lib'
@@ -17,9 +17,7 @@ const {
   HAVE_FOCUS,
   OPEN_FLOAT
 } = require('./constant/ipc');
-protocol.registerSchemesAsPrivileged([{
-  scheme: 'app', privileges: { secure: true, standard: true }
-}])
+
 
 const _minimize = () => {
   const mainWindow = remote.getCurrentWindow();
@@ -84,16 +82,24 @@ ipcMain.on(HSOP_SEND, () => {
 
 ipcMain.on(OPEN_FLOAT, () => {
   let win = new BrowserWindow({
-    width: 600,
-    height: 60,
+    width: 310,
+    height: 50,
+    show: false,
+    minWidth:200,
+    minHeight:40,
+    x: 1000,
+    y: 200,
     backgroundColor: '#fff',
     webPreferences: {
       nodeIntegration: true
     },
     frame: false,
   })
+  win.once('ready-to-show', () => {
+    win.show()
+  })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}/float`);
+    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}float`);
   } else {
     createProtocol('app');
     // Load the index.html when not in development

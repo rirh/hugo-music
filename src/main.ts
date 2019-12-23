@@ -13,17 +13,10 @@ import './registerServiceWorker';
 // Vue.component(Row.name, Row);
 // Vue.component(Col.name, Col);
 
-
-
-
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
   render: (h) => h(App),
-  mounted() {
-    this.$router.push('/');
-
-  },
 }).$mount('#app');
