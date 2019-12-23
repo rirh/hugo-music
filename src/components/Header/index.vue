@@ -102,12 +102,10 @@
     &-set {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-evenly;
       &-icon {
-        margin-left: 20px;
         font-size: 18px;
         color: var(--white);
-        padding: 2px;
       }
     }
   }
@@ -115,6 +113,7 @@
 .wapper-main-set-icon:hover {
   background-color: #bd5448;
   border-radius: 50%;
+  // padding: 3px;
   // padding: 3px;
 }
 
@@ -363,6 +362,13 @@
               :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
             />
           </a-popover>
+
+          <AIconfont
+            class="wapper-main-set-icon pointer"
+            type="icon-checkbox-multiple-blank"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            @click="handleFloatFrame"
+          />
         </div>
       </a-col>
     </a-row>
@@ -441,6 +447,7 @@ import {
   MAIN_CLOSE,
   HAVE_BLUR,
   HAVE_FOCUS,
+  OPEN_FLOAT,
 } from '@/constant/ipc';
 import { get_search_suggest, get_search_hot, get_song_detail } from '@/actions';
 import { STORE_HISTORY_LIST } from '@/constant/store';
@@ -499,6 +506,9 @@ export default class HelloWorld extends Vue {
     if (code === 200) {
       this.hotSearchList = result;
     }
+  }
+  public handleFloatFrame() {
+    ipcRenderer.send(OPEN_FLOAT);
   }
 
   public handleClear() {

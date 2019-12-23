@@ -51,7 +51,7 @@ function createWindow() {
     win.webContents.openDevTools();
     createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL('app://${__dirname}/index.html')
     // win.loadURL(`${__dirname}/index.html`)
   }
 

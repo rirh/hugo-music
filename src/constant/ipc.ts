@@ -1,4 +1,7 @@
-
+/**
+ *  ipc main 和 ipc process
+ *  通信名称 dao 类
+ */
 // 窗口最小化
 export const MAIN_MIN = `0x0001`;
 // 窗口最大化
@@ -19,3 +22,8 @@ export const HSOP_SEND = `0x0008`;
 export const HAVE_BLUR = `0x0009`;
 // 得到焦点
 export const HAVE_FOCUS = `0x0010`;
+// 打开悬浮窗
+export const OPEN_FLOAT = `0x0011`;
+// 关闭悬浮窗
+export const CLOSE_FLOAT = `0x0012`;
+

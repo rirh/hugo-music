@@ -5,6 +5,7 @@
   position: relative;
   overflow: scroll;
   padding-bottom: 9.1vw;
+  -webkit-app-region: drag;
   &-commet {
     display: flex;
     width: 100%;

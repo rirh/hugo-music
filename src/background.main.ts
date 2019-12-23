@@ -1,7 +1,9 @@
 'use strict';
 
-import { app, ipcMain, remote, shell } from 'electron';
-
+import { app, ipcMain, protocol, remote, shell, BrowserWindow } from 'electron';
+import {
+  createProtocol,
+} from 'vue-cli-plugin-electron-builder/lib'
 const {
   MAIN_MIN,
   MAIN_ZOOM,
@@ -12,7 +14,12 @@ const {
   USER_LEVER,
   HSOP_SEND,
   HAVE_BLUR,
-  HAVE_FOCUS } = require('./constant/ipc');
+  HAVE_FOCUS,
+  OPEN_FLOAT
+} = require('./constant/ipc');
+protocol.registerSchemesAsPrivileged([{
+  scheme: 'app', privileges: { secure: true, standard: true }
+}])
 
 const _minimize = () => {
   const mainWindow = remote.getCurrentWindow();
@@ -74,3 +81,24 @@ ipcMain.on(USER_LEVER, () => {
 ipcMain.on(HSOP_SEND, () => {
   shell.openExternal('https://music.163.com/store/product')
 })
+
+ipcMain.on(OPEN_FLOAT, () => {
+  let win = new BrowserWindow({
+    width: 600,
+    height: 60,
+    backgroundColor: '#fff',
+    webPreferences: {
+      nodeIntegration: true
+    },
+    frame: false,
+  })
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}/float`);
+  } else {
+    createProtocol('app');
+    // Load the index.html when not in development
+    win.loadURL('app://${__dirname}/index.html')
+  }
+})
+
+
