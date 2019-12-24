@@ -5,13 +5,14 @@
   width: 100vw;
   background-color: #f4f4f4;
   border: 1px solid var(--line);
+  border-radius: 10px;
   flex-direction: column;
   overflow: hidden;
+
   .col {
     display: flex;
     justify-content: center;
     align-items: center;
-
     .icon {
       cursor: pointer;
       color: #b9b1b1;
@@ -26,6 +27,7 @@
       align-items: flex-start;
       font-size: 12px;
       height: 100vh;
+      box-sizing: border-box;
       padding: 3px 5px;
       -webkit-app-region: drag;
     }
@@ -36,9 +38,13 @@
       align-items: center;
       margin-right: 5px;
       -webkit-app-region: drag;
+      position: relative;
+      .allow {
+        position: absolute;
+      }
     }
     .con {
-      height: 100vh;
+      height: 35px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -57,7 +63,7 @@
           }
           .ar {
             // margin-top: 5px;
-            padding-top: 5px;
+            padding-top: 3px;
             font-size: 11px;
             line-height: 11px;
             color: #b9b1b1;
@@ -82,6 +88,10 @@
           font-size: 20px;
           margin-right: 10px;
         }
+        .lyic {
+          font-size: 16px;
+          margin-right: 10px;
+        }
         .volume {
           font-size: 23px;
           margin-right: 2px;
@@ -94,6 +104,7 @@
     .con:hover .tit {
       display: none;
     }
+
     .playcon {
       height: 31px;
       width: 40vw;
@@ -126,50 +137,47 @@
         color: var(--red);
       }
     }
-    .range {
-      display: flex;
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      #pro {
-        width: 98%;
-        // height: 3px;
-        background: linear-gradient(var(--red), #b9b1b1);
-        // box-shadow: 0 1px 1px var(--red), inset 0 3px 3px #b9b1b1; /*轨道内置阴影效果*/
-      }
-      input[type="range"] {
-        -webkit-appearance: none;
-        height: 3px;
-        border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
-      }
-      input[type="range"]::-webkit-slider-runnable-track {
-        height: 3px;
-        border-radius: 10px; /*将轨道设为圆角的*/
-        box-shadow: 0 1px 1px #efefef, inset 0 3px 3px #b9b1b1; /*轨道内置阴影效果*/
-      }
-      input[type="range"]:focus {
-        outline: none;
-      }
-      input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        height: 10px;
-        width: 10px;
-        // opacity: 0;
-        margin-top: -3.5px; /*使滑块超出轨道部分的偏移量相等*/
-        background: var(--red);
-        border-radius: 50%; /*外观设置为圆形*/
-
-        // background: linear-gradient(toright, #059cfa, #ff8344 12%, #ff8344);
-        // border: solid 1px rgba(205, 224, 230, 0.5); /*设置边框*/
-        // box-shadow: 0 0.125em 0.125em #3b4547; /*添加底部阴影*/
-      }
-      #pro:hover #pro::-webkit-slider-thumb {
-        opacity: 1;
-      }
-    }
   }
+}
+
+.slider {
+  width: 98%;
+  // padding: 10px 0;
+}
+
+.slider-bar {
+  height: 2px;
+  position: relative;
+  display: block;
+  border-radius: 10px;
+  background-color: #b9b1b1;
+}
+.slider:hover .slider-handle {
+  opacity: 1;
+}
+.slider-handle {
+  width: 8px;
+  height: 8px;
+  top: -3px;
+  opacity: 0;
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--red);
+  // box-shadow: 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0.32);
+  transition: all 0s;
+  will-change: transform;
+  cursor: pointer;
+  z-index: 3;
+  transition-duration: 0s;
+  left: 0px;
+}
+
+.slider-process {
+  background-color: var(--red);
+  width: 0px;
+  height: 2px;
+  // padding-right: 8px;
+  border-radius: 1px;
 }
 </style>
 
@@ -178,11 +186,13 @@
     <div class="pl"></div>
     <div class="col">
       <div class="menu">
-        <AIconfont class="icon" style="margin-bottom:5px" type="icon-close1" />
+        <AIconfont class="icon" style="margin-bottom:3px" type="icon-close1" @click="handlehide" />
         <AIconfont class="icon" type="icon-application" />
       </div>
       <div class="image">
+        <!-- <AIconfont class="allow top" type="icon-chevron-down" /> -->
         <a-avatar class="img" :size="35" shape="square" icon="user" :src="music.image" />
+        <!-- <AIconfont class="allow bottom" type="icon-chevron-up" /> -->
       </div>
       <div class="con">
         <div class="info">
@@ -206,11 +216,26 @@
           <div class="icons">
             <AIconfont class="icon heart" type="icon-heart" />
             <AIconfont class="icon playlist" type="icon-playlist-play" />
+            <span class="icon lyic">词</span>
             <AIconfont class="icon volume" type="icon-volume-low" />
           </div>
         </div>
-        <div class="range">
-          <input :value="20" id="pro" type="range" min="0" max="100" />
+        <!-- <div class="range" @click="barClick">
+          <div class="slider-bar" ref="elem">
+            <div class="thumb" :style="{ left: position + 'px' }" @mousedown="dragStart($event, 0)"></div>
+            <div class="slider-process" :style="{ width: position + 'px' }"></div>
+        </div>-->
+        <!-- <input :value="20" id="pro" type="range" min="0" max="100" /> -->
+        <!-- </div> -->
+        <div class="slider" @click="barClick">
+          <div class="slider-bar" ref="elem">
+            <div
+              class="slider-handle"
+              :style="{ left: position + 'px' }"
+              @mousedown="dragStart($event, 0)"
+            ></div>
+            <div class="slider-process" :style="{ width: position + 'px' }"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -218,21 +243,34 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote, BrowserWindow } from 'electron';
 import { ACCEPT_STORE } from '@/constant/ipc';
 @Component({})
 export default class Float extends Vue {
   @Prop() public data: any;
   public state = 'playing';
+  public mainwin: any = null;
   public music = {
     image: '',
     name: '',
     auth: '',
   };
+  public position = 100;
+  public dragging = false;
+  public width: any = null;
+  public offset: any = null;
   public mounted() {
     ipcRenderer.on(ACCEPT_STORE, (event: any, arg: any) => {
-      // console.log("pong2", arg);
-      this.asyncMusic(arg.data); // prints "pong"
+      // console.log('pong2', arg);
+      if (arg.win) { this.mainwin = arg.win; }
+      if (arg && arg.data) {
+        this.asyncMusic(arg.data);
+      } // prints "pong"
+    });
+    this.$nextTick(function() {
+      this.width = (this as any).$refs.elem.offsetWidth;
+      this.offset = (this as any).$refs.elem.getBoundingClientRect().left;
+      this.bindListener();
     });
   }
   public handleStart() {
@@ -242,10 +280,53 @@ export default class Float extends Vue {
       this.state = 'playing';
     }
   }
+  public handlehide() {
+    const win = remote.getCurrentWindow();
+    // debugger;
+    if (win) {
+      const main = remote.BrowserWindow.fromId(this.mainwin);
+      main.show();
+      win.close();
+    }
+  }
+
   public asyncMusic({ id, image, name, auth, duration }: any) {
     this.music.image = image;
     this.music.name = name;
     this.music.auth = auth;
+  }
+
+  public bindListener() {
+    document.addEventListener('mousemove', this.drag);
+    document.addEventListener('mouseup', this.dragEnd);
+  }
+  public getPosition(ev: any) {
+    return ev.clientX - this.offset;
+  }
+  public setPosition(pos: any) {
+    this.position = pos;
+  }
+  public barClick(ev: any) {
+    const pos = this.getPosition(ev);
+    this.setPosition(pos);
+  }
+  public dragStart() {
+    this.dragging = true;
+  }
+  public drag(ev: any) {
+    if (!this.dragging) {
+      return;
+    }
+    const pos = this.getPosition(ev);
+    if (pos > 0 && pos < this.width) {
+      this.setPosition(pos);
+    }
+  }
+  public dragEnd() {
+    if (!this.dragging) {
+      return;
+    }
+    this.dragging = false;
   }
 }
 </script>

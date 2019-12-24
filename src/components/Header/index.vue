@@ -509,11 +509,16 @@ export default class HelloWorld extends Vue {
     }
   }
   public handleFloatFrame() {
-    ipcRenderer.send(
-      SEND_STORE,
-      this.$store.state.music && this.$store.state.music,
-    );
-    ipcRenderer.send(OPEN_FLOAT);
+    const show = true;
+    const data = this.$store.state.music && this.$store.state.music;
+    data.show = true;
+    const win = remote.getCurrentWindow();
+    if (win) {
+      data.win = win.id;
+      // debugger;
+      ipcRenderer.send(OPEN_FLOAT, data);
+      // win.hide();
+    }
   }
 
   public handleClear() {

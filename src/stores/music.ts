@@ -1,6 +1,6 @@
 
 import { ipcRenderer } from 'electron';
-import { SEND_STORE } from '@/constant/ipc';
+import { SEND_STORE, OPEN_FLOAT } from '@/constant/ipc';
 const music = {
   state: {
     music: '',
@@ -22,15 +22,12 @@ const music = {
       state.showPanel = params;
     },
     update_music_list(state: any, params: any) {
-      ipcRenderer.send(
-        SEND_STORE, state,
-      );
+
+      ipcRenderer.send(OPEN_FLOAT, state);
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {
         state.list.push(params);
         state.history.push(params);
-
-
       }
     },
     clear_music_list(state: any) {

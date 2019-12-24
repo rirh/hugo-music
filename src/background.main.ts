@@ -83,17 +83,13 @@ ipcMain.on(HSOP_SEND, () => {
   shell.openExternal('https://music.163.com/store/product')
 })
 
-ipcMain.on(SEND_STORE, (event: any, args: any) => {
-  // console.log(event);
-  data = {};
-  data = args;
-  if (win) win.webContents.send(ACCEPT_STORE, data)
-})
-ipcMain.on(OPEN_FLOAT, () => {
+ipcMain.on(OPEN_FLOAT, (event: any, args: any,) => {
   if (win) {
     win.show();
+    win.webContents.send(ACCEPT_STORE, args)
     return;
   }
+  if (!args.show) return;
   win = new BrowserWindow({
     width: 310,
     height: 50,
@@ -111,17 +107,21 @@ ipcMain.on(OPEN_FLOAT, () => {
   win.once('ready-to-show', () => {
     win.show()
   })
+  win.on('closed', function () {
+    win = null;
+    console.log('close');
+  })
   win.webContents.on('did-finish-load', function () {
-    win.webContents.send(ACCEPT_STORE, data)
+    setTimeout(() => {
+      win.webContents.send(ACCEPT_STORE, data);
+    }, 0)
   })
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-
     win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}float`);
-
   } else {
-    createProtocol('app');
+    // createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://${__dirname}/index.html')
+    win.loadURL('app://${__dirname}/index.html/float')
   }
 })
 
