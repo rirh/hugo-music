@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, Tray, Menu } from 'electron';
 import path from 'path';
 import {
   createProtocol,
@@ -15,7 +15,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null
-
+let tray = null
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{
   scheme: 'app', privileges: { secure: true, standard: true }
@@ -38,6 +38,15 @@ function createWindow() {
   win.setMenu(null);
   win.once('ready-to-show', () => {
     (win as any).show()
+    // tray = new Tray('');
+    // const contextMenu = Menu.buildFromTemplate([
+    //   { label: 'Item1', type: 'radio' },
+    //   { label: 'Item2', type: 'radio' },
+    //   { label: 'Item3', type: 'radio', checked: true },
+    //   { label: 'Item4', type: 'radio' }
+    // ])
+    // tray.setToolTip('NotesMuisc')
+    // tray.setContextMenu(contextMenu)
   })
   win.on('blur', (e: any, cmd: any) => {
     win && win.webContents.send(HAVE_BLUR)

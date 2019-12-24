@@ -22,8 +22,9 @@ const music = {
       state.showPanel = params;
     },
     update_music_list(state: any, params: any) {
-
-      ipcRenderer.send(OPEN_FLOAT, state);
+      const data = { ...state };
+      data.show = false;
+      ipcRenderer.send(OPEN_FLOAT, data);
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {
         state.list.push(params);

@@ -83,46 +83,65 @@ ipcMain.on(HSOP_SEND, () => {
   shell.openExternal('https://music.163.com/store/product')
 })
 
-ipcMain.on(OPEN_FLOAT, (event: any, args: any,) => {
-  if (win) {
-    win.show();
-    win.webContents.send(ACCEPT_STORE, args)
-    return;
+ipcMain.on(ACCEPT_STORE, () => {
+
+})
+ipcMain.on(OPEN_FLOAT, (event: any, args: any, ) => {
+
+  const createWin = () => {
+    win = new BrowserWindow({
+      width: 310,
+      height: 50,
+      show: false,
+      minWidth: 200,
+      minHeight: 40,
+      x: 1000,
+      y: 200,
+      backgroundColor: '#fff',
+      webPreferences: {
+        nodeIntegration: true
+      },
+      frame: false,
+    });
+    win.once('ready-to-show', () => {
+      win.show()
+    });
+    win.webContents.on('did-finish-load', function () {
+      setTimeout(() => {
+        win.webContents.send(ACCEPT_STORE, args);
+      }, 0)
+    })
+    win.on('closed', function () {
+      win = null;
+      console.log('close');
+    })
+    if (process.env.WEBPACK_DEV_SERVER_URL) {
+      win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}float`);
+    } else {
+      // createProtocol('app');
+      // Load the index.html when not in development
+      win.loadURL('app://${__dirname}/index.html/float')
+    }
   }
-  if (!args.show) return;
-  win = new BrowserWindow({
-    width: 310,
-    height: 50,
-    show: false,
-    minWidth: 200,
-    minHeight: 40,
-    x: 1000,
-    y: 200,
-    backgroundColor: '#fff',
-    webPreferences: {
-      nodeIntegration: true
-    },
-    frame: false,
-  })
-  win.once('ready-to-show', () => {
-    win.show()
-  })
-  win.on('closed', function () {
-    win = null;
-    console.log('close');
-  })
-  win.webContents.on('did-finish-load', function () {
-    setTimeout(() => {
-      win.webContents.send(ACCEPT_STORE, data);
-    }, 0)
-  })
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}float`);
+  // 自动切换音乐
+  // 打开悬浮页面
+  // 激活悬浮页面
+  if (args.show) {
+    if (win) {
+      win.show()
+    } else {
+      createWin();
+    }
   } else {
-    // createProtocol('app');
-    // Load the index.html when not in development
-    win.loadURL('app://${__dirname}/index.html/float')
+    if (win)
+      win.webContents.send(ACCEPT_STORE, args);
   }
+
+
+
+
+
+
 })
 
 

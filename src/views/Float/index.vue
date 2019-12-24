@@ -187,7 +187,7 @@
     <div class="col">
       <div class="menu">
         <AIconfont class="icon" style="margin-bottom:3px" type="icon-close1" @click="handlehide" />
-        <AIconfont class="icon" type="icon-application" />
+        <AIconfont class="icon" type="icon-application" @click="handleToggleView" />
       </div>
       <div class="image">
         <!-- <AIconfont class="allow top" type="icon-chevron-down" /> -->
@@ -262,7 +262,9 @@ export default class Float extends Vue {
   public mounted() {
     ipcRenderer.on(ACCEPT_STORE, (event: any, arg: any) => {
       // console.log('pong2', arg);
-      if (arg.win) { this.mainwin = arg.win; }
+      if (arg.id) {
+        this.mainwin = arg.id;
+      }
       if (arg && arg.data) {
         this.asyncMusic(arg.data);
       } // prints "pong"
@@ -279,12 +281,23 @@ export default class Float extends Vue {
     } else {
       this.state = 'playing';
     }
+    const data: any = {};
+    data.state = this.state;
+    const win = remote.getCurrentWindow();
+    if (win) {
+      data.id = win.id;
+      ipcRenderer.send(ACCEPT_STORE, data);
+    }
   }
   public handlehide() {
     const win = remote.getCurrentWindow();
-    // debugger;
+    win.hide();
+  }
+  public handleToggleView() {
+    const win = remote.getCurrentWindow();
     if (win) {
       const main = remote.BrowserWindow.fromId(this.mainwin);
+      // const main = remote.BrowserWindow.fromId(this.mainwin);
       main.show();
       win.close();
     }

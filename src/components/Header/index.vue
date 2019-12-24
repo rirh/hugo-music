@@ -440,7 +440,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Menu from '@/components/Menu';
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer, remote, BrowserWindow } from 'electron';
 import {
   MAIN_MIN,
   MAIN_ZOOM,
@@ -512,12 +512,11 @@ export default class HelloWorld extends Vue {
     const show = true;
     const data = this.$store.state.music && this.$store.state.music;
     data.show = true;
-    const win = remote.getCurrentWindow();
-    if (win) {
-      data.win = win.id;
-      // debugger;
+    const win = (remote as any).BrowserWindow.getFocusedWindow();
+    if (win && data.data.image) {
+      data.id = win.id;
       ipcRenderer.send(OPEN_FLOAT, data);
-      // win.hide();
+      win.hide();
     }
   }
 
