@@ -39,7 +39,6 @@ const AR = {
             .add('./*', () => {
                 this.loading.color = 'blue';
                 this.loading.text = 'add...';
-
             })
             .commit("await", () => {
                 this.loading.color = 'blue';
