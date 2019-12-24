@@ -700,7 +700,7 @@ export default class Panel extends Vue {
     this.like = this.isLike;
   }
   public handleReport() {
-    message.success('操作失败！社会注意核心价值观！');
+    message.success('操作失败！社会主义核心价值观！');
   }
   public handleHideShare() {
     this.visibleshare = false;
