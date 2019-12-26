@@ -21,7 +21,7 @@ export default (url = '', datas = {}, method = 'GET') => {
         resolve({ response: data });
       }
     } catch (err) {
-      if (err.response.data.message) {
+      if (err && err.response.data.message) {
         notification.error({
           message: '提示',
           description: err.response.data.message,
