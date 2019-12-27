@@ -118,6 +118,7 @@ import {
 @Component({})
 export default class Songs extends Vue {
   @Prop() public data: any;
+  public loading = true;
   public current = 1;
   public count = 0;
   public transformTimer = (e: any) => transformTimer(e);
@@ -126,8 +127,14 @@ export default class Songs extends Vue {
     if (count) {
       result = count;
       this.count = count;
-    } else { result = this.count; }
+    } else {
+      result = this.count;
+    }
     return result;
+  }
+  @Watch('data', { deep: true })
+  public handleCloseLoading() {
+    this.loading = false;
   }
   public indexfilter(index: number) {
     // return Number(index) * Number(this.current) < 9
@@ -139,7 +146,9 @@ export default class Songs extends Vue {
   public artistsfilter(item: any) {
     let result = '';
     const name = item.map((e: any) => e.name).join(',');
-    if (name) { result = name; }
+    if (name) {
+      result = name;
+    }
     return result;
   }
   public handlePlay(args: any) {
@@ -159,6 +168,7 @@ export default class Songs extends Vue {
   @Emit('on-pagination')
   public handleChangeSize(page: any) {
     // this.current = page;
+    this.loading = true;
     return page;
   }
 }

@@ -35,7 +35,9 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { get_search } from '@/actions';
 import Panel from './Panel/index.vue';
 import Songs from './Songs/index.vue';
-@Component({ components: { Panel, Songs } })
+import Artists from './Artists/index.vue';
+import Albums from './Albums/index.vue';
+@Component({ components: { Panel, Songs, Artists, Albums } })
 export default class SearchMain extends Vue {
   public keywords: string = '';
   public type_label = '单曲';
@@ -56,8 +58,12 @@ export default class SearchMain extends Vue {
     const {
       query: { keywords, type },
     }: any = this.$route;
-    if (keywords) { this.keywords = keywords; }
-    if (type) { this.type_value = Number(type); }
+    if (keywords) {
+      this.keywords = keywords;
+    }
+    if (type) {
+      this.type_value = Number(type);
+    }
     this.handleQueryList();
   }
   public async handleQueryList() {
@@ -72,6 +78,12 @@ export default class SearchMain extends Vue {
       switch (this.type_value) {
         case 1:
           this.components = Songs;
+          break;
+        case 100:
+          this.components = Artists;
+          break;
+        case 10:
+          this.components = Albums;
           break;
         default:
           this.components = '';
@@ -93,6 +105,7 @@ export default class SearchMain extends Vue {
     this.handleQueryList();
   }
   public async handleChangeType(list: any) {
+    if (list.value === this.type_value) { return; }
     this.loading = true;
     this.type_label = list.label;
     this.type_value = list.value;
