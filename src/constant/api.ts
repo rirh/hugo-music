@@ -214,3 +214,15 @@ export const GET_COMMENT_MV = `${host}comment/mv`;
 // /search/hot
 // 热门搜索
 export const GET_SEARCH_HOT = `${host}search/hot`;
+// /msg/private
+// 私信
+export const GET_MSG_PRIVATE = `${host}msg/private`;
+// 评论
+export const GET_MSG_COMMENTS = `${host}msg/comments`;
+// 艾特我
+export const GET_MSG_FORWARDS = `${host}msg/forwards`;
+// 通知
+export const GET_MSG_NOTICES = `${host}msg/notices`;
+// search
+// 搜索
+export const GET_SEARCH = `${host}search`;

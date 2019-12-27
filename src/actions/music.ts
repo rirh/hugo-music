@@ -14,8 +14,15 @@ import {
   GET_RESOURCE_LIKE,
   GET_COMMENT_LIKE,
   GET_SEARCH_HOT,
+  GET_SEARCH,
 } from '@/constant/api';
 import { getStorage } from '@/util/filters';
+
+// 搜索
+export const get_search = async (arg: any = '') => {
+  const { response }: any = await http(`${GET_SEARCH}?${arg}`);
+  return response;
+};
 
 // 获取热门搜索
 export const get_search_hot = async (arg: any = '') => {

@@ -4,6 +4,7 @@ import followsRouters from './follows';
 import privateRouters from './private';
 import vedioRouters from './vedio';
 import settingRouters from './setting';
+import searchRouters from './search';
 
 /**
  * 网易云音乐nav导航
@@ -175,6 +176,17 @@ export default [
     component: () => import('@/views/Setting/index.vue'),
     meta: { title: '设置首页', keepAlive: true, permission: ['dashboard'] },
     children: [...settingRouters],
+
+  },
+  {
+    path: '/search',
+    name: '搜索首页',
+    show: true,
+    // <a-icon type="customer-service" />
+    type: 'customer-service',
+    component: () => import('@/views/Search/index.vue'),
+    meta: { title: '设置首页', keepAlive: true, permission: ['dashboard'] },
+    children: [...searchRouters],
 
   },
 

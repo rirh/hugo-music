@@ -97,6 +97,9 @@ import { notification } from 'ant-design-vue';
 import { setStorage } from '@/util/filters';
 import { FORGET_PWD } from '@/constant/ipc';
 import { ipcRenderer, remote } from 'electron';
+import { STORE_USER_INFO } from '@/constant/store';
+import Store from 'electron-store';
+const electron_store = new Store();
 
 @Component
 export default class Tags extends Vue {
@@ -110,6 +113,14 @@ export default class Tags extends Vue {
   @Prop() private data!: string;
   @Prop() private show!: string;
   private visible!: boolean;
+  public mounted() {
+    const res = electron_store.get(STORE_USER_INFO) || {};
+    if (res && JSON.stringify(res) !== '{}') {
+      setStorage('user', res);
+      this.$store.commit('update_user', res);
+      this.handleReloadMain(res.profile.userId);
+    }
+  }
   public handleChange(msg: any) {
     this.CountryCode = msg;
   }
@@ -156,25 +167,31 @@ export default class Tags extends Vue {
       this.spinning = false;
       if (res.code === 200) {
         setStorage('user', res);
+        electron_store.set(STORE_USER_INFO, res);
         this.$store.commit('update_user', res);
-        const userId = `uid=${res.profile.userId}`;
-        const resAll = await axios.all([
-          get_user_playlist(userId),
-          get_user_detail(userId),
-          get_likelist(),
-        ]);
-        const [playlist, userdetail]: any = resAll;
-        if (playlist.code === 200) {
-          this.$store.commit('update_playlist', playlist.playlist);
-        }
-        if (userdetail.code === 200) {
-          this.$store.commit('update_user_detail', userdetail);
-        }
-        this.$router.push('/');
-        this.$emit('change', false);
+        this.handleReloadMain(res.profile.userId);
       }
     } catch (error) {
       this.spinning = false;
+    }
+  }
+  public async handleReloadMain(id: any) {
+    if (id) {
+      const userId = `uid=${id}`;
+      const resAll = await axios.all([
+        get_user_playlist(userId),
+        get_user_detail(userId),
+        get_likelist(),
+      ]);
+      const [playlist, userdetail]: any = resAll;
+      if (playlist.code === 200) {
+        this.$store.commit('update_playlist', playlist.playlist);
+      }
+      if (userdetail.code === 200) {
+        this.$store.commit('update_user_detail', userdetail);
+      }
+      this.$router.push('/');
+      this.$emit('change', false);
     }
   }
 }

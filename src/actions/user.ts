@@ -17,10 +17,38 @@ import {
   GET_USER_FOLLOWEDS,
   GET_FOLLOW,
   GET_USER_RECORD,
+  GET_MSG_PRIVATE,
+  GET_MSG_COMMENTS,
+  GET_MSG_FORWARDS,
+  GET_MSG_NOTICES,
 } from '@/constant/api';
 import { clearStorage } from '@/util/filters';
 import store from '@/store';
 import router from '@/router';
+
+// 通知-通知
+export const get_msg_notices = async (args: any) => {
+  const { response }: any = await http(`${GET_MSG_NOTICES}?${args}`);
+  return response;
+};
+
+// 通知-@我
+export const get_msg_forwards = async (args: any) => {
+  const { response }: any = await http(`${GET_MSG_FORWARDS}?${args}`);
+  return response;
+};
+
+// 通知-评论
+export const get_msg_comments = async (args: any) => {
+  const { response }: any = await http(`${GET_MSG_COMMENTS}?${args}`);
+  return response;
+};
+
+// 通知-私信
+export const get_msg_private = async (args: any) => {
+  const { response }: any = await http(`${GET_MSG_PRIVATE}?${args}`);
+  return response;
+};
 
 // 用户历史列表
 export const get_user_record = async (args: any) => {

@@ -15,7 +15,7 @@
     display: flex;
     width: 60px;
     align-content: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
     &-tips {
       height: 13px;
       width: 13px;
@@ -102,17 +102,19 @@
     &-set {
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
+
+      // justify-content: spac;
       &-icon {
         font-size: 18px;
-        color: var(--white);
+        color: white;
+        width: 24%;
       }
     }
   }
 }
 .wapper-main-set-icon:hover {
   background-color: #bd5448;
-  border-radius: 50%;
+  border-radius: 7px;
   // padding: 3px;
   // padding: 3px;
 }
@@ -237,10 +239,117 @@
     align-items: center;
     flex-direction: column;
     padding: 0 5px;
+    position: relative;
+    cursor: pointer;
     .text {
       font-size: 12px;
       margin-top: 5px;
       font-weight: bold;
+    }
+    .checked {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      color: #fff;
+      transform: rotate(-50%, -50%);
+    }
+
+    .checked:after {
+      content: " ";
+      height: 6px;
+      width: 2px;
+      position: absolute;
+      background-color: white;
+      -webkit-transform: rotateX(45deg);
+      transform: rotate(-45deg);
+      left: -5px;
+      top: -12px;
+    }
+    .checked:before {
+      content: " ";
+      height: 12px;
+      width: 2px;
+      position: absolute;
+      background-color: white;
+      -webkit-transform: rotateX(45deg);
+      transform: rotate(42deg);
+      left: 1px;
+      top: -17px;
+    }
+    .red:after,
+    .red:before {
+      background-color: var(--red) !important;
+    }
+  }
+}
+.noti {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 74vh;
+  overflow: hidden;
+  .head {
+    width: 100%;
+  }
+  .con {
+    width: 100%;
+    flex: 1;
+  }
+  .list::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    height: 68vh;
+    overflow-y: scroll;
+    .item:hover {
+      // background-color: var(--stripedHover);
+    }
+    .item {
+      display: flex;
+      transition: all 0.2s linear;
+
+      .avatar {
+        display: flex;
+        justify-content: center;
+        // align-items: center;
+        padding: 5px 15px 0 0;
+        margin: 0;
+      }
+      .cons {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+
+        border-bottom: 1px solid var(--line);
+
+        .user {
+          display: flex;
+          justify-content: space-between;
+          .nickname {
+            font-size: 12px;
+            color: var(--link);
+          }
+          .lastmsgtime {
+            font-size: 12px;
+            color: var(--textColor);
+          }
+        }
+        .content {
+          width: 100%;
+          display: flex;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-all;
+          margin-top: 3px;
+          font-size: 12px;
+          color: var(--black);
+        }
+      }
     }
   }
 }
@@ -311,12 +420,13 @@
             placeholder="搜索"
             type="text"
             @focus="showDrawer"
+            @keydown.enter="handleGoSeachPage"
           />
           <AIconfont
             v-show="keywords!==''"
             class="wapper-main-close1-icon pointer"
             type="icon-close1"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'white'}"
             @click.stop="handleClear"
           />
         </div>
@@ -326,47 +436,51 @@
           <AIconfont
             type="icon-settings"
             class="wapper-main-set-icon"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'white'}"
             @click="$router.push('/setting/index')"
           />
           <AIconfont
             class="wapper-main-set-icon pointer"
             type="icon-email"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'white'}"
             @click="email_visible=true"
           />
           <a-popover placement="bottomRight" trigger="click">
             <template slot="content">
               <div class="skin-wapper">
-                <div class="item">
+                <div class="item" @click="theme.type='less'">
                   <div id="less">&nbsp;</div>
                   <div for="less" class="text">浅色</div>
+                  <div v-show="theme.type==='less'" class="red checked"></div>
                 </div>
-                <div class="item">
+                <div class="item" @click="theme.type='red'">
                   <div id="red">&nbsp;</div>
                   <div for="red" class="text">红色</div>
+                  <div v-show="theme.type==='red'" class="checked"></div>
                 </div>
-                <div class="item">
+                <div class="item" @click="theme.type='black'">
                   <div id="black">&nbsp;</div>
                   <div for="black" class="text">黑色</div>
+                  <div v-show="theme.type==='black'" class="checked"></div>
                 </div>
-                <div class="item">
+                <div class="item" @click="theme.type='auto'">
                   <div id="auto">&nbsp;</div>
                   <div for="auto" class="text">自动</div>
+                  <div v-show="theme.type==='auto'" class="checked"></div>
                 </div>
               </div>
             </template>
             <AIconfont
               class="wapper-main-set-icon pointer"
               type="icon-tshirt-crew"
-              :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+              :style="{'color':$store.state.music.showPanel?'var(--textColot)':'white'}"
             />
           </a-popover>
 
           <AIconfont
             class="wapper-main-set-icon pointer"
             type="icon-checkbox-multiple-blank"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'white'}"
             @click="handleFloatFrame"
           />
         </div>
@@ -423,13 +537,38 @@
     </Drawer>
     <Drawer v-model="email_visible">
       <dl slot="content">
-        <div>
-          <a-radio-group class="radio-group" defaultValue="a" buttonStyle="solid">
-            <a-radio-button value="a">私信</a-radio-button>
-            <a-radio-button value="b">评论</a-radio-button>
-            <a-radio-button value="c">@我</a-radio-button>
-            <a-radio-button value="d">通知</a-radio-button>
-          </a-radio-group>
+        <div class="noti">
+          <div class="head">
+            <a-radio-group
+              v-model="noti.type"
+              @change="handleChangeNotType"
+              class="radio-group"
+              buttonStyle="solid"
+            >
+              <a-radio-button value="private">私信</a-radio-button>
+              <a-radio-button value="comments">评论</a-radio-button>
+              <a-radio-button value="forwards">@我</a-radio-button>
+              <a-radio-button value="notices">通知</a-radio-button>
+            </a-radio-group>
+          </div>
+          <div class="con">
+            <a-skeleton active avatar :loading="noti.loading">
+              <dl class="list">
+                <dd class="item" v-for="item in noti.list" :key="item.lastMsgTime">
+                  <div class="avatar">
+                    <a-avatar :size="40" :src="item.avatarUrl"></a-avatar>
+                  </div>
+                  <div class="cons">
+                    <div class="user">
+                      <div class="nickname" v-html="item.nickname"></div>
+                      <div class="lastmsgtime">{{(item.lastmsgtime)}}</div>
+                    </div>
+                    <div class="content">{{item.msg}}</div>
+                  </div>
+                </dd>
+              </dl>
+            </a-skeleton>
+          </div>
         </div>
         <div></div>
       </dl>
@@ -440,6 +579,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Menu from '@/components/Menu';
+import axios from 'axios';
 import { ipcRenderer, remote, BrowserWindow } from 'electron';
 import {
   MAIN_MIN,
@@ -450,9 +590,18 @@ import {
   OPEN_FLOAT,
   SEND_STORE,
 } from '@/constant/ipc';
-import { get_search_suggest, get_search_hot, get_song_detail } from '@/actions';
-import { STORE_HISTORY_LIST } from '@/constant/store';
+import {
+  get_search_suggest,
+  get_search_hot,
+  get_song_detail,
+  get_msg_private,
+  get_msg_comments,
+  get_msg_forwards,
+  get_msg_notices,
+} from '@/actions';
+import { STORE_HISTORY_LIST, STORE_USER_INFO } from '@/constant/store';
 import Drawer from '@/components/Drawer';
+import moment from 'moment';
 import Store from 'electron-store';
 const electron_store = new Store();
 
@@ -463,6 +612,16 @@ export default class HelloWorld extends Vue {
   public seach_visible = false;
   public email_visible = false;
   // public skin_visible = false;
+  // 通知消息的骨架屏
+  public theme = {
+    type: 'red',
+  };
+  public loading_no: boolean = true;
+  public noti: any = {
+    type: 'private',
+    loading: true,
+    list: [],
+  };
 
   public keywords = '';
   public seachList = {};
@@ -503,11 +662,107 @@ export default class HelloWorld extends Vue {
     this.asyncHisStore();
   }
   public async init() {
-    const { code, result } = await get_search_hot();
-    if (code === 200) {
-      this.hotSearchList = result;
+    const [host_res, private_res] = await axios.all([
+      get_search_hot(),
+      get_msg_private(''),
+    ]);
+    if (host_res.code === 200) {
+      this.hotSearchList = host_res.result;
+    }
+    if (private_res.code === 200) {
+      // 过滤其他没用信息
+      this.noti.list = private_res.msgs.map((e: any) => ({
+        ...e,
+        avatarUrl: e.fromUser.avatarUrl || '',
+        nickname: e.fromUser.nickname || '',
+        lastmsgtime: moment(e.lastMsgTime).format('MM月DD日') || '',
+        msg: JSON.parse(e.lastMsg).msg,
+      }));
+      this.noti.type = 'private';
+      this.noti.loading = false;
     }
   }
+  public handleGoSeachPage() {
+    if (this.keywords) {
+      this.seach_visible = false;
+      const params = { keywords: this.keywords };
+      this.$router.push({
+        path: `/search/index?keywords=${this.keywords}&type=1`,
+      });
+    }
+  }
+  /**
+   * handleChangeNotType
+   */
+  public async handleChangeNotType(e: EventListenerOrEventListenerObject) {
+    const key = this.noti.type;
+    this.noti.loading = true;
+    let res: any;
+
+    switch (key) {
+      case 'private':
+        res = await get_msg_private('');
+        if (res.code === 200) {
+          this.noti.list = res.msgs.map((e: any) => ({
+            ...e,
+            avatarUrl: e.fromUser.avatarUrl || '',
+            nickname: e.fromUser.nickname || '',
+            lastmsgtime: moment(e.lastMsgTime).format('MM月DD日') || '',
+            msg: JSON.parse(e.lastMsg).msg,
+          }));
+        }
+        break;
+      case 'comments':
+        const {
+          account: { id },
+        } = electron_store.get(STORE_USER_INFO);
+        if (id) {
+          res = await get_msg_comments(`uid=${id}`);
+          if (res.code === 200) {
+            this.noti.list = res.comments.map((e: any) => ({
+              ...e,
+              avatarUrl: e.user.avatarUrl,
+              nickname: e.user.nickname,
+              lastmsgtime: moment(e.time).format('YYYY年MM月DD日'),
+              msg: `回复我：${e.content}`,
+            }));
+          }
+        } else {
+          res = false;
+        }
+        break;
+      case 'forwards':
+        res = await get_msg_forwards('');
+        this.noti.list = [];
+        break;
+      case 'notices':
+        res = await get_msg_notices('');
+        if (res.code === 200) {
+          this.noti.list = res.notices.map((e: any) => ({
+            ...e,
+            avatarUrl: `${JSON.parse(e.notice).user.avatarUrl}` || '',
+            nickname:
+              `${
+                JSON.parse(e.notice).user.nickname
+              } <span style="color:var(--textColor)">赞了你的评论<span>` || '',
+            lastmsgtime: moment(e.time).format('YYYY年MM月DD日') || '',
+            msg: JSON.parse(e.notice).comment.content,
+          }));
+        }
+        break;
+      default:
+        break;
+    }
+    this.noti.loading = false;
+
+  }
+  /**
+   * format
+   */
+  public format(time: Date) {
+    return moment(time).format('MM月DD日');
+  }
+
   public handleFloatFrame() {
     const show = true;
     const data = this.$store.state.music && this.$store.state.music;
