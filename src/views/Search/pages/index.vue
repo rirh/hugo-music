@@ -37,7 +37,12 @@ import Panel from './Panel/index.vue';
 import Songs from './Songs/index.vue';
 import Artists from './Artists/index.vue';
 import Albums from './Albums/index.vue';
-@Component({ components: { Panel, Songs, Artists, Albums } })
+import Videos from './Videos/index.vue';
+import Playlists from './Playlists/index.vue';
+import Userprofiles from './Userprofiles/index.vue';
+@Component({
+  components: { Panel, Songs, Artists, Albums, Videos, Playlists, Userprofiles },
+})
 export default class SearchMain extends Vue {
   public keywords: string = '';
   public type_label = '单曲';
@@ -50,6 +55,7 @@ export default class SearchMain extends Vue {
   public loading = true;
 
   public mounted() {
+    // this.type_label = "单曲";
     this.init();
   }
   @Watch('$route.query', { deep: true })
@@ -85,6 +91,16 @@ export default class SearchMain extends Vue {
         case 10:
           this.components = Albums;
           break;
+        case 1014:
+          this.components = Videos;
+          break;
+        case 1000:
+          this.components = Playlists;
+          break;
+        case 1002:
+          this.components = Userprofiles;
+          break;
+
         default:
           this.components = '';
           break;
@@ -105,7 +121,9 @@ export default class SearchMain extends Vue {
     this.handleQueryList();
   }
   public async handleChangeType(list: any) {
-    if (list.value === this.type_value) { return; }
+    if (list.value === this.type_value) {
+      return;
+    }
     this.loading = true;
     this.type_label = list.label;
     this.type_value = list.value;

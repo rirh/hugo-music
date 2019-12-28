@@ -5,56 +5,22 @@ import { ipcRenderer, net } from 'electron';
 
 export default (url = '', datas = {}, method = 'GET') => {
   return new Promise(async (resolve, reject) => {
-//     const { remote } = require('electron');
+    // const { remote } = require('electron');
 
-// //     const request = remote.net.request(url)
-// //     request.on('response', (response) => {
-// //       console.log(`STATUS: ${response.statusCode}`)
-// //       // let data: any = '';
-// //       // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
-// //       response.on('data', (chunk:any) => {
-// //         // console.log(`BODY: ${chunk}`)
-// //         // data = (chunk.toString())
-// //         // console.log(JSON.parse(chunk.toString()));
-// //         function Uint8ArrayToString(fileData:any){
-// //           var dataString = "";
-// //           for (var i = 0; i < fileData.length; i++) {
-// //             dataString += String.fromCharCode(fileData[i]);
-// //           }
-
-// //           return dataString
-// //         }
-// //         console.log(Uint8ArrayToString(chunk));
-// //         // var uint8array = new TextEncoder("utf-8").encode("¢");
-// // var string = new TextDecoder("utf-8").decode(chunk);
-// // console.log(JSON.parse(string) );
-
-// //         // console.log((chunk.toString()));
-// //         // resolve(chunk)
-
-// //         // console.log(params.length,'==================================');
-
-
-// //         // event.sender.send('main-reply-ipc', params);
-// //         // porxy.trigger("net",params );
-
-// //         // event.sender.send('net-done', chunk);
-
-// //       })
-// //       response.on('end', async () => {
-// //         console.log('No more data in response.')
-// //         // await netLog.startLogging(`${__dirname}/log`)
-// //         // After some network events
-// //         // event.returnValue = data;
-// //         // console.log(data.lenght);
-
-// //         // const path = await netLog.stopLogging()
-// //         // console.log('Net-logs written to', path)
-// //       })
-// //     })
-// //     request.end()
+    // const request = remote.net.request(url)
+    // request.on('response', (response) => {
+    //   console.log(`STATUS: ${response.statusCode}`)
+    //   // let data: any = '';
+    //   // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+    //   response.on('data', (chunk: any) => {
+    //     // console.log(`BODY: ${chunk}`)
+    //   })
+    //   response.on('end', async () => {
+    //     console.log('No more data in response.')
+    //   })
+    // })
+    // request.end()
     // try {
-
 
     const { status, data } = await axios.get(url, { withCredentials: true });
     if (status === 200) {
