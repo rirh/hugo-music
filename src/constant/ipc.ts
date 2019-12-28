@@ -30,4 +30,6 @@ export const CLOSE_FLOAT = `0x0012`;
 export const SEND_STORE = `0x0013`;
 // 接受数据同步
 export const ACCEPT_STORE = `0x0014`;
+// 网络状态变化
+export const INTENT_CHANGE = `0x0015`;
 

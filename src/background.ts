@@ -6,15 +6,17 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
-const {
+import {
   HAVE_BLUR,
-  HAVE_FOCUS
-} = require('./constant/ipc');
+  HAVE_FOCUS,
+  INTENT_CHANGE
+} from './constant/ipc';
+import DockMenu from './constant/dock.menu';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow | null
+let win: BrowserWindow | any
 let tray = null
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{
@@ -35,9 +37,16 @@ function createWindow() {
     // icon: path.join(__static, 'icon.png')
     // icon: path.join(__static, 'icon.png')
   })
+
+
+  const dockMenu = Menu.buildFromTemplate(DockMenu)
+  app.dock.setMenu(dockMenu)
   win.setMenu(null);
   win.once('ready-to-show', () => {
-    (win as any).show()
+    (win as any).show();
+    require('./background.main')
+  
+
     // tray = new Tray('');
     // const contextMenu = Menu.buildFromTemplate([
     //   { label: 'Item1', type: 'radio' },
@@ -72,7 +81,6 @@ function createWindow() {
   win.on('closed', () => {
     win = null
   })
-  require('./background.main')
 }
 
 // Quit when all windows are closed.

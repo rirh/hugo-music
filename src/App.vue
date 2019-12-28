@@ -6,7 +6,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { ipcRenderer, remote } from 'electron';
-import { MAIN_DROP } from '@/constant/ipc';
+import { MAIN_DROP, INTENT_CHANGE } from '@/constant/ipc';
 
 @Component({})
 export default class Home extends Vue {
@@ -37,10 +37,17 @@ export default class Home extends Vue {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state));
     });
   }
+  public bindUpdateOnlineStatus() {
+    const updateOnlineStatus = () => {
+      ipcRenderer.send(INTENT_CHANGE, navigator.onLine ? 'online' : 'offline');
+    };
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+  }
   public mounted() {
     this.preventDrop();
     this.bindStoreRefrse();
-
+    this.bindUpdateOnlineStatus();
   }
 }
 </script>

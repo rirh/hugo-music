@@ -1,10 +1,18 @@
-'use strict';
+import {
+  app,
+  ipcMain,
+  remote,
+  shell,
+  BrowserWindow,
+  Notification,
+  systemPreferences,
+  dialog,
 
-import { app, ipcMain, remote, shell, BrowserWindow } from 'electron';
+} from 'electron';
 import {
   createProtocol,
 } from 'vue-cli-plugin-electron-builder/lib'
-const {
+import {
   MAIN_MIN,
   MAIN_ZOOM,
   MAIN_CLOSE,
@@ -18,7 +26,8 @@ const {
   OPEN_FLOAT,
   SEND_STORE,
   ACCEPT_STORE,
-} = require('./constant/ipc');
+  INTENT_CHANGE
+} from './constant/ipc';
 let win: any;
 let data: any;
 
@@ -136,12 +145,85 @@ ipcMain.on(OPEN_FLOAT, (event: any, args: any, ) => {
     if (win)
       win.webContents.send(ACCEPT_STORE, args);
   }
-
-
-
-
-
-
 })
 
 
+ipcMain.on(INTENT_CHANGE, async (e: any, state: any) => {
+  // const params: any = {
+  //   title: '通知',
+  //   body: `您已${state === 'online' ? '连接' : '断开'}网络！`,
+  //   // hasReply: true,
+  //   // replyPlaceholder: '好',
+  // }
+  // const notification: any = new Notification(params);
+  // notification.show()
+  const dialogOpts = {
+    type: 'info',
+    title: '通知',
+    message: '通知',
+    buttons: ['好'],
+    detail: `您已${state === 'online' ? '连接' : '断开'}网络！`
+  }
+
+  const returnValue = await dialog.showMessageBox(dialogOpts);
+});
+
+systemPreferences.subscribeNotification(
+  'AppleInterfaceThemeChangedNotification',
+  function theThemeHasChanged() {
+    //TODO systemPreferences.isDarkMode()
+    const params: any = {
+      title: '通知',
+      body: `${systemPreferences.isDarkMode()} 模式`,
+      // hasReply: true,
+      // replyPlaceholder: '好',
+    }
+    const notification: any = new Notification(params);
+    notification.show()
+
+  }
+)
+const http = function (args: any) {
+  const { net, netLog } = require('electron')
+
+  new Promise((resolve, reject) => {
+    const request = net.request(args.url)
+    request.on('response', (response) => {
+      console.log(`STATUS: ${response.statusCode}`)
+      // let data: any = '';
+      // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+      response.on('data', (chunk) => {
+        // console.log(`BODY: ${chunk}`)
+        // data = (chunk.toString())
+        console.log(chunk.toString().length);
+        resolve(chunk)
+
+        // console.log(params.length,'==================================');
+
+
+        // event.sender.send('main-reply-ipc', params);
+        // porxy.trigger("net",params );
+
+        // event.sender.send('net-done', chunk);
+
+      })
+      response.on('end', async () => {
+        console.log('No more data in response.')
+        // await netLog.startLogging(`${__dirname}/log`)
+        // After some network events
+        // event.returnValue = data;
+        // console.log(data.lenght);
+
+        // const path = await netLog.stopLogging()
+        // console.log('Net-logs written to', path)
+      })
+    })
+    request.end()
+  })
+}
+let p = [];
+ipcMain.on('net', async (event: any, args: any) => {
+  const chunk: any = await http(args)
+  event.returnValue = chunk;
+
+})
