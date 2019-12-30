@@ -74,14 +74,14 @@ export default class Panel extends Vue {
       label: '个歌单',
       value: 1000,
     },
-    {
-      label: '首歌词',
-      value: 1006,
-    },
-    {
-      label: '个主播电台',
-      value: 1009,
-    },
+    // {
+    //   label: '首歌词',
+    //   value: 1006,
+    // },
+    // {
+    //   label: '个主播电台',
+    //   value: 1009,
+    // },
     {
       label: '位用户',
       value: 1002,
@@ -90,10 +90,10 @@ export default class Panel extends Vue {
       label: '首MV',
       value: 1004,
     },
-    {
-      label: '个综合',
-      value: 1018,
-    },
+    // {
+    //   label: '个综合',
+    //   value: 1018,
+    // },
   ];
   @Emit('on-item')
   public handleChangeType(item: any) {

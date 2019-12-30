@@ -18,9 +18,14 @@
 #progress /deep/ .ant-slider-handle {
   border-color: var(--red);
   background-color: var(--red);
+  opacity: 0;
 }
+// #progress:hover #progress /deep/ .ant-slider-handle {
+//   opacity: 1;
+// }
 #progress /deep/ .ant-slider-track {
   height: 3px;
+  background-color: var(--red);
 }
 #progress /deep/ .ant-slider-rail {
   height: 3px;
@@ -50,6 +55,7 @@
       text-align: left;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
       &-name {
         font-weight: bold;
       }
@@ -220,6 +226,13 @@
 .drawer /deep/ .ant-tabs-bar {
   margin: 0;
 }
+.ellipsis {
+  height: 4vh;
+  width: 27vw;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
 </style>
 
 <template>
@@ -248,7 +261,7 @@
             />
           </span>
           <span class="music-info-base">
-            <span>
+            <span class="ellipsis">
               <span class="music-info-base-name">{{name}}</span>
               <span class="music-info-base-auth">&nbsp;-&nbsp;{{auth}}</span>
             </span>

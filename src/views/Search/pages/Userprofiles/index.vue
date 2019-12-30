@@ -32,6 +32,9 @@
     color: var(--textColor);
     font-weight: normal;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 .pagination {

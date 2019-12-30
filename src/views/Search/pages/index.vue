@@ -40,8 +40,18 @@ import Albums from './Albums/index.vue';
 import Videos from './Videos/index.vue';
 import Playlists from './Playlists/index.vue';
 import Userprofiles from './Userprofiles/index.vue';
+import Mvs from './Mvs/index.vue';
 @Component({
-  components: { Panel, Songs, Artists, Albums, Videos, Playlists, Userprofiles },
+  components: {
+    Panel,
+    Songs,
+    Artists,
+    Albums,
+    Videos,
+    Playlists,
+    Userprofiles,
+    Mvs,
+  },
 })
 export default class SearchMain extends Vue {
   public keywords: string = '';
@@ -103,7 +113,9 @@ export default class SearchMain extends Vue {
         case 1002:
           this.components = Userprofiles;
           break;
-
+        case 1004:
+          this.components = Mvs;
+          break;
         default:
           this.components = '';
           break;

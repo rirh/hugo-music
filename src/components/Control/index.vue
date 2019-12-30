@@ -1,7 +1,10 @@
 <style lang="less" scoped>
+.wapper::-webkit-scrollbar {
+  width: 0;
+}
 .wapper {
   height: 100%;
-  width: 100%;
+  width: 20vw;
   background-color: var(--bgColor);
   overflow-y: scroll;
   overflow-x: hidden;
@@ -41,6 +44,7 @@
       height: 36px;
       align-items: center;
       cursor: default;
+      width: 95%;
       margin: 0;
       &-icon {
         font-size: 18px;
@@ -48,7 +52,7 @@
       }
       &-link {
         margin-left: 10px;
-        font-weight: 500;
+        font-weight: 450;
         flex: 1;
         text-align: left;
         font-size: 13px;
@@ -75,8 +79,8 @@
   color: var(--textColor);
   text-align: left;
   font-weight: bold;
-  font-size: 13px;
-  padding: 3px 0 10px 30px;
+  font-size: 12px;
+  padding: 10px 0px 10px 31px;
 }
 .playlist /deep/ .ant-collapse > .ant-collapse-item {
   border: none;
@@ -88,6 +92,11 @@
 .playlist /deep/ .ant-collapse-content > .ant-collapse-content-box {
   padding: 0;
   text-align: left;
+}
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 
@@ -121,11 +130,8 @@
       >
         <AIconfont class="wapper-main-list-icon" :type="menu.type" />
         <!-- <a-icon class="wapper-main-list-icon" :type="menu.type" /> -->
-        <router-link
-          class="wapper-main-list-link"
-          tag="span"
-          :to="menu.path"
-        >{{menu.name.length>10?`${menu.name.substring(0,8)}...`:menu.name}}</router-link>
+        <router-link class="wapper-main-list-link name" tag="span" :to="menu.path">{{menu.name}}</router-link>
+        <!-- {{menu.name.length>10?`${menu.name.substring(0,8)}...`:menu.name}} -->
       </dd>
     </dl>
     <h5 class="wapper-tips">我的音乐</h5>
@@ -139,11 +145,8 @@
       >
         <AIconfont class="wapper-main-list-icon" :type="menu.type" />
         <!-- <a-icon class="wapper-main-list-icon" :type="menu.type" /> -->
-        <router-link
-          class="wapper-main-list-link"
-          tag="span"
-          :to="menu.path"
-        >{{menu.name.length>10?`${menu.name.substring(0,8)}...`:menu.name}}</router-link>
+        <router-link class="wapper-main-list-link name" tag="span" :to="menu.path">{{menu.name}}</router-link>
+        <!-- {{menu.name.length>10?`${menu.name.substring(0,8)}...`:menu.name}} -->
       </dd>
     </dl>
     <div class="playlist">
@@ -155,16 +158,17 @@
             v-for="(menu,index) in v"
             :key="index"
           >
-            <AIconfont class="wapper-main-list-icon" type="icon-music-circle" />
+            <AIconfont class="wapper-main-list-icon" type="icon-music-note" />
             <!-- <a-icon class="wapper-main-list-icon" :type="menu.type" /> -->
             <router-link
-              class="wapper-main-list-link"
+              class="wapper-main-list-link name"
               tag="span"
               :to="{
                path: '/music-detail',
                query: menu 
             }"
-            >{{menu.name.length>12?`${menu.name.substring(0,10)}...`:menu.name}}</router-link>
+            >{{menu.name}}</router-link>
+            <!-- {{menu.name.length>12?`${menu.name.substring(0,10)}...`:menu.name}} -->
           </dd>
         </a-collapse-panel>
       </a-collapse>
@@ -236,7 +240,9 @@ export default class Control extends Vue {
     const isLogin = this.user.profile;
     if (!isLogin) {
       result = !args.show;
-      if (~args.name.indexOf('我的')) { result = !~args.name.indexOf('我的'); }
+      if (~args.name.indexOf('我的')) {
+        result = !~args.name.indexOf('我的');
+      }
     } else {
       result = !args.show;
     }

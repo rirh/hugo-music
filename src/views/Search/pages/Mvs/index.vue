@@ -78,25 +78,25 @@
     <dd
       class="item"
       :class="{'striped':index%2===0}"
-      v-for="(video,index) in data.videos"
-      :key="video.id"
-      @click="handleGovideo(video)"
+      v-for="(mv,index) in data.mvs"
+      :key="mv.id"
+      @click="handleGoalbum(mv)"
     >
-      <a-avatar class="cover" shape="square" icon="user" :src="video.coverUrl&&video.coverUrl"></a-avatar>
+      <a-avatar class="cover" shape="square" icon="user" :src="mv.cover&&mv.cover"></a-avatar>
       <span class="playtime">
         <AIconfont class="icon heart" type="icon-up1-copy"></AIconfont>
-        {{transformW(video.playTime)}}
+        {{transformW(mv.playCount)}}
       </span>
-      <span class="durationms">{{transformTimer(video.durationms/1000)}}</span>
+      <span class="durationms">{{transformTimer(mv.duration/1000)}}</span>
       <div class="info">
-        <div>{{video.title}}</div>
-        <p>by&nbsp;{{video.creator.map(e=>e.userName).join(',')}}</p>
+        <div>{{mv.name}}</div>
+        <p>by&nbsp;{{mv.artists.map(e=>e.name).join(',')}}</p>
       </div>
     </dd>
     <div class="pagination">
       <a-pagination
         v-model="current"
-        :total="countfilter(data.videoCount)"
+        :total="countfilter(data.mvCount)"
         :defaultPageSize="100"
         @change="handleChangeSize"
       />
@@ -111,9 +111,9 @@ import {
   transformTimer,
   leftpad,
 } from '@/util/filters';
-import { get_video_detail } from '@/actions';
+import { get_mv_detail } from '@/actions';
 @Component({})
-export default class Videos extends Vue {
+export default class Mvs extends Vue {
   @Prop() public data: any;
   public loading = true;
   public current = 1;
@@ -131,15 +131,15 @@ export default class Videos extends Vue {
     return result;
   }
 
-  public async handleGovideo(item: any) {
-    const res = await get_video_detail(`id=${item.vid}`);
+  public async handleGoalbum(item: any) {
+    const res = await get_mv_detail(`mvid=${item.id}`);
     if (res.code === 200) {
-      this.$router.push({
-        path: '/vedio-detail',
-        query: res,
-      });
       this.$store.commit('update_vedio_cursor', res);
       this.$store.commit('update_show_vedio_page', true);
+      this.$router.push({
+        path: '/mv-detail',
+        query: res,
+      });
     }
   }
   @Emit('on-pagination')

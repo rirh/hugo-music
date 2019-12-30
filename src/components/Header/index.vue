@@ -417,7 +417,7 @@
           <input
             v-model="keywords"
             class="wapper-main-seach-input"
-            placeholder="搜索"
+            :placeholder="$store.state.music.showPanel?'':'搜索'"
             type="text"
             @focus="showDrawer"
             @keydown.enter="handleGoSeachPage"

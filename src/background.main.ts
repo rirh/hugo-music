@@ -174,7 +174,7 @@ systemPreferences.subscribeNotification(
     //TODO systemPreferences.isDarkMode()
     const params: any = {
       title: '通知',
-      body: `${systemPreferences.isDarkMode()} 模式`,
+      body: `${systemPreferences.isDarkMode() ? '白天' : '夜间'} 模式`,
       // hasReply: true,
       // replyPlaceholder: '好',
     }
@@ -183,47 +183,47 @@ systemPreferences.subscribeNotification(
 
   }
 )
-const http = function (args: any) {
-  const { net, netLog } = require('electron')
+// const http = function (args: any) {
+//   const { net, netLog } = require('electron')
 
-  new Promise((resolve, reject) => {
-    const request = net.request(args.url)
-    request.on('response', (response) => {
-      console.log(`STATUS: ${response.statusCode}`)
-      // let data: any = '';
-      // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
-      response.on('data', (chunk) => {
-        // console.log(`BODY: ${chunk}`)
-        // data = (chunk.toString())
-        console.log(chunk.toString().length);
-        resolve(chunk)
+//   new Promise((resolve, reject) => {
+//     const request = net.request(args.url)
+//     request.on('response', (response: any) => {
+//       console.log(`STATUS: ${response.statusCode}`)
+//       // let data: any = '';
+//       // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+//       response.on('data', (chunk: any) => {
+//         // console.log(`BODY: ${chunk}`)
+//         // data = (chunk.toString())
+//         console.log(chunk.toString().length);
+//         resolve(chunk)
 
-        // console.log(params.length,'==================================');
+//         // console.log(params.length,'==================================');
 
 
-        // event.sender.send('main-reply-ipc', params);
-        // porxy.trigger("net",params );
+//         // event.sender.send('main-reply-ipc', params);
+//         // porxy.trigger("net",params );
 
-        // event.sender.send('net-done', chunk);
+//         // event.sender.send('net-done', chunk);
 
-      })
-      response.on('end', async () => {
-        console.log('No more data in response.')
-        // await netLog.startLogging(`${__dirname}/log`)
-        // After some network events
-        // event.returnValue = data;
-        // console.log(data.lenght);
+//       })
+//       response.on('end', async () => {
+//         console.log('No more data in response.')
+//         // await netLog.startLogging(`${__dirname}/log`)
+//         // After some network events
+//         // event.returnValue = data;
+//         // console.log(data.lenght);
 
-        // const path = await netLog.stopLogging()
-        // console.log('Net-logs written to', path)
-      })
-    })
-    request.end()
-  })
-}
-let p = [];
-ipcMain.on('net', async (event: any, args: any) => {
-  const chunk: any = await http(args)
-  event.returnValue = chunk;
+//         // const path = await netLog.stopLogging()
+//         // console.log('Net-logs written to', path)
+//       })
+//     })
+//     request.end()
+//   })
+// }
+// let p = [];
+// ipcMain.on('net', async (event: any, args: any) => {
+//   const chunk: any = await http(args)
+//   event.returnValue = chunk;
 
-})
+// })
