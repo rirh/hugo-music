@@ -58,6 +58,9 @@ export default class SearchMain extends Vue {
     // this.type_label = "单曲";
     this.init();
   }
+  public beforeRouteEnter(to: any, from: any, next: any) {
+    next();
+  }
   @Watch('$route.query', { deep: true })
   public init() {
     this.loading = true;
