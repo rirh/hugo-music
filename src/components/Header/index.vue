@@ -815,35 +815,35 @@ export default class HelloWorld extends Vue {
 
   // }
   // @Watch("theme.type")
-  // handleChangeTheme(key: any = "red") {
-  //   let result = {
-  //     bg: "var(--red)",
-  //     txt: "white"
-  //   };
-  //   const showPanel = (this as any).$store.state.music.showPanel;
-  //   debugger;
-  //   switch (key) {
-  //     case "less":
-  //       result.bg = "white";
-  //       result.txt = "var(--textColot)";
-  //       break;
-  //     case "red":
-  //       result = {
-  //         bg: "var(--red)",
-  //         txt: "white"
-  //       };
-  //       break;
+  handleChangeTheme(key: any = "red") {
+    let result = {
+      bg: "var(--red)",
+      txt: "white"
+    };
+    const showPanel = (this as any).$store.state.music.showPanel;
+    debugger;
+    switch (key) {
+      case "less":
+        result.bg = "white";
+        result.txt = "var(--textColot)";
+        break;
+      case "red":
+        result = {
+          bg: "var(--red)",
+          txt: "white"
+        };
+        break;
 
-  //     default:
-  //       break;
-  //   }
-  //   if (showPanel) {
-  //     result.bg = "white";
-  //     result.txt = "var(--textColot)";
-  //   }
+      default:
+        break;
+    }
+    if (showPanel) {
+      result.bg = "white";
+      result.txt = "var(--textColot)";
+    }
 
-  //   return result;
-  // }
+    return result;
+  }
   @Watch("keywords")
   public async handleSeach(keywords: any) {
     if (keywords) {
