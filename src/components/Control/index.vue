@@ -44,7 +44,7 @@
       height: 36px;
       align-items: center;
       cursor: default;
-      width: 95%;
+      // width: 95%;
       margin: 0;
       &-icon {
         font-size: 18px;
