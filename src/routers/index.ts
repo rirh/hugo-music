@@ -50,7 +50,7 @@ export default [
     // <a-icon type="team" />
     // type: 'team',
     type: 'icon-friend',
-    redirect: '/moments/index',
+    redirect: '/friends/index',
     component: () => import('@/views/Friends/index.vue'),
     meta: { title: '朋友', keepAlive: true, permission: ['dashboard'] },
     children: [...momentsRouters],

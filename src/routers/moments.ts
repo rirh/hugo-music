@@ -3,7 +3,7 @@
  */
 export default [
     {
-        path: '/moments/index',
+        path: '/friends/index',
         name: '动态',
         // <a-icon type="customer-service" />
         // type: 'customer-service',
