@@ -5,6 +5,7 @@ import privateRouters from './private';
 import vedioRouters from './vedio';
 import settingRouters from './setting';
 import searchRouters from './search';
+import momentsRouters from './moments';
 
 /**
  * 网易云音乐nav导航
@@ -49,9 +50,11 @@ export default [
     // <a-icon type="team" />
     // type: 'team',
     type: 'icon-friend',
+    redirect: '/moments/index',
     component: () => import('@/views/Friends/index.vue'),
-    children: [],
     meta: { title: '朋友', keepAlive: true, permission: ['dashboard'] },
+    children: [...momentsRouters],
+
   },
   {
     path: '/dowload',

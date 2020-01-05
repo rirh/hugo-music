@@ -226,3 +226,8 @@ export const GET_MSG_NOTICES = `${host}msg/notices`;
 // search
 // 搜索
 export const GET_SEARCH = `${host}search`;
+// event
+// 朋友
+export const GET_EVENT = `${host}event`;
+
+
