@@ -1,6 +1,12 @@
 
 import { ipcRenderer } from 'electron';
 import { SEND_STORE, OPEN_FLOAT } from '@/constant/ipc';
+/**
+ * 定义为全局数据控制器
+ * 只要数据改变监听改变进行对应的操作
+ */
+const player = new Audio();
+
 const music = {
   state: {
     music: '',
@@ -14,8 +20,10 @@ const music = {
     history: [],
     like: false,
     showPanel: false,
+    player,
   },
   mutations: {
+    
     update_like(state: any, params: any) {
       state.list = params;
     },
@@ -29,6 +37,7 @@ const music = {
       const data = { ...state };
       data.show = false;
       ipcRenderer.send(OPEN_FLOAT, data);
+      // state.player
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {
         state.list.push(params);
@@ -66,7 +75,6 @@ const music = {
           state.data = {};
           state.data = params;
           break;
-
         default:
           break;
       }

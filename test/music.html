@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body onload="init()">
+    <button onclick="play()">play</button>
+    <button onclick="stop()">stop</button>
+</body>
+<script>
+    // let context,
+    //     oscillator,
+    //     fr;
+
+    // function BufferLoader(context, urlList, callback) {
+    //     this.context = context;
+    //     this.urlList = urlList;
+    //     this.onload = callback;
+    //     this.bufferList = new Array();
+    //     this.loadCount = 0;
+    // }
+
+    // BufferLoader.prototype.loadBuffer = function (url, index) {
+    //     // Load buffer asynchronously
+    //     var request = new XMLHttpRequest();
+    //     request.open("GET", url, true);
+    //     request.responseType = "arraybuffer";
+
+    //     var loader = this;
+
+    //     request.onload = function () {
+    //         // Asynchronously decode the audio file data in request.response
+    //         loader.context.decodeAudioData(
+    //             request.response,
+    //             function (buffer) {
+    //                 if (!buffer) {
+    //                     alert('error decoding file data: ' + url);
+    //                     return;
+    //                 }
+    //                 loader.bufferList[index] = buffer;
+    //                 if (++loader.loadCount == loader.urlList.length)
+    //                     loader.onload(loader.bufferList);
+    //             },
+    //             function (error) {
+    //                 console.error('decodeAudioData error', error);
+    //             }
+    //         );
+    //     }
+
+    //     request.onerror = function () {
+    //         alert('BufferLoader: XHR error');
+    //     }
+
+    //     request.send();
+    // }
+
+    // BufferLoader.prototype.load = function () {
+    //     for (var i = 0; i < this.urlList.length; ++i)
+    //         this.loadBuffer(this.urlList[i], i);
+    // }
+
+    const url = "http://m7.music.126.net/20200106175951/5a64b54133e53e29371e7dc8a128ecd6/ymusic/5252/0f0e/5158/e8a6d6fa708d1a1cef43f2f7ab66278a.mp3"
+
+    // function play() {
+    //     context = new (window.AudioContext || window.webkitAudioContext)();
+    //     fileData = new Blob(url);
+    //     var reader = new FileReader();
+    //     reader.readAsArrayBuffer(fileData);
+    //     reader.onload = function () {
+    //         debugger;
+
+    //         var arrayBuffer = reader.result
+    //         var bytes = new Uint8Array(arrayBuffer);
+    //     }
+    //     debugger;
+
+    //     oscillator = context.createOscillator();
+    //     oscillator.type = 'sine';
+    //     oscillator.frequency.value = 440;
+    //     oscillator.connect(context.destination);
+    //     oscillator.start();
+    // }
+
+    // function stop() {
+    //     oscillator.stop()
+    // }
+    var context;
+    // window.addEventLisener('load', init, false)
+
+    function init() {
+        try {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            context = new AudioContext();
+            console.log(context);
+            
+        }
+        catch (e) {
+
+            alert('MLGB 你的浏览器连个Web-Audio-API 都不支持！！')
+        }
+
+
+    }
+
+
+</script>
+
+</html>

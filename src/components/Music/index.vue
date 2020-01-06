@@ -250,7 +250,13 @@
         <div class="music-flex music-info" v-show="showinfo">
           <span class="music-img-box" @click="handleShowConrtal">
             <!-- <img class="music-info-img" :src="img" alt /> -->
-            <a-avatar shape="square" class="music-info-img" :onerror="errorImg" :src="img" alt />
+            <a-avatar
+              shape="square"
+              class="music-info-img"
+              :onerror="errorImg"
+              :src="$store.state.music.data.img"
+              alt
+            />
             <AIconfont
               class="music-img-box-up show"
               :type="`icon-arrow-${$store.state.music.showPanel?'down':'up'}`"
@@ -262,14 +268,18 @@
           </span>
           <span class="music-info-base">
             <span class="ellipsis">
-              <span class="music-info-base-name">{{name}}</span>
-              <span class="music-info-base-auth">&nbsp;-&nbsp;{{auth}}</span>
+              <span
+                class="music-info-base-name"
+              >{{$store.state.music.data.name?`${$store.state.music.data.name}`:''}}</span>
+              <span
+                class="music-info-base-auth"
+              >{{$store.state.music.data.auth?`-${$store.state.music.data.auth}`:''}}</span>
             </span>
             <span class="music-info-base-duration">
-              {{transformTimer(cursor)||'00:00'}}
+              {{transformTimer($store.state.music.cursor)||'00:00'}}
               &nbsp;/
               &nbsp;
-              {{transformTimer(duration)||'00:00'}}
+              {{transformTimer($store.state.music.duration)||'00:00'}}
             </span>
           </span>
         </div>
@@ -316,9 +326,7 @@
                 @dblclick="$store.commit('update_music_data', song)"
               >
                 <span class="playlist-list-name">{{song.name}}</span>
-                <span
-                  class="playlist-list-auth"
-                >{{ song.auth&&song.auth.length > 15 ? `${song.auth.substring(0, 10)}...` : song.auth}}</span>
+                <span class="playlist-list-auth">{{ song.auth}}</span>
                 <span class="playlist-list-duration">
                   {{transformTimer(song.duration/1000)}}
                   <AIconfont class="delete" type="icon-delete" @click="handleDelete(index)" />
@@ -357,11 +365,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { get_song_url, get_check_music, get_user_record } from '@/actions';
-import { notification, Modal } from 'ant-design-vue';
-import Drawer from '@/components/Drawer';
-import { ERROR_IMG } from '@/constant/api';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { get_song_url, get_check_music, get_user_record } from "@/actions";
+import { notification, Modal } from "ant-design-vue";
+import Drawer from "@/components/Drawer";
+import { ERROR_IMG } from "@/constant/api";
 
 const player = new Audio();
 
@@ -389,17 +397,17 @@ export default class Music extends Vue {
   // 进度条
   public progress = 0;
   // 音乐信息
-  public music = '';
-  public img = '';
-  public name = 'XXX';
-  public auth = 'XXX';
+  public music = "";
+  public img = "";
+  public name = "XXX";
+  public auth = "XXX";
   // 缓存实体
   public player = player;
-  public cursor = '0';
-  public duration = '0';
+  public cursor = "0";
+  public duration = "0";
   public volume = 100;
   public volumecach = 100;
-  public volumetype = 'icon-volume-high';
+  public volumetype = "icon-volume-high";
   public like = false;
 
   // 音量弹窗显示
@@ -407,17 +415,17 @@ export default class Music extends Vue {
   // 抛出进度可以外部控制
   @Prop() private msg!: string;
   public handleDelete(index: any) {
-    this.$store.commit('delete_music_list_item', index);
+    this.$store.commit("delete_music_list_item", index);
   }
   public handleEmptyList() {
     Modal.confirm({
-      title: '确定清空列表？',
-      content: '清空以后需要重新添加',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定清空列表？",
+      content: "清空以后需要重新添加",
+      okText: "确定",
+      cancelText: "取消",
       onOk: () => {
-        this.$store.commit('clear_music_list');
-      },
+        this.$store.commit("clear_music_list");
+      }
     });
   }
   public mounted() {
@@ -454,21 +462,21 @@ export default class Music extends Vue {
   }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('update_show_panel', !showPanel);
+    this.$store.commit("update_show_panel", !showPanel);
   }
   public handleProgress(msg: any) {
     const duration: any = this.duration;
     this.player.currentTime = (msg / 100) * duration;
   }
 
-  @Watch('volume')
+  @Watch("volume")
   public handleVolume(msg: any) {
     if (msg === 100) {
-      this.volumetype = 'icon-volume-high';
+      this.volumetype = "icon-volume-high";
     } else if (msg === 0) {
-      this.volumetype = 'icon-volume-off';
+      this.volumetype = "icon-volume-off";
     } else {
-      this.volumetype = 'icon-volume-medium';
+      this.volumetype = "icon-volume-medium";
     }
     if (msg && this.play) {
       (this as any).player.volume = msg / 100;
@@ -479,39 +487,49 @@ export default class Music extends Vue {
     // if (this.cursor === '0') return;
     if ((this as any).player.play) {
       const state = this.state;
-      if (state === 'playing') {
+      if (state === "playing") {
         this.pause();
       } else {
         this.play();
       }
     }
   }
-  @Watch('$store.state.music.state')
+  // @Watch("$store.state.music", { deep: true })
+  // public asyncMusic(state: any, oldstate: any) {
+  //   if (!oldstate) {
+  //   }
+  //   if (state === "playing") {
+  //     (this as any).player.play();
+  //   } else {
+  //     (this as any).player.pause();
+  //   }
+  // }
+  @Watch("$store.state.music.state")
   public handleChangeState(state: any) {
-    if (state === 'playing') {
+    if (state === "playing") {
       (this as any).player.play();
     } else {
       (this as any).player.pause();
     }
   }
 
-  @Watch('$store.state.music.data', { deep: true })
+  @Watch("$store.state.music.data", { deep: true })
   public async handleMusic({ id, image, name, auth, duration }: any) {
     this.showinfo = true;
     this.img = image;
     this.name = name;
     this.auth = auth;
-    this.$store.commit('update_music_list', {
+    this.$store.commit("update_music_list", {
       id,
       image,
       name,
       auth,
-      duration,
+      duration
     });
 
     const myNotification = new Notification(this.name, {
       body: this.auth,
-      icon: this.img,
+      icon: this.img
     });
     await this.asyncPlay(id);
     // this.visible = false;
@@ -528,7 +546,7 @@ export default class Music extends Vue {
       index = list.length - 1;
     }
     if (list[index]) {
-      this.$store.commit('update_music_data', list[index]);
+      this.$store.commit("update_music_data", list[index]);
     }
   }
   public handleNext() {
@@ -540,7 +558,7 @@ export default class Music extends Vue {
       index = 0;
     }
     if (list[index]) {
-      this.$store.commit('update_music_data', list[index]);
+      this.$store.commit("update_music_data", list[index]);
     }
   }
   public handleVolumeType() {
@@ -548,14 +566,14 @@ export default class Music extends Vue {
     if (this.volume !== 0) {
       this.volumecach = this.volume;
     }
-    if (type === 'icon-volume-off') {
-      this.volumetype = 'icon-volume-medium';
+    if (type === "icon-volume-off") {
+      this.volumetype = "icon-volume-medium";
       this.player.muted = false;
       this.volume = this.volumecach;
     } else {
       this.player.muted = true;
       this.volume = 0;
-      this.volumetype = 'icon-volume-off';
+      this.volumetype = "icon-volume-off";
     }
   }
   public async asyncPlay(id: any) {
@@ -578,11 +596,11 @@ export default class Music extends Vue {
     const [music] = data;
     (this as any).player.src = music.url;
 
-    (this as any).player.addEventListener('pause', this.pause());
-    (this as any).player.addEventListener('loadeddata', this.play());
+    (this as any).player.addEventListener("pause", this.pause());
+    (this as any).player.addEventListener("loadeddata", this.play());
 
     // (this as any).player.addEventListener("ended", this.stop());
-    (this as any).player.addEventListener('error', (error: any) => {
+    (this as any).player.addEventListener("error", (error: any) => {
       throw error;
     });
     this.music = music.url;
@@ -591,7 +609,7 @@ export default class Music extends Vue {
     if (this.player) {
       let duration: any;
       let currentTime: any;
-      this.$store.commit('update_music_state', 'playing');
+      this.$store.commit("update_music_state", "playing");
       (this as any).player.play();
       this.player.onended = () => {
         this.stop();
@@ -603,11 +621,11 @@ export default class Music extends Vue {
         duration = (this as any).player.duration;
         this.duration = duration;
         (this as any).player.volume = this.volume / 100;
-        // this.$store.commit('update_music_duration', duration);
+        this.$store.commit('update_music_duration', duration);
         // 拿到当前时长
         (this as any).player.ontimeupdate = () => {
           currentTime = (this as any).player.currentTime;
-          // this.$store.commit('update_music_cursor', currentTime);
+          this.$store.commit('update_music_cursor', currentTime);
           this.cursor = currentTime;
           this.progress = (currentTime / duration) * 100;
         };
@@ -617,20 +635,20 @@ export default class Music extends Vue {
   public pause() {
     const { state } = this.$store.state.music;
     if (this.player) {
-      if (state === 'playing') {
+      if (state === "playing") {
         (this as any).player.pause();
-        this.$store.commit('update_music_state', 'pause');
+        this.$store.commit("update_music_state", "pause");
       }
     }
   }
   public stop() {
     const state = this.state;
     if (this.player) {
-      if (state !== 'stop') {
+      if (state !== "stop") {
         // this.showinfo = false;
         this.progress = 0;
-        this.cursor = '0';
-        this.$store.commit('update_music_state', 'stop');
+        this.cursor = "0";
+        this.$store.commit("update_music_state", "stop");
         // this.play();
       }
     }
@@ -646,7 +664,7 @@ export default class Music extends Vue {
     if (duration) {
       const min: any = `${Math.floor(duration / 60)}`;
       const sco: any = `${Math.floor(duration % 60)}`;
-      result = `${min.padStart(2, '0')}:${sco.padStart(2, '0')}`;
+      result = `${min.padStart(2, "0")}:${sco.padStart(2, "0")}`;
     }
     return result;
   }

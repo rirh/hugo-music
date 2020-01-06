@@ -5,7 +5,6 @@ const user = {
     state: 'ready',
     currtime: 0,
     duration: 0,
-
   },
   mutations: {
     update_show_vedio_page(state: any, params: any) {
