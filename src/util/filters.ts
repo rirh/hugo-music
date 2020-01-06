@@ -192,3 +192,28 @@ export const transformSongTime = (str: any) => {
   }
   return result;
 };
+
+// 处理歌词方法
+export const parseLyric = (lyric: any) => {
+  let result: any = [];
+  if (lyric) {
+    const ly = lyric.split('\n');
+    const splitLyric = (e: any) => {
+      const crr = e.split(']');
+      const [tit, contant] = crr;
+      const timer = tit.split('[')[1];
+      let timerArr: any = `${timer}`.split('.');
+      const [h, s] = timerArr;
+      timerArr = h.split(':');
+      const [a, b] = timerArr;
+      let time: any = `${Number(a) * 60 + Number(b)}.${s}`;
+      if (isNaN(time)) {
+        time = '';
+      }
+      // if (!contant) { contant = ''; }
+      return { time, contant };
+    };
+    result = ly.map(splitLyric);
+    return result;
+  }
+};

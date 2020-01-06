@@ -20,7 +20,7 @@
       justify-content: center;
       align-items: flex-start;
       &-list {
-        flex: 1;
+        width: 25%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -93,7 +93,7 @@
 .recommedmv-recommedmvs-main-list:hover
   .recommedmv-recommedmvs-main-list-toptips {
   opacity: 0.7;
-   top: 0;
+  top: 0;
 }
 </style>
 

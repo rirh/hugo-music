@@ -10,6 +10,7 @@ const music = {
     mode: '',
     data: {},
     list: [],
+    lyric: [],
     history: [],
     like: false,
     showPanel: false,
@@ -17,6 +18,9 @@ const music = {
   mutations: {
     update_like(state: any, params: any) {
       state.list = params;
+    },
+    update_lyric(state: any, params: any) {
+      state.lyric = params;
     },
     update_show_panel(state: any, params: any) {
       state.showPanel = params;

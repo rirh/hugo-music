@@ -48,6 +48,13 @@ const _unmaximize = () => {
   mainWindow.unmaximize();
 };
 
+const _closewin = () => {
+  const mainWindow = remote.getCurrentWindow();
+  console.log(1);
+  
+  mainWindow.close();
+};
+
 ipcMain.on(MAIN_MIN, () => {
   const mainWindow = remote.getCurrentWindow();
   const isMin = mainWindow.isMinimized();
@@ -70,7 +77,7 @@ ipcMain.on(MAIN_ZOOM, () => {
 
 });
 ipcMain.on(MAIN_CLOSE, () => {
-  _minimize();
+  _closewin();
 
 });
 ipcMain.on(MAIN_DROP, (e: any) => {

@@ -33,6 +33,12 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/Float/index.vue'),
+    }, {
+      path: '/fullboard',
+      name: '全屏播放',
+      // <a-icon type="customer-service" />
+      component: () => import('@/views/FullBoard/index.vue'),
+      meta: { title: '全屏播放', keepAlive: true, permission: ['dashboard'] },
     },
 
   ],

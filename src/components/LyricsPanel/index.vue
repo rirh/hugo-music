@@ -32,6 +32,7 @@
         transform: scale(0.4) rotate(-36deg);
         transform-origin: -10px -10px;
         z-index: 1;
+        will-change: transform;
       }
       &-action {
         display: flex;
@@ -689,6 +690,7 @@ export default class Panel extends Vue {
     }
     if (lyricres.code === 200) {
       this.songs.lyric = lyricres;
+      this.$store.commit('update_lyric', lyricres);
     }
     if (commentres.code === 200) {
       this.comments = commentres;

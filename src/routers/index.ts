@@ -190,8 +190,9 @@ export default [
     component: () => import('@/views/Search/index.vue'),
     meta: { title: '设置首页', keepAlive: true, permission: ['dashboard'] },
     children: [...searchRouters],
-
   },
+
+
 
 
 
