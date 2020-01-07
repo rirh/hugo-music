@@ -167,7 +167,7 @@ class Music {
   public start() {
     this.gain.gain.value = 0;
     this.source.start(0); // 开始播放
-    const vloume = store.state.music.vloume;
+    const vloume = (store as any).state.music.vloume;
     this.gain.gain.linearRampToValueAtTime(vloume, 5);
   }
   public onended() {
