@@ -676,22 +676,18 @@ export default class Panel extends Vue {
 
     const res = await axios.all([
       get_song_detail(`${id}`),
-      get_lyric(`${id}`),
       get_comment_music(`id=${id}`),
       get_simi_song(`id=${id}`),
       get_likelist(),
     ]);
-    const [{ code, privileges, songs }, lyricres, commentres, simis] = res;
+    const [{ code, privileges, songs },  commentres, simis] = res;
     this.comloading = false;
     this.sonloading = false;
     this.similoading = false;
     if (code === 200) {
       this.songs = songs[0];
     }
-    if (lyricres.code === 200) {
-      this.songs.lyric = lyricres;
-      this.$store.commit('update_lyric', lyricres);
-    }
+
     if (commentres.code === 200) {
       this.comments = commentres;
     }

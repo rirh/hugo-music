@@ -11,100 +11,123 @@
 <body onload="init()">
     <button onclick="play()">play</button>
     <button onclick="stop()">stop</button>
+    <button onclick="resume()">resume</button>
+    <button onclick="suspend()">suspend</button>
+    <input type="range" name="vlo" value="50" id="vlo" oninput="handleVol()">
+    <input type="range" name="seek" value="0" onchange="handleSeek()">
+
+
 </body>
+<script src="axios.js"></script>
+
 <script>
-    // let context,
-    //     oscillator,
-    //     fr;
 
-    // function BufferLoader(context, urlList, callback) {
-    //     this.context = context;
-    //     this.urlList = urlList;
-    //     this.onload = callback;
-    //     this.bufferList = new Array();
-    //     this.loadCount = 0;
-    // }
 
-    // BufferLoader.prototype.loadBuffer = function (url, index) {
-    //     // Load buffer asynchronously
-    //     var request = new XMLHttpRequest();
-    //     request.open("GET", url, true);
-    //     request.responseType = "arraybuffer";
+    const url = "http://m7.music.126.net/20200107111345/998ef3076eb6493b9be81f7e43437de4/ymusic/e796/34ad/499a/32c27f4dc29f21334d41e5929549906f.mp3"
 
-    //     var loader = this;
+    var context, source, gain, analyser, filter;
+    function handleVol() {
+        const value = document.getElementById('vlo').value;
+        gain.gain.value = (value / 100);
+    }
+    async function handleSeek() {
+        const value = document.querySelector("input[name='seek']").value;
+        const len = source.buffer.duration;
+        const playtime = (value * len / 100);
+        stop();
+        await init();
+        source.start(0, playtime)
+    }
+    async function play() {
+        gain.gain.value = 0;
+        const value = document.getElementById('vlo').value;
+        source.start(0);//开始播放
+        gain.gain.linearRampToValueAtTime(value / 100, 10)
+    }
+    function stop() {
+        gain.gain.linearRampToValueAtTime(0, 10)
 
-    //     request.onload = function () {
-    //         // Asynchronously decode the audio file data in request.response
-    //         loader.context.decodeAudioData(
-    //             request.response,
-    //             function (buffer) {
-    //                 if (!buffer) {
-    //                     alert('error decoding file data: ' + url);
-    //                     return;
-    //                 }
-    //                 loader.bufferList[index] = buffer;
-    //                 if (++loader.loadCount == loader.urlList.length)
-    //                     loader.onload(loader.bufferList);
-    //             },
-    //             function (error) {
-    //                 console.error('decodeAudioData error', error);
-    //             }
-    //         );
-    //     }
+        // source.stop()
+    }
+    async function resume() {
+        // const currentTime = context.currentTime;
+        // filter.disconnect(0)
+        // await init();
+        // source.start(0, currentTime)
+        // const value = document.getElementById('vlo').value;
+        context.resume()
+        // gain.gain.value = 0;
+        // gain.gain.linearRampToValueAtTime(value / 100, context.currentTime + 10)
+    }
+    function suspend() {
+        // gain.gain.linearRampToValueAtTime(0, context.currentTime + 10)
+        // setTimeout(() => {
+        context.suspend()
+        // }, 1000)
+    }
+    async function init() {
+        return new Promise(async (reslove, reject) => {
 
-    //     request.onerror = function () {
-    //         alert('BufferLoader: XHR error');
-    //     }
 
-    //     request.send();
-    // }
-
-    // BufferLoader.prototype.load = function () {
-    //     for (var i = 0; i < this.urlList.length; ++i)
-    //         this.loadBuffer(this.urlList[i], i);
-    // }
-
-    const url = "http://m7.music.126.net/20200106175951/5a64b54133e53e29371e7dc8a128ecd6/ymusic/5252/0f0e/5158/e8a6d6fa708d1a1cef43f2f7ab66278a.mp3"
-
-    // function play() {
-    //     context = new (window.AudioContext || window.webkitAudioContext)();
-    //     fileData = new Blob(url);
-    //     var reader = new FileReader();
-    //     reader.readAsArrayBuffer(fileData);
-    //     reader.onload = function () {
-    //         debugger;
-
-    //         var arrayBuffer = reader.result
-    //         var bytes = new Uint8Array(arrayBuffer);
-    //     }
-    //     debugger;
-
-    //     oscillator = context.createOscillator();
-    //     oscillator.type = 'sine';
-    //     oscillator.frequency.value = 440;
-    //     oscillator.connect(context.destination);
-    //     oscillator.start();
-    // }
-
-    // function stop() {
-    //     oscillator.stop()
-    // }
-    var context;
-    // window.addEventLisener('load', init, false)
-
-    function init() {
-        try {
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
             context = new AudioContext();
-            console.log(context);
-            // https://www.jianshu.com/p/0079d1fe7496
-        }
-        catch (e) {
+            console.time()
+            console.log(`初始化完成${context}`);
+            console.log(`开始fetch加载资源....`);
+            const { data } = await axios({ method: 'GET', url, responseType: 'arraybuffer' });
+            console.log(`fetch加载资源完成`);
+            console.log(`decodeAudioData...`);
+            buffer = await context.decodeAudioData(data)
+            // buffer = context.decodeAudioData(data).then(e => console.log(e));
+            console.log(`decodeAudioData 完成`);
+            //播放资源
+            source = context.createBufferSource();
+            source.buffer = buffer;
+            //音量控制器
+            gain = context.createGain()
+            gain.gain.value = 0.5;
+            //动态效果控制器
+            analyser = context.createAnalyser();
+            analyser.fftSize = 2048
+            console.log(source);
 
-            alert('MLGB 你的浏览器连个Web-Audio-API 都不支持！！')
-        }
+            // // 创建分析节点
+            // analyser = context.createAnalyser();
+            // analyser.fftSize = '';
+            //音效控制器
+            filter = context.createBiquadFilter();
+            filter.type = 'allpass';// 低通 滤波器 详情可以见 BiquadFilterNode的文档
+            // filter.frequency.value = 440;// 设置截止位置为 440HZ
+            // Low Pass
+            // High Pass
+            // Band Pass
+            // Low Shelf
+            // High Shelf
+            // Peaking
+            // Notch
+            // Allpass
+            // 创建音频图像
+            source.connect(filter);
+            filter.connect(analyser);
+            analyser.connect(gain);
+            gain.connect(context.destination);
 
+            //  设置filter的参数
 
+            // source.start(0);//开始播放
+            console.log(`开始播放`);
+            console.timeEnd();
+            reslove();
+            source.onended = function (e) {
+                console.log('onended', source, e);
+
+            }
+            context.onstatechange = function (e) {
+                console.log('onstatechange', source, e);
+
+            }
+
+        })
     }
 
 
