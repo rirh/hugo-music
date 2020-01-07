@@ -241,7 +241,7 @@
       autofocus
       id="progress"
       v-model="progress"
-      @afterChange="handleProgress"
+      @afterChange="handleseek"
       :defaultValue="0"
       :tooltipVisible="false"
     />
@@ -464,6 +464,9 @@ export default class Music extends Vue {
     const showPanel = this.$store.state.music.showPanel;
     this.$store.commit('update_show_panel', !showPanel);
   }
+  public handleseek(msg: string | number) {
+    this.$store.commit('update_music_seek', msg);
+  }
   @Watch('$store.state.music.cursor', { deep: true })
   public handleProgress(msg: any) {
     const duration: any = this.$store.state.music.duration;
@@ -600,29 +603,29 @@ export default class Music extends Vue {
   }
   public async play() {
     // if (this.player) {
-      // let duration: any;
-      // let currentTime: any;
-      this.$store.commit('update_music_state', 'playing');
-      // (this as any).player.play();
-      // this.player.onended = () => {
-      //   this.stop();
-      //   this.handleNext();
-      // };
+    // let duration: any;
+    // let currentTime: any;
+    this.$store.commit('update_music_state', 'playing');
+    // (this as any).player.play();
+    // this.player.onended = () => {
+    //   this.stop();
+    //   this.handleNext();
+    // };
 
-      // 拿到总时长
-      // (this as any).player.ondurationchange = () => {
-      //   duration = (this as any).player.duration;
-      //   this.duration = duration;
-      //   (this as any).player.volume = this.volume / 100;
-      //   this.$store.commit('update_music_duration', duration);
-      //   // 拿到当前时长
-      //   (this as any).player.ontimeupdate = () => {
-      //     currentTime = (this as any).player.currentTime;
-      //     this.$store.commit('update_music_cursor', currentTime);
-      //     this.cursor = currentTime;
-      //     this.progress = (currentTime / duration) * 100;
-      //   };
-      // };
+    // 拿到总时长
+    // (this as any).player.ondurationchange = () => {
+    //   duration = (this as any).player.duration;
+    //   this.duration = duration;
+    //   (this as any).player.volume = this.volume / 100;
+    //   this.$store.commit('update_music_duration', duration);
+    //   // 拿到当前时长
+    //   (this as any).player.ontimeupdate = () => {
+    //     currentTime = (this as any).player.currentTime;
+    //     this.$store.commit('update_music_cursor', currentTime);
+    //     this.cursor = currentTime;
+    //     this.progress = (currentTime / duration) * 100;
+    //   };
+    // };
     // }
   }
   public pause() {

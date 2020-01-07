@@ -29,7 +29,9 @@ const music = {
 
 
   mutations: {
-
+    update_music_seek(state: any, value: any) {
+      audio.seek(value);
+    },
     update_like(state: any, params: any) {
       state.list = params;
     },
@@ -91,9 +93,12 @@ const music = {
           const [music] = musics.data;
           if (!audio || !audio.init) {
             audio = new Music({ url: music.url, vloume: 1 });
+            await audio.init(music.url);
+            audio.start();
           } else {
             audio.stop();
-            audio.init(music.url);
+            await audio.init(music.url);
+            audio.start();
           }
           store.commit('update_music_list', params);
         }
@@ -119,31 +124,40 @@ class Music {
     window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     this.url = props.url;
     this.vloume = props.vloume;
-    this.init(this.url);
+    // this.init(this.url);
   }
 
   public async init(url: any) {
-    this.context = new AudioContext();
-    const { data } = await axios({ method: 'GET', url, responseType: 'arraybuffer' });
-    const buffer = await this.context.decodeAudioData(data);
-    this.source = this.context.createBufferSource();
-    this.source.buffer = buffer;
-    this.gain = this.context.createGain();
-    this.gain.gain.value = 0.5;
-    this.analyser = this.context.createAnalyser();
-    this.analyser.fftSize = 2048;
-    this.filter = this.context.createBiquadFilter();
-    this.filter.type = 'allpass'; // 低通 滤波器 详情可以见 BiquadFilterNode的文档
-    this.source.connect(this.filter);
-    this.filter.connect(this.analyser);
-    this.analyser.connect(this.gain);
-    this.gain.connect(this.context.destination);
-    this.source.onended = this.onended;
-    this.context.onstatechange = this.onstatechange;
-    this.start();
-    // 更新总时长数据
-    store.commit('update_music_duration', this.source.buffer.duration);
-    this.async_cursor();
+    return new Promise(async (reslove, reject) => {
+      this.context = new AudioContext();
+      const { data } = await axios({ method: 'GET', url, responseType: 'arraybuffer' });
+      const buffer = await this.context.decodeAudioData(data);
+      this.source = this.context.createBufferSource();
+      this.source.buffer = buffer;
+      this.gain = this.context.createGain();
+      this.gain.gain.value = this.vloume;
+      this.analyser = this.context.createAnalyser();
+      this.analyser.fftSize = 2048;
+      this.filter = this.context.createBiquadFilter();
+      this.filter.type = 'allpass'; // 低通 滤波器 详情可以见 BiquadFilterNode的文档
+      this.source.connect(this.filter);
+      this.filter.connect(this.analyser);
+      this.analyser.connect(this.gain);
+      this.gain.connect(this.context.destination);
+      this.source.onended = this.onended;
+      this.context.onstatechange = this.onstatechange;
+      // 更新总时长数据
+      store.commit('update_music_duration', this.source.buffer.duration);
+      reslove();
+    });
+
+  }
+  public async seek(value: any) {
+    const len = this.source.buffer.duration;
+    const playtime = (value * len / 100);
+    this.stop();
+    await this.init(this.url);
+    this.source.start(0, playtime);
   }
   public async_cursor() {
     const start = () => {
@@ -161,14 +175,15 @@ class Music {
 
   }
   public set_gain(val: number) {
-    this.gain = val;
-    this.gain.gain.value = 0.5;
+    // this.gain = val;
+    this.gain.gain.value = val;
   }
   public start() {
     this.gain.gain.value = 0;
     this.source.start(0); // 开始播放
-    const vloume = (store as any).state.music.vloume;
+    const vloume = this.vloume;
     this.gain.gain.linearRampToValueAtTime(vloume, 5);
+    this.async_cursor();
   }
   public onended() {
     store.commit('update_music_state', 'stop');
