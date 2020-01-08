@@ -284,6 +284,8 @@
           </span>
         </div>
       </div>
+                {{$store.state.music.state}}
+
       <div class="music-flex music-control">
         <AIconfont class="music-control-heart" :type="isLike?'icon-heart-outline':'icon-heart'" />
         <AIconfont class="music-control-previous" @click="handlePrev" type="icon-skip-previous" />

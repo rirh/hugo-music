@@ -67,7 +67,7 @@ const music = {
       state.duration = params;
     },
     update_music_state(state: any, params: any) {
-      switch (state.state) {
+      switch (params) {
         case 'playing':
           audio.resume();
           // if (state.state === 'pause') { audio.resume(); }
@@ -101,7 +101,6 @@ const music = {
           audio.set_url(music.url);
           audio.set_vloume(state.vloume);
           await audio.init();
-          audio.resume();
           store.commit('update_music_list', params);
         }
         if (lyrics.code === 200) {
@@ -154,10 +153,14 @@ class Sound {
         /**
          * TODO
          */
-        store.commit('update_music_state', 'ready');
-        store.commit('update_music_cursor', this.audio.currentTime);
-        store.commit('update_music_duration', this.audio.duration);
-        reslove();
+        if (this.url) {
+          store.commit('update_music_state', 'playing');
+          store.commit('update_music_cursor', this.audio.currentTime);
+          store.commit('update_music_duration', this.audio.duration);
+          reslove();
+        }
+
+
       };
       this.audio.ontimeupdate = this.start_progress.bind(this);
       this.audio.onended = this.stop.bind(this);
@@ -181,11 +184,11 @@ class Sound {
     this.source.start(0); // 开始播放
     const vloume = this.vloume;
     this.gain.gain.linearRampToValueAtTime(vloume, 5);
-    this.async_cursor();
+    this.start_progress();
   }
   public stop() {
     this.audio.pause();
-    store.commit('update_music_state', 'stop');
+    // store.commit('update_music_state', 'stop');
   }
   public resume() {
     this.gain.gain.value = 0;
