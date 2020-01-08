@@ -47,13 +47,6 @@ const AR = {
             .push('origin', 'master', () => {
                 this.loading.color = 'blue';
                 this.loading.text = 'pushing...';
-                exec(`
-                    ssh blog> /dev/null 2>&1 << eeooff
-                    cd NoteBook/;
-                    git fetch --all;
-                    git reset --hard origin/master;
-                    git pull;
-                    `);
                 this.loading.succeed();
                 this.loading.stop();
                 clg('push done!')
