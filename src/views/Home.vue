@@ -105,7 +105,9 @@ footer {
     <LyricsPanel v-show="$store.state.music.showPanel" />
   </transition>-->
   <footer v-show="!$store.state.vedio.show">
-    <Music />
+    <keep-alive>
+      <Music />
+    </keep-alive>
   </footer>
 </body>
 </template>

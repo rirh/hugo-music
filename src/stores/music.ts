@@ -8,6 +8,7 @@ import store from '../store';
  * 定义为全局数据控制器
  * 只要数据改变监听改变进行对应的操作
  */
+
 let audio: any;
 const music = {
   state: {
@@ -64,20 +65,23 @@ const music = {
       state.duration = params;
     },
     update_music_state(state: any, params: any) {
-      state.state = params;
       switch (state.state) {
         case 'playing':
           audio.resume();
+          // if (state.state === 'pause') { audio.resume(); }
           break;
         case 'pause':
           audio.suspend();
+
+          // if (state.state === 'playing') { audio.suspend(); }
           break;
         case 'stop':
-          audio.stop();
+          // audio.stop();
           break;
         default:
           break;
       }
+      state.state = params;
     },
     async  update_music_data(state: any, params: any) {
       if (params.id !== state.data.id) {
@@ -90,11 +94,12 @@ const music = {
         if (musics.code === 200) {
           const [music] = musics.data;
           if (!audio || !audio.init) {
-            audio = new Music({ url: music.url, vloume: 1 });
-          } else {
-            audio.stop();
-            audio.init(music.url);
+            audio = new Sound({ volume: state.vloume, url: music.url });
           }
+          audio.set_url(music.url);
+          audio.set_vloume(state.vloume);
+          await audio.init();
+          audio.resume();
           store.commit('update_music_list', params);
         }
         if (lyrics.code === 200) {
@@ -107,58 +112,62 @@ const music = {
 
 export default music;
 
-class Music {
-  public context: any;
-  public source: any;
-  public gain: any;
-  public analyser: any;
-  public filter: any;
-  public url: any;
-  public vloume: number | string = 1;
-  constructor(props: any) {
+
+class Sound {
+  public DEF_ANALYSER_FFSIZE: string | number = 2048;
+  public FADE_SEC: number = 0.8;
+
+  private audio: any;
+  private context: any;
+  private source: any;
+  private gain: any;
+  private analyser: any;
+  private filter: any;
+  private url: any;
+  private vloume: number | string = 1;
+  constructor(props: any = {}) {
     window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     this.url = props.url;
     this.vloume = props.vloume;
-    this.init(this.url);
   }
-
-  public async init(url: any) {
-    this.context = new AudioContext();
-    const { data } = await axios({ method: 'GET', url, responseType: 'arraybuffer' });
-    const buffer = await this.context.decodeAudioData(data);
-    this.source = this.context.createBufferSource();
-    this.source.buffer = buffer;
-    this.gain = this.context.createGain();
-    this.gain.gain.value = 0.5;
-    this.analyser = this.context.createAnalyser();
-    this.analyser.fftSize = 2048;
-    this.filter = this.context.createBiquadFilter();
-    this.filter.type = 'allpass'; // 低通 滤波器 详情可以见 BiquadFilterNode的文档
-    this.source.connect(this.filter);
-    this.filter.connect(this.analyser);
-    this.analyser.connect(this.gain);
-    this.gain.connect(this.context.destination);
-    this.source.onended = this.onended;
-    this.context.onstatechange = this.onstatechange;
-    this.start();
-    // 更新总时长数据
-    store.commit('update_music_duration', this.source.buffer.duration);
-    this.async_cursor();
+  public async init() {
+    return new Promise(async (reslove, reject) => {
+      this.context = new AudioContext();
+      // this.audio = document.createElement('audio');
+      if (this.audio) { this.stop(); this.audio = null; }
+      this.audio = new Audio();
+      this.audio.crossOrigin = 'anonymous';
+      this.audio.src = this.url;
+      this.audio.volume = 1;
+      this.source = this.context.createMediaElementSource(this.audio);
+      this.gain = this.context.createGain();
+      this.gain.gain.value = this.vloume;
+      this.analyser = this.context.createAnalyser();
+      this.analyser.fftSize = this.DEF_ANALYSER_FFSIZE;
+      this.source.connect(this.gain);
+      this.gain.connect(this.context.destination);
+      this.audio.oncanplay = () => {
+        // 已经能够播放
+        /**
+         * TODO
+         */
+        store.commit('update_music_state', 'ready');
+        store.commit('update_music_cursor', this.audio.currentTime);
+        store.commit('update_music_duration', this.audio.duration);
+        reslove();
+      };
+      this.audio.ontimeupdate = this.start_progress.bind(this);
+      this.audio.onended = this.stop.bind(this);
+    });
   }
-  public async_cursor() {
-    const start = () => {
-      const { state, currentTime } = this.source.context;
-      // console.log(state, currentTime);
-      setTimeout(() => {
-        store.commit('update_music_cursor', currentTime);
-        if (state === 'running') { start(); }
-      }, 1000);
-
-    };
-
-    store.commit('update_music_cursor', this.source.context.currentTime);
-    start();
-
+  public set_url(url: string) {
+    this.url = url;
+  }
+  public set_vloume(val: string) {
+    this.vloume = val;
+  }
+  public start_progress() {
+    store.commit('update_music_cursor', this.audio.currentTime);
   }
   public set_gain(val: number) {
     this.gain = val;
@@ -167,38 +176,135 @@ class Music {
   public start() {
     this.gain.gain.value = 0;
     this.source.start(0); // 开始播放
-    const vloume = (store as any).state.music.vloume;
+    const vloume = this.vloume;
     this.gain.gain.linearRampToValueAtTime(vloume, 5);
   }
-  public onended() {
+  public stop() {
+    this.audio.pause();
     store.commit('update_music_state', 'stop');
   }
-  public onstatechange() {
-    const key = this.source.context.state;
-    let state: any = null;
-    switch (key) {
-      case 'suspended':
-        state = 'pause';
-        break;
-      case 'running':
-        state = 'playing';
-        break;
-      default:
-        break;
-    }
-    if (state) { store.commit('update_music_state', state); }
-  }
-  public stop() {
-    this.source.stop();
-  }
   public resume() {
-    this.context.resume();
-    // 同步播放器当前数据
-    this.async_cursor();
+    this.gain.gain.value = 0;
+    this.audio.play();
+    const currentTime: number = this.context.currentTime;
+    this.gain.gain.linearRampToValueAtTime(this.vloume, currentTime + this.FADE_SEC);
   }
   public suspend() {
-    this.context.suspend();
+    const currentTime = this.context.currentTime;
+    this.gain.gain.linearRampToValueAtTime(0, currentTime + this.FADE_SEC);
+    setTimeout(() => {
+      this.audio.pause();
+    }, this.FADE_SEC * 800); // 延时
   }
-
-
 }
+
+
+// class Music {
+//   private context: any;
+//   private source: any;
+//   private gain: any;
+//   private analyser: any;
+//   private filter: any;
+//   private url: any;
+//   private vloume: number | string = 1;
+//   constructor(props: any = {}) {
+//     window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+//   }
+//   public async init() {
+//     return new Promise(async (reslove, reject) => {
+//       this.context = new AudioContext();
+//       const url = this.url;
+//       const { data } = await axios({ method: 'GET', url, responseType: 'arraybuffer' });
+//       const buffer = await this.context.decodeAudioData(data);
+//       this.source = this.context.createBufferSource();
+//       this.source.buffer = buffer;
+//       this.gain = this.context.createGain();
+//       this.gain.gain.value = 0.5;
+//       this.analyser = this.context.createAnalyser();
+//       this.analyser.fftSize = 2048;
+//       this.filter = this.context.createBiquadFilter();
+//       this.filter.type = 'allpass'; // 低通 滤波器 详情可以见 BiquadFilterNode的文档
+//       this.source.connect(this.filter);
+//       this.filter.connect(this.analyser);
+//       this.analyser.connect(this.gain);
+//       this.gain.connect(this.context.destination);
+//       this.source.onended = this.onended;
+//       this.context.onstatechange = this.onstatechange;
+//       // 更新总时长数据
+//       store.commit('update_music_duration', this.source.buffer.duration);
+//       reslove();
+//     });
+//   }
+//   public set_url(url: string) {
+//     this.url = url;
+//   }
+//   public set_vloume(val: string) {
+//     this.vloume = val;
+//   }
+//   public start_progress() {
+//     const start = () => {
+//       const { state, currentTime } = this.source.context;
+//       // console.log(state, currentTime);
+//       setTimeout(() => {
+//         store.commit('update_music_cursor', currentTime);
+//         if (state === 'running') { start(); }
+//       }, 1000);
+//     };
+//     store.commit('update_music_cursor', this.source.context.currentTime);
+//     start();
+//   }
+//   public set_gain(val: number) {
+//     this.gain = val;
+//     this.gain.gain.value = 0.5;
+//   }
+//   public start() {
+//     this.gain.gain.value = 0;
+//     this.source.start(0); // 开始播放
+//     const vloume = this.vloume;
+//     this.gain.gain.linearRampToValueAtTime(vloume, 5);
+//   }
+//   public onended() {
+//     store.commit('update_music_state', 'stop');
+//     this.stop();
+//     // 下一首 如果有下一首就播放下一首 没有就列表循环
+//     const current = (store as any).state.music.data;
+//     const list = (store as any).state.music.list;
+//     let index = list.findIndex((e: any) => e.id === current.id);
+//     index = index + 1;
+//     if (index > list.length - 1) {
+//       index = 0;
+//     }
+//     if (list[index]) {
+//       store.commit('update_music_data', list[index]);
+//     }
+
+//   }
+//   public onstatechange() {
+//     const key = this.source.context.state;
+//     let state: any = null;
+//     switch (key) {
+//       case 'suspended':
+//         state = 'pause';
+//         break;
+//       case 'running':
+//         state = 'playing';
+//         break;
+//       default:
+//         break;
+//     }
+//     if (state) { store.commit('update_music_state', state); }
+//   }
+//   public stop() {
+//     this.source.stop();
+//   }
+//   public resume() {
+//     this.context.resume();
+//     // 同步播放器当前数据
+//     this.start_progress();
+//   }
+//   public suspend() {
+//     this.context.suspend();
+//   }
+
+
+// }

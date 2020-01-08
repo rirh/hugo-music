@@ -647,6 +647,7 @@ export default class Music extends Vue {
     }
   }
 
+
   // public mounted() {
   //   this.player = this.$refs.player;
   //   // localStorage.setItem("a", '123123123');
