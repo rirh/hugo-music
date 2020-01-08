@@ -391,11 +391,15 @@
       </a-col>
       <a-col v-show="!$store.state.music.showPanel" :span="5" style="text-align:right">
         <a-icon
-          @click="handleBack"
+          @click="handleBackRoute"
           type="left"
           class="wapper-main-icon wapper-main-icon-left pointer"
         />
-        <a-icon type="right" class="wapper-main-icon wapper-main-icon-right pointer" />
+        <a-icon
+          @click="handleNextRoute"
+          type="right"
+          class="wapper-main-icon wapper-main-icon-right pointer"
+        />
       </a-col>
       <a-col :span="10" class="wapper-main-menu">
         <Menu v-show="!$store.state.music.showPanel" />
@@ -941,7 +945,10 @@ export default class HelloWorld extends Vue {
     this.seach_visible = true;
   }
 
-  public handleBack() {
+  public handleBackRoute() {
+    this.$router.go(-1);
+  }
+  public handleNextRoute() {
     this.$router.go(-1);
   }
 }

@@ -256,18 +256,20 @@
       <div class="circletrow roate" ref="roate">
         <a-avatar :size="132" class="cover" :src="$store.state.music.data.image" alt />
       </div>
+
       <div class="play" @click="handlePlay">
         <AIconfont v-show="$store.state.music.state!=='playing'" type="icon-play" />
         <AIconfont v-show="$store.state.music.state==='playing'" type="icon-pause" />
       </div>
       <div class="panel">
+        {{$store.state.music.state}}
         <div
           class="name"
         >{{$store.state.music.data.name?`${$store.state.music.data.name}-`:''}}{{$store.state.music.data.auth}}</div>
         <div class="lyrics">
           <strong
             class="lyrics-line"
-            v-for="(item,index) in parseLyric($store.state.music.lyric.lrc.lyric)"
+            v-for="(item,index) in parseLyric($store.state.music.lyric&&$store.state.music.lyric.lrc&&$store.state.music.lyric.lrc.lyric)"
             :key="index"
             :style="highLightLyric(item,index)"
           >{{item.contant}}</strong>
