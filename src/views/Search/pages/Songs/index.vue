@@ -141,7 +141,7 @@ export default class Songs extends Vue {
     //   ? `0${index + 1}`
     //   : this.current * index + 1;
     index = index + 1 + (this.current - 1) * 100;
-    return index > 10 ? index : `0${index}`;
+    return index >= 10 ? index : `0${index}`;
   }
   public artistsfilter(item: any) {
     let result = '';

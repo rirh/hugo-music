@@ -26,10 +26,16 @@ const music = {
     showPanel: false,
     ctx: null,
     vloume: 1,
+    effects: 0,
   },
 
 
   mutations: {
+
+    updata_music_vloume(state: any, value: any) {
+      state.vloume = value;
+      audio.set_vloume(state.vloume);
+    },
     update_music_seek(state: any, value: any) {
       audio.seek(value);
     },
@@ -53,6 +59,50 @@ const music = {
         state.history.push(params);
       }
 
+    },
+    // 添加音效
+    set_effects(state: any, params: any) {
+      switch (params) {
+        case 0:
+          audio.cancelEffect();
+          break;
+        case 1:
+          audio.createSound();
+
+          break;
+        case 2:
+          audio.stereo();
+
+          break;
+        case 3:
+          audio.lowpassFilter();
+
+          break;
+        case 4:
+          audio.highpassFilter();
+
+          break;
+        case 5:
+          audio.enhanceVocal();
+
+          break;
+        case 6:
+          audio.removeVocal();
+
+          break;
+        case 7:
+          audio.delay();
+
+          break;
+        case 8:
+          audio.splitterMerger();
+
+          break;
+
+        default:
+          break;
+      }
+      state.effects = params;
     },
     clear_music_list(state: any) {
       state.list = [];
@@ -79,6 +129,16 @@ const music = {
           break;
         case 'stop':
           // audio.stop();
+          const current = state.data;
+          const list = state.list;
+          let index = list.findIndex((e: any) => e.id === current.id);
+          index = index + 1;
+          if (index > list.length - 1) {
+            index = 0;
+          }
+          if (list[index]) {
+            store.commit('update_music_data', list[index]);
+          }
           break;
         default:
           break;
@@ -136,7 +196,7 @@ class Sound {
     return new Promise(async (reslove, reject) => {
       this.context = new AudioContext();
       // this.audio = document.createElement('audio');
-      if (this.audio) { this.stop(); this.audio = null; }
+      if (this.audio) { this.audio.pause(); this.audio = null; }
       this.audio = new Audio();
       this.audio.crossOrigin = 'anonymous';
       this.audio.src = this.url;
@@ -159,18 +219,24 @@ class Sound {
           store.commit('update_music_duration', this.audio.duration);
           reslove();
         }
-
-
       };
       this.audio.ontimeupdate = this.start_progress.bind(this);
       this.audio.onended = this.stop.bind(this);
     });
+  }
+  public seek(value: any) {
+    const len = this.audio.duration;
+    const playtime = (value * len / 100);
+    this.audio.currentTime = playtime;
   }
   public set_url(url: string) {
     this.url = url;
   }
   public set_vloume(val: string) {
     this.vloume = val;
+    if (this.gain) {
+      this.gain.gain.value = this.vloume;
+    }
   }
   public start_progress() {
     store.commit('update_music_cursor', this.audio.currentTime);
@@ -187,8 +253,9 @@ class Sound {
     this.start_progress();
   }
   public stop() {
-    this.audio.pause();
-    // store.commit('update_music_state', 'stop');
+    // this.audio.pause();
+    store.commit('update_music_state', 'stop');
+
   }
   public resume() {
     this.splitterMerger();
@@ -243,7 +310,7 @@ class Sound {
       panner.setPosition(Math.sin(index) * radius, 0, Math.cos(index) * radius);
       index += 1 / 100;
     }, 16);
-    gain1.gain.value = 1;
+    gain1.gain.value = this.vloume;
     this.gain.connect(gain1);
     this.gain.connect(panner);
     panner.connect(this.analyser);

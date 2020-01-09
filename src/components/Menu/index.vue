@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import routers from "@/routers";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import routers from '@/routers';
 
 @Component
 export default class Menu extends Vue {

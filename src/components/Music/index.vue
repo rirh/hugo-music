@@ -298,7 +298,27 @@
         <AIconfont class="music-control-next" @click="handleNext" type="icon-skip-next" />
         <AIconfont class="music-control-share" type="icon-share" />
       </div>
+
       <div class="music-flex music-panel">
+        <!-- <a-popover>
+          <template slot="content">
+            <div style="padding:10px 15px">
+              <p @click="$store.commit('set_effects',0)">原声</p>
+              <p @click="$store.commit('set_effects',1)">测试声音</p>
+              <p @click="$store.commit('set_effects',2)">环绕声音</p>
+              <p @click="$store.commit('set_effects',3)">低音增强</p>
+              <p @click="$store.commit('set_effects',4)">高音增强</p>
+              <p @click="$store.commit('set_effects',5)">人声增强</p>
+              <p @click="$store.commit('set_effects',6)">人声消除</p>
+              <p @click="$store.commit('set_effects',7)">回声缭绕</p>
+              <p @click="$store.commit('set_effects',8)">声道增强</p>
+            </div>
+          </template>
+        </a-popover>-->
+        <AIconfont class="music-panel-plus" @click="visibleEffects=true" type="icon-heart-pulse" />
+        <a-modal v-model="visibleEffects" :footer="null" :mask="false">
+          <Effects />
+        </a-modal>
         <AIconfont class="music-panel-play" @click="visible=true" type="icon-playlist-play" />
         <AIconfont class="music-panel-plus" type="icon-playlist-plus" />
         <AIconfont class="music-panel-cibiaoquanyi" type="icon-cibiaoquanyi" />
@@ -370,11 +390,11 @@ import { get_song_url, get_check_music, get_user_record } from '@/actions';
 import { notification, Modal } from 'ant-design-vue';
 import Drawer from '@/components/Drawer';
 import { ERROR_IMG } from '@/constant/api';
+import Effects from './Effects.vue';
 
-const player = new Audio();
-
-@Component({ components: { Drawer } })
+@Component({ components: { Drawer, Effects } })
 export default class Music extends Vue {
+  public visibleEffects = false;
   // 播放状态
   get state() {
     return this.$store.state.music.state;
@@ -402,7 +422,6 @@ export default class Music extends Vue {
   public name = 'XXX';
   public auth = 'XXX';
   // 缓存实体
-  public player = player;
   public cursor = '0';
   public duration = '0';
   public volume = 100;
@@ -483,8 +502,8 @@ export default class Music extends Vue {
     } else {
       this.volumetype = 'icon-volume-medium';
     }
-    if (msg && this.play) {
-      (this as any).player.volume = msg / 100;
+    if (msg) {
+      this.$store.commit('updata_music_vloume', msg / 100);
     }
   }
   // 播放暂停按钮
@@ -564,10 +583,10 @@ export default class Music extends Vue {
     }
     if (type === 'icon-volume-off') {
       this.volumetype = 'icon-volume-medium';
-      this.player.muted = false;
+      // this.player.muted = false;
       this.volume = this.volumecach;
     } else {
-      this.player.muted = true;
+      // this.player.muted = true;
       this.volume = 0;
       this.volumetype = 'icon-volume-off';
     }
@@ -639,17 +658,16 @@ export default class Music extends Vue {
   }
   public stop() {
     const state = this.state;
-    if (this.player) {
-      if (state !== 'stop') {
-        // this.showinfo = false;
-        this.progress = 0;
-        this.cursor = '0';
-        this.$store.commit('update_music_state', 'stop');
-        // this.play();
-      }
-    }
+    // if (this.player) {
+    //   if (state !== "stop") {
+    //     // this.showinfo = false;
+    //     this.progress = 0;
+    //     this.cursor = "0";
+    //     this.$store.commit("update_music_state", "stop");
+    //     // this.play();
+    //   }
+    // }
   }
-
 
   // public mounted() {
   //   this.player = this.$refs.player;
