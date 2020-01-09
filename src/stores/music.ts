@@ -191,6 +191,7 @@ class Sound {
     // store.commit('update_music_state', 'stop');
   }
   public resume() {
+    this.splitterMerger();
     this.gain.gain.value = 0;
     this.audio.play();
     const currentTime: number = this.context.currentTime;
