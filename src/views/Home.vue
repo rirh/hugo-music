@@ -89,7 +89,6 @@ footer {
   <header>
     <Header />
   </header>
-
   <div class="HolyGrail-body" v-show="!$store.state.music.showPanel">
     <main class="HolyGrail-content">
       <Contant />
