@@ -947,13 +947,13 @@ export default class HelloWorld extends Vue {
 
   public handleBackRoute() {
     // this.$router.go(-1);
-    console.log(this.$router, this.$route);
+    // console.log(this.$router, this.$route);
     window.history.back();
   }
   public handleNextRoute() {
     window.history.forward();
     // this.$router.go(-1);
-    console.log(this.$router, this.$route);
+    // console.log(this.$router, this.$route);
   }
 }
 </script>
