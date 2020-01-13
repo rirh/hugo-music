@@ -2,8 +2,9 @@
 import { ipcRenderer } from 'electron';
 import { SEND_STORE, OPEN_FLOAT } from '@/constant/ipc';
 import axios from 'axios';
-import { get_song_url, get_lyric } from '@/actions';
+import { get_song_url, get_lyric, get_like, get_likelist } from '@/actions';
 import store from '../store';
+import { notification } from 'ant-design-vue';
 /**
  * 定义为全局数据控制器
  * 只要数据改变监听改变进行对应的操作
@@ -31,7 +32,17 @@ const music = {
 
 
   mutations: {
+    async updata_like_state(state: any, value: any) {
+      const id = value.id ? value.id : state.data.id;
+      const { code } = await get_like(`id=${id}&like=${value.like}`);
+      if (code === 200) {
+        notification.success({
+          message: '恭喜',
+          description: '操作成功！',
+        });
+      }
 
+    },
     updata_music_vloume(state: any, value: any) {
       state.vloume = value;
       audio.set_vloume(state.vloume);
@@ -68,35 +79,27 @@ const music = {
           break;
         case 1:
           audio.createSound();
-
           break;
         case 2:
           audio.stereo();
-
           break;
         case 3:
           audio.lowpassFilter();
-
           break;
         case 4:
           audio.highpassFilter();
-
           break;
         case 5:
           audio.enhanceVocal();
-
           break;
         case 6:
           audio.removeVocal();
-
           break;
         case 7:
           audio.delay();
-
           break;
         case 8:
           audio.splitterMerger();
-
           break;
 
         default:

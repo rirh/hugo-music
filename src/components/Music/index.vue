@@ -285,7 +285,12 @@
         </div>
       </div>
       <div class="music-flex music-control">
-        <AIconfont class="music-control-heart" :type="isLike?'icon-heart-outline':'icon-heart'" />
+        <AIconfont
+          @click="handleLike"
+          class="music-control-heart"
+          :style="{color:$store.state.music.like&&'var(--red)'}"
+          :type="$store.state.music.like?'icon-heart-outline':'icon-heart'"
+        />
         <AIconfont class="music-control-previous" @click="handlePrev" type="icon-skip-previous" />
         <a-button type="primary" class="music-control-play" @click="handleStart">
           <transition name="fade" mode="out-in">
@@ -385,12 +390,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { get_song_url, get_check_music, get_user_record } from '@/actions';
-import { notification, Modal } from 'ant-design-vue';
-import Drawer from '@/components/Drawer';
-import { ERROR_IMG } from '@/constant/api';
-import Effects from './Effects.vue';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { get_song_url, get_check_music, get_user_record } from "@/actions";
+import { notification, Modal } from "ant-design-vue";
+import Drawer from "@/components/Drawer";
+import { ERROR_IMG } from "@/constant/api";
+import Effects from "./Effects.vue";
 
 @Component({ components: { Drawer, Effects } })
 export default class Music extends Vue {
@@ -417,16 +422,16 @@ export default class Music extends Vue {
   // 进度条
   public progress = 0;
   // 音乐信息
-  public music = '';
-  public img = '';
-  public name = 'XXX';
-  public auth = 'XXX';
+  public music = "";
+  public img = "";
+  public name = "XXX";
+  public auth = "XXX";
   // 缓存实体
-  public cursor = '0';
-  public duration = '0';
+  public cursor = "0";
+  public duration = "0";
   public volume = 100;
   public volumecach = 100;
-  public volumetype = 'icon-volume-high';
+  public volumetype = "icon-volume-high";
   public like = false;
 
   // 音量弹窗显示
@@ -434,17 +439,17 @@ export default class Music extends Vue {
   // 抛出进度可以外部控制
   @Prop() private msg!: string;
   public handleDelete(index: any) {
-    this.$store.commit('delete_music_list_item', index);
+    this.$store.commit("delete_music_list_item", index);
   }
   public handleEmptyList() {
     Modal.confirm({
-      title: '确定清空列表？',
-      content: '清空以后需要重新添加',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定清空列表？",
+      content: "清空以后需要重新添加",
+      okText: "确定",
+      cancelText: "取消",
       onOk: () => {
-        this.$store.commit('clear_music_list');
-      },
+        this.$store.commit("clear_music_list");
+      }
     });
   }
   public mounted() {
@@ -479,31 +484,35 @@ export default class Music extends Vue {
     // var id1 = sound.play();
     // var id2 = sound.play();
   }
+  async handleLike() {
+    const id = this.$store.state.music.data.id;
+    this.$store.commit("updata_like_state", { like: true });
+  }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('update_show_panel', !showPanel);
+    this.$store.commit("update_show_panel", !showPanel);
   }
   public handleseek(msg: string | number) {
-    this.$store.commit('update_music_seek', msg);
+    this.$store.commit("update_music_seek", msg);
   }
-  @Watch('$store.state.music.cursor', { deep: true })
+  @Watch("$store.state.music.cursor", { deep: true })
   public handleProgress(msg: any) {
     const duration: any = this.$store.state.music.duration;
     this.progress = (msg / duration) * 100;
     // console.log((msg / 100) * duration);
   }
 
-  @Watch('volume')
+  @Watch("volume")
   public handleVolume(msg: any) {
     if (msg === 100) {
-      this.volumetype = 'icon-volume-high';
+      this.volumetype = "icon-volume-high";
     } else if (msg === 0) {
-      this.volumetype = 'icon-volume-off';
+      this.volumetype = "icon-volume-off";
     } else {
-      this.volumetype = 'icon-volume-medium';
+      this.volumetype = "icon-volume-medium";
     }
     if (msg) {
-      this.$store.commit('updata_music_vloume', msg / 100);
+      this.$store.commit("updata_music_vloume", msg / 100);
     }
   }
   // 播放暂停按钮
@@ -512,8 +521,8 @@ export default class Music extends Vue {
     // if ((this as any).player.play) {
 
     let state = this.$store.state.music.state;
-    state = state === 'playing' ? 'pause' : 'playing';
-    this.$store.commit('update_music_state', state);
+    state = state === "playing" ? "pause" : "playing";
+    this.$store.commit("update_music_state", state);
 
     // }
   }
@@ -536,7 +545,7 @@ export default class Music extends Vue {
   //   }
   // }
 
-  @Watch('$store.state.music.data', { deep: true })
+  @Watch("$store.state.music.data", { deep: true })
   public async handleMusic({ id, image, name, auth, duration }: any) {
     this.showinfo = true;
     this.img = image;
@@ -544,7 +553,7 @@ export default class Music extends Vue {
     this.auth = auth;
     const myNotification = new Notification(this.name, {
       body: this.auth,
-      icon: this.img,
+      icon: this.img
     });
     // await this.asyncPlay(id);
     // this.visible = false;
@@ -561,7 +570,7 @@ export default class Music extends Vue {
       index = list.length - 1;
     }
     if (list[index]) {
-      this.$store.commit('update_music_data', list[index]);
+      this.$store.commit("update_music_data", list[index]);
     }
   }
   public handleNext() {
@@ -573,7 +582,7 @@ export default class Music extends Vue {
       index = 0;
     }
     if (list[index]) {
-      this.$store.commit('update_music_data', list[index]);
+      this.$store.commit("update_music_data", list[index]);
     }
   }
   public handleVolumeType() {
@@ -581,14 +590,14 @@ export default class Music extends Vue {
     if (this.volume !== 0) {
       this.volumecach = this.volume;
     }
-    if (type === 'icon-volume-off') {
-      this.volumetype = 'icon-volume-medium';
+    if (type === "icon-volume-off") {
+      this.volumetype = "icon-volume-medium";
       // this.player.muted = false;
       this.volume = this.volumecach;
     } else {
       // this.player.muted = true;
       this.volume = 0;
-      this.volumetype = 'icon-volume-off';
+      this.volumetype = "icon-volume-off";
     }
   }
   public async asyncPlay(id: any) {
@@ -611,11 +620,11 @@ export default class Music extends Vue {
     const [music] = data;
     (this as any).player.src = music.url;
 
-    (this as any).player.addEventListener('pause', this.pause());
-    (this as any).player.addEventListener('loadeddata', this.play());
+    (this as any).player.addEventListener("pause", this.pause());
+    (this as any).player.addEventListener("loadeddata", this.play());
 
     // (this as any).player.addEventListener("ended", this.stop());
-    (this as any).player.addEventListener('error', (error: any) => {
+    (this as any).player.addEventListener("error", (error: any) => {
       throw error;
     });
     this.music = music.url;
@@ -624,7 +633,7 @@ export default class Music extends Vue {
     // if (this.player) {
     // let duration: any;
     // let currentTime: any;
-    this.$store.commit('update_music_state', 'playing');
+    this.$store.commit("update_music_state", "playing");
     // (this as any).player.play();
     // this.player.onended = () => {
     //   this.stop();
@@ -650,9 +659,9 @@ export default class Music extends Vue {
   public pause() {
     const { state } = this.$store.state.music;
     // if (this.player) {
-    if (state === 'playing') {
+    if (state === "playing") {
       // (this as any).player.pause();
-      this.$store.commit('update_music_state', 'pause');
+      this.$store.commit("update_music_state", "pause");
     }
     // }
   }
@@ -679,7 +688,7 @@ export default class Music extends Vue {
     if (duration) {
       const min: any = `${Math.floor(duration / 60)}`;
       const sco: any = `${Math.floor(duration % 60)}`;
-      result = `${min.padStart(2, '0')}:${sco.padStart(2, '0')}`;
+      result = `${min.padStart(2, "0")}:${sco.padStart(2, "0")}`;
     }
     return result;
   }

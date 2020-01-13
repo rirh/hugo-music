@@ -36,7 +36,7 @@
         justify-content: center;
         border-radius: 50%;
         font-size: 40px;
-        padding: .5vw;
+        padding: 0.5vw;
         opacity: 0;
         transition: opacity 0.3s;
       }
@@ -54,7 +54,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: left;
-      margin: .5vw 0 0; 
+      margin: 0.5vw 0 0;
     }
     &-auth {
       font-size: 12px;
@@ -96,7 +96,7 @@
           <strong>{{item.data&&item.data.title}}</strong>
         </div>
         <div class="lists-item-auth">
-          <span>by {{item.data&&item.data.creator.nickname}}</span>
+          <span>by {{item.data&&item.data.creator&&item.data.creator.nickname}}</span>
         </div>
       </div>
     </div>
@@ -104,11 +104,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ERROR_IMG } from '@/constant/api';
-import { get_cat_list } from '@/actions';
-import { groupBy } from 'lodash';
-import { transformW, transformSongTime } from '@/util/filters';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { ERROR_IMG } from "@/constant/api";
+import { get_cat_list } from "@/actions";
+import { groupBy } from "lodash";
+import { transformW, transformSongTime } from "@/util/filters";
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
@@ -116,7 +116,7 @@ export default class Home extends Vue {
   public transformW = (e: any) => transformW(e);
   public transformSongTime = (e: any) => transformSongTime(e);
   public handleItem(item: any) {
-    this.$emit('on-item', item);
+    this.$emit("on-item", item);
   }
 }
 </script>
