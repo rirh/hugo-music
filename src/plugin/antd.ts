@@ -9,13 +9,13 @@ import {
   Pagination, Tabs, Table,
   Divider, Drawer, Tag, Select,
   Input, Form, Collapse, Progress,
-  Radio, Spin,
+  Radio, Spin, message,
 } from 'ant-design-vue';
 import Avatar from './components/Avatar.vue';
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
   // scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',
-  scriptUrl: 'https:////at.alicdn.com/t/font_1272441_xqqumuesbk.js',
+  scriptUrl: 'https://at.alicdn.com/t/font_1272441_no0ows19td.js',
   // scriptUrl: 'icon.js',
 });
 
@@ -56,6 +56,13 @@ Vue.component(Radio.Group.name, Radio.Group);
 Vue.component(Radio.Button.name, Radio.Button);
 Vue.component(Radio.name, Radio);
 Vue.component(Spin.name, Spin);
+
+// 全局配置
+message.config({
+  top: `120px`,
+  duration: 2,
+  maxCount: 6,
+});
 
 
 

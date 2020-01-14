@@ -106,7 +106,8 @@ export const get_update = async (args: any) => {
 export const get_likelist = async () => {
   const account = (store as any).state.user.user.account;
   if (account) {
-    const { response }: any = await http(`${GET_LIKELIST}?uid=${account.id}`);
+    // 添加时间防止缓存数据不更新
+    const { response }: any = await http(`${GET_LIKELIST}?uid=${account.id}&time=${new Date().getTime()}`);
     store.commit('update_likelist', response);
   }
 };

@@ -1,10 +1,10 @@
 
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, BrowserWindow } from 'electron';
 import { SEND_STORE, OPEN_FLOAT } from '@/constant/ipc';
 import axios from 'axios';
 import { get_song_url, get_lyric, get_like, get_likelist } from '@/actions';
 import store from '../store';
-import { notification } from 'ant-design-vue';
+import { notification, message } from 'ant-design-vue';
 /**
  * 定义为全局数据控制器
  * 只要数据改变监听改变进行对应的操作
@@ -17,7 +17,7 @@ const music = {
     duration: 0,
     cursor: 0,
     state: 'stop',
-    mode: '',
+    mode: 'order',
     data: {},
     list: [],
     lyric: [],
@@ -28,20 +28,27 @@ const music = {
     ctx: null,
     vloume: 1,
     effects: 0,
+    mode_list: ['order', 'random', 'pleasing', 'loop', 'one'],
   },
 
 
   mutations: {
+    update_music_mode(state: any, value: any) {
+      state.mode = value;
+    },
     async updata_like_state(state: any, value: any) {
       const id = value.id ? value.id : state.data.id;
-      const { code } = await get_like(`id=${id}&like=${value.like}`);
-      if (code === 200) {
-        notification.success({
-          message: '恭喜',
-          description: '操作成功！',
-        });
+      // 容错一下
+      if (id) {
+        const { code } = await get_like(`id=${id}&like=${value.like}`);
+        if (code === 200) {
+          message.success(value.like ? '已添加到我喜欢的音乐！' : '取消喜欢成功');
+          await get_likelist();
+          state.like = !state.like;
+        } else {
+          message.success('遇到了一点问题，请稍后重试');
+        }
       }
-
     },
     updata_music_vloume(state: any, value: any) {
       state.vloume = value;
@@ -122,22 +129,46 @@ const music = {
     update_music_state(state: any, params: any) {
       switch (params) {
         case 'playing':
-          audio.resume();
+          if (audio) {
+            audio.resume();
+          }
           // if (state.state === 'pause') { audio.resume(); }
           break;
         case 'pause':
-          audio.suspend();
-
+          if (audio) {
+            audio.suspend();
+          }
           // if (state.state === 'playing') { audio.suspend(); }
           break;
         case 'stop':
-          // audio.stop();
           const current = state.data;
           const list = state.list;
+          const mode = state.mode;
+          const mode_list = state.mode_list;
           let index = list.findIndex((e: any) => e.id === current.id);
           index = index + 1;
-          if (index > list.length - 1) {
-            index = 0;
+          switch (mode) {
+            case mode_list[0]:
+              if (index >= list.length - 1) { return; }
+              break;
+            case mode_list[1]:
+              const pub_img_current_no = () =>
+                Math.floor(Math.random() * list.length + 1);
+              index = pub_img_current_no();
+              break;
+            case mode_list[2]:
+              break;
+            case mode_list[3]:
+              if (index > list.length - 1) {
+                index = 0;
+              }
+              break;
+            case mode_list[4]:
+              audio.seek(0);
+              audio.resume();
+              return;
+            default:
+              break;
           }
           if (list[index]) {
             store.commit('update_music_data', list[index]);
@@ -156,6 +187,7 @@ const music = {
             get_song_url(params.id),
             get_lyric(params.id),
           ]);
+        // 播放歌曲
         if (musics.code === 200) {
           const [music] = musics.data;
           if (!audio || !audio.init) {
@@ -166,8 +198,14 @@ const music = {
           await audio.init();
           store.commit('update_music_list', params);
         }
+        // 同步歌词
         if (lyrics.code === 200) {
           store.commit('update_lyric', lyrics);
+        }
+        //  同步喜欢状态
+        if (lyrics.code === 200) {
+          const list = (store as any).state.user.likelist.ids;
+          state.like = list.some((e: any) => e === params.id);
         }
       }
     },

@@ -104,11 +104,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { ERROR_IMG } from "@/constant/api";
-import { get_cat_list } from "@/actions";
-import { groupBy } from "lodash";
-import { transformW, transformSongTime } from "@/util/filters";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { ERROR_IMG } from '@/constant/api';
+import { get_cat_list } from '@/actions';
+import { groupBy } from 'lodash';
+import { transformW, transformSongTime } from '@/util/filters';
 @Component({})
 export default class Home extends Vue {
   public errorImg = ERROR_IMG;
@@ -116,7 +116,7 @@ export default class Home extends Vue {
   public transformW = (e: any) => transformW(e);
   public transformSongTime = (e: any) => transformSongTime(e);
   public handleItem(item: any) {
-    this.$emit("on-item", item);
+    this.$emit('on-item', item);
   }
 }
 </script>

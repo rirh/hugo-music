@@ -113,7 +113,7 @@
   }
 }
 .wapper-main-set-icon:hover {
-  background-color: #bd5448;
+  background-color: var(--setHover);
   border-radius: 7px;
   // padding: 3px;
   // padding: 3px;
@@ -384,7 +384,7 @@
       <a-col style="padding-left:50px" :span="4" :offset="1" v-show="$store.state.music.showPanel">
         <AIconfont
           class="pointer"
-          style="font-size:32px"
+          style="font-size:32px;color"
           type="icon-chevron-down"
           @click="handleShowConrtal"
         />
@@ -474,7 +474,7 @@
             <AIconfont
               class="wapper-main-set-icon pointer"
               type="icon-tshirt-crew"
-              :style="{'color':'white'}"
+              :style="{'color':theme.skin_color}"
             />
           </a-popover>
 
@@ -620,6 +620,7 @@ export default class HelloWorld extends Vue {
     keywords_color: 'white',
     settings_color: 'white',
     email_color: 'white',
+    skin_color: 'white',
     blank_color: 'white',
   };
   public loading_no: boolean = true;
@@ -824,6 +825,27 @@ export default class HelloWorld extends Vue {
     };
     build[key]();
   }
+  @Watch('$store.state.music.showPanel')
+  public handleAsyncPanel(msg: any) {
+    if (msg) {
+      document.documentElement.style.setProperty(`--setHover`, '#e2e2e2');
+      this.theme.wapper_bg = 'white';
+      this.theme.keywords_color = 'var(--textColot)';
+      this.theme.settings_color = 'var(--textColot)';
+      this.theme.email_color = 'var(--textColot)';
+      this.theme.skin_color = 'var(--textColot)';
+      this.theme.blank_color = 'var(--textColot)';
+    } else {
+      document.documentElement.style.setProperty(`--setHover`, '#bd5448');
+      this.theme.wapper_bg = 'var(--red)';
+      this.theme.keywords_color = 'white';
+      this.theme.settings_color = 'white';
+      this.theme.email_color = 'white';
+      this.theme.skin_color = 'white';
+      this.theme.blank_color = 'white';
+    }
+  }
+
   // 历史记录功能待完善TODO
   // @Watch('$route')
   // public handleHistory(args: any) {
@@ -843,6 +865,7 @@ export default class HelloWorld extends Vue {
         this.theme.keywords_color = 'var(--textColot)';
         this.theme.settings_color = 'var(--textColot)';
         this.theme.email_color = 'var(--textColot)';
+        this.theme.skin_color = 'var(--textColot)';
         this.theme.blank_color = 'var(--textColot)';
 
         break;
@@ -851,6 +874,7 @@ export default class HelloWorld extends Vue {
         this.theme.keywords_color = 'white';
         this.theme.settings_color = 'white';
         this.theme.email_color = 'white';
+        this.theme.skin_color = 'white';
         this.theme.blank_color = 'white';
         break;
       case 'black':

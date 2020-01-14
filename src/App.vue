@@ -69,6 +69,7 @@ export default class Home extends Vue {
   --striped: #fafafa;
   --stripedHover: #f2f2f3;
   --tagBg: #aeaeae;
+  --setHover:#bd5448;
 }
 body {
   margin: 0;
