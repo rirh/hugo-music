@@ -57,16 +57,26 @@
         .tit {
           padding: 3px 0 0 0;
           .name {
-            font-size: 12px;
-            line-height: 12px;
+            font-size: 11px;
+            line-height: 11px;
             color: var(--textcolor);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 40vw;
           }
           .ar {
             // margin-top: 5px;
-            padding-top: 3px;
-            font-size: 11px;
-            line-height: 11px;
+            padding-top: 5px;
+            font-size: 10px;
+            line-height: 10px;
             color: #b9b1b1;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 40vw;
           }
         }
       }
@@ -214,9 +224,16 @@
             <AIconfont class="icon skip-next" type="icon-skip-next" />
           </div>
           <div class="icons">
-            <AIconfont class="icon heart" type="icon-heart" />
+            <AIconfont
+              :style="{color:music.like?'var(--red)':''}"
+              :type="music.like?'icon-heart':'icon-heart-outline'"
+              class="icon heart"
+            />
             <AIconfont class="icon playlist" type="icon-playlist-play" />
-            <span class="icon lyic">词</span>
+            <span
+              class="icon lyic"
+              :style="{color:music.showlyric?'var(--red)':'var(--textColor)'}"
+            >词</span>
             <AIconfont class="icon volume" type="icon-volume-low" />
           </div>
         </div>
@@ -254,13 +271,19 @@ export default class Float extends Vue {
     image: '',
     name: '',
     auth: '',
+    like: false,
+    showlyric: true,
   };
-  public position = 100;
+  public position = 240;
   public dragging = false;
   public width: any = null;
   public offset: any = null;
   public mounted() {
     ipcRenderer.on(ACCEPT_STORE, (event: any, arg: any) => {
+      this.setPosition((arg.cursor / arg.duration) * 240);
+      this.music.like = arg.like;
+      this.music.showlyric = arg.showlyric;
+      // console.log((arg.cursor / arg.duration) * 240);
       // console.log('pong2', arg);
       if (arg.id) {
         this.mainwin = arg.id;

@@ -341,7 +341,13 @@
           @click="visible=true"
           type="icon-playlist-play"
         />
-        <AIconfont title="歌词" class="music-panel-cibiaoquanyi" type="icon-cibiaoquanyi" />
+        <AIconfont
+          title="歌词"
+          @click="$store.commit('update_music_showlyric',!$store.state.music.showlyric);"
+          class="music-panel-cibiaoquanyi"
+          type="icon-cibiaoquanyi"
+          :style="{color:$store.state.music.showlyric?'var(--red)':'var(--textColor)'}"
+        />
         <!-- trigger="click" -->
         <a-popover class="music-panel-pop">
           <template slot="content">
@@ -549,7 +555,9 @@ export default class Music extends Vue {
     };
     const mode = this.$store.state.music.mode;
     const index = mode_list.findIndex((e: any) => e.key === mode);
-    if (~index) { result = mode_list[index]; }
+    if (~index) {
+      result = mode_list[index];
+    }
     return result;
   }
   public handleChangeMode() {

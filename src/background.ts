@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, Tray, Menu } from 'electron';
+import { app, protocol, BrowserWindow, Tray, Menu, nativeImage, remote, ipcMain } from 'electron';
 import path from 'path';
 import {
   createProtocol,
@@ -9,15 +9,16 @@ import {
 import {
   HAVE_BLUR,
   HAVE_FOCUS,
-  INTENT_CHANGE
-} from './constant/ipc';
+  INTENT_CHANGE,
+  ASYNC_LYRICS
+} from '@/constant/ipc';
 import DockMenu from './constant/dock.menu';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | any
-let tray = null
+let tray: any = null
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{
   scheme: 'app', privileges: { secure: true, standard: true }
@@ -28,6 +29,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 670,
+    resizable: false,
     backgroundColor: '#fff',
     webPreferences: {
       nodeIntegration: true
@@ -45,7 +47,7 @@ function createWindow() {
   win.once('ready-to-show', () => {
     (win as any).show();
     require('./background.main')
-  
+
 
     // tray = new Tray('');
     // const contextMenu = Menu.buildFromTemplate([
@@ -103,6 +105,26 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  const iconpath = path.join(__dirname, "../public/img/tray@2x.png");
+  const icon = nativeImage.createFromPath(iconpath)
+  tray = new Tray(icon);
+  tray.setToolTip('netease');
+  tray.on('click', () => {
+    // app.maximize()
+    app.focus();
+  })
+  tray.on('right-click', () => {
+    app.focus();
+
+    // console.log('right-click');
+  })
+  tray.on('double-click', () => {
+    app.focus();
+
+    // console.log('double-click');
+  })
+  tray.setTitle(new Date().toString())
+
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
@@ -114,6 +136,9 @@ app.on('ready', async () => {
   createWindow()
 })
 
+ipcMain.on(ASYNC_LYRICS, (e: any, params: any) => {
+  tray.setTitle(`${params}`);
+})
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {

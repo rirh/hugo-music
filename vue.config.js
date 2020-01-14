@@ -68,7 +68,7 @@ const config = {
           "output": "./dist_electron"//输出文件路径
         },
         "mac": {
-          "icon": "./public/163Music.icns"
+          "icon": "./public/netease.icns"
         },
       }
     }

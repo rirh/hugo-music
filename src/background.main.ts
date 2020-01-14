@@ -51,7 +51,7 @@ const _unmaximize = () => {
 const _closewin = () => {
   const mainWindow = remote.getCurrentWindow();
   console.log(1);
-  
+
   mainWindow.close();
 };
 
@@ -103,7 +103,6 @@ ipcMain.on(ACCEPT_STORE, () => {
 
 })
 ipcMain.on(OPEN_FLOAT, (event: any, args: any, ) => {
-
   const createWin = () => {
     win = new BrowserWindow({
       width: 310,
@@ -113,6 +112,7 @@ ipcMain.on(OPEN_FLOAT, (event: any, args: any, ) => {
       minHeight: 40,
       x: 1000,
       y: 200,
+      resizable: false,
       backgroundColor: '#fff',
       webPreferences: {
         nodeIntegration: true

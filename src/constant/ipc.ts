@@ -32,4 +32,7 @@ export const SEND_STORE = `0x0013`;
 export const ACCEPT_STORE = `0x0014`;
 // 网络状态变化
 export const INTENT_CHANGE = `0x0015`;
+// 改变歌词
+export const ASYNC_LYRICS = `0x0016`;
+
 

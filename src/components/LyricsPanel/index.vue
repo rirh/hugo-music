@@ -595,6 +595,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Tray, nativeImage, ipcRenderer } from 'electron';
+import path from 'path';
 import routers from '@/routers';
 import {
   get_song_detail,
@@ -609,6 +611,7 @@ import {
 import { ERROR_IMG } from '@/constant/api';
 import { notification, message } from 'ant-design-vue';
 import { download, transformatDate } from '@/util/filters';
+import { ASYNC_LYRICS } from '@/constant/ipc';
 import axios from 'axios';
 
 @Component
@@ -625,28 +628,29 @@ export default class Panel extends Vue {
   // 解析歌词
   get parseLyric() {
     let result: any = [];
-
-    if (this.songs.lyric) {
-      if (this.songs.lyric.lrc) {
-        const lyric = this.songs.lyric.lrc.lyric;
-        const ly = lyric.split('\n');
-        const splitLyric = (e: any) => {
-          const crr = e.split(']');
-          const [tit, contant] = crr;
-          const timer = tit.split('[')[1];
-          let timerArr: any = `${timer}`.split('.');
-          const [h, s] = timerArr;
-          timerArr = h.split(':');
-          const [a, b] = timerArr;
-          let time: any = `${Number(a) * 60 + Number(b)}.${s}`;
-          if (isNaN(time)) {
-            time = '';
-          }
-          // if (!contant) { contant = ''; }
-          return { time, contant };
-        };
-        result = ly.map(splitLyric);
-      }
+    let lyric: any = [];
+    let ly: any = this.$store.state.music.lyric;
+    lyric =
+      (ly.klyric && (ly.klyric.lyric ? ly.klyric.lyric : ly.lrc.lyric)) ||
+      false;
+    if (lyric) {
+      ly = lyric.split('\n');
+      const splitLyric = (e: any) => {
+        const crr = e.split(']');
+        const [tit, contant] = crr;
+        const timer = tit.split('[')[1];
+        let timerArr: any = `${timer}`.split('.');
+        const [h, s] = timerArr;
+        timerArr = h.split(':');
+        const [a, b] = timerArr;
+        let time: any = `${Number(a) * 60 + Number(b)}.${s}`;
+        if (isNaN(time)) {
+          time = '';
+        }
+        // if (!contant) { contant = ''; }
+        return { time, contant };
+      };
+      result = ly.map(splitLyric);
     }
 
     return result;
@@ -680,7 +684,7 @@ export default class Panel extends Vue {
       get_simi_song(`id=${id}`),
       get_likelist(),
     ]);
-    const [{ code, privileges, songs },  commentres, simis] = res;
+    const [{ code, privileges, songs }, commentres, simis] = res;
     this.comloading = false;
     this.sonloading = false;
     this.similoading = false;
@@ -781,6 +785,7 @@ export default class Panel extends Vue {
   public highLightLyric(item: any, index: any) {
     let result = {};
     const cursor = this.$store.state.music.cursor;
+    const iShowLy = this.$store.state.music.showlyric;
     // const lyrics: any = this.$refs.lyrics;
     const filter = this.parseLyric.filter((e: any) => {
       return cursor > e.time;
@@ -793,6 +798,7 @@ export default class Panel extends Vue {
 
     const tempTime = filter[filter.length - 2];
     if (tempTime) {
+      if (iShowLy) { ipcRenderer.send(ASYNC_LYRICS, tempTime.contant); }
       if (item.time === tempTime.time) {
         result = {
           color: 'var(--black)',

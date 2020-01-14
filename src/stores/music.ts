@@ -1,6 +1,6 @@
 
 import { ipcRenderer, BrowserWindow } from 'electron';
-import { SEND_STORE, OPEN_FLOAT } from '@/constant/ipc';
+import { SEND_STORE, OPEN_FLOAT, ASYNC_LYRICS } from '@/constant/ipc';
 import axios from 'axios';
 import { get_song_url, get_lyric, get_like, get_likelist } from '@/actions';
 import store from '../store';
@@ -21,6 +21,7 @@ const music = {
     data: {},
     list: [],
     lyric: [],
+    showlyric: true,
     history: [],
     like: false,
     url: '',
@@ -33,6 +34,13 @@ const music = {
 
 
   mutations: {
+    update_music_showlyric(state: any, value: any) {
+      if (!value) {
+        // 清空窗口歌词
+        ipcRenderer.send(ASYNC_LYRICS, '');
+      }
+      state.showlyric = value;
+    },
     update_music_mode(state: any, value: any) {
       state.mode = value;
     },
@@ -67,9 +75,7 @@ const music = {
       state.showPanel = params;
     },
     async update_music_list(state: any, params: any) {
-      const data = { ...state };
-      data.show = false;
-      ipcRenderer.send(OPEN_FLOAT, data);
+
       // state.player
       const isalive = state.list.some((e: any) => e.id === params.id);
       if (!isalive) {
@@ -121,6 +127,9 @@ const music = {
       state.list.splice(params, 1);
     },
     update_music_cursor(state: any, params: any) {
+      const data = { ...state };
+      data.show = false;
+      ipcRenderer.send(OPEN_FLOAT, data);
       state.cursor = params;
     },
     update_music_duration(state: any, params: any) {
@@ -181,7 +190,6 @@ const music = {
     },
     async  update_music_data(state: any, params: any) {
       if (params.id !== state.data.id) {
-        state.data = params;
         const [musics, lyrics] = await axios.all(
           [
             get_song_url(params.id),
@@ -190,13 +198,19 @@ const music = {
         // 播放歌曲
         if (musics.code === 200) {
           const [music] = musics.data;
-          if (!audio || !audio.init) {
-            audio = new Sound({ volume: state.vloume, url: music.url });
+          if (music.url) {
+            if (!audio || !audio.init) {
+              audio = new Sound({ volume: state.vloume, url: music.url });
+            }
+            audio.set_url(music.url);
+            audio.set_vloume(state.vloume);
+            await audio.init();
+            store.commit('update_music_list', params);
+            state.data = params;
+          } else {
+            message.error('暂无版权播放，请试试其他歌曲吧！');
           }
-          audio.set_url(music.url);
-          audio.set_vloume(state.vloume);
-          await audio.init();
-          store.commit('update_music_list', params);
+
         }
         // 同步歌词
         if (lyrics.code === 200) {
@@ -299,7 +313,6 @@ class Sound {
 
   }
   public resume() {
-    this.splitterMerger();
     this.gain.gain.value = 0;
     this.audio.play();
     const currentTime: number = this.context.currentTime;
