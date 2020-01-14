@@ -129,7 +129,7 @@ const music = {
     update_music_cursor(state: any, params: any) {
       const data = { ...state };
       data.show = false;
-      ipcRenderer.send(OPEN_FLOAT, data);
+      // ipcRenderer.send(OPEN_FLOAT, data);
       state.cursor = params;
     },
     update_music_duration(state: any, params: any) {
@@ -219,7 +219,7 @@ const music = {
         //  同步喜欢状态
         if (lyrics.code === 200) {
           const list = (store as any).state.user.likelist.ids;
-          state.like = list.some((e: any) => e === params.id);
+          if (list.length) { state.like = list.some((e: any) => e === params.id); }
         }
       }
     },

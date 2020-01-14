@@ -798,7 +798,7 @@ export default class Panel extends Vue {
 
     const tempTime = filter[filter.length - 2];
     if (tempTime) {
-      if (iShowLy) { ipcRenderer.send(ASYNC_LYRICS, tempTime.contant); }
+      // if (iShowLy) { ipcRenderer.send(ASYNC_LYRICS, tempTime.contant); }
       if (item.time === tempTime.time) {
         result = {
           color: 'var(--black)',
