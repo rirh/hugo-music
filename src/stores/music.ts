@@ -29,11 +29,15 @@ const music = {
     ctx: null,
     vloume: 1,
     effects: 0,
+    loading: false,
     mode_list: ['order', 'random', 'pleasing', 'loop', 'one'],
   },
 
 
   mutations: {
+    update_music_loading(state: any, value: any) {
+      state.loading = value;
+    },
     update_music_showlyric(state: any, value: any) {
       if (!value) {
         // 清空窗口歌词

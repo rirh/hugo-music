@@ -9,7 +9,7 @@ import {
   Pagination, Tabs, Table,
   Divider, Drawer, Tag, Select,
   Input, Form, Collapse, Progress,
-  Radio, Spin, message,
+  Radio, Spin, message, Empty,
 } from 'ant-design-vue';
 import Avatar from './components/Avatar.vue';
 const IconFont: any = Icon.createFromIconfontCN({
@@ -56,6 +56,8 @@ Vue.component(Radio.Group.name, Radio.Group);
 Vue.component(Radio.Button.name, Radio.Button);
 Vue.component(Radio.name, Radio);
 Vue.component(Spin.name, Spin);
+Vue.component(Empty.name, Empty);
+
 
 // 全局配置
 message.config({

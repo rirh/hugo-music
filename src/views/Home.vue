@@ -7,6 +7,16 @@
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  position: relative;
+}
+.spins {
+  position: absolute !important;
+  display: flex !important;
+  height: 100vh;
+  width: 100vw;
+  font-size: 65px;
+  justify-content: center;
+  align-items: center;
 }
 /* header,
 footer {
@@ -82,10 +92,63 @@ footer {
 .fade-leave-active {
   transform: translateY(100%);
 }
+
+@keyframes scale-1 {
+  0% {
+    transform: scale(1);
+    color: white;
+    background-color: white;
+    border-color: var(--red);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1.4);
+    background-color: var(--red);
+    border-color: var(--red);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.8);
+    background-color: var(--red);
+    border-color: var(--red);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(2);
+    background-color: var(--red);
+    border-color: var(--red);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.8);
+    background-color: var(--red);
+    border-color: var(--red);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.4);
+    background-color: var(--red);
+    border-color: var(--red);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    background-color: white;
+    border-color: var(--red);
+    opacity: 1;
+  }
+}
+.loading {
+  animation: scale-1 2000ms infinite;
+}
 </style>
 
 <template>
 <body class="HolyGrail">
+  <!-- <a-icon type="apple" /> -->
+  <!-- <a-spin class="spins">
+    <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 125px;z-index:1" spin />
+  </a-spin>-->
   <header>
     <Header />
   </header>

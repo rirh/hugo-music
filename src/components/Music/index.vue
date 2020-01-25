@@ -19,7 +19,11 @@
   border-color: var(--red);
   background-color: var(--red);
   opacity: 0;
+  width: 10px !important;
+  height: 10px !important;
+  margin-top: -3px !important;
 }
+
 // #progress:hover #progress /deep/ .ant-slider-handle {
 //   opacity: 1;
 // }
@@ -253,6 +257,7 @@
     <a-slider
       autofocus
       id="progress"
+      refs="progress"
       v-model="progress"
       @afterChange="handleseek"
       :defaultValue="0"
@@ -515,7 +520,24 @@ export default class Music extends Vue {
       },
     });
   }
+  @Watch('$store.state.music.loading', { deep: true })
+  public asyncLoading(msg: any) {
+
+    const progress: any = document.getElementById('progress');
+    const [, , , handle] = progress.children;
+    if (msg) {
+      handle.classList.add('loading');
+    } else {
+      handle.classList.remove('loading');
+    }
+  }
   public mounted() {
+    // this.$nextTick(() => {
+    //   const progress: any = document.getElementById("progress");
+    //   const [, , , handle] = progress.children;
+    //   const loading = this.$store.state.music.state.loading;
+    //   if (loading) handle.classList.add("loading");
+    // });
     // const { Howl, Howler } = require("howler");
     // const sound = new Howl({
     //   src: [

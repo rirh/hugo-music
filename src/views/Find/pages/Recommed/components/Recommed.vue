@@ -170,6 +170,7 @@ export default class Home extends Vue {
     });
   }
   public async handleRandomPlay(list: any) {
+    this.$store.commit('update_music_loading', true);
     const { playlist, privileges } = await get_play_list_detail(
       `id=${list.id}`,
     );
@@ -188,6 +189,8 @@ export default class Home extends Vue {
       image: item.al.picUrl,
       duration: item.dt,
     };
+    this.$store.commit('update_music_loading', false);
+
     (this as any).$store.commit('update_music_data', params);
   }
 

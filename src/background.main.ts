@@ -50,7 +50,7 @@ const _unmaximize = () => {
 
 const _closewin = () => {
   const mainWindow = remote.getCurrentWindow();
-  console.log(1);
+  // console.log(1);
 
   mainWindow.close();
 };

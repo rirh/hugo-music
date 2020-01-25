@@ -668,6 +668,10 @@ export default class Panel extends Vue {
   public like = false;
   public percent = 0;
   public img = '';
+  // 当前播放时间
+  public cursor: any = '';
+  // 当前播放的歌词
+  public tempTime: any = '';
 
   @Prop() private msg!: string;
 
@@ -785,26 +789,36 @@ export default class Panel extends Vue {
   public highLightLyric(item: any, index: any) {
     let result = {};
     const cursor = this.$store.state.music.cursor;
-    const iShowLy = this.$store.state.music.showlyric;
-    // const lyrics: any = this.$refs.lyrics;
-    const filter = this.parseLyric.filter((e: any) => {
-      return cursor > e.time;
-    });
-    // if (filter.length > 9 && !this.isPress) {
-    //   console.log(21 * (filter.length - 4));
+    if (this.cursor !== cursor) {
+      this.cursor = cursor;
+      const iShowLy = this.$store.state.music.showlyric;
+      // const lyrics: any = this.$refs.lyrics;
+      const filter = this.parseLyric.filter((e: any) => {
+        return cursor > e.time;
+      });
+      // if (filter.length > 9 && !this.isPress) {
+      //   console.log(21 * (filter.length - 4));
 
-    //   lyrics.scrollTop = 21 * (filter.length - 4);
-    // }
+      //   lyrics.scrollTop = 21 * (filter.length - 4);
+      // }
 
-    const tempTime = filter[filter.length - 2];
-    if (tempTime) {
-      // if (iShowLy) { ipcRenderer.send(ASYNC_LYRICS, tempTime.contant); }
-      if (item.time === tempTime.time) {
-        result = {
-          color: 'var(--black)',
-        };
+      const tempTime = filter[filter.length - 2];
+
+      if (tempTime && this.tempTime !== tempTime) {
+        this.tempTime = tempTime;
+        if (iShowLy) {
+          ipcRenderer.send(ASYNC_LYRICS, tempTime.contant);
+        }
+        // console.log(item, tempTime.time, item.time === tempTime.time);
+
+        if (item.time === tempTime.time) {
+          result = {
+            color: 'var(--black)',
+          };
+        }
       }
     }
+
     return result;
   }
   public leftPadauth(songs: any) {

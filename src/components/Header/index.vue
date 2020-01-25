@@ -553,6 +553,9 @@
             </a-radio-group>
           </div>
           <div class="con">
+            <a-empty v-show="noti.list.length===0">
+              <span slot="description">暂无数据</span>
+            </a-empty>
             <a-skeleton active avatar :loading="noti.loading">
               <dl class="list">
                 <dd class="item" v-for="item in noti.list" :key="item.lastMsgTime">
