@@ -119,8 +119,6 @@
         -webkit-animation-name: animateLeft;
         animation-name: animateLeft;
     }
-
-    
 </style>
 
 
@@ -140,3 +138,7 @@
         </div>
     </div>
 </body>
+<script>
+    const url = "https://api.huobi.pro/market/detail/merged?symbol=ethusdt";
+    fetch(url).then(e => console.log(e))
+</script>
