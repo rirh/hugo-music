@@ -74,9 +74,9 @@
           filter: brightness(90%);
         }
         .name {
-          font-size: 13px;
-          line-height: 30px;
-          height: 30px;
+          font-size: 12px;
+          line-height: 40px;
+          height: 40px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
