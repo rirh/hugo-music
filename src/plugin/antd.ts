@@ -9,7 +9,7 @@ import {
   Pagination, Tabs, Table,
   Divider, Drawer, Tag, Select,
   Input, Form, Collapse, Progress,
-  Radio, Spin, message, Empty,Switch
+  Radio, Spin, message, Empty, Switch,
 } from 'ant-design-vue';
 import Avatar from './components/Avatar.vue';
 const IconFont: any = Icon.createFromIconfontCN({

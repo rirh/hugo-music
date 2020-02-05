@@ -134,8 +134,7 @@ export const get_user_playlist = async (args: any) => {
 };
 // 手机号登录
 export const get_phone_login = async (args: any) => {
-  const { response }: any = await http(`${GET_CELL_PHONE}${args}`);
-  return response;
+  return await http(`${GET_CELL_PHONE}${args}`);
 };
 
 

@@ -11,6 +11,8 @@
       height: 20vw;
       width: 20vw;
       background-size: 100%;
+      border: 1px solid #eee;
+      box-shadow: 2px 2px 2px #333;
     }
   }
   &-right {

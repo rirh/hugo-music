@@ -163,13 +163,13 @@ export default class Tags extends Vue {
       return;
     }
     try {
-      const res = await get_phone_login(params);
+      const { response }: any = await get_phone_login(params);
       this.spinning = false;
-      if (res.code === 200) {
-        setStorage('user', res);
-        electron_store.set(STORE_USER_INFO, res);
-        this.$store.commit('update_user', res);
-        this.handleReloadMain(res.profile.userId);
+      if (response.code === 200) {
+        setStorage('user', response);
+        electron_store.set(STORE_USER_INFO, response);
+        this.$store.commit('update_user', response);
+        this.handleReloadMain(response.profile.userId);
       }
     } catch (error) {
       this.spinning = false;

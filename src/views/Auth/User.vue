@@ -62,6 +62,29 @@
     &-list {
       display: flex;
       flex-wrap: wrap;
+      .item {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        .image {
+          border: 1px solid #eee;
+          box-shadow: 2px 2px 1px #333;
+          filter: brightness(90%);
+        }
+        .name {
+          font-size: 13px;
+          line-height: 30px;
+          height: 30px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: center;
+          width: 100%;
+          font-weight: bold;
+        }
+      }
     }
   }
 }
@@ -85,6 +108,9 @@
       padding: 0 2vw;
     }
   }
+}
+.item:hover {
+  filter: brightness(120%);
 }
 </style>
 
@@ -147,22 +173,34 @@
     <div class="wapper-lists">
       <h2>我创建的歌单({{playlist.create.length}})</h2>
       <dl class="wapper-lists-list">
-        <dd style="flex:0 0 25%;" v-for="(item,index) in playlist.create" :key="index">
+        <dd
+          class="item"
+          style="flex:0 0 25%;overflow: hidden;"
+          v-for="(item,index) in playlist.create"
+          :key="index"
+          @click="handleGoSinger(item)"
+        >
           <span>
-            <a-avatar :size="150" icon="user" shape="square" :src="item.coverImgUrl" />
+            <a-avatar :size="150" icon="user" shape="square" class="image" :src="item.coverImgUrl" />
           </span>
-          <span>{{item.name}}</span>
+          <span class="name">{{item.name}}</span>
         </dd>
       </dl>
     </div>
     <div class="wapper-lists">
       <h2>我收藏的歌单({{playlist.marked.length}})</h2>
       <dl class="wapper-lists-list">
-        <dd style="flex:0 0 25%" v-for="(item,index) in playlist.marked" :key="index">
+        <dd
+          class="item"
+          style="flex:0 0 25%;overflow: hidden;"
+          v-for="(item,index) in playlist.marked"
+          :key="index"
+          @click="handleGoSinger(item)"
+        >
           <span>
-            <a-avatar :size="150" icon="user" shape="square" :src="item.coverImgUrl" />
+            <a-avatar :size="150" icon="user" shape="square" class="image" :src="item.coverImgUrl" />
           </span>
-          <span></span>
+          <span class="name">{{item.name}}</span>
         </dd>
       </dl>
     </div>
@@ -205,10 +243,16 @@ export default class Tags extends Vue {
     return result;
   }
   public handleGoFollows(args: any) {
-    const userId = this.detail.profile.userId;
+    const userId = this.$store.state.user.userDetail.profile.userId;
     this.$router.push({
       path: '/follows/index',
       query: { type: args, uid: userId },
+    });
+  }
+  public handleGoSinger(item: any) {
+    this.$router.push({
+      path: '/music-detail',
+      query: { ...item },
     });
   }
   public handleGoEdit() {

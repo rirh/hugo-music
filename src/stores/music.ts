@@ -223,7 +223,7 @@ const music = {
         //  同步喜欢状态
         if (lyrics.code === 200) {
           const list = (store as any).state.user.likelist.ids;
-          if (list.length) { state.like = list.some((e: any) => e === params.id); }
+          if (list && list.length) { state.like = list.some((e: any) => e === params.id); }
         }
       }
     },

@@ -71,10 +71,12 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 @Component({})
 export default class Effect extends Vue {
   @Prop() public data: any;
-  onChange() {}
+  public onChange() {
+    // TODO
+  }
 }
 </script>

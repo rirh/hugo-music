@@ -21,11 +21,18 @@ export default (url = '', datas = {}, method = 'GET') => {
     // })
     // request.end()
     // try {
+    try {
+      const { status, data } = await axios.get(url, { withCredentials: true });
 
-    const { status, data } = await axios.get(url, { withCredentials: true });
-    if (status === 200) {
-      resolve({ response: data });
+      if (status === 200) {
+        resolve({ response: data });
+      } else {
+        reject({ response: { message: '请求错误' } });
+      }
+    } catch (error) {
+      reject({ response: { message: '请求错误' } });
     }
+
 
 
 

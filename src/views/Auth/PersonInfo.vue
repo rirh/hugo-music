@@ -27,8 +27,16 @@
   }
   &-lists {
     border-bottom: 1px solid var(--bgColor);
-    padding: 0.5vw 1vw 0.5vw 2vw;
     // margin: 0.5vw 1vw 0.5vw 2vw;
+    &-list-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 30px;
+      height: 30px;
+      padding: 1.5vw 2vw;
+      font-size: 12px;
+    }
     &-list {
       display: flex;
       justify-content: center;
@@ -41,7 +49,7 @@
 .signin {
   border-radius: 20px;
 }
-.detail-lists-list:hover {
+.detail-lists-list-item:hover {
   background-color: var(--stripedHover);
 }
 .lv {
@@ -77,8 +85,13 @@
         @click="handleSignin"
       >{{`${detail.pcSign?'已签到':'签到'}`}}</a-button>
     </div>
+    <br />
     <dl class="detail-lists">
-      <dd class="detail-lists-list" @click="handleGoVip" style="justify-content: space-between">
+      <dd
+        class="detail-lists-list-item"
+        @click="handleGoVip"
+        style="justify-content: space-between"
+      >
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-account-star-variant" />
           <span>&nbsp;&nbsp;会员中心</span>
@@ -88,7 +101,11 @@
           <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
         </span>
       </dd>
-      <dd class="detail-lists-list" @click="handleGoLeaver" style="justify-content: space-between">
+      <dd
+        class="detail-lists-list-item"
+        @click="handleGoLeaver"
+        style="justify-content: space-between"
+      >
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-brightness-auto" />
           <span>&nbsp;&nbsp;等级</span>
@@ -100,7 +117,11 @@
           <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
         </span>
       </dd>
-      <dd class="detail-lists-list" @click="handleGoShop" style="justify-content: space-between">
+      <dd
+        class="detail-lists-list-item"
+        @click="handleGoShop"
+        style="justify-content: space-between"
+      >
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-shopping" />
           <span>&nbsp;&nbsp;商城</span>
@@ -111,7 +132,7 @@
       </dd>
     </dl>
     <dl class="detail-lists" @click="handleGoSetting">
-      <dd class="detail-lists-list" style="justify-content: space-between">
+      <dd class="detail-lists-list-item" style="justify-content: space-between">
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-settings" />
           <span>&nbsp;&nbsp;个人信息设置</span>
@@ -121,7 +142,7 @@
         </span>
       </dd>
       <dd
-        class="detail-lists-list"
+        class="detail-lists-list-item"
         @click="handleGoUserSetting"
         style="justify-content: space-between"
       >
@@ -135,7 +156,11 @@
       </dd>
     </dl>
     <dl class="detail-lists" style="padding-bottom:0;margin-bottom:0;border:none">
-      <dd @click="handleSignOut" class="detail-lists-list" style="justify-content: space-between">
+      <dd
+        @click="handleSignOut"
+        class="detail-lists-list-item"
+        style="justify-content: space-between"
+      >
         <span class="detail-lists-list">
           <AIconfont style="font-size:24px;" type="icon-settings" />
           <span>&nbsp;&nbsp;退出登录</span>

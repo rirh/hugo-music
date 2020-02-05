@@ -15,6 +15,13 @@
     justify-content: center;
     overflow: hidden;
     margin: 1vw 0 0 0;
+    // padding: 1vw;
+    // box-shadow: 0px 1px 1px 1px #333;
+
+    &-avatar {
+      border: 1px solid #eee;
+      box-shadow: 0px 1px 1px 1px #333;
+    }
     &-con {
       display: flex;
       text-align: left;
@@ -60,7 +67,7 @@
             </strong>
             <span
               style="font-size:12px;margin-top:1vw;"
-            >{{item.signature.length>15?`${item.signature.substring(0,12)}...`:item.signature}}</span>
+            >{{item.signature&&item.signature.length>15?`${item.signature.substring(0,12)}...`:item.signature}}</span>
             <span class="wapper-item-con-followeds">
               <span>歌单：{{item.playlistCount}}</span>
               <a-divider type="vertical" />
