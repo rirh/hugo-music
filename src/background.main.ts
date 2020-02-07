@@ -26,7 +26,8 @@ import {
   OPEN_FLOAT,
   SEND_STORE,
   ACCEPT_STORE,
-  INTENT_CHANGE
+  INTENT_CHANGE,
+  LOAD_MUSIC
 } from './constant/ipc';
 let win: any;
 let data: any;
@@ -174,6 +175,18 @@ ipcMain.on(INTENT_CHANGE, async (e: any, state: any) => {
 
   const returnValue = await dialog.showMessageBox(dialogOpts);
 });
+
+ipcMain.on(LOAD_MUSIC, async (e: any, state: any) => {
+  const tmp: any = require("tmp");
+  const fs = require("fs");
+  const path: string = tmp.tmpdir;
+  console.log(path);
+  fs.readdir(path, function (err: any, data: any) {
+    if (err) throw err;
+    console.log(data);
+    e.returnValue = data;
+  });
+})
 
 systemPreferences.subscribeNotification(
   'AppleInterfaceThemeChangedNotification',

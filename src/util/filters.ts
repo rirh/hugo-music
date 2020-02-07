@@ -152,8 +152,8 @@ export const download = (patch: any, downloadFile: any, callback: any) => {
   });
   const fs = require('fs');
   const path = require('path');
-
-  const out = fs.createWriteStream(path.join(`/Users/zh/Desktop`, downloadFile));
+  const tmp = require('tmp');  
+  const out = fs.createWriteStream(path.join(`${tmp.tmpdir}`, downloadFile));
   req.pipe(out);
 
   req.on('response', (data: any) => {

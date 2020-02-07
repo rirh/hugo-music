@@ -34,5 +34,7 @@ export const ACCEPT_STORE = `0x0014`;
 export const INTENT_CHANGE = `0x0015`;
 // 改变歌词
 export const ASYNC_LYRICS = `0x0016`;
+// 读取已下载的音乐
+export const LOAD_MUSIC = `0x0017`;
 
 
