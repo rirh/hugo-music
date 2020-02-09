@@ -357,7 +357,7 @@
 
 <template>
   <div class="wapper" :style="{'background-color':theme.wapper_bg}">
-    <div class="wapper-menu">
+    <div class="wapper-menu" v-if="process.platform === 'win32'">
       <span
         @click="handleMenu('close')"
         :class="{'focus':focus}"
@@ -581,10 +581,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import Menu from '@/components/Menu';
-import axios from 'axios';
-import { ipcRenderer, remote, BrowserWindow } from 'electron';
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Menu from "@/components/Menu";
+import axios from "axios";
+import { ipcRenderer, remote, BrowserWindow } from "electron";
 import {
   MAIN_MIN,
   MAIN_ZOOM,
@@ -592,8 +592,8 @@ import {
   HAVE_BLUR,
   HAVE_FOCUS,
   OPEN_FLOAT,
-  SEND_STORE,
-} from '@/constant/ipc';
+  SEND_STORE
+} from "@/constant/ipc";
 import {
   get_search_suggest,
   get_search_hot,
@@ -601,62 +601,63 @@ import {
   get_msg_private,
   get_msg_comments,
   get_msg_forwards,
-  get_msg_notices,
-} from '@/actions';
-import { STORE_HISTORY_LIST, STORE_USER_INFO } from '@/constant/store';
-import Drawer from '@/components/Drawer';
-import moment from 'moment';
-import Store from 'electron-store';
+  get_msg_notices
+} from "@/actions";
+import { STORE_HISTORY_LIST, STORE_USER_INFO } from "@/constant/store";
+import Drawer from "@/components/Drawer";
+import moment from "moment";
+import Store from "electron-store";
 const electron_store = new Store();
 
 @Component({
-  components: { Menu, Drawer },
+  components: { Menu, Drawer }
 })
 export default class HelloWorld extends Vue {
   public seach_visible = false;
   public email_visible = false;
+  process = process.versions.electron;
   // public skin_visible = false;
   // 通知消息的骨架屏
   public theme = {
-    type: 'red',
-    wapper_bg: 'var(--red)',
-    keywords_color: 'white',
-    settings_color: 'white',
-    email_color: 'white',
-    skin_color: 'white',
-    blank_color: 'white',
+    type: "red",
+    wapper_bg: "var(--red)",
+    keywords_color: "white",
+    settings_color: "white",
+    email_color: "white",
+    skin_color: "white",
+    blank_color: "white"
   };
   public loading_no: boolean = true;
   public noti: any = {
-    type: 'private',
+    type: "private",
     loading: true,
-    list: [],
+    list: []
   };
 
-  public keywords = '';
+  public keywords = "";
   public seachList = {};
   public focus = false;
   public types = {
     artists: {
-      name: '歌手',
-      icon: 'icon-account',
+      name: "歌手",
+      icon: "icon-account"
     },
     songs: {
-      name: '单曲',
-      icon: 'icon-music-note',
+      name: "单曲",
+      icon: "icon-music-note"
     },
     albums: {
-      name: '歌单',
-      icon: 'icon-music-circle',
+      name: "歌单",
+      icon: "icon-music-circle"
     },
     mvs: {
-      name: '视频',
-      icon: 'icon-youtube-play',
+      name: "视频",
+      icon: "icon-youtube-play"
     },
     playlists: {
-      name: '歌单',
-      icon: 'icon-playlist-play',
-    },
+      name: "歌单",
+      icon: "icon-playlist-play"
+    }
   };
   public hotSearchList = [];
   public hislist = [];
@@ -674,7 +675,7 @@ export default class HelloWorld extends Vue {
   public async init() {
     const [host_res, private_res] = await axios.all([
       get_search_hot(),
-      get_msg_private(''),
+      get_msg_private("")
     ]);
     if (host_res.code === 200) {
       this.hotSearchList = host_res.result;
@@ -683,12 +684,12 @@ export default class HelloWorld extends Vue {
       // 过滤其他没用信息
       this.noti.list = private_res.msgs.map((e: any) => ({
         ...e,
-        avatarUrl: e.fromUser.avatarUrl || '',
-        nickname: e.fromUser.nickname || '',
-        lastmsgtime: moment(e.lastMsgTime).format('MM月DD日') || '',
-        msg: JSON.parse(e.lastMsg).msg,
+        avatarUrl: e.fromUser.avatarUrl || "",
+        nickname: e.fromUser.nickname || "",
+        lastmsgtime: moment(e.lastMsgTime).format("MM月DD日") || "",
+        msg: JSON.parse(e.lastMsg).msg
       }));
-      this.noti.type = 'private';
+      this.noti.type = "private";
       this.noti.loading = false;
     }
   }
@@ -697,7 +698,7 @@ export default class HelloWorld extends Vue {
       this.seach_visible = false;
       const params = { keywords: this.keywords };
       this.$router.push({
-        path: `/search/index?keywords=${this.keywords}&type=1`,
+        path: `/search/index?keywords=${this.keywords}&type=1`
       });
     }
   }
@@ -710,21 +711,21 @@ export default class HelloWorld extends Vue {
     let res: any;
 
     switch (key) {
-      case 'private':
-        res = await get_msg_private('');
+      case "private":
+        res = await get_msg_private("");
         if (res.code === 200) {
           this.noti.list = res.msgs.map((e: any) => ({
             ...e,
-            avatarUrl: e.fromUser.avatarUrl || '',
-            nickname: e.fromUser.nickname || '',
-            lastmsgtime: moment(e.lastMsgTime).format('MM月DD日') || '',
-            msg: JSON.parse(e.lastMsg).msg,
+            avatarUrl: e.fromUser.avatarUrl || "",
+            nickname: e.fromUser.nickname || "",
+            lastmsgtime: moment(e.lastMsgTime).format("MM月DD日") || "",
+            msg: JSON.parse(e.lastMsg).msg
           }));
         }
         break;
-      case 'comments':
+      case "comments":
         const {
-          account: { id },
+          account: { id }
         } = electron_store.get(STORE_USER_INFO);
         if (id) {
           res = await get_msg_comments(`uid=${id}`);
@@ -733,30 +734,30 @@ export default class HelloWorld extends Vue {
               ...e,
               avatarUrl: e.user.avatarUrl,
               nickname: e.user.nickname,
-              lastmsgtime: moment(e.time).format('YYYY年MM月DD日'),
-              msg: `回复我：${e.content}`,
+              lastmsgtime: moment(e.time).format("YYYY年MM月DD日"),
+              msg: `回复我：${e.content}`
             }));
           }
         } else {
           res = false;
         }
         break;
-      case 'forwards':
-        res = await get_msg_forwards('');
+      case "forwards":
+        res = await get_msg_forwards("");
         this.noti.list = [];
         break;
-      case 'notices':
-        res = await get_msg_notices('');
+      case "notices":
+        res = await get_msg_notices("");
         if (res.code === 200) {
           this.noti.list = res.notices.map((e: any) => ({
             ...e,
-            avatarUrl: `${JSON.parse(e.notice).user.avatarUrl}` || '',
+            avatarUrl: `${JSON.parse(e.notice).user.avatarUrl}` || "",
             nickname:
               `${
                 JSON.parse(e.notice).user.nickname
-              } <span style="color:var(--textColor)">赞了你的评论<span>` || '',
-            lastmsgtime: moment(e.time).format('YYYY年MM月DD日') || '',
-            msg: JSON.parse(e.notice).comment.content,
+              } <span style="color:var(--textColor)">赞了你的评论<span>` || "",
+            lastmsgtime: moment(e.time).format("YYYY年MM月DD日") || "",
+            msg: JSON.parse(e.notice).comment.content
           }));
         }
         break;
@@ -769,7 +770,7 @@ export default class HelloWorld extends Vue {
    * format
    */
   public format(time: Date) {
-    return moment(time).format('MM月DD日');
+    return moment(time).format("MM月DD日");
   }
 
   public handleFloatFrame() {
@@ -785,12 +786,12 @@ export default class HelloWorld extends Vue {
   }
 
   public handleClear() {
-    this.keywords = '';
+    this.keywords = "";
     this.seachList = [];
   }
   public handleShowConrtal() {
     const showPanel = this.$store.state.music.showPanel;
-    this.$store.commit('update_show_panel', !showPanel);
+    this.$store.commit("update_show_panel", !showPanel);
   }
   public handleMenu(key: any) {
     // remote.getCurrentWindow().maximize();
@@ -822,30 +823,30 @@ export default class HelloWorld extends Vue {
           mainWindow.setFullScreen(false);
         } else {
           mainWindow.setFullScreen(true);
-          this.$router.push('/fullboard');
+          this.$router.push("/fullboard");
         }
-      },
+      }
     };
     build[key]();
   }
-  @Watch('$store.state.music.showPanel')
+  @Watch("$store.state.music.showPanel")
   public handleAsyncPanel(msg: any) {
     if (msg) {
-      document.documentElement.style.setProperty(`--setHover`, '#e2e2e2');
-      this.theme.wapper_bg = 'white';
-      this.theme.keywords_color = 'var(--textColot)';
-      this.theme.settings_color = 'var(--textColot)';
-      this.theme.email_color = 'var(--textColot)';
-      this.theme.skin_color = 'var(--textColot)';
-      this.theme.blank_color = 'var(--textColot)';
+      document.documentElement.style.setProperty(`--setHover`, "#e2e2e2");
+      this.theme.wapper_bg = "white";
+      this.theme.keywords_color = "var(--textColot)";
+      this.theme.settings_color = "var(--textColot)";
+      this.theme.email_color = "var(--textColot)";
+      this.theme.skin_color = "var(--textColot)";
+      this.theme.blank_color = "var(--textColot)";
     } else {
-      document.documentElement.style.setProperty(`--setHover`, '#bd5448');
-      this.theme.wapper_bg = 'var(--red)';
-      this.theme.keywords_color = 'white';
-      this.theme.settings_color = 'white';
-      this.theme.email_color = 'white';
-      this.theme.skin_color = 'white';
-      this.theme.blank_color = 'white';
+      document.documentElement.style.setProperty(`--setHover`, "#bd5448");
+      this.theme.wapper_bg = "var(--red)";
+      this.theme.keywords_color = "white";
+      this.theme.settings_color = "white";
+      this.theme.email_color = "white";
+      this.theme.skin_color = "white";
+      this.theme.blank_color = "white";
     }
   }
 
@@ -855,41 +856,41 @@ export default class HelloWorld extends Vue {
 
   // }
   // @Watch("theme.type")
-  public handleChangeTheme(key: any = 'red') {
+  public handleChangeTheme(key: any = "red") {
     this.theme.type = key;
     let result = {
-      bg: 'var(--red)',
-      txt: 'white',
+      bg: "var(--red)",
+      txt: "white"
     };
     const showPanel = (this as any).$store.state.music.showPanel;
     switch (key) {
-      case 'less':
-        this.theme.wapper_bg = 'white';
-        this.theme.keywords_color = 'var(--textColot)';
-        this.theme.settings_color = 'var(--textColot)';
-        this.theme.email_color = 'var(--textColot)';
-        this.theme.skin_color = 'var(--textColot)';
-        this.theme.blank_color = 'var(--textColot)';
+      case "less":
+        this.theme.wapper_bg = "white";
+        this.theme.keywords_color = "var(--textColot)";
+        this.theme.settings_color = "var(--textColot)";
+        this.theme.email_color = "var(--textColot)";
+        this.theme.skin_color = "var(--textColot)";
+        this.theme.blank_color = "var(--textColot)";
 
         break;
-      case 'red':
-        this.theme.wapper_bg = 'var(--red)';
-        this.theme.keywords_color = 'white';
-        this.theme.settings_color = 'white';
-        this.theme.email_color = 'white';
-        this.theme.skin_color = 'white';
-        this.theme.blank_color = 'white';
+      case "red":
+        this.theme.wapper_bg = "var(--red)";
+        this.theme.keywords_color = "white";
+        this.theme.settings_color = "white";
+        this.theme.email_color = "white";
+        this.theme.skin_color = "white";
+        this.theme.blank_color = "white";
         break;
-      case 'black':
+      case "black":
         result = {
-          bg: 'var(--red)',
-          txt: 'white',
+          bg: "var(--red)",
+          txt: "white"
         };
         break;
-      case 'auto':
+      case "auto":
         result = {
-          bg: 'var(--red)',
-          txt: 'white',
+          bg: "var(--red)",
+          txt: "white"
         };
         break;
 
@@ -897,13 +898,13 @@ export default class HelloWorld extends Vue {
         break;
     }
     if (showPanel) {
-      result.bg = 'white';
-      result.txt = 'var(--textColot)';
+      result.bg = "white";
+      result.txt = "var(--textColot)";
     }
 
     return result;
   }
-  @Watch('keywords')
+  @Watch("keywords")
   public async handleSeach(keywords: any) {
     if (keywords) {
       const res = await get_search_suggest(`keywords=${keywords}`);
@@ -917,7 +918,7 @@ export default class HelloWorld extends Vue {
 
   public async handleGoSeach(item: any, state: any) {
     switch (state) {
-      case 'songs':
+      case "songs":
         const { code, songs } = await get_song_detail(`${item.id}`);
         const [song] = songs;
         const image = song.al.picUrl;
@@ -927,23 +928,23 @@ export default class HelloWorld extends Vue {
           auth: item.artists
             .map((e: any) => e.name)
             .toString()
-            .split(',')
-            .join('/'),
+            .split(",")
+            .join("/"),
           image: image || item.artists[0].img1v1Url,
-          duration: item.duration,
+          duration: item.duration
         };
-        this.$store.commit('update_music_data', params);
+        this.$store.commit("update_music_data", params);
         break;
-      case 'playlists':
+      case "playlists":
         this.$router.push({
-          path: '/music-detail',
-          query: item,
+          path: "/music-detail",
+          query: item
         });
         break;
-      case 'albums':
+      case "albums":
         this.$router.push({
-          path: '/album-detail',
-          query: item,
+          path: "/album-detail",
+          query: item
         });
         break;
 
@@ -954,10 +955,10 @@ export default class HelloWorld extends Vue {
     this.asyncHisStore(item);
     this.seach_visible = false;
   }
-  public asyncHisStore(item: any = '') {
+  public asyncHisStore(item: any = "") {
     let list = electron_store.get(STORE_HISTORY_LIST) || [];
     const hasName = list.some((e: any) => e === item.name);
-    if (item.name !== '' && !hasName) {
+    if (item.name !== "" && !hasName) {
       list.push(item.name);
     }
     list = list.filter((e: any) => e);

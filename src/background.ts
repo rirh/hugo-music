@@ -26,7 +26,7 @@ protocol.registerSchemesAsPrivileged([{
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({
+  const options: any = {
     width: 1000,
     height: 670,
     resizable: false,
@@ -34,13 +34,21 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
+    vibrancy: 'ultra-dark',
+    titleBarStyle: 'hidden',
     frame: false,
     show: false,
     // icon: path.join(__static, 'icon.png')
     // icon: path.join(__static, 'icon.png')
-  })
+  }
+  //如果是win的窗口就需要自定义按钮关闭
+  if (process.platform === 'win32') { // 如果平台是win32，也即windows
+    options.show = true // 当window创建的时候打开
+    options.frame = false // 创建一个frameless窗口，详情：https://electronjs.org/docs/api/frameless-window
+    options.backgroundColor = '#3f3c37'
+  }
 
-
+  win = new BrowserWindow(options)
   const dockMenu = Menu.buildFromTemplate(DockMenu)
   app.dock.setMenu(dockMenu)
   win.setMenu(null);
