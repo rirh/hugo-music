@@ -36,6 +36,7 @@
   text-align: center;
   padding: 7px 0;
   background-color: #efefef;
+  margin: 0;
 }
 .dd:hover {
   background-color: #efefef;
@@ -75,10 +76,26 @@
         <span>
           <a-button class="play-all" type="primary">播放全部</a-button>
           <span class="open-dir" @click="handleOpenDir()">打开目录</span>
+          &nbsp;
+          <a-icon type="sync" :spin="spin" @click="init()" />
         </span>
         <span>
-          <a-input size="small" class="search" type="text" placeholder="搜索下载歌曲">
+          <a-input
+            @input="handleFilter()"
+            v-model="search"
+            size="small"
+            class="search"
+            type="text"
+            placeholder="搜索下载歌曲"
+          >
             <a-icon slot="prefix" type="search" />
+            <a-icon
+              slot="suffix"
+              v-show="search"
+              type="close"
+              style="color: rgba(0,0,0,.45)"
+              @click="search='';init()"
+            />
           </a-input>
         </span>
       </dt>
@@ -93,11 +110,12 @@
         </dt>
         <dd
           class="dd"
-          :style="{'background-color':index%2!==0?'#fff':'#efefef'}"
+          @click="handlePlay(item)"
           v-for="(item,index) in data"
           :key="index"
+          :style="{'background-color':index%2!==0?'#fff':'#efefef'}"
         >
-          <span class="name">{{item}}</span>
+          <span class="name">{{item.split(":")[1]||item}}</span>
           <span class="singer"></span>
           <span class="alume"></span>
           <span class="size"></span>
@@ -115,19 +133,57 @@ import { ipcRenderer } from "electron";
 @Component({})
 export default class Download extends Vue {
   data = [];
+  search = "";
+  spin = false;
+
   mounted() {
+    this.init();
+  }
+
+  init() {
+    this.spin = true;
     setTimeout(() => {
       const result: any = ipcRenderer.sendSync(LOAD_MUSIC);
-      console.log(result);
-
-      const data = result.filter((e: any) => ~e.indexOf("mp3"));
+      const data = result.filter((e: any) => {
+        if (~e.indexOf("mp3") && e.split(":")[0]) {
+          const [id] = e.split(":");
+          const name = e.split(":").join("");
+          return {
+            id,
+            name
+          };
+        }
+      });
       this.data = data;
-    }, 100);
+      this.spin = false;
+    }, 200);
+  }
+  handleFilter() {
+    const data = this.data;
+    const keyword = this.search;
+    if (keyword) {
+      const result = data.filter((e: any) => ~e.indexOf(keyword)) || [];      
+      this.data = result;
+    } else {
+      this.init();
+    }
   }
   handleOpenDir() {
     const { shell } = require("electron").remote;
     const tmp = require("tmp");
     shell.showItemInFolder(`${tmp.tmpdir}`);
+  }
+  handlePlay(item: any) {
+    if (item.split(":")[0]) {
+      const params = {
+        id: item.split(":")[0],
+        name: item.split(":")[1],
+        auth: null,
+        image: null,
+        duration: null
+      };
+      this.$store.commit("update_music_data", params);
+    }
   }
 }
 </script>

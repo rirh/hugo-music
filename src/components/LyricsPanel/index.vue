@@ -760,7 +760,7 @@ export default class Panel extends Vue {
     const [music] = data;
     download(
       music.url,
-      `${name}.${music.type}`,
+      `${id}:${name}.${music.type}`,
       (arg: any, percentage: any, total: any) => {
         if (arg === 'progress') {
           // 显示进度
