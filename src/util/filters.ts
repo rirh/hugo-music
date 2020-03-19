@@ -152,7 +152,7 @@ export const download = (patch: any, downloadFile: any, callback: any) => {
   });
   const fs = require('fs');
   const path = require('path');
-  const tmp = require('tmp');  
+  const tmp = require('tmp');
   const out = fs.createWriteStream(path.join(`${tmp.tmpdir}`, downloadFile));
   req.pipe(out);
 

@@ -127,30 +127,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { LOAD_MUSIC } from "@/constant/ipc";
-import { ipcRenderer } from "electron";
+import { Component, Vue } from 'vue-property-decorator';
+import { LOAD_MUSIC } from '@/constant/ipc';
+import { ipcRenderer } from 'electron';
 @Component({})
 export default class Download extends Vue {
-  data = [];
-  search = "";
-  spin = false;
+  public data = [];
+  public search = '';
+  public spin = false;
 
-  mounted() {
+  public mounted() {
     this.init();
   }
 
-  init() {
+  public init() {
     this.spin = true;
     setTimeout(() => {
       const result: any = ipcRenderer.sendSync(LOAD_MUSIC);
       const data = result.filter((e: any) => {
-        if (~e.indexOf("mp3") && e.split(":")[0]) {
-          const [id] = e.split(":");
-          const name = e.split(":").join("");
+        if (~e.indexOf('mp3') && e.split(':')[0]) {
+          const [id] = e.split(':');
+          const name = e.split(':').join('');
           return {
             id,
-            name
+            name,
           };
         }
       });
@@ -158,31 +158,31 @@ export default class Download extends Vue {
       this.spin = false;
     }, 200);
   }
-  handleFilter() {
+  public handleFilter() {
     const data = this.data;
     const keyword = this.search;
     if (keyword) {
-      const result = data.filter((e: any) => ~e.indexOf(keyword)) || [];      
+      const result = data.filter((e: any) => ~e.indexOf(keyword)) || [];
       this.data = result;
     } else {
       this.init();
     }
   }
-  handleOpenDir() {
-    const { shell } = require("electron").remote;
-    const tmp = require("tmp");
+  public handleOpenDir() {
+    const { shell } = require('electron').remote;
+    const tmp = require('tmp');
     shell.showItemInFolder(`${tmp.tmpdir}`);
   }
-  handlePlay(item: any) {
-    if (item.split(":")[0]) {
+  public handlePlay(item: any) {
+    if (item.split(':')[0]) {
       const params = {
-        id: item.split(":")[0],
-        name: item.split(":")[1],
+        id: item.split(':')[0],
+        name: item.split(':')[1],
         auth: null,
         image: null,
-        duration: null
+        duration: null,
       };
-      this.$store.commit("update_music_data", params);
+      this.$store.commit('update_music_data', params);
     }
   }
 }
