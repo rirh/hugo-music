@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-  
+
     <router-view />
   </div>
 </template>
@@ -8,6 +8,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { ipcRenderer, remote } from 'electron';
 import { MAIN_DROP, INTENT_CHANGE } from '@/constant/ipc';
+
 
 @Component({})
 export default class Home extends Vue {
