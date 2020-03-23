@@ -153,7 +153,9 @@ export const download = (patch: any, downloadFile: any, callback: any) => {
   const fs = require('fs');
   const path = require('path');
   const tmp = require('tmp');
-  const out = fs.createWriteStream(path.join(`${tmp.tmpdir}`, downloadFile));
+  const { remote } = require('electron');
+
+  const out = fs.createWriteStream(path.join(`${remote.app.getPath('music')}`, downloadFile));
   req.pipe(out);
 
   req.on('response', (data: any) => {

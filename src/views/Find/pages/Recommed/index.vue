@@ -181,7 +181,7 @@
             <span>{{nav.name}}</span>
             <a-icon class="ordermodal-main-list-logo" type="align-right" />
           </div>
-        </transition-group> -->
+        </transition-group>-->
         <SortableList
           class="ordermodal-main-lists"
           @sort-end="init"
@@ -210,16 +210,16 @@
 </template>
 
 <script lang="ts">
-import Swiper from "./components/Swiper.vue";
-import Recommed from "./components/Recommed.vue";
-import Exclusive from "./components/Exclusive.vue";
-import Newsong from "./components/Newsong.vue";
-import RecommedMv from "./components/RecommedMv.vue";
-import DjProgram from "./components/DjProgram.vue";
-import SortableItem from "./SortableItem.vue";
-import SortableList from "./SortableList.vue";
+import Swiper from './components/Swiper.vue';
+import Recommed from './components/Recommed.vue';
+import Exclusive from './components/Exclusive.vue';
+import Newsong from './components/Newsong.vue';
+import RecommedMv from './components/RecommedMv.vue';
+import DjProgram from './components/DjProgram.vue';
+import SortableItem from './SortableItem.vue';
+import SortableList from './SortableList.vue';
 
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 import {
   get_banner,
   get_personalized,
@@ -228,9 +228,9 @@ import {
   get_personalized_mv,
   get_dj_program,
   get_play_list_detail,
-  get_play_song_detail
-} from "@/actions";
-import axios from "axios";
+  get_play_song_detail,
+} from '@/actions';
+import axios from 'axios';
 
 @Component({
   components: {
@@ -241,8 +241,8 @@ import axios from "axios";
     RecommedMv,
     DjProgram,
     SortableItem,
-    SortableList
-  }
+    SortableList,
+  },
 })
 export default class Home extends Vue {
   public showOrder = false;
@@ -253,54 +253,54 @@ export default class Home extends Vue {
   private order_tempates = [];
   private templates = [
     {
-      name: "推荐歌单",
-      key: "Recommed",
+      name: '推荐歌单',
+      key: 'Recommed',
       component: Recommed,
-      data: []
+      data: [],
     },
     {
-      name: "独家放送",
-      key: "Exclusive",
+      name: '独家放送',
+      key: 'Exclusive',
       component: Exclusive,
-      data: []
+      data: [],
     },
     {
-      name: "最新音乐",
-      key: "Newsong",
+      name: '最新音乐',
+      key: 'Newsong',
       component: Newsong,
-      data: []
+      data: [],
     },
     {
-      name: "推荐MV",
-      key: "RecommedMv",
+      name: '推荐MV',
+      key: 'RecommedMv',
       component: RecommedMv,
-      data: []
+      data: [],
     },
     {
-      name: "主播电台",
-      key: "DjProgram",
+      name: '主播电台',
+      key: 'DjProgram',
       component: DjProgram,
-      data: []
-    }
+      data: [],
+    },
   ];
-  dragstart(nav: any) {
-    this.oldNav = nav;
-  }
-  dragenter(nav: any) {
-    this.newNav = nav;
-    if (this.oldNav.name !== this.newNav.name) {
-      let oldIndex = this.templates.findIndex(nav => nav.name == this.oldNav.name);
-      let newIndex = this.templates.findIndex(nav => nav.name == this.newNav.name);
-      let newItems = [...this.templates];
-      // 删除老的节点
-      newItems.splice(oldIndex, 1);
-      // 在列表中目标位置增加新的节点
-      newItems.splice(newIndex, 0, this.oldNav);
-      // this.navs一改变，transition-group就起了作用
-      this.templates = [...newItems];
-      // window.localStorage.setItem("nav", JSON.stringify(this.templates));
-    }
-  }
+  // public dragstart(nav: any) {
+  //   this.oldNav = nav;
+  // }
+  // public dragenter(nav: any) {
+  //   this.newNav = nav;
+  //   if (this.oldNav.name !== this.newNav.name) {
+  //     const oldIndex = this.templates.findIndex((nav) => nav.name == this.oldNav.name);
+  //     const newIndex = this.templates.findIndex((nav) => nav.name == this.newNav.name);
+  //     const newItems = [...this.templates];
+  //     // 删除老的节点
+  //     newItems.splice(oldIndex, 1);
+  //     // 在列表中目标位置增加新的节点
+  //     newItems.splice(newIndex, 0, this.oldNav);
+  //     // this.navs一改变，transition-group就起了作用
+  //     this.templates = [...newItems];
+  //     // window.localStorage.setItem("nav", JSON.stringify(this.templates));
+  //   }
+  // }
   public handleDefaultTempates() {
     this.templates = this.order_tempates;
   }
@@ -389,7 +389,7 @@ export default class Home extends Vue {
       get_private_content(),
       get_new_song(),
       get_personalized_mv(),
-      get_dj_program()
+      get_dj_program(),
     ]);
     const mergeData = (e: any, i: any) => {
       if (e.code === 200) {

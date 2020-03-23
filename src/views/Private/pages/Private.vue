@@ -715,10 +715,11 @@ export default class Panel extends Vue {
     if (code !== 200) {
       return;
     }
+
     const [music] = data;
     download(
       music.url,
-      `${id}:${name}.${music.type}`,
+      `${this.songs.ar.map((e: any) => e.name).join('')}-${name}.${music.type}`,
       (arg: any, percentage: any, total: any) => {
         if (arg === 'progress') {
           // 显示进度

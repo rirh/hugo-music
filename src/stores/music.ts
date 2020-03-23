@@ -193,7 +193,15 @@ const music = {
       state.state = params;
     },
     async  update_music_data(state: any, params: any) {
+
       if (params.id !== state.data.id) {
+        if (params.local) {
+          audio = new Sound({ volume: state.vloume, url: params.path });
+          audio.set_url(params.path);
+          audio.set_vloume(state.vloume);
+          await audio.init();
+          return;
+        }
         const [musics, lyrics] = await axios.all(
           [
             get_song_url(params.id),

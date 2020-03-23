@@ -111,13 +111,13 @@
         </dt>
         <dd
           class="dd"
-          @click="handlePlay(item)"
+          @dblclick="handlePlay(item)"
           v-for="(item,index) in data"
           :key="index"
           :style="{'background-color':index%2!==0?'#fff':'#efefef'}"
         >
-          <span class="name">{{item.split(":")[1]||item}}</span>
-          <span class="singer"></span>
+          <span class="name">{{item.name||item}}</span>
+          <span class="singer">{{item.siger||item}}</span>
           <span class="alume"></span>
           <span class="size"></span>
           <span class="time"></span>
@@ -128,16 +128,16 @@
 </template>
 
 <script lang="ts">
-import { remote } from "electron";
-import { Component, Vue } from "vue-property-decorator";
-import { LOAD_MUSIC } from "@/constant/ipc";
-import { ipcRenderer } from "electron";
+import { remote } from 'electron';
+import { Component, Vue } from 'vue-property-decorator';
+import { LOAD_MUSIC } from '@/constant/ipc';
+import { ipcRenderer } from 'electron';
 @Component({})
 export default class Download extends Vue {
   public data = [];
-  public search = "";
+  public search = '';
   public spin = false;
-  public path = remote.app.getPath("music");
+  public path = remote.app.getPath('music');
 
   public mounted() {
     this.init();
@@ -147,21 +147,23 @@ export default class Download extends Vue {
     this.spin = true;
     setTimeout(() => {
       const result: any = ipcRenderer.sendSync(LOAD_MUSIC);
-      console.log(remote.app.getPath("music"));
-        console.log(result);
-
       const data = result.filter((e: any) => {
-
-        if (~e.indexOf("mp3") && e.split(":")[0]) {
-          const [id] = e.split(":");
-          const name = e.split(":").join("");
-          return {
-            id,
-            name
-          };
+        if (~e.indexOf('mp3') && e.split('-')[0]) {
+          return e;
         }
       });
-      this.data = data;
+
+      this.data = data.map((e: any) => {
+        const [item] = e.split('.');
+        const [siger, name] = item.split('-');
+
+        return {
+          siger,
+          name,
+          orgin: e,
+          path: `${this.path}/${e}`,
+        };
+      });
       this.spin = false;
     }, 200);
   }
@@ -176,21 +178,17 @@ export default class Download extends Vue {
     }
   }
   public handleOpenDir() {
-    const { shell } = require("electron").remote;
+    const { shell } = require('electron').remote;
     // const tmp = require("tmp");
     shell.showItemInFolder(`${this.path}`);
   }
   public handlePlay(item: any) {
-    if (item.split(":")[0]) {
-      const params = {
-        id: item.split(":")[0],
-        name: item.split(":")[1],
-        auth: null,
-        image: null,
-        duration: null
-      };
-      this.$store.commit("update_music_data", params);
-    }
+    const params: any = {
+      id: 0,
+      path: item.path,
+      local: true,
+    };
+    this.$store.commit('update_music_data', params);
   }
 }
 </script>

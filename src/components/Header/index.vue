@@ -857,7 +857,6 @@ export default class HelloWorld extends Vue {
   // }
   // @Watch("theme.type")
   public handleChangeTheme(key: any = 'red') {
-    console.log((window as any).less)
     this.theme.type = key;
     let result = {
       bg: 'var(--red)',
