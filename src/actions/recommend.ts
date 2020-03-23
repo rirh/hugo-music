@@ -21,8 +21,13 @@ import {
   GET_TOP_ALBUM,
   GET_ALBUM_DETAIL,
   GET_ALBUM_COMMENT,
+  GET_DJ_BANNER,
 } from '@/constant/api';
 
+export const get_dj_banner = async (args: any) => {
+  const { response }: any = await http(`${GET_DJ_BANNER}`);
+  return response;
+};
 
 
 export const get_album_comment = async (args: any) => {

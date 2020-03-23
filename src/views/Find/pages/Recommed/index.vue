@@ -134,7 +134,7 @@
     <Swiper :data="banners" />
     <br />
     <div v-for="(template,index) in templates" :key="index">
-      <component :data="template.data" :is="template.component"  />
+      <component :data="template.data" :is="template.key" />
     </div>
     <div class="wapper-order">
       <p class="wapper-order-tips">现在可以根据个人喜好, 自由调整首页栏目顺序啦~</p>
@@ -169,6 +169,19 @@
             <a-icon class="ordermodal-main-list-logo" type="align-right" />
           </dd>
         </dl>-->
+        <!-- <transition-group name="flip-list">
+          <div
+            v-for="nav in order_tempates"
+            :key="nav.key"
+            class="drag-item"
+            draggable="true"
+            @dragstart="dragstart(nav)"
+            @dragenter="dragenter(nav)"
+          >
+            <span>{{nav.name}}</span>
+            <a-icon class="ordermodal-main-list-logo" type="align-right" />
+          </div>
+        </transition-group> -->
         <SortableList
           class="ordermodal-main-lists"
           @sort-end="init"
@@ -197,16 +210,16 @@
 </template>
 
 <script lang="ts">
-import Swiper from './components/Swiper.vue';
-import Recommed from './components/Recommed.vue';
-import Exclusive from './components/Exclusive.vue';
-import Newsong from './components/Newsong.vue';
-import RecommedMv from './components/RecommedMv.vue';
-import DjProgram from './components/DjProgram.vue';
-import SortableItem from './SortableItem.vue';
-import SortableList from './SortableList.vue';
+import Swiper from "./components/Swiper.vue";
+import Recommed from "./components/Recommed.vue";
+import Exclusive from "./components/Exclusive.vue";
+import Newsong from "./components/Newsong.vue";
+import RecommedMv from "./components/RecommedMv.vue";
+import DjProgram from "./components/DjProgram.vue";
+import SortableItem from "./SortableItem.vue";
+import SortableList from "./SortableList.vue";
 
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 import {
   get_banner,
   get_personalized,
@@ -215,9 +228,9 @@ import {
   get_personalized_mv,
   get_dj_program,
   get_play_list_detail,
-  get_play_song_detail,
-} from '@/actions';
-import axios from 'axios';
+  get_play_song_detail
+} from "@/actions";
+import axios from "axios";
 
 @Component({
   components: {
@@ -228,42 +241,66 @@ import axios from 'axios';
     RecommedMv,
     DjProgram,
     SortableItem,
-    SortableList,
-  },
+    SortableList
+  }
 })
 export default class Home extends Vue {
   public showOrder = false;
   private banners = [];
+  private oldNav: any = 0;
+  private newNav: any = 0;
   // 调整顺序
   private order_tempates = [];
   private templates = [
     {
-      name: '推荐歌单',
+      name: "推荐歌单",
+      key: "Recommed",
       component: Recommed,
-      data: [],
-
+      data: []
     },
     {
-      name: '独家放送',
+      name: "独家放送",
+      key: "Exclusive",
       component: Exclusive,
-      data: [],
+      data: []
     },
     {
-      name: '最新音乐',
+      name: "最新音乐",
+      key: "Newsong",
       component: Newsong,
-      data: [],
+      data: []
     },
     {
-      name: '推荐MV',
+      name: "推荐MV",
+      key: "RecommedMv",
       component: RecommedMv,
-      data: [],
+      data: []
     },
     {
-      name: '主播电台',
+      name: "主播电台",
+      key: "DjProgram",
       component: DjProgram,
-      data: [],
-    },
+      data: []
+    }
   ];
+  dragstart(nav: any) {
+    this.oldNav = nav;
+  }
+  dragenter(nav: any) {
+    this.newNav = nav;
+    if (this.oldNav.name !== this.newNav.name) {
+      let oldIndex = this.templates.findIndex(nav => nav.name == this.oldNav.name);
+      let newIndex = this.templates.findIndex(nav => nav.name == this.newNav.name);
+      let newItems = [...this.templates];
+      // 删除老的节点
+      newItems.splice(oldIndex, 1);
+      // 在列表中目标位置增加新的节点
+      newItems.splice(newIndex, 0, this.oldNav);
+      // this.navs一改变，transition-group就起了作用
+      this.templates = [...newItems];
+      // window.localStorage.setItem("nav", JSON.stringify(this.templates));
+    }
+  }
   public handleDefaultTempates() {
     this.templates = this.order_tempates;
   }
@@ -352,7 +389,7 @@ export default class Home extends Vue {
       get_private_content(),
       get_new_song(),
       get_personalized_mv(),
-      get_dj_program(),
+      get_dj_program()
     ]);
     const mergeData = (e: any, i: any) => {
       if (e.code === 200) {

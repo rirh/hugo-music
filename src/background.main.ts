@@ -177,11 +177,10 @@ ipcMain.on(INTENT_CHANGE, async (e: any, state: any) => {
 });
 
 ipcMain.on(LOAD_MUSIC, async (e: any, state: any) => {
-  const tmp: any = require("tmp");
+  // const tmp: any = require("tmp");
   const fs = require("fs");
-  const path: string = tmp.tmpdir;
-  console.log(path);
-  fs.readdir(path, function (err: any, data: any) {
+  // const path: string = tmp.tmpdir;
+  fs.readdir(remote.app.getPath('music'), function (err: any, data: any) {
     if (err) throw err;
     console.log(data);
     e.returnValue = data;

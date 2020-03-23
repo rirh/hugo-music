@@ -75,6 +75,7 @@
       <dt class="header">
         <span>
           <a-button class="play-all" type="primary">播放全部</a-button>
+          <span>&nbsp;{{path}}&nbsp;</span>
           <span class="open-dir" @click="handleOpenDir()">打开目录</span>
           &nbsp;
           <a-icon type="sync" :spin="spin" @click="init()" />
@@ -127,14 +128,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { LOAD_MUSIC } from '@/constant/ipc';
-import { ipcRenderer } from 'electron';
+import { remote } from "electron";
+import { Component, Vue } from "vue-property-decorator";
+import { LOAD_MUSIC } from "@/constant/ipc";
+import { ipcRenderer } from "electron";
 @Component({})
 export default class Download extends Vue {
   public data = [];
-  public search = '';
+  public search = "";
   public spin = false;
+  public path = remote.app.getPath("music");
 
   public mounted() {
     this.init();
@@ -144,13 +147,17 @@ export default class Download extends Vue {
     this.spin = true;
     setTimeout(() => {
       const result: any = ipcRenderer.sendSync(LOAD_MUSIC);
+      console.log(remote.app.getPath("music"));
+        console.log(result);
+
       const data = result.filter((e: any) => {
-        if (~e.indexOf('mp3') && e.split(':')[0]) {
-          const [id] = e.split(':');
-          const name = e.split(':').join('');
+
+        if (~e.indexOf("mp3") && e.split(":")[0]) {
+          const [id] = e.split(":");
+          const name = e.split(":").join("");
           return {
             id,
-            name,
+            name
           };
         }
       });
@@ -169,20 +176,20 @@ export default class Download extends Vue {
     }
   }
   public handleOpenDir() {
-    const { shell } = require('electron').remote;
-    const tmp = require('tmp');
-    shell.showItemInFolder(`${tmp.tmpdir}`);
+    const { shell } = require("electron").remote;
+    // const tmp = require("tmp");
+    shell.showItemInFolder(`${this.path}`);
   }
   public handlePlay(item: any) {
-    if (item.split(':')[0]) {
+    if (item.split(":")[0]) {
       const params = {
-        id: item.split(':')[0],
-        name: item.split(':')[1],
+        id: item.split(":")[0],
+        name: item.split(":")[1],
         auth: null,
         image: null,
-        duration: null,
+        duration: null
       };
-      this.$store.commit('update_music_data', params);
+      this.$store.commit("update_music_data", params);
     }
   }
 }

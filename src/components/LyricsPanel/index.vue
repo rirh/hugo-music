@@ -56,12 +56,12 @@
       }
 
       &-box {
-        background-image: url("../../assets/coverall.png");
-        background-position: -518px 916px;
+        background-image: url("../../assets/coverall_bate.png");
+        // background-position: -518px 916px;
         text-align: left;
         position: relative;
-        height: 21vw;
-        width: 21vw;
+        height: 19.1vw;
+        width: 19.1vw;
         transform: scale(1.6);
 
         &-img {

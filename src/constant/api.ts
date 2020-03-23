@@ -231,3 +231,5 @@ export const GET_SEARCH = `${host}search`;
 export const GET_EVENT = `${host}event`;
 
 
+// 主播电台
+export const GET_DJ_BANNER = `${host}dj/banner`;

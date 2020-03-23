@@ -19,15 +19,19 @@
   }
   &-song {
     color: var(--black);
+    white-space: nowrap;
   }
   &-auth {
     color: var(--black);
+    white-space: nowrap;
   }
   &-dj {
     color: var(--black);
+    white-space: nowrap;
   }
   &-dt {
     color: var(--tipsColor);
+
   }
 }
 

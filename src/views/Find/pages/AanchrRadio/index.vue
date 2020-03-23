@@ -2,14 +2,12 @@
 </style>
 
 <template>
-<div>
-  作者电台
-</div>
+  <div></div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-@Component({ })
+import Banner from './components/Banner.vue';
+@Component({  })
 export default class Home extends Vue {}
 </script>
