@@ -172,7 +172,6 @@ ipcMain.on(INTENT_CHANGE, async (e: any, state: any) => {
     buttons: ['好'],
     detail: `您已${state === 'online' ? '连接' : '断开'}网络！`
   }
-
   const returnValue = await dialog.showMessageBox(dialogOpts);
 });
 
