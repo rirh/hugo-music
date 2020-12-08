@@ -11,7 +11,7 @@ import {
   HAVE_FOCUS,
   INTENT_CHANGE,
   ASYNC_LYRICS
-} from '@/constant/ipc';
+} from './constant/ipc';
 import DockMenu from './constant/dock.menu';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
