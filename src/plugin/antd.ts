@@ -11,7 +11,7 @@ import {
   Input, Form, Collapse, Progress,
   Radio, Spin, message, Empty, Switch,
 } from 'ant-design-vue';
-import Avatar from './components/Avatar.vue';
+import Avatar from './components/avatar.vue';
 const IconFont: any = Icon.createFromIconfontCN({
   // scriptUrl: '//at.alicdn.com/t/font_1272441_0etur92r3rbs.js',
   // scriptUrl: '//at.alicdn.com/t/font_1272441_030a7grz1th2.js',

@@ -89,32 +89,33 @@
               ref="vedio"
               :height="filterHeight(data.height)"
               :style="{
-              'object-fit':data.height>data.width?'contain':'fill',
-               'background-image': `url(${data.coverUrl})`,
-               'filter':'brightness(60%), blur(20px)'
-            }"
+                'object-fit': data.height > data.width ? 'contain' : 'fill',
+                'background-image': `url(${data.coverUrl})`,
+                filter: 'brightness(60%), blur(20px)',
+              }"
               autoplay
-              v-for="(item,index) in data.urls"
+              v-for="(item, index) in data.urls"
               :key="index"
               :src="item.url"
             ></video>
           </a-spin>
           <span
             @click.stop="handlePlay"
-            v-show="state.state!=='playing'"
+            v-show="state.state !== 'playing'"
             class="wapper-left-vedio-play"
           >
             <AIconfont type="icon-up1-copy" />
           </span>
           <span class="wapper-left-vedio-controls">
             <span>
-              {{transformSongTime(currtime)
-              }}/{{transformSongTime(duration)}}
+              {{ transformSongTime(currtime) }}/{{
+                transformSongTime(duration)
+              }}
             </span>
             <span class="wapper-left-vedio-controls-right">
               <a-popover class="music-panel-pop">
                 <template slot="content">
-                  <div style="height:100px;">
+                  <div style="height: 100px">
                     <a-slider
                       vertical
                       :defaultValue="100"
@@ -127,7 +128,7 @@
                   @click.stop="handleVolumeType"
                   class="music-panel-volume"
                   :type="volumetype"
-                  :style="{'font-size':'18px'}"
+                  :style="{ 'font-size': '18px' }"
                 />
               </a-popover>
               <a-divider type="vertical" />
@@ -135,9 +136,9 @@
               <a-divider type="vertical" />
               <span>
                 <AIconfont
-                  :style="{'font-size':'18px'}"
+                  :style="{ 'font-size': '18px' }"
                   @click="handleFull"
-                  :type="isfull?'icon-fullscreen-exit':'icon-fullscreen'"
+                  :type="isfull ? 'icon-fullscreen-exit' : 'icon-fullscreen'"
                 />
               </span>
             </span>
@@ -370,12 +371,12 @@ export default class Radio extends Vue {
           4: 'URL无效',
         };
         this.spinning = true;
-        message.error({
-          message: '提示',
-          description: `检测到${
-            errorArr[vedio.error.code]
-          } 正在自动执行修复方案...`,
-        });
+        // message.error({
+        //   message: "提示",
+        //   description: `检测到${
+        //     errorArr[vedio.error.code]
+        //   } 正在自动执行修复方案...`,
+        // });
         const data = this.$store.state.vedio.cursor.data;
         this.init(data);
       };

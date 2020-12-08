@@ -255,7 +255,7 @@ class Sound {
   private vloume: number | string = 1;
   private effectTimer: any;
   constructor(props: any = {}) {
-    window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    AudioContext = AudioContext || (window as any).webkitAudioContext;
     this.url = props.url;
     this.vloume = props.vloume;
   }

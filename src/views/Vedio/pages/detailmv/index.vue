@@ -383,12 +383,12 @@ export default class Radio extends Vue {
           4: 'URL无效',
         };
         this.spinning = true;
-        message.error({
-          message: '提示',
-          description: `检测到${
-            errorArr[vedio.error.code]
-          } 正在自动执行修复方案...`,
-        });
+        // message.error({
+        //   message: '提示',
+        //   description: `检测到${
+        //     errorArr[vedio.error.code]
+        //   } 正在自动执行修复方案...`,
+        // });
         const data = this.$store.state.vedio.cursor.data;
         this.init(data);
       };
