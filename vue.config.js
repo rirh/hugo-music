@@ -50,9 +50,9 @@ const config = {
           // "component-background": "#131722",
           // "border-color-base": "#212738",
           // "text-color": "#c5cbce"
-          'primary-color': '#d5504b',
-          'link-color': '#d5504b',
-          'success-color': 'd5504b'
+          "primary-color": "#d5504b",
+          "link-color": "#d5504b",
+          "success-color": "d5504b"
         },
         javascriptEnabled: true
       }
@@ -61,32 +61,15 @@ const config = {
   pluginOptions: {
     electronBuilder: {
       builderOptions: {
-        "appId": "com.notesmusic.app",
-        "productName": "NotesMusic",//项目名，也是生成的安装文件名，即aDemo.exe
-        "copyright": "Copyright © 2019",//版权信息
-        "directories": {
-          "output": "./dist_electron"//输出文件路径
-        },
-        "mac": {
-          "icon": "./public/netease.icns"
-        },
-      }
-    }
-
-  },
-  devServer: {
-    proxy: {
-      'https://music.huzhihui.org.cn': {
-        target: 'https://music.huzhihui.org.cn',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/api': ''
+        appId: "com.notesmusic.app",
+        productName: "NotesMusic", //项目名，也是生成的安装文件名，即aDemo.exe
+        copyright: "Copyright © 2019", //版权信息
+        mac: {
+          icon: "./public/netease.icns"
         }
       }
     }
-  }
+  },
   // ...other config
-
 };
 module.exports = config;

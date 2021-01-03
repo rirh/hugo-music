@@ -23,7 +23,6 @@ export default (url = '', datas = {}, method = 'GET') => {
     // try {
     try {
       const { status, data } = await axios.get(url, { withCredentials: true });
-
       if (status === 200) {
         resolve({ response: data });
       } else {
