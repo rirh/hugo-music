@@ -22,7 +22,7 @@ import {
   ASYNC_LYRICS
 } from "./constant/ipc";
 import DockMenu from "./constant/dock.menu";
-import './background.main'
+import "./background.main";
 const isDevelopment = process.env.NODE_ENV !== "production";
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -68,15 +68,6 @@ function createWindow() {
   win.setMenu(null);
   win.once("ready-to-show", () => {
     (win as any).show();
-    // tray = new Tray('');
-    // const contextMenu = Menu.buildFromTemplate([
-    //   { label: 'Item1', type: 'radio' },
-    //   { label: 'Item2', type: 'radio' },
-    //   { label: 'Item3', type: 'radio', checked: true },
-    //   { label: 'Item4', type: 'radio' }
-    // ])
-    // tray.setToolTip('NotesMuisc')
-    // tray.setContextMenu(contextMenu)
   });
   win.on("blur", (e: any, cmd: any) => {
     win && win.webContents.send(HAVE_BLUR);
@@ -92,10 +83,8 @@ function createWindow() {
     if (!process.env.IS_TEST) win.webContents.openDevTools();
     // win.webContents.openDevTools();
   } else {
-    win.webContents.openDevTools();
-    createProtocol("app");
     // Load the index.html when not in development
-    win.loadURL("app://./index.html");
+    win.loadURL("app//./index.html");
     // win.loadURL(`${__dirname}/index.html`)
   }
 
@@ -124,6 +113,7 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
+  createProtocol("app");
   const iconpath = path.join(__dirname, "../public/img/tray@2x.png");
   const icon = nativeImage.createFromPath(iconpath);
   tray = new Tray(icon);
