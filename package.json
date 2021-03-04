@@ -2,6 +2,8 @@
   "name": "netease",
   "version": "0.0.1",
   "private": true,
+  "author":"TigerZH <only_tigerhu@163.com>",
+  "description":"netease",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "build": "vue-cli-service electron:build",
