@@ -2,8 +2,8 @@
   "name": "netease",
   "version": "0.0.1",
   "private": true,
-  "author":"TigerZH <only_tigerhu@163.com>",
-  "description":"netease",
+  "author": "TigerZH <only_tigerhu@163.com>",
+  "description": "netease",
   "scripts": {
     "electron:serve": "vue-cli-service electron:serve",
     "electron:build": "vue-cli-service electron:build",
@@ -40,7 +40,7 @@
     "vue-awesome-swiper": "^3.1.3",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.3",
+    "vue-router": "3.0.7",
     "vue-slicksort": "^1.1.3",
     "vuex": "^3.0.1",
     "wind-dom": "^0.0.3"
