@@ -1,5 +1,4 @@
 
-import { ipcRenderer, BrowserWindow } from 'electron';
 import { SEND_STORE, OPEN_FLOAT, ASYNC_LYRICS } from '@/constant/ipc';
 import axios from 'axios';
 import { get_song_url, get_lyric, get_like, get_likelist } from '@/actions';
@@ -40,6 +39,7 @@ const music = {
     },
     update_music_showlyric(state: any, value: any) {
       if (!value) {
+        const { ipcRenderer } = require('electron');
         // 清空窗口歌词
         ipcRenderer.send(ASYNC_LYRICS, '');
       }
@@ -192,7 +192,7 @@ const music = {
       }
       state.state = params;
     },
-    async  update_music_data(state: any, params: any) {
+    async update_music_data(state: any, params: any) {
 
       if (params.id !== state.data.id) {
         if (params.local) {
@@ -284,7 +284,7 @@ class Sound {
           store.commit('update_music_state', 'playing');
           store.commit('update_music_cursor', this.audio.currentTime);
           store.commit('update_music_duration', this.audio.duration);
-          reslove();
+          reslove({});
         }
       };
       this.audio.ontimeupdate = this.start_progress.bind(this);

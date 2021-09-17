@@ -1,4 +1,4 @@
-<style lang="less" >
+<style lang="less">
 .login /deep/ .ant-modal-body {
   padding: 1.5vw 3vw 3vw 3vw;
   border-top: 1vw solid var(--red);
@@ -43,12 +43,26 @@
       @keyup.enter="handleSumit"
     >
       <a-spin class="login-body" :spinning="spinning">
-        <AIconfont class="login-close" type="icon-close1" @click="$emit('change',false)" />
-        <div v-show="logintype==='手机登录'">
-          <a-input size="large" class="login-input" v-model="user" placeholder="请输入手机号"></a-input>
+        <AIconfont
+          class="login-close"
+          type="icon-close1"
+          @click="$emit('change', false)"
+        />
+        <div v-show="logintype === '手机登录'">
+          <a-input
+            size="large"
+            class="login-input"
+            v-model="user"
+            placeholder="请输入手机号"
+          ></a-input>
         </div>
-        <div v-show="logintype!=='手机登录'">
-          <a-input size="large" class="login-input" v-model="email" placeholder="请输入邮箱">
+        <div v-show="logintype !== '手机登录'">
+          <a-input
+            size="large"
+            class="login-input"
+            v-model="email"
+            placeholder="请输入邮箱"
+          >
             <!-- <a-select slot="addonBefore" v-model="selected" @change="handleChange">
               <a-select-option v-for="(item) in CountryCode" :key="`${item}`"  >
                 <span>{{item.phone_code}}&nbsp;</span>
@@ -96,7 +110,6 @@ import {
 import { notification } from 'ant-design-vue';
 import { setStorage } from '@/util/filters';
 import { FORGET_PWD } from '@/constant/ipc';
-import { ipcRenderer, remote } from 'electron';
 import { STORE_USER_INFO } from '@/constant/store';
 import Store from 'electron-store';
 const electron_store = new Store();
@@ -128,6 +141,7 @@ export default class Tags extends Vue {
   //   this.$emit('change',false)
   // }
   public handleIpcForget() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.send(FORGET_PWD);
   }
   public async handleSumit() {
@@ -196,4 +210,3 @@ export default class Tags extends Vue {
   }
 }
 </script>
-

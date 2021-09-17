@@ -36,7 +36,23 @@ const config = {
   },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
-
+  // webpack-dev-server 相关配置
+  devServer: {
+    host: "0.0.0.0",
+    port: process.env.port || process.env.npm_config_port || 80,
+    open: true,
+    proxy: {
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_BASE_HOST,
+        changeOrigin: true,
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_BASE_API]: ""
+        }
+      }
+    },
+    disableHostCheck: true
+  },
   // 开启 CSS source maps?
   css: {
     sourceMap: false,
@@ -60,6 +76,14 @@ const config = {
   },
   pluginOptions: {
     electronBuilder: {
+      // List native deps here if they don't work
+      externals: ["my-native-dep"],
+      // If you are using Yarn Workspaces, you may have multiple node_modules folders
+      // List them all here so that VCP Electron Builder can find them
+      nodeModulesPath: ["../../node_modules", "./node_modules"],
+      // seting background nodeIntegration
+      nodeIntegration: true,
+      preload: "src/preload.ts",
       builderOptions: {
         appId: "com.notesmusic.app",
         productName: "NotesMusic", //项目名，也是生成的安装文件名，即aDemo.exe
@@ -69,7 +93,7 @@ const config = {
         }
       }
     }
-  },
+  }
   // ...other config
 };
 module.exports = config;

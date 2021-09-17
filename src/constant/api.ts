@@ -1,5 +1,5 @@
 // 服务器
-export const host = 'https://music.huzhihui.org.cn/';
+export const host = process.env.VUE_APP_BASE_API;
 // export const host = 'http://localhost:3002/';
 
 // 错误图片

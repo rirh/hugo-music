@@ -297,7 +297,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { remote, ipcRenderer } from 'electron';
 import { HAVE_BLUR, HAVE_FOCUS } from '@/constant/ipc';
 import { parseLyric } from '@/util/filters';
 
@@ -307,10 +306,12 @@ export default class HelloWorld extends Vue {
   public focus = false;
   public img = '';
   public mounted() {
-    ipcRenderer.on(HAVE_BLUR, () => {
+            const {ipcRenderer, remote} = require('electron');
+
+            ipcRenderer.on(HAVE_BLUR, () => {
       this.focus = true;
     });
-    ipcRenderer.on(HAVE_FOCUS, () => {
+            ipcRenderer.on(HAVE_FOCUS, () => {
       this.focus = false;
     });
   }
@@ -373,8 +374,10 @@ export default class HelloWorld extends Vue {
     // remote.getCurrentWindow().minimize();
     // remote.getCurrentWindow().unmaximize();
     // remote.getCurrentWindow().restore();
-    const mainWindow = remote.getCurrentWindow();
-    const build: any = {
+            const {ipcRenderer, remote} = require('electron');
+
+            const mainWindow = remote.getCurrentWindow();
+            const build: any = {
       close: () => {
         // ipcRenderer.send(MAIN_CLOSE);
         if (mainWindow.isFullScreen()) {
@@ -402,8 +405,8 @@ export default class HelloWorld extends Vue {
         }
       },
     };
-    build[key]();
-    this.$router.back();
+            build[key]();
+            this.$router.back();
   }
 }
 </script>

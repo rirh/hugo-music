@@ -128,17 +128,20 @@
 }
 </style>
 
-
 <template>
   <div class="wapper">
     <Swiper :data="banners" />
     <br />
-    <div v-for="(template,index) in templates" :key="index">
+    <div v-for="(template, index) in templates" :key="index">
       <component :data="template.data" :is="template.key" />
     </div>
     <div class="wapper-order">
-      <p class="wapper-order-tips">现在可以根据个人喜好, 自由调整首页栏目顺序啦~</p>
-      <button @click="showOrder=true" class="wapper-order-button">调整栏目顺序</button>
+      <p class="wapper-order-tips">
+        现在可以根据个人喜好, 自由调整首页栏目顺序啦~
+      </p>
+      <button @click="showOrder = true" class="wapper-order-button">
+        调整栏目顺序
+      </button>
     </div>
     <a-modal
       class="ordermodal"
@@ -152,12 +155,18 @@
     >
       <template slot="title">
         <div class="order-header">
-          <AIconfont class="order-header-logo" @click="showOrder=false" type="icon-close"></AIconfont>
+          <AIconfont
+            class="order-header-logo"
+            @click="showOrder = false"
+            type="icon-close"
+          ></AIconfont>
           <h4>调整栏目顺序</h4>
         </div>
       </template>
       <div class="ordermodal-main">
-        <p class="ordermodal-main-tips">想调整首页栏目的顺序?按住右边的按钮拖动即可</p>
+        <p class="ordermodal-main-tips">
+          想调整首页栏目的顺序?按住右边的按钮拖动即可
+        </p>
         <!-- <dl ref="lists" class="ordermodal-main-lists" @mousedown="handleMouseDown">
           <dd
             ref="list"
@@ -197,8 +206,12 @@
           />
         </SortableList>
 
-        <a class="ordermodal-main-def" @click="handleDefaultTempates">恢复默认排序</a>
-        <a-button class="ordermodal-main-btn" @click="handleSortTempates">确认</a-button>
+        <a class="ordermodal-main-def" @click="handleDefaultTempates"
+          >恢复默认排序</a
+        >
+        <a-button class="ordermodal-main-btn" @click="handleSortTempates"
+          >确认</a-button
+        >
       </div>
     </a-modal>
     <!-- <Recommed :data="recommeds" />
@@ -210,16 +223,16 @@
 </template>
 
 <script lang="ts">
-import Swiper from './components/Swiper.vue';
-import Recommed from './components/Recommed.vue';
-import Exclusive from './components/Exclusive.vue';
-import Newsong from './components/Newsong.vue';
-import RecommedMv from './components/RecommedMv.vue';
-import DjProgram from './components/DjProgram.vue';
-import SortableItem from './SortableItem.vue';
-import SortableList from './SortableList.vue';
+import Swiper from "./components/Swiper.vue";
+import Recommed from "./components/Recommed.vue";
+import Exclusive from "./components/Exclusive.vue";
+import Newsong from "./components/Newsong.vue";
+import RecommedMv from "./components/RecommedMv.vue";
+import DjProgram from "./components/DjProgram.vue";
+import SortableItem from "./SortableItem.vue";
+import SortableList from "./SortableList.vue";
 
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 import {
   get_banner,
   get_personalized,
@@ -228,9 +241,9 @@ import {
   get_personalized_mv,
   get_dj_program,
   get_play_list_detail,
-  get_play_song_detail,
-} from '@/actions';
-import axios from 'axios';
+  get_play_song_detail
+} from "@/actions";
+import axios from "axios";
 
 @Component({
   components: {
@@ -241,8 +254,8 @@ import axios from 'axios';
     RecommedMv,
     DjProgram,
     SortableItem,
-    SortableList,
-  },
+    SortableList
+  }
 })
 export default class Home extends Vue {
   public showOrder = false;
@@ -253,35 +266,35 @@ export default class Home extends Vue {
   private order_tempates = [];
   private templates = [
     {
-      name: '推荐歌单',
-      key: 'Recommed',
+      name: "推荐歌单",
+      key: "Recommed",
       component: Recommed,
-      data: [],
+      data: []
     },
     {
-      name: '独家放送',
-      key: 'Exclusive',
+      name: "独家放送",
+      key: "Exclusive",
       component: Exclusive,
-      data: [],
+      data: []
     },
     {
-      name: '最新音乐',
-      key: 'Newsong',
+      name: "最新音乐",
+      key: "Newsong",
       component: Newsong,
-      data: [],
+      data: []
     },
     {
-      name: '推荐MV',
-      key: 'RecommedMv',
+      name: "推荐MV",
+      key: "RecommedMv",
       component: RecommedMv,
-      data: [],
+      data: []
     },
     {
-      name: '主播电台',
-      key: 'DjProgram',
+      name: "主播电台",
+      key: "DjProgram",
       component: DjProgram,
-      data: [],
-    },
+      data: []
+    }
   ];
   // public dragstart(nav: any) {
   //   this.oldNav = nav;
@@ -389,8 +402,10 @@ export default class Home extends Vue {
       get_private_content(),
       get_new_song(),
       get_personalized_mv(),
-      get_dj_program(),
+      get_dj_program()
     ]);
+    console.log(respone)
+    
     const mergeData = (e: any, i: any) => {
       if (e.code === 200) {
         if (e.banners) {
@@ -403,6 +418,8 @@ export default class Home extends Vue {
     };
     respone.forEach(mergeData);
     Object.assign(this.order_tempates, this.templates);
+    console.log(this.order_tempates);
+
     // console.log(this.order_tempates);
 
     // const [

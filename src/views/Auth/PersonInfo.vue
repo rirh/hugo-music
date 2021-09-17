@@ -61,19 +61,23 @@
   <div class="detail">
     <div class="detail-header">
       <span class="detail-header-item">
-        <span
-          style="font-size:28px;font-weight:bold;"
-        >{{detail.profile&&detail.profile.allSubscribedCount}}</span>
+        <span style="font-size:28px;font-weight:bold;">{{
+          detail.profile && detail.profile.allSubscribedCount
+        }}</span>
         <span style="font-size:12px;">动态</span>
       </span>
       <a-divider type="vertical" />
       <span class="detail-header-item" @click="handleGoFollows('关注')">
-        <span style="font-size:28px;font-weight:bold;">{{detail.profile&&detail.profile.follows}}</span>
+        <span style="font-size:28px;font-weight:bold;">{{
+          detail.profile && detail.profile.follows
+        }}</span>
         <span style="font-size:12px;">关注</span>
       </span>
       <a-divider type="vertical" />
       <span class="detail-header-item" @click="handleGoFollows('粉丝')">
-        <span style="font-size:28px;font-weight:bold;">{{detail.profile&&detail.profile.followeds}}</span>
+        <span style="font-size:28px;font-weight:bold;">{{
+          detail.profile && detail.profile.followeds
+        }}</span>
         <span style="font-size:12px;">粉丝</span>
       </span>
     </div>
@@ -83,7 +87,8 @@
         type="primary"
         :disabled="detail.pcSign"
         @click="handleSignin"
-      >{{`${detail.pcSign?'已签到':'签到'}`}}</a-button>
+        >{{ `${detail.pcSign ? "已签到" : "签到"}` }}</a-button
+      >
     </div>
     <br />
     <dl class="detail-lists">
@@ -98,7 +103,10 @@
         </span>
         <span class="detail-lists-list">
           <span style="color:var(--textColor)">订购</span>
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
       <dd
@@ -112,9 +120,12 @@
         </span>
         <span class="detail-lists-list">
           <span class="lv" style="color:var(--textColor)">
-            <strong>lv&nbsp;{{detail.level}}</strong>
+            <strong>lv&nbsp;{{ detail.level }}</strong>
           </span>
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
       <dd
@@ -127,7 +138,10 @@
           <span>&nbsp;&nbsp;商城</span>
         </span>
         <span class="detail-lists-list">
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
     </dl>
@@ -138,7 +152,10 @@
           <span>&nbsp;&nbsp;个人信息设置</span>
         </span>
         <span class="detail-lists-list">
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
       <dd
@@ -151,11 +168,17 @@
           <span>&nbsp;&nbsp;绑定社交账号</span>
         </span>
         <span class="detail-lists-list">
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
     </dl>
-    <dl class="detail-lists" style="padding-bottom:0;margin-bottom:0;border:none">
+    <dl
+      class="detail-lists"
+      style="padding-bottom:0;margin-bottom:0;border:none"
+    >
       <dd
         @click="handleSignOut"
         class="detail-lists-list-item"
@@ -166,7 +189,10 @@
           <span>&nbsp;&nbsp;退出登录</span>
         </span>
         <span class="detail-lists-list">
-          <AIconfont style="font-size:24px;color:var(--textColor)" type="icon-chevron-right" />
+          <AIconfont
+            style="font-size:24px;color:var(--textColor)"
+            type="icon-chevron-right"
+          />
         </span>
       </dd>
     </dl>
@@ -177,7 +203,6 @@
 import { Component, Prop, Vue, Model } from 'vue-property-decorator';
 import { get_daily_signin, get_user_detail, sign_out } from '@/actions';
 import { notification } from 'ant-design-vue';
-import { ipcRenderer, remote } from 'electron';
 import { VIP_CENTER, USER_LEVER, HSOP_SEND } from '@/constant/ipc';
 
 @Component
@@ -194,12 +219,15 @@ export default class Tags extends Vue {
     this.$router.push('/edit-user-info');
   }
   public handleGoVip() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.send(VIP_CENTER);
   }
   public handleGoLeaver() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.send(USER_LEVER);
   }
   public handleGoShop() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.send(HSOP_SEND);
   }
 
@@ -242,4 +270,3 @@ export default class Tags extends Vue {
   }
 }
 </script>
-

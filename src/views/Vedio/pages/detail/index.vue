@@ -177,7 +177,6 @@ import { transformW, transformatDate, transformSongTime } from '@/util/filters';
 import AuthInfo from './AuthInfo.vue';
 import Simi from './Simi.vue';
 import Comment from './Comment.vue';
-import { screen } from 'electron';
 @Component({ components: { AuthInfo, Simi, Comment } })
 export default class Radio extends Vue {
   public loading = false;

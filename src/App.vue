@@ -5,7 +5,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ipcRenderer, remote } from 'electron';
 import { MAIN_DROP, INTENT_CHANGE } from '@/constant/ipc';
 
 
@@ -40,6 +39,7 @@ export default class Home extends Vue {
   }
   public bindUpdateOnlineStatus() {
     const updateOnlineStatus = () => {
+      const {ipcRenderer} = require('electron');
       ipcRenderer.send(INTENT_CHANGE, navigator.onLine ? 'online' : 'offline');
     };
     window.addEventListener('online', updateOnlineStatus);

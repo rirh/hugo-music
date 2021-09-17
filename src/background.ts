@@ -13,7 +13,6 @@ import {
 import path from "path";
 import {
   createProtocol,
-  installVueDevtools
 } from "vue-cli-plugin-electron-builder/lib";
 import {
   HAVE_BLUR,
@@ -45,7 +44,11 @@ function createWindow() {
     resizable: false,
     backgroundColor: "#fff",
     webPreferences: {
-      nodeIntegration: true
+      webSecurity: false,
+      // Use pluginOptions.nodeIntegration, leave this alone
+      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     },
     vibrancy: "ultra-dark",
     titleBarStyle: "hidden",
@@ -137,9 +140,9 @@ app.on("ready", async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
-      await installVueDevtools();
+      // await installVueDevtools();
     } catch (e) {
-      console.error("Vue Devtools failed to install:", e.toString());
+      console.error("Vue Devtools failed to install:");
     }
   }
   createWindow();

@@ -75,7 +75,7 @@
       <dt class="header">
         <span>
           <a-button class="play-all" type="primary">播放全部</a-button>
-          <span>&nbsp;{{path}}&nbsp;</span>
+          <span>&nbsp;{{ path }}&nbsp;</span>
           <span class="open-dir" @click="handleOpenDir()">打开目录</span>
           &nbsp;
           <a-icon type="sync" :spin="spin" @click="init()" />
@@ -95,7 +95,10 @@
               v-show="search"
               type="close"
               style="color: rgba(0,0,0,.45)"
-              @click="search='';init()"
+              @click="
+                search = '';
+                init();
+              "
             />
           </a-input>
         </span>
@@ -112,12 +115,12 @@
         <dd
           class="dd"
           @dblclick="handlePlay(item)"
-          v-for="(item,index) in data"
+          v-for="(item, index) in data"
           :key="index"
-          :style="{'background-color':index%2!==0?'#fff':'#efefef'}"
+          :style="{ 'background-color': index % 2 !== 0 ? '#fff' : '#efefef' }"
         >
-          <span class="name">{{item.name||item}}</span>
-          <span class="singer">{{item.siger||item}}</span>
+          <span class="name">{{ item.name || item }}</span>
+          <span class="singer">{{ item.siger || item }}</span>
           <span class="alume"></span>
           <span class="size"></span>
           <span class="time"></span>
@@ -128,24 +131,24 @@
 </template>
 
 <script lang="ts">
-import { remote } from 'electron';
 import { Component, Vue } from 'vue-property-decorator';
 import { LOAD_MUSIC } from '@/constant/ipc';
-import { ipcRenderer } from 'electron';
 @Component({})
 export default class Download extends Vue {
   public data = [];
   public search = '';
   public spin = false;
-  public path = remote.app.getPath('music');
+  public path = '';
 
   public mounted() {
     this.init();
+    this.path = require('electron').remote.app.getPath('music');
   }
 
   public init() {
     this.spin = true;
     setTimeout(() => {
+      const { ipcRenderer } = require('electron');
       const result: any = ipcRenderer.sendSync(LOAD_MUSIC);
       const data = result.filter((e: any) => {
         if (~e.indexOf('mp3') && e.split('-')[0]) {

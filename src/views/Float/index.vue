@@ -196,27 +196,42 @@
     <div class="pl"></div>
     <div class="col">
       <div class="menu">
-        <AIconfont class="icon" style="margin-bottom:3px" type="icon-close1" @click="handlehide" />
-        <AIconfont class="icon" type="icon-application" @click="handleToggleView" />
+        <AIconfont
+          class="icon"
+          style="margin-bottom:3px"
+          type="icon-close1"
+          @click="handlehide"
+        />
+        <AIconfont
+          class="icon"
+          type="icon-application"
+          @click="handleToggleView"
+        />
       </div>
       <div class="image">
         <!-- <AIconfont class="allow top" type="icon-chevron-down" /> -->
-        <a-avatar class="img" :size="35" shape="square" icon="user" :src="music.image" />
+        <a-avatar
+          class="img"
+          :size="35"
+          shape="square"
+          icon="user"
+          :src="music.image"
+        />
         <!-- <AIconfont class="allow bottom" type="icon-chevron-up" /> -->
       </div>
       <div class="con">
         <div class="info">
           <div class="tit">
-            <div class="name">{{music.name}}</div>
-            <div class="ar">{{music.auth}}</div>
+            <div class="name">{{ music.name }}</div>
+            <div class="ar">{{ music.auth }}</div>
           </div>
           <div class="playcon">
             <AIconfont class="icon skip-previous" type="icon-skip-previous" />
             <a-button type="primary" class="play" @click="handleStart">
               <transition name="fade" mode="out-in">
                 <div>
-                  <AIconfont v-if="state!=='playing'" type="icon-play" />
-                  <AIconfont v-if="state==='playing'" type="icon-pause" />
+                  <AIconfont v-if="state !== 'playing'" type="icon-play" />
+                  <AIconfont v-if="state === 'playing'" type="icon-pause" />
                 </div>
               </transition>
             </a-button>
@@ -225,15 +240,18 @@
           </div>
           <div class="icons">
             <AIconfont
-              :style="{color:music.like?'var(--red)':''}"
-              :type="music.like?'icon-heart':'icon-heart-outline'"
+              :style="{ color: music.like ? 'var(--red)' : '' }"
+              :type="music.like ? 'icon-heart' : 'icon-heart-outline'"
               class="icon heart"
             />
             <AIconfont class="icon playlist" type="icon-playlist-play" />
             <span
               class="icon lyic"
-              :style="{color:music.showlyric?'var(--red)':'var(--textColor)'}"
-            >词</span>
+              :style="{
+                color: music.showlyric ? 'var(--red)' : 'var(--textColor)'
+              }"
+              >词</span
+            >
             <AIconfont class="icon volume" type="icon-volume-low" />
           </div>
         </div>
@@ -251,7 +269,10 @@
               :style="{ left: position + 'px' }"
               @mousedown="dragStart($event, 0)"
             ></div>
-            <div class="slider-process" :style="{ width: position + 'px' }"></div>
+            <div
+              class="slider-process"
+              :style="{ width: position + 'px' }"
+            ></div>
           </div>
         </div>
       </div>
@@ -260,7 +281,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import { ipcRenderer, remote, BrowserWindow } from 'electron';
 import { ACCEPT_STORE } from '@/constant/ipc';
 @Component({})
 export default class Float extends Vue {
@@ -279,6 +299,7 @@ export default class Float extends Vue {
   public width: any = null;
   public offset: any = null;
   public mounted() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.on(ACCEPT_STORE, (event: any, arg: any) => {
       this.setPosition((arg.cursor / arg.duration) * 240);
       this.music.like = arg.like;
@@ -306,6 +327,8 @@ export default class Float extends Vue {
     }
     const data: any = {};
     data.state = this.state;
+    const { ipcRenderer, remote } = require('electron');
+
     const win = remote.getCurrentWindow();
     if (win) {
       data.id = win.id;
@@ -313,10 +336,14 @@ export default class Float extends Vue {
     }
   }
   public handlehide() {
+    const { ipcRenderer, remote } = require('electron');
+
     const win = remote.getCurrentWindow();
     win.hide();
   }
   public handleToggleView() {
+    const { ipcRenderer, remote } = require('electron');
+
     const win = remote.getCurrentWindow();
     if (win) {
       const main = remote.BrowserWindow.fromId(this.mainwin);

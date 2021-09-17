@@ -302,14 +302,17 @@
       class="pro"
       :percent="percent"
       :showInfo="false"
-      v-show="percent!==0"
+      v-show="percent !== 0"
       status="active"
       :strokeWidth="1"
     />
     <div class="wapper-panel">
       <div class="wapper-panel-music">
         <img
-          :class="{'playneedle-in':$store.state.music.state==='playing','playneedle-out':$store.state.music.state!=='playing'}"
+          :class="{
+            'playneedle-in': $store.state.music.state === 'playing',
+            'playneedle-out': $store.state.music.state !== 'playing'
+          }"
           class="wapper-panel-music-playneedle"
           src="../../assets/play_needle.png"
           alt
@@ -323,10 +326,10 @@
           <a-button @click="handleLike" class="wapper-panel-music-action-btn">
             <AIconfont
               :style="{
-              'margin-top':'5px',
-              color:like?'var(--red)':''
-            }"
-              :type="like?'icon-heart':'icon-heart-outline'"
+                'margin-top': '5px',
+                color: like ? 'var(--red)' : ''
+              }"
+              :type="like ? 'icon-heart' : 'icon-heart-outline'"
             />
           </a-button>
           <a-button class="wapper-panel-music-action-btn">
@@ -342,16 +345,16 @@
       </div>
       <div class="wapper-panel-lyrics">
         <h1 class="name">
-          {{$store.state.music.data.name
-          &&($store.state.music.data.name.length>20
-          ?`${$store.state.music.data.name.substring(0,10)}...`
-          :$store.state.music.data.name)}}
-          <span
-            class="name-tips"
-          >标准音质</span>
+          {{
+            $store.state.music.data.name &&
+              ($store.state.music.data.name.length > 20
+                ? `${$store.state.music.data.name.substring(0, 10)}...`
+                : $store.state.music.data.name)
+          }}
+          <span class="name-tips">标准音质</span>
         </h1>
         <div class="name-alia">
-          <strong>{{songs.alia&&songs.alia.toString()}}</strong>
+          <strong>{{ songs.alia && songs.alia.toString() }}</strong>
         </div>
         <div class="auth">
           <div class="auth-item">
@@ -359,41 +362,59 @@
             <router-link
               class="auth-item-val"
               :to="{
-                 path: '/album-detail',
-                 query: songs.al,
+                path: '/album-detail',
+                query: songs.al
               }"
               @click.native="handleTogglePanel"
-            >{{songs.al&&(songs.al.name.length>10?`${songs.al.name.substring(0,6)}...`:songs.al.name)}}</router-link>
+              >{{
+                songs.al &&
+                  (songs.al.name.length > 10
+                    ? `${songs.al.name.substring(0, 6)}...`
+                    : songs.al.name)
+              }}</router-link
+            >
           </div>
           <div class="auth-item">
             <label for>歌手：</label>
             <router-link
               class="auth-item-val"
               :to="{
-                 path: '/singer',
-                 query:songs.ar&&songs.ar[0],
+                path: '/singer',
+                query: songs.ar && songs.ar[0]
               }"
               @click.native="handleTogglePanel"
-            >{{leftPadauth(songs).length>10?`${leftPadauth(songs).substring(0,8)}...`:leftPadauth(songs)}}</router-link>
+              >{{
+                leftPadauth(songs).length > 10
+                  ? `${leftPadauth(songs).substring(0, 8)}...`
+                  : leftPadauth(songs)
+              }}</router-link
+            >
           </div>
           <div class="auth-item">
             <label for>来源：</label>
             <router-link
               class="auth-item-val"
               :to="{
-                 path: '/album-detail',
-                 query: songs.al,
+                path: '/album-detail',
+                query: songs.al
               }"
-            >{{songs.al&&(songs.al.name.length>10?`${songs.al.name.substring(0,6)}...`:songs.al.name)}}</router-link>
+              >{{
+                songs.al &&
+                  (songs.al.name.length > 10
+                    ? `${songs.al.name.substring(0, 6)}...`
+                    : songs.al.name)
+              }}</router-link
+            >
           </div>
         </div>
         <div class="lyrics" ref="lyrics">
           <strong
             class="lyrics-line"
-            v-for="(item,index) in parseLyric"
+            v-for="(item, index) in parseLyric"
             :key="index"
-            :style="highLightLyric(item,index)"
-          >{{item.contant}}</strong>
+            :style="highLightLyric(item, index)"
+            >{{ item.contant }}</strong
+          >
         </div>
       </div>
     </div>
@@ -404,11 +425,15 @@
             <div>
               <h3 style="font-size:14px;">
                 听友评论&nbsp;
-                <span
-                  style="font-size:12px;color:var(--textColor)"
-                >(已有{{comments.total}}条评论)</span>
+                <span style="font-size:12px;color:var(--textColor)"
+                  >(已有{{ comments.total }}条评论)</span
+                >
               </h3>
-              <a-input :value="null" @click="handleShowCommet" placeholder="发表评论">
+              <a-input
+                :value="null"
+                @click="handleShowCommet"
+                placeholder="发表评论"
+              >
                 <AIconfont slot="prefix" type="icon-lead-pencil" />
                 <span slot="suffix">
                   <AIconfont type="icon-emoticon" />&nbsp;
@@ -422,52 +447,69 @@
               </dt>
               <dd
                 class="commet-item"
-                v-for="(item,cindex) in comments.hotComments||[]"
+                v-for="(item, cindex) in comments.hotComments || []"
                 :key="cindex"
               >
                 <span class="commet-item-left">
                   <a-avatar
                     style="height:3.4vw;width:3.4vw;margin-top:.2vw;"
                     :onerror="errorImg"
-                    :src="item.user&&item.user.avatarUrl"
+                    :src="item.user && item.user.avatarUrl"
                     alt
                   />
                 </span>
                 <span class="commet-item-right">
                   <span>
-                    <span style="color:var(--link)">{{item.user&&item.user.nickname}}：</span>
-                    <span>{{item.content}}</span>
+                    <span style="color:var(--link)"
+                      >{{ item.user && item.user.nickname }}：</span
+                    >
+                    <span>{{ item.content }}</span>
                   </span>
                   <span
                     class="commet-item-right-beReplied"
-                    v-for="(bitem,bindex) in item.beReplied"
+                    v-for="(bitem, bindex) in item.beReplied"
                     :key="bindex"
                   >
-                    <span style="color:var(--link)">@{{bitem.user&&bitem.user.nickname}}：</span>
-                    <span>{{bitem.content}}</span>
+                    <span style="color:var(--link)"
+                      >@{{ bitem.user && bitem.user.nickname }}：</span
+                    >
+                    <span>{{ bitem.content }}</span>
                   </span>
                   <span class="commet-item-right-contarl">
-                    <span>{{transformatDate(item.time)}}</span>
+                    <span>{{ transformatDate(item.time) }}</span>
                     <span class="commet-item-right-contarl-tips">
                       <span
                         @click="handleReport"
                         class="commet-item-right-contarl-tips-report"
-                      >举报&nbsp;&nbsp;&nbsp;</span>
+                        >举报&nbsp;&nbsp;&nbsp;</span
+                      >
                       <AIconfont
-                        @click="handleResLike(item,cindex,'hot')"
-                        :style="{color:item.liked?'var(--red)':'var(--textColor)'}"
-                        :type="item.liked?'icon-thumb-up':'icon-thumb-up-outline'"
+                        @click="handleResLike(item, cindex, 'hot')"
+                        :style="{
+                          color: item.liked ? 'var(--red)' : 'var(--textColor)'
+                        }"
+                        :type="
+                          item.liked ? 'icon-thumb-up' : 'icon-thumb-up-outline'
+                        "
                       />
-                      <span v-show="item.likedCount>0">&nbsp;{{item.likedCount}}</span>
+                      <span v-show="item.likedCount > 0"
+                        >&nbsp;{{ item.likedCount }}</span
+                      >
                       <a-divider type="vertical" />
-                      <a-popover :title="null" trigger="click" arrowPointAtCenter>
+                      <a-popover
+                        :title="null"
+                        trigger="click"
+                        arrowPointAtCenter
+                      >
                         <template slot="content">
                           <div class="share">
                             <p @click="handleHideShare" class="share-item">
                               <span class="share-item-icon">
                                 <AIconfont type="icon-wangyiyunyinle" />
                               </span>
-                              <span class="share-item-con">分享到云音乐动态</span>
+                              <span class="share-item-con"
+                                >分享到云音乐动态</span
+                              >
                             </p>
                             <p @click="handleHideShare" class="share-item">
                               <span class="share-item-icon">
@@ -480,7 +522,10 @@
                         <AIconfont type="icon-share" />
                       </a-popover>
                       <a-divider type="vertical" />
-                      <AIconfont @click="handleShowCommet" type="icon-comment-text-outline" />
+                      <AIconfont
+                        @click="handleShowCommet"
+                        type="icon-comment-text-outline"
+                      />
                     </span>
                   </span>
                 </span>
@@ -488,52 +533,73 @@
             </dl>
             <dl class="commet-wapper">
               <dt style="margin:1vw 0vw;font-size:12px;">
-                <h3>最新评论（{{comments.total}}）</h3>
+                <h3>最新评论（{{ comments.total }}）</h3>
               </dt>
-              <dd class="commet-item" v-for="(item,cindex) in comments.comments||[]" :key="cindex">
+              <dd
+                class="commet-item"
+                v-for="(item, cindex) in comments.comments || []"
+                :key="cindex"
+              >
                 <span class="commet-item-left">
                   <a-avatar
                     style="height:3.4vw;width:3.4vw;margin-top:.2vw;"
                     :onerror="errorImg"
-                    :src="item.user&&item.user.avatarUrl"
+                    :src="item.user && item.user.avatarUrl"
                     alt
                   />
                 </span>
                 <span class="commet-item-right">
                   <span>
-                    <span style="color:var(--link)">{{item.user&&item.user.nickname}}：</span>
-                    <span>{{item.content}}</span>
+                    <span style="color:var(--link)"
+                      >{{ item.user && item.user.nickname }}：</span
+                    >
+                    <span>{{ item.content }}</span>
                   </span>
                   <span
                     class="commet-item-right-beReplied"
-                    v-for="(bitem,bindex) in item.beReplied"
+                    v-for="(bitem, bindex) in item.beReplied"
                     :key="bindex"
                   >
-                    <span style="color:var(--link)">@{{bitem.user&&bitem.user.nickname}}：</span>
-                    <span>{{bitem.content}}</span>
+                    <span style="color:var(--link)"
+                      >@{{ bitem.user && bitem.user.nickname }}：</span
+                    >
+                    <span>{{ bitem.content }}</span>
                   </span>
                   <span class="commet-item-right-contarl">
-                    <span>{{transformatDate(item.time,'new')}}</span>
+                    <span>{{ transformatDate(item.time, "new") }}</span>
                     <span class="commet-item-right-contarl-tips">
                       <span
                         @click="handleReport"
                         class="commet-item-right-contarl-tips-report"
-                      >举报&nbsp;&nbsp;&nbsp;</span>
+                        >举报&nbsp;&nbsp;&nbsp;</span
+                      >
                       <AIconfont
-                        @click="handleResLike(item,cindex)"
-                        :style="{color:item.liked?'var(--red)':'var(--textColor)'}"
-                        :type="item.liked?'icon-thumb-up':'icon-thumb-up-outline'"
+                        @click="handleResLike(item, cindex)"
+                        :style="{
+                          color: item.liked ? 'var(--red)' : 'var(--textColor)'
+                        }"
+                        :type="
+                          item.liked ? 'icon-thumb-up' : 'icon-thumb-up-outline'
+                        "
                       />
-                      <span v-show="item.likedCount>0">&nbsp;{{item.likedCount}}</span>
+                      <span v-show="item.likedCount > 0"
+                        >&nbsp;{{ item.likedCount }}</span
+                      >
                       <a-divider type="vertical" />
-                      <a-popover :title="null" trigger="click" arrowPointAtCenter>
+                      <a-popover
+                        :title="null"
+                        trigger="click"
+                        arrowPointAtCenter
+                      >
                         <template slot="content">
                           <div class="share">
                             <p @click="handleHideShare" class="share-item">
                               <span class="share-item-icon">
                                 <AIconfont type="icon-wangyiyunyinle" />
                               </span>
-                              <span class="share-item-con">分享到云音乐动态</span>
+                              <span class="share-item-con"
+                                >分享到云音乐动态</span
+                              >
                             </p>
                             <p @click="handleHideShare" class="share-item">
                               <span class="share-item-icon">
@@ -546,7 +612,10 @@
                         <AIconfont type="icon-share" />
                       </a-popover>
                       <a-divider type="vertical" />
-                      <AIconfont type="icon-comment-text-outline" @click="handleShowCommet" />
+                      <AIconfont
+                        type="icon-comment-text-outline"
+                        @click="handleShowCommet"
+                      />
                     </span>
                   </span>
                 </span>
@@ -555,7 +624,7 @@
           </div>
         </a-skeleton>
       </div>
-      <div class="simi" v-show="simis.songs&&simis.songs.length!==0">
+      <div class="simi" v-show="simis.songs && simis.songs.length !== 0">
         <a-skeleton active :loading="similoading">
           <dl>
             <dt style="margin:1vw 0vw;font-size:15px;">
@@ -564,7 +633,7 @@
             <dd
               class="simi-item"
               @click="handleMusic(sitem)"
-              v-for="(sitem,sindex) in simis.songs"
+              v-for="(sitem, sindex) in simis.songs"
               :key="sindex"
             >
               <span class="avatar">
@@ -572,7 +641,7 @@
                   style="height:5vw;width:5vw;"
                   shape="square"
                   :onerror="errorImg"
-                  :src="sitem.album&&sitem.album.picUrl"
+                  :src="sitem.album && sitem.album.picUrl"
                   alt
                 />
                 <span class="avatar-tips">
@@ -580,10 +649,16 @@
                 </span>
               </span>
               <span class="simi-item-auth">
-                <h4 style="margin:0">{{sitem.name}}</h4>
-                <div
-                  class="simi-item-auth-name"
-                >{{sitem.artists.map((e) => e.name).toString().split(',').join('/')}}</div>
+                <h4 style="margin:0">{{ sitem.name }}</h4>
+                <div class="simi-item-auth-name">
+                  {{
+                    sitem.artists
+                      .map(e => e.name)
+                      .toString()
+                      .split(",")
+                      .join("/")
+                  }}
+                </div>
               </span>
             </dd>
           </dl>
@@ -807,6 +882,7 @@ export default class Panel extends Vue {
       if (tempTime && this.tempTime !== tempTime) {
         this.tempTime = tempTime;
         if (iShowLy) {
+          const { ipcRenderer } = require('electron');
           ipcRenderer.send(ASYNC_LYRICS, tempTime.contant);
         }
         // console.log(item, tempTime.time, item.time === tempTime.time);
@@ -854,5 +930,3 @@ export default class Panel extends Vue {
   }
 }
 </script>
-
-

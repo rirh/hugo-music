@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { notification } from 'ant-design-vue';
-import { ipcRenderer, net } from 'electron';
 
 
 export default (url = '', datas = {}, method = 'GET') => {
@@ -24,7 +23,7 @@ export default (url = '', datas = {}, method = 'GET') => {
     try {
       const { status, data } = await axios.get(url, { withCredentials: true });
       if (status === 200) {
-        resolve({ response: data });
+        resolve({ response: data.body });
       } else {
         reject({ response: { message: '请求错误' } });
       }

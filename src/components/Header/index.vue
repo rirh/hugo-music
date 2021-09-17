@@ -356,32 +356,43 @@
 </style>
 
 <template>
-  <div class="wapper" :style="{'background-color':theme.wapper_bg}">
+  <div class="wapper" :style="{ 'background-color': theme.wapper_bg }">
     <div class="wapper-menu" v-if="process.platform === 'win32'">
       <span
         @click="handleMenu('close')"
-        :class="{'focus':focus}"
+        :class="{ focus: focus }"
         class="wapper-menu-tips wapper-menu-close pointer"
       >
         <!-- <strong>x</strong> -->
       </span>
       <span
         @click="handleMenu('min')"
-        :class="{'focus':focus}"
+        :class="{ focus: focus }"
         class="wapper-menu-tips wapper-menu-min pointer"
       >
         <!-- <strong>+</strong> -->
       </span>
       <span
         @click="handleMenu('zoom')"
-        :class="{'focus':focus}"
+        :class="{ focus: focus }"
         class="wapper-menu-tips wapper-menu-zoom pointer"
       >
         <!-- <strong>🤓</strong> -->
       </span>
     </div>
-    <a-row :gutter="14" type="flex" class="wapper-main" justify="space-around" align="middle">
-      <a-col style="padding-left:50px" :span="4" :offset="1" v-show="$store.state.music.showPanel">
+    <a-row
+      :gutter="14"
+      type="flex"
+      class="wapper-main"
+      justify="space-around"
+      align="middle"
+    >
+      <a-col
+        style="padding-left:50px"
+        :span="4"
+        :offset="1"
+        v-show="$store.state.music.showPanel"
+      >
         <AIconfont
           class="pointer"
           style="font-size:32px;color"
@@ -389,7 +400,11 @@
           @click="handleShowConrtal"
         />
       </a-col>
-      <a-col v-show="!$store.state.music.showPanel" :span="5" style="text-align:right">
+      <a-col
+        v-show="!$store.state.music.showPanel"
+        :span="5"
+        style="text-align:right"
+      >
         <a-icon
           @click="handleBackRoute"
           type="left"
@@ -408,26 +423,34 @@
       <a-col :span="3" :offset="1" style="padding:0">
         <div
           class="wapper-main-seach"
-          :style="{'background-color':$store.state.music.showPanel?'var(--bgColor)':'#db6965'}"
+          :style="{
+            'background-color': $store.state.music.showPanel
+              ? 'var(--bgColor)'
+              : '#db6965'
+          }"
         >
           <AIconfont
             class="wapper-main-seach-icon pointer"
             type="icon-iconseach"
-            :style="{'color':$store.state.music.showPanel?'var(--textColot)':'#f2cbc9'}"
+            :style="{
+              color: $store.state.music.showPanel
+                ? 'var(--textColot)'
+                : '#f2cbc9'
+            }"
           />
           <input
             v-model="keywords"
             class="wapper-main-seach-input"
-            :placeholder="$store.state.music.showPanel?'':'搜索'"
+            :placeholder="$store.state.music.showPanel ? '' : '搜索'"
             type="text"
             @focus="showDrawer"
             @keydown.enter="handleGoSeachPage"
           />
           <AIconfont
-            v-show="keywords!==''"
+            v-show="keywords !== ''"
             class="wapper-main-close1-icon pointer"
             type="icon-close1"
-            :style="{'color':theme.keywords_color}"
+            :style="{ color: theme.keywords_color }"
             @click.stop="handleClear"
           />
         </div>
@@ -437,14 +460,14 @@
           <AIconfont
             type="icon-settings"
             class="wapper-main-set-icon"
-            :style="{'color':theme.settings_color}"
+            :style="{ color: theme.settings_color }"
             @click="$router.push('/setting/index')"
           />
           <AIconfont
             class="wapper-main-set-icon pointer"
             type="icon-email"
-            :style="{'color':theme.email_color}"
-            @click="email_visible=true"
+            :style="{ color: theme.email_color }"
+            @click="email_visible = true"
           />
           <a-popover placement="bottomRight" trigger="click">
             <template slot="content">
@@ -452,36 +475,36 @@
                 <div class="item" @click="handleChangeTheme('less')">
                   <div id="less">&nbsp;</div>
                   <div for="less" class="text">浅色</div>
-                  <div v-show="theme.type==='less'" class="red checked"></div>
+                  <div v-show="theme.type === 'less'" class="red checked"></div>
                 </div>
                 <div class="item" @click="handleChangeTheme('red')">
                   <div id="red">&nbsp;</div>
                   <div for="red" class="text">红色</div>
-                  <div v-show="theme.type==='red'" class="checked"></div>
+                  <div v-show="theme.type === 'red'" class="checked"></div>
                 </div>
                 <div class="item" @click="handleChangeTheme('black')">
                   <div id="black">&nbsp;</div>
                   <div for="black" class="text">黑色</div>
-                  <div v-show="theme.type==='black'" class="checked"></div>
+                  <div v-show="theme.type === 'black'" class="checked"></div>
                 </div>
                 <div class="item" @click="handleChangeTheme('auto')">
                   <div id="auto">&nbsp;</div>
                   <div for="auto" class="text">自动</div>
-                  <div v-show="theme.type==='auto'" class="checked"></div>
+                  <div v-show="theme.type === 'auto'" class="checked"></div>
                 </div>
               </div>
             </template>
             <AIconfont
               class="wapper-main-set-icon pointer"
               type="icon-tshirt-crew"
-              :style="{'color':theme.skin_color}"
+              :style="{ color: theme.skin_color }"
             />
           </a-popover>
 
           <AIconfont
             class="wapper-main-set-icon pointer"
             type="icon-checkbox-multiple-blank"
-            :style="{'color':theme.blank_color}"
+            :style="{ color: theme.blank_color }"
             @click="handleFloatFrame"
           />
         </div>
@@ -495,42 +518,59 @@
           <div class="tag-con">
             <span
               class="tag pointer"
-              v-for="(hot,index) in hotSearchList.hots"
+              v-for="(hot, index) in hotSearchList.hots"
               :key="index"
-              @click="keywords=hot.first"
-            >{{hot.first}}</span>
+              @click="keywords = hot.first"
+              >{{ hot.first }}</span
+            >
           </div>
-          <div v-show="hislist.length" style="margin-top:10px" class="name history">
+          <div
+            v-show="hislist.length"
+            style="margin-top:10px"
+            class="name history"
+          >
             搜索历史
-            <AIconfont class="trash" type="icon-delete" @click="handleClearStore" />
+            <AIconfont
+              class="trash"
+              type="icon-delete"
+              @click="handleClearStore"
+            />
           </div>
           <div class="tag-con">
             <span
               class="tag pointer"
-              v-for="(his,index) in hislist"
+              v-for="(his, index) in hislist"
               :key="index"
-              @click="keywords=his"
-            >{{his}}</span>
+              @click="keywords = his"
+              >{{ his }}</span
+            >
           </div>
         </div>
 
-        <div v-show="seachList.order" v-for="(order , key) in seachList.order" :key="key">
+        <div
+          v-show="seachList.order"
+          v-for="(order, key) in seachList.order"
+          :key="key"
+        >
           <dt class="content-title">
             <AIconfont
               class="content-title-icon pointer"
-              :type="types[order]&&types[order].icon||' '"
-            ></AIconfont>&nbsp;&nbsp;
-            <span>{{types[order]&&types[order].name}}</span>
+              :type="(types[order] && types[order].icon) || ' '"
+            ></AIconfont
+            >&nbsp;&nbsp;
+            <span>{{ types[order] && types[order].name }}</span>
           </dt>
           <br />
           <dd
-            v-for="(song,index) in seachList[order]"
+            v-for="(song, index) in seachList[order]"
             class="content-con pointer"
             :key="index"
-            @click="handleGoSeach(song,order)"
+            @click="handleGoSeach(song, order)"
           >
-            {{song.name}}
-            <span v-for="(artist,aindex) in song.artists" :key="aindex">{{artist.name}}</span>
+            {{ song.name }}
+            <span v-for="(artist, aindex) in song.artists" :key="aindex">{{
+              artist.name
+            }}</span>
           </dd>
           <br />
         </div>
@@ -553,21 +593,25 @@
             </a-radio-group>
           </div>
           <div class="con">
-            <a-empty v-show="noti.list.length===0">
+            <a-empty v-show="noti.list.length === 0">
               <span slot="description">暂无数据</span>
             </a-empty>
             <a-skeleton active avatar :loading="noti.loading">
               <dl class="list">
-                <dd class="item" v-for="item in noti.list" :key="item.lastMsgTime">
+                <dd
+                  class="item"
+                  v-for="item in noti.list"
+                  :key="item.lastMsgTime"
+                >
                   <div class="avatar">
                     <a-avatar :size="40" :src="item.avatarUrl"></a-avatar>
                   </div>
                   <div class="cons">
                     <div class="user">
                       <div class="nickname" v-html="item.nickname"></div>
-                      <div class="lastmsgtime">{{(item.lastmsgtime)}}</div>
+                      <div class="lastmsgtime">{{ item.lastmsgtime }}</div>
                     </div>
-                    <div class="content">{{item.msg}}</div>
+                    <div class="content">{{ item.msg }}</div>
                   </div>
                 </dd>
               </dl>
@@ -584,7 +628,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import Menu from '@/components/Menu';
 import axios from 'axios';
-import { ipcRenderer, remote, BrowserWindow } from 'electron';
 import {
   MAIN_MIN,
   MAIN_ZOOM,
@@ -663,6 +706,7 @@ export default class HelloWorld extends Vue {
   public hislist = [];
   @Prop() private msg!: string;
   public mounted() {
+    const { ipcRenderer } = require('electron');
     ipcRenderer.on(HAVE_BLUR, () => {
       this.focus = true;
     });
@@ -777,9 +821,13 @@ export default class HelloWorld extends Vue {
     const show = true;
     const data = this.$store.state.music && this.$store.state.music;
     data.show = true;
+    const { remote } = require('electron');
+
     const win = (remote as any).BrowserWindow.getFocusedWindow();
     if (win && data.data.image) {
       data.id = win.id;
+      const { ipcRenderer } = require('electron');
+
       ipcRenderer.send(OPEN_FLOAT, data);
       win.hide();
     }
@@ -798,6 +846,7 @@ export default class HelloWorld extends Vue {
     // remote.getCurrentWindow().minimize();
     // remote.getCurrentWindow().unmaximize();
     // remote.getCurrentWindow().restore();
+    const { remote } = require('electron');
     const mainWindow = remote.getCurrentWindow();
     const build: any = {
       close: () => {
@@ -985,4 +1034,3 @@ export default class HelloWorld extends Vue {
   }
 }
 </script>
-
