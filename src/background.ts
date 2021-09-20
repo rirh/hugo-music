@@ -53,10 +53,10 @@ function createWindow() {
     vibrancy: "ultra-dark",
     titleBarStyle: "hidden",
     frame: false,
-    show: false
     // icon: path.join(__static, 'icon.png')
     // icon: path.join(__static, 'icon.png')
   };
+  
   //如果是win的窗口就需要自定义按钮关闭
   if (process.platform === "win32") {
     // 如果平台是win32，也即windows
@@ -69,15 +69,14 @@ function createWindow() {
   const dockMenu = Menu.buildFromTemplate(DockMenu);
   app.dock.setMenu(dockMenu);
   win.setMenu(null);
-  win.once("ready-to-show", () => {
-    (win as any).show();
-  });
   win.on("blur", (e: any, cmd: any) => {
     win && win.webContents.send(HAVE_BLUR);
   });
   win.on("focus", (e: any, cmd: any) => {
     win && win.webContents.send(HAVE_FOCUS);
   });
+  console.log(win)
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
 
@@ -91,7 +90,6 @@ function createWindow() {
     win.loadURL("app//./index.html");
     // win.loadURL(`${__dirname}/index.html`)
   }
-
   win.on("closed", (e: Event) => {
     win = null;
   });
