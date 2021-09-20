@@ -5,7 +5,6 @@ import { notification } from 'ant-design-vue';
 export default (url = '', datas = {}, method = 'GET') => {
   return new Promise(async (resolve, reject) => {
     // const { remote } = require('electron');
-
     // const request = remote.net.request(url)
     // request.on('response', (response) => {
     //   console.log(`STATUS: ${response.statusCode}`)

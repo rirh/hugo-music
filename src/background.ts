@@ -86,6 +86,7 @@ function createWindow() {
     if (!process.env.IS_TEST) win.webContents.openDevTools();
     // win.webContents.openDevTools();
   } else {
+    createProtocol('app')
     // Load the index.html when not in development
     win.loadURL("app//./index.html");
     // win.loadURL(`${__dirname}/index.html`)
@@ -116,7 +117,6 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-  createProtocol("app");
   const iconpath = path.join(__dirname, "../public/img/tray@2x.png");
   const icon = nativeImage.createFromPath(iconpath);
   tray = new Tray(icon);

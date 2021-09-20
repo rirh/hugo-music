@@ -223,16 +223,16 @@
 </template>
 
 <script lang="ts">
-import Swiper from "./components/Swiper.vue";
-import Recommed from "./components/Recommed.vue";
-import Exclusive from "./components/Exclusive.vue";
-import Newsong from "./components/Newsong.vue";
-import RecommedMv from "./components/RecommedMv.vue";
-import DjProgram from "./components/DjProgram.vue";
-import SortableItem from "./SortableItem.vue";
-import SortableList from "./SortableList.vue";
+import Swiper from './components/Swiper.vue';
+import Recommed from './components/Recommed.vue';
+import Exclusive from './components/Exclusive.vue';
+import Newsong from './components/Newsong.vue';
+import RecommedMv from './components/RecommedMv.vue';
+import DjProgram from './components/DjProgram.vue';
+import SortableItem from './SortableItem.vue';
+import SortableList from './SortableList.vue';
 
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 import {
   get_banner,
   get_personalized,
@@ -241,9 +241,9 @@ import {
   get_personalized_mv,
   get_dj_program,
   get_play_list_detail,
-  get_play_song_detail
-} from "@/actions";
-import axios from "axios";
+  get_play_song_detail,
+} from '@/actions';
+import axios from 'axios';
 
 @Component({
   components: {
@@ -254,8 +254,8 @@ import axios from "axios";
     RecommedMv,
     DjProgram,
     SortableItem,
-    SortableList
-  }
+    SortableList,
+  },
 })
 export default class Home extends Vue {
   public showOrder = false;
@@ -266,35 +266,35 @@ export default class Home extends Vue {
   private order_tempates = [];
   private templates = [
     {
-      name: "推荐歌单",
-      key: "Recommed",
+      name: '推荐歌单',
+      key: 'Recommed',
       component: Recommed,
-      data: []
+      data: [],
     },
     {
-      name: "独家放送",
-      key: "Exclusive",
+      name: '独家放送',
+      key: 'Exclusive',
       component: Exclusive,
-      data: []
+      data: [],
     },
     {
-      name: "最新音乐",
-      key: "Newsong",
+      name: '最新音乐',
+      key: 'Newsong',
       component: Newsong,
-      data: []
+      data: [],
     },
     {
-      name: "推荐MV",
-      key: "RecommedMv",
+      name: '推荐MV',
+      key: 'RecommedMv',
       component: RecommedMv,
-      data: []
+      data: [],
     },
     {
-      name: "主播电台",
-      key: "DjProgram",
+      name: '主播电台',
+      key: 'DjProgram',
       component: DjProgram,
-      data: []
-    }
+      data: [],
+    },
   ];
   // public dragstart(nav: any) {
   //   this.oldNav = nav;
@@ -402,10 +402,8 @@ export default class Home extends Vue {
       get_private_content(),
       get_new_song(),
       get_personalized_mv(),
-      get_dj_program()
+      get_dj_program(),
     ]);
-    console.log(respone)
-    
     const mergeData = (e: any, i: any) => {
       if (e.code === 200) {
         if (e.banners) {
