@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+  <el-button>默认按钮</el-button>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
