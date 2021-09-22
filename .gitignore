@@ -2,8 +2,8 @@
 node_modules
 /dist
 
-
 # local env files
+.env
 .env.local
 .env.*.local
 
@@ -22,5 +22,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+.vercel
+
 #Electron-builder output
 /dist_electron
+NeteaseCloudMusicApi-master
+NeteaseCloudMusicApi-master.zip

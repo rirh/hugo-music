@@ -1,50 +1,34 @@
-import axios from "axios";
-import { Notification } from "element-plus";
-axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
-// 不缓存图片
-axios.defaults.headers["Cache-Control"] = "no-cache";
-// 创建axios实例
+import axios from 'axios';
+// import Cookies from 'js-cookie';
+
+let baseURL = '';
+// Web 和 Electron 跑在不同端口避免同时启动时冲突
+if (process.env.IS_ELECTRON) {
+  if (process.env.NODE_ENV === 'production') {
+    baseURL = process.env.VUE_APP_ELECTRON_API_URL;
+  } else {
+    baseURL = process.env.VUE_APP_ELECTRON_API_URL_DEV;
+  }
+} else {
+  baseURL = process.env.VUE_APP_NETEASE_API_URL;
+}
+console.log(baseURL);
 const service = axios.create({
-  // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: process.env.VUE_APP_BASE_API || process.env.VUE_APP_BASE_API,
+  baseURL,
   withCredentials: true,
-  // 超时
-  timeout: 60000
+  timeout: 15000,
 });
 
-// request拦截器
-service.interceptors.request.use(
-  config => {
-    // 是否需要设置 token
-    return config;
-  },
-  error => {
-    console.log(error);
-    Promise.reject(error);
-  }
-);
+service.interceptors.request.use(function (config) {
+  return config;
+});
 
-// 响应拦截器
 service.interceptors.response.use(
-  res => {
-    // 未设置状态码则默认成功状态
-    return res.data?.body;
+  response => {
+    const res = response.data.body;
+    return res;
   },
   error => {
-    console.log("err" + error);
-    let { message } = error;
-    if (message == "Network Error") {
-      message = "后端接口连接异常";
-    } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
-    } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常";
-    }
-    Notification({
-      message: message,
-      type: "error",
-      duration: 5 * 1000
-    });
     return Promise.reject(error);
   }
 );
