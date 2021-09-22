@@ -14,8 +14,10 @@
           remote
           class="search-la"
           ref="select"
+          autofocus
           reserve-keyword
           autocomplete
+          popper-append-to-body
           placeholder=" "
           :remote-method="fetch_search_song"
           :loading="loading"
@@ -37,23 +39,17 @@
           </el-option-group>
         </el-select>
       </el-col>
-      <el-col>{{ play_list }}</el-col>
-      <el-col>
-        {{ current_state }}- {{ current_progress }}/{{ current_duration }}
-        <el-button @click="handle_toggle_play">
-          暂停/播放
-        </el-button>
-        <el-slider :min="0" :max="100" @change="handle_seek_value"></el-slider>
-      </el-col>
+      <PlayCon v-if="Object.keys(play_list).length" />
     </el-row>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getSearchSuggest } from "@/api";
+import PlayCon from "@/views/home/components/PlayContral.vue";
 
 const router = useRouter();
 const store = useStore();
@@ -63,13 +59,10 @@ const song_options = ref([]);
 const select = ref(null);
 const loading = ref(false);
 const play_list = computed(() => store.state.sound.play_list);
-const current_duration = computed(() => store.state.sound.current_duration);
-const current_progress = computed(() => store.state.sound.current_progress);
-const current_state = computed(() => store.state.sound.current_state);
 
-const handle_seek_value = val => {
-  store.dispatch("seek", val);
-};
+onMounted(() => {
+  store.commit("init_audio_context");
+});
 
 const fetch_search_song = async keywords => {
   loading.value = true;
@@ -96,9 +89,6 @@ const fetch_search_song = async keywords => {
 const handle_detail = () => {
   router.push(`/detail/${select.value.query}`);
 };
-const handle_toggle_play = () => {
-  store.dispatch("toggle_play");
-};
 const handle_select = async id => {
   store.dispatch("fetch_song_data", id);
 };
@@ -111,11 +101,13 @@ const handle_select = async id => {
   height: 100vh;
   width: 100vw;
   box-sizing: border-box;
+  background-color: #fafafa;
   .container {
-    margin-top: -20vh;
+    margin-top: -30vh;
   }
   .logo {
-    height: 60px;
+    height: 5.5vmax;
+    min-height: 55px;
     width: auto;
     background: transparent;
     margin-bottom: 30px;
@@ -123,6 +115,7 @@ const handle_select = async id => {
   }
   .search-la {
     width: 50vw;
+    min-width: 300px;
     border-width: 2px;
     border: 2px solid #000;
     border-radius: 5px;

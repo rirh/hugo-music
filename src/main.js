@@ -7,7 +7,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
-createApp(App)
+export default createApp(App)
   .use(store)
   .use(router)
   .use(ElementPlus)

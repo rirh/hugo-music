@@ -25,3 +25,12 @@ export function getSongUrl(params) {
     params
   });
 }
+
+// 获取音乐的url
+export function getSongDetail(params) {
+  return request({
+    url: "/song/detail",
+    method: "get",
+    params
+  });
+}
