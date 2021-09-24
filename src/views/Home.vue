@@ -1,14 +1,18 @@
 <template>
   <div class="app-container">
-    <el-row class="container">
-      <el-col>
-        <el-avatar
+    <div class="container">
+      <div>
+        <img
           class="logo"
           src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
-        ></el-avatar>
-      </el-col>
-      <el-col>
-        <el-select
+        />
+      </div>
+      <div v-t="{ path: 'message.hello' }"></div>
+      <div>
+        <button @click="handle_change_theme('light')">白色</button>
+        <button @click="handle_change_theme('dark')">黑色</button>
+
+        <!-- <el-select
           v-model="song"
           filterable
           remote
@@ -37,60 +41,64 @@
             >
             </el-option>
           </el-option-group>
-        </el-select>
-      </el-col>
-      <PlayCon v-if="Object.keys(play_list).length" />
-    </el-row>
+        </el-select> -->
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-import { getSearchSuggest } from "@/api";
-import PlayCon from "@/views/home/components/PlayContral.vue";
+// import { ref } from "vue";
+// import { useRouter } from "vue-router";
+// import { useStore } from "vuex";
+// import { getSearchSuggest } from "@/api";
 
-const router = useRouter();
-const store = useStore();
+// const router = useRouter();
+// const store = useStore();
 
-const song = ref(null);
-const song_options = ref([]);
-const select = ref(null);
-const loading = ref(false);
-const play_list = computed(() => store.state.sound.play_list);
+// const song = ref(null);
+// const song_options = ref([]);
+// const select = ref(null);
+// const loading = ref(false);
 
-onMounted(() => {
-  store.commit("init_audio_context");
-});
-
-const fetch_search_song = async keywords => {
-  loading.value = true;
-  const { result, code } = await getSearchSuggest({ keywords });
-  loading.value = false;
-  if (code !== 200) return;
-  if (!result.order) return;
-  song_options.value = result?.order.map(e => {
-    let options = result[e];
-    options = options.map(it => ({
-      ...it,
-      value: it.id,
-      label: `${it.name}${(it.artists &&
-        "-" + it.artists.map(artist => artist.name).join("/")) ||
-        ""}`
-    }));
-    return {
-      value: e,
-      label: e,
-      options
-    };
-  });
-};
-const handle_detail = () => {
-  router.push(`/detail/${select.value.query}`);
-};
-const handle_select = async id => {
-  store.dispatch("fetch_song_data", id);
+// const fetch_search_song = async keywords => {
+//   loading.value = true;
+//   const { result, code } = await getSearchSuggest({ keywords });
+//   loading.value = false;
+//   if (code !== 200) return;
+//   if (!result.order) return;
+//   song_options.value = result?.order.map(e => {
+//     let options = result[e];
+//     options = options.map(it => ({
+//       ...it,
+//       value: it.id,
+//       label: `${it.name}${(it.artists &&
+//         "-" + it.artists.map(artist => artist.name).join("/")) ||
+//         ""}`
+//     }));
+//     return {
+//       value: e,
+//       label: e,
+//       options
+//     };
+//   });
+// };
+// const handle_detail = () => {
+//   router.push(`/detail/${select.value.query}`);
+// };
+// const handle_select = async id => {
+//   store.dispatch("fetch_song_data", id);
+// };
+const handle_change_theme = appearance => {
+  if (appearance === "auto" || appearance === undefined) {
+    appearance = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+  document.body.setAttribute("data-theme", appearance);
+  document
+    .querySelector('meta[name="theme-color"]')
+    .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
 };
 </script>
 
@@ -101,7 +109,6 @@ const handle_select = async id => {
   height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  background-color: #fafafa;
   .container {
     margin-top: -30vh;
   }
@@ -112,7 +119,9 @@ const handle_select = async id => {
     background: transparent;
     margin-bottom: 30px;
     border-radius: 0;
+    filter: var(--img-primary);
   }
+
   .search-la {
     width: 50vw;
     min-width: 300px;

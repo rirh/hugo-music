@@ -1,28 +1,28 @@
 <template>
-  <el-row class="play-contral">
-    <el-row class="container" type="flex" align="middle">
-      <el-avatar class="pic" :src="detail.picUrl"></el-avatar>
+  <div class="play-contral">
+    <div class="container" type="flex" align="middle">
+      <img class="pic" :src="detail.picUrl" />
       <div class="con">
-        <el-row class="title" v-show="detail.name"> {{ detail.name }}</el-row>
-        <el-row v-show="detail.al_name" class="artiles">
+        <div class="title" v-show="detail.name"> {{ detail.name }}</div>
+        <div v-show="detail.al_name" class="artiles">
           <span class="al-name" :title="detail.al_name">
             专辑： {{ detail.al_name }}
           </span>
           <span class="ar-name" :title="detail.ar_name">
             歌手：{{ detail.ar_name }}</span
           >
-        </el-row>
+        </div>
       </div>
       <div class="contal" @click="handle_toggle_play">
         <img :src="current_state !== 'play' ? play : pause" alt="" />
       </div>
-    </el-row>
+    </div>
     <div class="pro">
       <span>{{ to_time(current_progress) }}</span> /
       <span>{{ to_time(current_duration) }}</span>
     </div>
     <div class="progress" :style="{ '--percent': percentage }"></div>
-  </el-row>
+  </div>
 </template>
 
 <script setup>
@@ -74,7 +74,7 @@ const handle_toggle_play = () => {
 <style lang="scss" scoped>
 .play-contral {
   min-height: 100px;
-  height: 10vw;
+  height: 8vw;
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -136,7 +136,6 @@ const handle_toggle_play = () => {
     }
     .contal {
       padding: 10px;
-      background-color: rgba(255, 255, 255, 0.9);
       display: grid;
       place-items: center;
       border-radius: 50%;

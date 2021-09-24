@@ -1,14 +1,13 @@
 import { createApp } from "vue";
+import i18n from "./locale";
 import App from "./App.vue";
-import "element-plus/dist/index.css";
-import ElementPlus from "element-plus";
 import "@/assets/styles/index.scss"; // global css
-import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import "./registerServiceWorker";
 
 export default createApp(App)
   .use(store)
   .use(router)
-  .use(ElementPlus)
+  .use(i18n)
   .mount("#app");

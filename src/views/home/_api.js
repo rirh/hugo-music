@@ -7,6 +7,15 @@ export function getSearchMultimatch(params) {
     params
   });
 }
+// 搜索
+export function getCloudSearch(params) {
+  return request({
+    url: "/cloudsearch",
+    method: "get",
+    params
+  });
+}
+
 
 // 搜索建议
 export function getSearchSuggest(params) {

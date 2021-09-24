@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   configureWebpack: {
-    name: "z-org-music",
+    name: "Z ORG | MUSIC",
     resolve: {
       alias: {
         "@": path.join(__dirname, "src")
@@ -46,6 +46,138 @@ module.exports = {
   chainWebpack(config) {
     config.plugins.delete("preload"); // TODO: need test
     config.plugins.delete("prefetch"); // TODO: need test
+    config.resolve.symlinks(true); // 修复热更新失效
+  },
+  pwa: {
+    name: "Z ORG | MUSIC",
+    manifestOptions: {
+      background_color: "#335eea"
+    },
+    themeColor: "#000",
+    iconPaths: {
+      faviconSVG:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/16x16.png",
+      favicon32:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/32x32.png",
+      favicon16:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/16x16.png",
+      appleTouchIcon:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png",
+      maskIcon:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png",
+      msTileImage:
+        "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png"
+    }
+  },
+  // 添加插件的配置
+  pluginOptions: {
+    // electron-builder的配置文件
+    electronBuilder: {
+      nodeIntegration: true,
+      externals: ["@revincx/unblockneteasemusic"],
+      builderOptions: {
+        productName: "Z ORG MUSIC",
+        copyright: "Copyright © Z ORG",
+        // compression: "maximum", // 机器好的可以打开，配置压缩，开启后会让 .AppImage 格式的客户端启动缓慢
+        asar: true,
+        publish: [
+          {
+            provider: "github",
+            owner: "tigerzh",
+            repo: "NotesMusic",
+            vPrefixedTagName: true,
+            releaseType: "draft"
+          }
+        ],
+        directories: {
+          output: "dist_electron"
+        },
+        mac: {
+          target: [
+            {
+              target: "dmg",
+              arch: ["x64", "arm64", "universal"]
+            }
+          ],
+          artifactName: "${productName}-${os}-${version}-${arch}.${ext}",
+          category: "app.zorg.music",
+          darkModeSupport: true
+        },
+        win: {
+          target: [
+            {
+              target: "portable",
+              arch: ["x64"]
+            },
+            {
+              target: "nsis",
+              arch: ["x64"]
+            }
+          ],
+          publisherName: "Z ORG MUSIC",
+          icon: "build/icons/icon.ico",
+          publish: ["github"]
+        },
+        linux: {
+          target: [
+            {
+              target: "AppImage",
+              arch: ["x64"]
+            },
+            {
+              target: "tar.gz",
+              arch: ["x64"]
+            },
+            {
+              target: "deb",
+              arch: ["x64", "armv7l"]
+            },
+            {
+              target: "rpm",
+              arch: ["x64"]
+            },
+            {
+              target: "snap",
+              arch: ["x64"]
+            },
+            {
+              target: "pacman",
+              arch: ["x64"]
+            }
+          ],
+          category: "Music",
+          icon: "./build/icon.icns"
+        },
+        dmg: {
+          icon: "build/icons/icon.icns"
+        },
+        nsis: {
+          oneClick: true,
+          perMachine: true,
+          deleteAppDataOnUninstall: true
+        }
+      },
+      // 主线程的配置文件
+      chainWebpackMainProcess: config => {
+        config.plugin("define").tap(args => {
+          args[0]["IS_ELECTRON"] = true;
+          return args;
+        });
+      },
+      // 渲染线程的配置文件
+      chainWebpackRendererProcess: config => {
+        // 渲染线程的一些其他配置
+        // Chain webpack config for electron renderer process only
+        // The following example will set IS_ELECTRON to true in your app
+        config.plugin("define").tap(args => {
+          args[0]["IS_ELECTRON"] = true;
+          return args;
+        });
+      },
+      // 主入口文件
+      // mainProcessFile: 'src/main.js',
+      mainProcessWatch: ["../netease_api/routes.js"]
+      // mainProcessArgs: []
+    }
   }
 };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

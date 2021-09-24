@@ -83,6 +83,7 @@ export default {
       }
     },
     async fetch_song_data({ commit, dispatch, state }, id) {
+      if (!audio) commit("init_audio_context");
       dispatch("pause");
       const { data, code } = await getSongUrl({ id });
       if (code !== 200) return;

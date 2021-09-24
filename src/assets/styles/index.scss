@@ -1,7 +1,22 @@
-@import "./variables.scss";
+:root,
+[data-theme="light"] {
+  --color-primary: #fafafa;
+  --img-primary: invert(0%);
+  --text-primary: #222;
+}
 
-body,
-html {
-  margin: 0;
+[data-theme="dark"] {
+  --color-primary: #222;
+  --img-primary: invert(100%);
+  --text-primary: #fff;
+}
+html,
+body {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-primary);
   padding: 0;
+  margin: 0;
+  color: var(--text-primary);
 }

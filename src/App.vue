@@ -1,26 +1,14 @@
 <template>
-  <router-view/>
+  <router-view />
+  <transition name="slide-up">
+    <PlayCon v-if="Object.keys(play_list).length" />
+  </transition>
 </template>
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import PlayCon from "@/views/home/components/PlayContral.vue";
+const store = useStore();
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+const play_list = computed(() => store.state.sound.play_list);
+</script>
