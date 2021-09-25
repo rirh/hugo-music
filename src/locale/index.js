@@ -1,14 +1,16 @@
-import { createI18n } from "vue-i18n";
+import { createI18n } from "vue-i18n/index";
 import en from "./en.json";
 import zh from "./zh.json";
+
 const messages = {
   en,
   zh
 };
-export default createI18n({
+const i18n = createI18n({
   // locale: "zh",
   // messgae
-  locale: "zh", // set locale
-  fallbackLocale: "zh", // set fallback locale
+  locale: "en", // set locale
   messages
 });
+
+export default i18n;

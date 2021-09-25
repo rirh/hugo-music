@@ -19,7 +19,7 @@
     "electron-icon-builder": "^2.0.1",
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",
-    "vue-i18n": "^9.1.7",
+    "vue-i18n": "^9.2.0-beta.6",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },

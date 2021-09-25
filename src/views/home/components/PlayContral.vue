@@ -3,7 +3,7 @@
     <div class="container" type="flex" align="middle">
       <img class="pic" :src="detail.picUrl" />
       <div class="con">
-        <div class="title" v-show="detail.name"> {{ detail.name }}</div>
+        <div class="title" v-show="detail.name">{{ detail.name }}</div>
         <div v-show="detail.al_name" class="artiles">
           <span class="al-name" :title="detail.al_name">
             专辑： {{ detail.al_name }}
@@ -83,6 +83,10 @@ const handle_toggle_play = () => {
   .container {
     position: relative;
     width: 100%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+
     .pic {
       height: 4vw;
       width: 4vw;
@@ -99,6 +103,7 @@ const handle_toggle_play = () => {
         color: white;
         font-weight: bold;
         margin-bottom: 5px;
+        text-align: left;
       }
       .artiles {
         font-size: 12px;
@@ -146,6 +151,16 @@ const handle_toggle_play = () => {
         min-width: 40px;
         height: 2vw;
         width: 2vw;
+        color: #999;
+        opacity: 1;
+        transition: all 0.3s;
+        border-radius: 50%;
+      }
+      img:hover {
+        background: #fff;
+        color: #fff;
+        opacity: 0.8;
+        padding: 5px;
       }
     }
   }

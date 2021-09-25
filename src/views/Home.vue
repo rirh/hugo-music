@@ -11,6 +11,8 @@
       <div>
         <button @click="handle_change_theme('light')">白色</button>
         <button @click="handle_change_theme('dark')">黑色</button>
+        <button @click="handle_change_language('en')">en</button>
+        <button @click="handle_change_language('zh')">zh</button>
 
         <!-- <el-select
           v-model="song"
@@ -48,14 +50,16 @@
 </template>
 
 <script setup>
-// import { ref } from "vue";
+import { onMounted } from "vue";
 // import { useRouter } from "vue-router";
-// import { useStore } from "vuex";
+import { useStore } from "vuex";
 // import { getSearchSuggest } from "@/api";
-
+import locale from "../locale";
 // const router = useRouter();
-// const store = useStore();
-
+const store = useStore();
+onMounted(() => {
+  store.dispatch("fetch_song_data", 1307411242);
+});
 // const song = ref(null);
 // const song_options = ref([]);
 // const select = ref(null);
@@ -89,6 +93,11 @@
 // const handle_select = async id => {
 //   store.dispatch("fetch_song_data", id);
 // };
+const handle_change_language = en => {
+  console.log(en);
+  locale.locale = en;
+  console.log(locale);
+};
 const handle_change_theme = appearance => {
   if (appearance === "auto" || appearance === undefined) {
     appearance = window.matchMedia("(prefers-color-scheme: dark)").matches
