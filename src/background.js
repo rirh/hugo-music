@@ -16,6 +16,7 @@ async function createWindow() {
     width: 800,
     height: 600,
     titleBarStyle: "hidden",
+    transparent: true,
     webPreferences: {
       webSecurity: false,
       // Use pluginOptions.nodeIntegration, leave this alone

@@ -1,4 +1,4 @@
-import { getSongUrl, getSongDetail } from "@/api";
+import { getSongUrl, getSongDetail, getLyric } from "@/api";
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
 let audioContext, audio_context, audio, source, gain, analyser;
@@ -43,7 +43,7 @@ export default {
     },
     update_song_detail(state, payload) {
       let song = state.play_list[payload.id];
-      song = { ...song, ...payload, is_detail: true };
+      song = { ...song, ...payload };
       state.play_list[payload.id] = song;
     },
     update_current_url(state, payload) {
@@ -100,6 +100,9 @@ export default {
         responde_song_detail.id = id;
         responde_song_detail.is_detail = true;
         commit("update_song_detail", responde_song_detail);
+        const responde_lyric_detail = await getLyric({ id });
+        responde_lyric_detail.id = id;
+        commit("update_song_detail", responde_lyric_detail);
       };
       audio.onended = () => {
         console.log("onended");

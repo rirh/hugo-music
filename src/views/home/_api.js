@@ -16,7 +16,6 @@ export function getCloudSearch(params) {
   });
 }
 
-
 // 搜索建议
 export function getSearchSuggest(params) {
   return request({
@@ -39,6 +38,15 @@ export function getSongUrl(params) {
 export function getSongDetail(params) {
   return request({
     url: "/song/detail",
+    method: "get",
+    params
+  });
+}
+
+// 获取音乐的url
+export function getLyric(params) {
+  return request({
+    url: "/lyric",
     method: "get",
     params
   });

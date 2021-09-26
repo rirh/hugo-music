@@ -1,28 +1,34 @@
 <template>
-  <div class="play-contral">
-    <div class="container" type="flex" align="middle">
-      <img class="pic" :src="detail.picUrl" />
-      <div class="con">
-        <div class="title" v-show="detail.name">{{ detail.name }}</div>
-        <div v-show="detail.al_name" class="artiles">
-          <span class="al-name" :title="detail.al_name">
-            专辑： {{ detail.al_name }}
-          </span>
-          <span class="ar-name" :title="detail.ar_name">
-            歌手：{{ detail.ar_name }}</span
-          >
+  <transition name="slide">
+    <div v-if="detail.ar_name" class="play-contral">
+      <div class="container" type="flex" align="middle">
+        <img class="pic" alt="" :src="detail.picUrl" />
+        <div class="con">
+          <div class="title" v-show="detail.name">
+            {{ detail.name }} <strong class="lyric"> {{ detail.lyric }}</strong>
+          </div>
+          <transition name="fade">
+            <div v-show="detail.al_name" class="artiles">
+              <span class="al-name" :title="detail.al_name">
+                专辑： {{ detail.al_name }}
+              </span>
+              <span class="ar-name" :title="detail.ar_name">
+                歌手：{{ detail.ar_name }}</span
+              >
+            </div>
+          </transition>
+        </div>
+        <div class="contal" @click="handle_toggle_play">
+          <img :src="current_state !== 'play' ? play : pause" alt="" />
         </div>
       </div>
-      <div class="contal" @click="handle_toggle_play">
-        <img :src="current_state !== 'play' ? play : pause" alt="" />
+      <div class="pro">
+        <span>{{ to_time(current_progress) }}</span> /
+        <span>{{ to_time(current_duration) }}</span>
       </div>
+      <div class="progress" :style="{ '--percent': percentage }"></div>
     </div>
-    <div class="pro">
-      <span>{{ to_time(current_progress) }}</span> /
-      <span>{{ to_time(current_duration) }}</span>
-    </div>
-    <div class="progress" :style="{ '--percent': percentage }"></div>
-  </div>
+  </transition>
 </template>
 
 <script setup>
@@ -31,6 +37,7 @@ import { useStore } from "vuex";
 import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
 const store = useStore();
+
 const current_duration = computed(() => store.state.sound.current_duration);
 const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
@@ -42,6 +49,7 @@ const percentage = computed(() => {
   return result;
 });
 
+let temp_lyric = "";
 const detail = computed(() => {
   let result = {};
   if (play_list.value[current_id.value]) {
@@ -52,6 +60,20 @@ const detail = computed(() => {
       result.picUrl = detail.al.picUrl;
       result.al_name = detail.al.name;
       result.ar_name = detail.ar.map(e => e.name).join("/");
+      const lyr = song?.lrc?.lyric;
+      if (lyr) {
+        const lyric = lyr.split("\n");
+        let lyric_result = {};
+        lyric.forEach(lyri => {
+          const [time, value] = lyri.split("]");
+          let key = time.substr(1).split(".");
+          key.splice(-1, 1);
+          lyric_result[key.join(".")] = value;
+        });
+        const progress = to_time(current_progress.value);
+        temp_lyric = lyric_result[progress] || temp_lyric;
+        result.lyric = temp_lyric;
+      }
     }
   }
   return result;
@@ -104,6 +126,10 @@ const handle_toggle_play = () => {
         font-weight: bold;
         margin-bottom: 5px;
         text-align: left;
+        .lyric {
+          margin-left: 0px;
+          font-size: 26px;
+        }
       }
       .artiles {
         font-size: 12px;

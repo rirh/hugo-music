@@ -1,18 +1,50 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" :class="{ drag: is_electron }">
     <div class="container">
       <div>
         <img
+          @click="handle_change_theme"
           class="logo"
+          alt="logo"
           src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
         />
       </div>
-      <div v-t="{ path: 'message.hello' }"></div>
+      <!-- <div v-t="{ path: 'message.hello' }"></div> -->
       <div>
-        <button @click="handle_change_theme('light')">白色</button>
+        <div class="song-auto-complete-wapper no-drag">
+          <input
+            @focus="show_options = true"
+            @blur="handle_blur"
+            @input="fetch_search_song"
+            class="search-la"
+            type="text"
+          />
+          <transition name="fade">
+            <div v-show="show_options" class="auto-complete-wapper">
+              <div
+                v-for="group in song_options"
+                :key="group.label"
+                :label="group.label"
+              >
+                <div class="title item">{{ group.label }}</div>
+                <div
+                  v-for="item in group.options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  class="label item"
+                  @click="handle_select(item.value)"
+                >
+                  {{ item.label }}
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
+        <!-- <button @click="handle_change_theme('light')">白色</button>
         <button @click="handle_change_theme('dark')">黑色</button>
         <button @click="handle_change_language('en')">en</button>
-        <button @click="handle_change_language('zh')">zh</button>
+        <button @click="handle_change_language('zh')">zh</button> -->
 
         <!-- <el-select
           v-model="song"
@@ -50,55 +82,64 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 // import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-// import { getSearchSuggest } from "@/api";
-import locale from "../locale";
+import { getSearchSuggest } from "@/api";
+// import locale from "../locale";
 // const router = useRouter();
 const store = useStore();
+const is_electron = ref(process.env.IS_ELECTRON || false);
 onMounted(() => {
-  store.dispatch("fetch_song_data", 1307411242);
+  // store.dispatch("fetch_song_data", 1307411242);
 });
 // const song = ref(null);
-// const song_options = ref([]);
+const song_options = ref([]);
 // const select = ref(null);
-// const loading = ref(false);
-
-// const fetch_search_song = async keywords => {
-//   loading.value = true;
-//   const { result, code } = await getSearchSuggest({ keywords });
-//   loading.value = false;
-//   if (code !== 200) return;
-//   if (!result.order) return;
-//   song_options.value = result?.order.map(e => {
-//     let options = result[e];
-//     options = options.map(it => ({
-//       ...it,
-//       value: it.id,
-//       label: `${it.name}${(it.artists &&
-//         "-" + it.artists.map(artist => artist.name).join("/")) ||
-//         ""}`
-//     }));
-//     return {
-//       value: e,
-//       label: e,
-//       options
-//     };
-//   });
-// };
+const loading = ref(false);
+const show_options = ref(false);
+const handle_blur = () => {
+  setTimeout(() => {
+    show_options.value = false;
+  }, 200);
+};
+const fetch_search_song = async e => {
+  loading.value = true;
+  const keywords = e.target.value;
+  const { result, code } = await getSearchSuggest({ keywords });
+  loading.value = false;
+  if (code !== 200) return;
+  if (!result.order) return;
+  song_options.value = result?.order.map(e => {
+    let options = result[e];
+    options = options.map(it => ({
+      ...it,
+      value: it.id,
+      label: `${it.name}${(it.artists &&
+        "-" + it.artists.map(artist => artist.name).join("/")) ||
+        ""}`
+    }));
+    return {
+      value: e,
+      label: e,
+      options
+    };
+  });
+};
 // const handle_detail = () => {
 //   router.push(`/detail/${select.value.query}`);
 // };
-// const handle_select = async id => {
-//   store.dispatch("fetch_song_data", id);
-// };
-const handle_change_language = en => {
-  console.log(en);
-  locale.locale = en;
-  console.log(locale);
+const handle_select = async id => {
+  store.dispatch("fetch_song_data", id);
 };
-const handle_change_theme = appearance => {
+// const handle_change_language = en => {
+//   console.log(en);
+//   locale.locale = en;
+//   console.log(locale);
+// };
+const handle_change_theme = () => {
+  let appearance =
+    document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
   if (appearance === "auto" || appearance === undefined) {
     appearance = window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
@@ -118,12 +159,14 @@ const handle_change_theme = appearance => {
   height: 100vh;
   width: 100vw;
   box-sizing: border-box;
+  text-align: center;
   .container {
     margin-top: -30vh;
   }
   .logo {
-    height: 5.5vmax;
+    height: 8vmax;
     min-height: 55px;
+    max-height: 100px;
     width: auto;
     background: transparent;
     margin-bottom: 30px;
@@ -132,13 +175,51 @@ const handle_change_theme = appearance => {
   }
 
   .search-la {
+    padding: 10px;
+    font-size: 16px;
     width: 50vw;
+    max-width: 600px;
     min-width: 300px;
     border-width: 2px;
-    border: 2px solid #000;
+    font-weight: bold;
+    outline: none;
+    height: 45px;
+    border: none;
+    box-sizing: border-box;
+  }
+  .search-la:focus .song-auto-complete-wapper {
+    border: 2px solid var(--color-primary);
     border-radius: 5px;
-    ::v-deep(input) {
-      font-weight: bold;
+  }
+  .song-auto-complete-wapper {
+    max-height: 45vh;
+    overflow: hidden;
+    border: 2px solid #666;
+    border-radius: 5px;
+    cursor: pointer;
+
+    .auto-complete-wapper {
+      overflow: auto;
+      text-align: left;
+      max-height: calc(45vh - 45px);
+      border-top: 1px solid #eee;
+
+      .item {
+        padding: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: var(--color-primary);
+      }
+      .label:hover {
+        background-color: var(--color-hover-primary);
+        color: var(--color-primary);
+      }
+      .title {
+        font-size: 14px;
+        background-color: var(--color-primary);
+        font-weight: normal;
+        cursor: unset;
+      }
     }
   }
 }
