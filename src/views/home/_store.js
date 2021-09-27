@@ -35,11 +35,12 @@ export default {
       state.gain = gain;
     },
     update_play_list(state, payload) {
-      if (!state.play_list[payload.id]) {
-        state.play_list[payload.id] = payload;
-        state.current_id = payload.id;
-        state.current_url = payload.url;
-      }
+      state.play_list[payload.id] = payload;
+      state.current_id = payload.id;
+      state.current_url = payload.url;
+    },
+    update_current_id(state, payload) {
+      state.current_id = payload;
     },
     update_song_detail(state, payload) {
       let song = state.play_list[payload.id];
@@ -85,9 +86,15 @@ export default {
     async fetch_song_data({ commit, dispatch, state }, id) {
       if (!audio) commit("init_audio_context");
       dispatch("pause");
-      const { data, code } = await getSongUrl({ id });
-      if (code !== 200) return;
-      let [song] = data;
+      let song;
+      if (!state.play_list[id]) {
+        const { data, code } = await getSongUrl({ id });
+        if (code !== 200) return;
+        let [music] = data;
+        song = music;
+      } else {
+        song = state.play_list[id];
+      }
       commit("update_play_list", song);
       const url = song.url.split("http").join("https");
       audio.src = url;

@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { useStore } from "vuex";
 import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
@@ -50,6 +50,9 @@ const percentage = computed(() => {
 });
 
 let temp_lyric = "";
+watch(current_id, () => {
+  temp_lyric = "";
+});
 const detail = computed(() => {
   let result = {};
   if (play_list.value[current_id.value]) {

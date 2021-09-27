@@ -166,7 +166,7 @@ const handle_change_theme = () => {
   .logo {
     height: 8vmax;
     min-height: 55px;
-    max-height: 100px;
+    max-height: 80px;
     width: auto;
     background: transparent;
     margin-bottom: 30px;
@@ -177,13 +177,13 @@ const handle_change_theme = () => {
   .search-la {
     padding: 10px;
     font-size: 16px;
-    width: 50vw;
+    width: 40vw;
     max-width: 600px;
     min-width: 300px;
     border-width: 2px;
     font-weight: bold;
     outline: none;
-    height: 45px;
+    height: 40px;
     border: none;
     box-sizing: border-box;
   }
