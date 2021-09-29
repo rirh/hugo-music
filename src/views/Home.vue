@@ -18,24 +18,27 @@
             @input="fetch_search_song"
             class="search-la"
             type="text"
+            autofocus
           />
           <transition name="fade">
-            <div v-show="show_options" class="auto-complete-wapper">
-              <div
-                v-for="group in song_options"
-                :key="group.label"
-                :label="group.label"
-              >
-                <div class="title item">{{ group.label }}</div>
+            <div class="auto-complete-wapper">
+              <div v-if="show_options">
                 <div
-                  v-for="item in group.options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                  class="label item"
-                  @click="handle_select(item.value)"
+                  v-for="group in song_options"
+                  :key="group.label"
+                  :label="group.label"
                 >
-                  {{ item.label }}
+                  <div class="title item">{{ group.label }}</div>
+                  <div
+                    v-for="item in group.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    class="label item"
+                    @click="handle_select(item.value)"
+                  >
+                    {{ item.label }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -160,8 +163,9 @@ const handle_change_theme = () => {
   width: 100vw;
   box-sizing: border-box;
   text-align: center;
+  min-width: 400px;
   .container {
-    margin-top: -30vh;
+    margin-top: -40vh;
   }
   .logo {
     height: 8vmax;
@@ -169,7 +173,7 @@ const handle_change_theme = () => {
     max-height: 80px;
     width: auto;
     background: transparent;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     border-radius: 0;
     filter: var(--img-primary);
   }
@@ -186,6 +190,7 @@ const handle_change_theme = () => {
     height: 40px;
     border: none;
     box-sizing: border-box;
+    border-radius: 5px;
   }
   .search-la:focus .song-auto-complete-wapper {
     border: 2px solid var(--color-primary);
@@ -193,16 +198,30 @@ const handle_change_theme = () => {
   }
   .song-auto-complete-wapper {
     max-height: 45vh;
-    overflow: hidden;
-    border: 2px solid #666;
+    border-left: 2px solid #666;
+    border-right: 2px solid #666;
+    border-top: 2px solid #666;
     border-radius: 5px;
     cursor: pointer;
+    position: relative;
 
     .auto-complete-wapper {
       overflow: auto;
       text-align: left;
       max-height: calc(45vh - 45px);
       border-top: 1px solid #eee;
+      position: absolute;
+      /* bottom: 0; */
+      left: -2px;
+      width: 100%;
+      top: 100%;
+      z-index: 1;
+      border-left: 2px solid #666;
+      border-right: 2px solid #666;
+      border-bottom: 2px solid #666;
+      top: calc(100% - 2px);
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
 
       .item {
         padding: 5px;
