@@ -15,13 +15,16 @@
           <input
             @focus="show_options = true"
             @blur="handle_blur"
-            @input="fetch_search_song"
             class="search-la"
             type="text"
+            v-model="query"
             autofocus
           />
-          <transition name="fade">
-            <div class="auto-complete-wapper">
+          <div class="auto-complete-wapper">
+            <transition
+              name="fade"
+              enter-active-class="animate__animated animate__fadeInDown"
+            >
               <div v-if="show_options">
                 <div
                   v-for="group in song_options"
@@ -41,8 +44,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </transition>
+            </transition>
+          </div>
         </div>
         <!-- <button @click="handle_change_theme('light')">白色</button>
         <button @click="handle_change_theme('dark')">黑色</button>
@@ -85,16 +88,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 // import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getSearchSuggest } from "@/api";
+import useDebouncedRef from "@/components/useDebouncedRef";
 // import locale from "../locale";
 // const router = useRouter();
 const store = useStore();
 const is_electron = ref(process.env.IS_ELECTRON || false);
 onMounted(() => {
   // store.dispatch("fetch_song_data", 1307411242);
+});
+const query = useDebouncedRef("", 400);
+watch(query, q => {
+  // 发起API请求
+  fetch_search_song(q);
 });
 // const song = ref(null);
 const song_options = ref([]);
@@ -108,7 +117,7 @@ const handle_blur = () => {
 };
 const fetch_search_song = async e => {
   loading.value = true;
-  const keywords = e.target.value;
+  const keywords = e;
   const { result, code } = await getSearchSuggest({ keywords });
   loading.value = false;
   if (code !== 200) return;

@@ -11,7 +11,6 @@
   --img-primary: invert(100%);
   --text-primary: #fff;
   --color-hover-primary: #fff;
-
 }
 html,
 body {
@@ -30,30 +29,4 @@ body {
 }
 .no-drag {
   -webkit-app-region: no-drag;
-}
-
-.fade-enter-active {
-  transition: all 0.2s ease;
-}
-.fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.fade-enter, .fade-leave-to
-/* .slide-fade-leave-active 用于 2.1.8 以下版本 */ {
-  opacity: 0;
-}
-
-/*设置动画*/
-.slide-enter,
-.slide-leave-to {
-  transform: translateY(-100%);
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: 1s;
-}
-
-.slide-enter-to {
-  transform: translateY(0%);
 }

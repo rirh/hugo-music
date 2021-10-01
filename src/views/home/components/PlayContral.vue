@@ -1,6 +1,14 @@
 <template>
-  <transition name="slide">
-    <div v-if="detail.ar_name" class="play-contral">
+  <transition
+    name="slide"
+    leave-active-class="animate__animated animate__fadeOutDown"
+    enter-active-class="animate__animated animate__fadeInUp"
+  >
+    <div
+      @click="handle_open_dashbord"
+      v-if="detail.ar_name"
+      class="play-contral"
+    >
       <div class="container" type="flex" align="middle">
         <img class="pic" alt="" :src="detail.picUrl" />
         <div class="con">
@@ -18,7 +26,7 @@
             </div>
           </transition>
         </div>
-        <div class="contal" @click="handle_toggle_play">
+        <div class="contal" @click.stop="handle_toggle_play">
           <img :src="current_state !== 'play' ? play : pause" alt="" />
         </div>
       </div>
@@ -32,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
+import { computed, watch, defineEmits } from "vue";
 import { useStore } from "vuex";
 import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
@@ -48,6 +56,10 @@ const percentage = computed(() => {
   result = Math.floor((current_progress.value / current_duration.value) * 100);
   return result;
 });
+const emit = defineEmits(["on-open-dashbord"]);
+const handle_open_dashbord = () => {
+  emit("on-open-dashbord");
+};
 
 let temp_lyric = "";
 watch(current_id, () => {

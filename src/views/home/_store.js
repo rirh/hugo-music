@@ -14,9 +14,13 @@ export default {
     current_duration: 0,
     current_progress: 0,
     current_mode: "loop",
-    current_mode_options: ["loop", "order", "single", "random"]
+    current_mode_options: ["loop", "order", "single", "random"],
+    dashboard_open: false
   },
   mutations: {
+    update_dashboard_open(state, payload) {
+      state.dashboard_open = payload;
+    },
     init_audio_context(state) {
       audioContext =
         AudioContext || window.AudioContext || window.webkitAudioContext;
