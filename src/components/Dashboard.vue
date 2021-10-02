@@ -1,6 +1,14 @@
 <template>
   <div class="wapper" @click="handle_close_dashboard">
-    <div class="left"><img class="pic" alt="" :src="detail.picUrl" /></div>
+    <div class="left">
+      <img
+        class="pic"
+        crossorigin="Anonymous"
+        alt=""
+        id="pic"
+        :src="detail.picUrl"
+      />
+    </div>
     <div class="right">
       <!-- {{ detail.lyric }} -->
       <h1>
@@ -19,11 +27,11 @@
           :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
           v-for="(lyric, i) in Object.values(detail.lyric || {})"
           :key="i"
-          :style="{
-            color:
-              detail.lyric_arr_lyric[i].includes(to_time(current_progress)) &&
-              '#fff'
+          class="text"
+          :class="{
+            load: detail.lyric_arr_lyric[i].includes(to_time(current_progress))
           }"
+          :style="{}"
         >
           {{ lyric }}
         </li>
@@ -33,7 +41,8 @@
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
+import { computed, watch, onMounted, nextTick } from "vue";
+import { colorfulImg } from "@/utils";
 // import play from "@/assets/image/play.svg";
 // import pause from "@/assets/image/pause.svg";
 import { useStore } from "vuex";
@@ -56,6 +65,16 @@ const play_list = computed(() => store.state.sound.play_list);
 // const handle_open_dashbord = () => {
 //   emit("on-open-dashbord");
 // };
+onMounted(() => {
+  nextTick(() => {
+    let myImg = document.getElementById("pic");
+    let { r, g, b } = colorfulImg(myImg);
+    console.log(r, g, b);
+    document.querySelector(".wapper").style.backgroundColor = `rgb(${(r,
+    g,
+    b)})`;
+  });
+});
 
 const detail = computed(() => {
   let result = {};
@@ -133,7 +152,7 @@ const to_time = val => {
   }
   .right {
     width: 55vw;
-    color: #f2f2f2;
+    color: var(--color-primary);
 
     .lyric-wapper {
       height: 60vh;
@@ -149,9 +168,12 @@ const to_time = val => {
         font-size: 24px;
         margin: 0;
         padding: 0;
-        color: #999;
+        color: var(--color-primary);
       }
     }
   }
+}
+.load {
+  color: #ff8344;
 }
 </style>

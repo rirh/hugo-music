@@ -3524,6 +3524,11 @@ colorette@^1.2.1, colorette@^1.2.2, colorette@^1.3.0:
   resolved "https://registry.nlark.com/colorette/download/colorette-1.4.0.tgz?cache=0&sync_timestamp=1631964858506&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcolorette%2Fdownload%2Fcolorette-1.4.0.tgz#5190fbb87276259a86ad700bff2c6d6faa3fca40"
   integrity sha1-UZD7uHJ2JZqGrXAL/yxtb6o/ykA=
 
+colorfulimg@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/colorfulimg/-/colorfulimg-1.0.2.tgz#3a4ef5a76385f8733b57c67559567e837abe1bf2"
+  integrity sha512-P/WeX8siKxUPz1lxzCSir06/KusvTS6+TGi8N3EPr4VZXmPayVX1kscLB6nPbohWSd4Z2Y1+KodscHR7Cb219A==
+
 colors@1.0.3:
   version "1.0.3"
   resolved "https://registry.nlark.com/colors/download/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
