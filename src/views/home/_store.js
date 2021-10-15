@@ -67,7 +67,10 @@ export default {
     }
   },
   actions: {
-    seek() {},
+    seek({ commit }, len) {
+      console.log(commit, len);
+      audio.currentTime = len;
+    },
     play({ commit }) {
       gain.gain.value = 0;
       audio.play();

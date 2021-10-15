@@ -1,5 +1,5 @@
 <template>
-  <div class="wapper">
+  <div class="wapper" :style="style">
     <div class="left">
       <div>
         <img
@@ -28,6 +28,7 @@
         class="close"
         :src="down"
         alt="down"
+        @load="handle_load_back"
       />
       <!-- {{ detail.lyric }} -->
 
@@ -57,8 +58,7 @@
 </template>
 
 <script setup>
-import { computed, watch, onMounted, nextTick } from "vue";
-import { colorfulImg } from "@/utils";
+import { computed, watch, ref, nextTick } from "vue";
 import down from "@/assets/image/down.svg";
 
 // import play from "@/assets/image/play.svg";
@@ -69,6 +69,7 @@ const handle_close_dashboard = () => {
   store.commit("update_dashboard_open", false);
 };
 
+const style = ref(null);
 // const current_duration = computed(() => store.state.sound.current_duration);
 const current_progress = computed(() => store.state.sound.current_progress);
 // const current_state = computed(() => store.state.sound.current_state);
@@ -83,16 +84,59 @@ const play_list = computed(() => store.state.sound.play_list);
 // const handle_open_dashbord = () => {
 //   emit("on-open-dashbord");
 // };
-onMounted(() => {
+const handle_load_back = () => {
   nextTick(() => {
     let myImg = document.getElementById("pic");
-    let { r, g, b } = colorfulImg(myImg);
-    console.log(r, g, b);
-    document.querySelector(".wapper").style.backgroundColor = `rgb(${(r,
-    g,
-    b)})`;
+    let { r, g, b } = getAverageRGB(myImg);
+    style.value = { "background-color": `rgb(${r},${g},${b})` };
   });
-});
+};
+const getAverageRGB = imgEl => {
+  var blockSize = 5, // only visit every 5 pixels
+    defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
+    canvas = document.createElement("canvas"),
+    context = canvas.getContext && canvas.getContext("2d"),
+    data,
+    width,
+    height,
+    i = -4,
+    length,
+    rgb = { r: 0, g: 0, b: 0 },
+    count = 0;
+
+  if (!context) {
+    return defaultRGB;
+  }
+
+  height = canvas.height =
+    imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+  width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+
+  context.drawImage(imgEl, 0, 0);
+
+  try {
+    data = context.getImageData(0, 0, width, height);
+  } catch (e) {
+    /* security error, img on diff domain */
+    return defaultRGB;
+  }
+
+  length = data.data.length;
+
+  while ((i += blockSize * 4) < length) {
+    ++count;
+    rgb.r += data.data[i];
+    rgb.g += data.data[i + 1];
+    rgb.b += data.data[i + 2];
+  }
+
+  // ~~ used to floor values
+  rgb.r = ~~(rgb.r / count);
+  rgb.g = ~~(rgb.g / count);
+  rgb.b = ~~(rgb.b / count);
+
+  return rgb;
+};
 
 const detail = computed(() => {
   let result = {};
@@ -130,7 +174,7 @@ watch(current_progress, () => {
   const times = Object.keys(detail.value.lyric || {});
   if (times.includes(progress)) {
     const el = document.getElementById(`lyric-${progress}`);
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el && el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 });
 
@@ -139,8 +183,16 @@ const to_time = val => {
     s = `${Math.floor(val % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
 };
-const handle_set_seek = p1 => {
-  console.log(p1);
+const handle_set_seek = row => {
+  console.log(row);
+  if (/\[(.*?)\]/g.test(row)) {
+    const [, time] = /\[(.*?)\]/g.exec(row);
+    if (time) {
+      let [m, s] = time.split(":");
+      const seek = Number(m) * 60 + Number(s);
+      store.dispatch("seek", seek);
+    }
+  }
   // const [] = p1.substring(1,6)
 };
 
@@ -196,7 +248,7 @@ const handle_set_seek = p1 => {
       }
     }
     .lyric-wapper {
-      height: 80vh;
+      height: 90vh;
       overflow: auto;
       // margin: 0;
       padding: 0;
@@ -214,6 +266,9 @@ const handle_set_seek = p1 => {
           background-color: hsla(0, 0%, 100%, 0.08);
         }
       }
+    }
+    .lyric-wapper::-webkit-scrollbar {
+      display: none;
     }
   }
 }

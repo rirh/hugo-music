@@ -19,7 +19,7 @@ export default createApp(App)
 var end = Date.now() + 5 * 1000;
 
 // go Buckeyes!
-var colors = ["#ffa62d","#ff36ff"];
+var colors = ["#bb0000", "#ff0000"];
 
 (function frame() {
   confetti({
