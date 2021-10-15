@@ -1,20 +1,19 @@
 <template>
-  <div class="wapper" @click="handle_close_dashboard">
+  <div class="wapper">
     <div class="left">
-      <img
-        class="pic"
-        crossorigin="Anonymous"
-        alt=""
-        id="pic"
-        :src="detail.picUrl"
-      />
-    </div>
-    <div class="right">
-      <!-- {{ detail.lyric }} -->
-      <h1>
+      <div>
+        <img
+          class="pic"
+          crossorigin="Anonymous"
+          alt=""
+          id="pic"
+          :src="detail.picUrl"
+        />
+      </div>
+      <h1 class="title" style="margin-top:30px">
         {{ detail.name }}
       </h1>
-      <div>
+      <div class="title">
         <strong class="al-name" :title="detail.al_name">
           专辑： {{ detail.al_name }}
         </strong>
@@ -22,19 +21,36 @@
           歌手：{{ detail.ar_name }}</strong
         >
       </div>
+    </div>
+    <div class="right">
+      <img
+        @click="handle_close_dashboard"
+        class="close"
+        :src="down"
+        alt="down"
+      />
+      <!-- {{ detail.lyric }} -->
+
       <ul class="lyric-wapper">
-        <li
-          :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
+        <template
           v-for="(lyric, i) in Object.values(detail.lyric || {})"
           :key="i"
-          class="text"
-          :class="{
-            load: detail.lyric_arr_lyric[i].includes(to_time(current_progress))
-          }"
-          :style="{}"
         >
-          {{ lyric }}
-        </li>
+          <li
+            v-if="lyric"
+            @click="handle_set_seek(detail.lyric_arr_lyric[i])"
+            :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
+            class="text"
+            :class="{
+              load: detail.lyric_arr_lyric[i].includes(
+                to_time(current_progress)
+              )
+            }"
+            :style="{}"
+          >
+            {{ lyric }}
+          </li>
+        </template>
       </ul>
     </div>
   </div>
@@ -43,6 +59,8 @@
 <script setup>
 import { computed, watch, onMounted, nextTick } from "vue";
 import { colorfulImg } from "@/utils";
+import down from "@/assets/image/down.svg";
+
 // import play from "@/assets/image/play.svg";
 // import pause from "@/assets/image/pause.svg";
 import { useStore } from "vuex";
@@ -112,7 +130,7 @@ watch(current_progress, () => {
   const times = Object.keys(detail.value.lyric || {});
   if (times.includes(progress)) {
     const el = document.getElementById(`lyric-${progress}`);
-    el.scrollIntoView({ behavior: "smooth" });
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 });
 
@@ -120,6 +138,10 @@ const to_time = val => {
   const m = `${Math.floor((val / 60) % 60)}`.padStart(2, "0"),
     s = `${Math.floor(val % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
+};
+const handle_set_seek = p1 => {
+  console.log(p1);
+  // const [] = p1.substring(1,6)
 };
 
 // const handle_toggle_play = () => {
@@ -143,37 +165,60 @@ const to_time = val => {
   background-color: var(--color-hover-primary);
 
   .left {
-    display: grid;
-    place-items: center;
-    width: 45vw;
+    width: 55vw;
+    color: var(--color-primary);
+    text-align: left;
+    .title {
+      margin: 0 auto;
+      text-align: center;
+    }
     .pic {
+      margin: 0 auto;
       height: 40vh;
+      margin-top: 10vh;
+      display: block;
     }
   }
   .right {
-    width: 55vw;
+    width: 45vw;
     color: var(--color-primary);
+    .close {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      height: 24px;
+      padding: 10px;
+      border-radius: 10px;
 
+      &:hover {
+        color: #fff;
+        background-color: hsla(0, 0%, 100%, 0.08);
+      }
+    }
     .lyric-wapper {
-      height: 60vh;
+      height: 80vh;
       overflow: auto;
       // margin: 0;
       padding: 0;
       margin-top: 50px;
       li {
         list-style-type: none;
-        height: 50px;
-        line-height: 50px;
         font-weight: bold;
+        padding: 10px 30px;
+        margin: 0 40px 0 0px;
         font-size: 24px;
-        margin: 0;
-        padding: 0;
-        color: var(--color-primary);
+        color: var(--lyric-active-default);
+        border-radius: 0.75em;
+        cursor: pointer;
+        &:hover {
+          background-color: hsla(0, 0%, 100%, 0.08);
+        }
       }
     }
   }
 }
 .load {
-  color: #ff8344;
+  color: var(--color-primary) !important;
+  font-size: 26px;
 }
 </style>

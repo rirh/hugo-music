@@ -1,9 +1,15 @@
+:root {
+  --animate-duration: 300ms;
+  --animate-delay: 0.2s;
+}
+
 :root,
 [data-theme="light"] {
   --color-primary: #fafafa;
   --img-primary: invert(0%);
   --text-primary: #222;
   --color-hover-primary: #222;
+  --lyric-active-default: #999;
 }
 
 [data-theme="dark"] {
@@ -11,6 +17,7 @@
   --img-primary: invert(100%);
   --text-primary: #fff;
   --color-hover-primary: #fff;
+  --lyric-active-default: #666;
 }
 html,
 body {
@@ -29,4 +36,17 @@ body {
 }
 .no-drag {
   -webkit-app-region: no-drag;
+}
+
+.z-music-cover {
+  position: relative;
+  transition: transform 0.3s;
+  width: 100%;
+  img {
+    width: 100%;
+    border-radius: 0.75em;
+    user-select: none;
+    aspect-ratio: 1/1;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
 }

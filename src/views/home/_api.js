@@ -51,3 +51,18 @@ export function getLyric(params) {
     params
   });
 }
+
+// 获取mv的url
+export function getMvUrl(id) {
+  return request({
+    url: `/mv/url?id=${id}`,
+    method: "get"
+  });
+}
+// 获取mv的url
+export function getVideoUrl(id) {
+  return request({
+    url: `/video/url?id=${id}`,
+    method: "get"
+  });
+}

@@ -19,7 +19,9 @@
             type="text"
             v-model="query"
             autofocus
+            @keyup.enter="handle_go_detail()"
           />
+          <Spinner v-if="loading" class="spinner" />
           <div class="auto-complete-wapper">
             <transition
               name="fade"
@@ -28,10 +30,16 @@
               <div v-if="show_options">
                 <div
                   v-for="group in song_options"
+                  v-show="group.label === 'songs'"
                   :key="group.label"
                   :label="group.label"
                 >
-                  <div class="title item">{{ group.label }}</div>
+                  <div class="title item">
+                    <span>{{ group.label }}</span
+                    ><span @click="handle_go_detail(group.label)" class="more"
+                      >更多</span
+                    >
+                  </div>
                   <div
                     v-for="item in group.options"
                     :key="item.value"
@@ -89,12 +97,13 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { getSearchSuggest } from "@/api";
 import useDebouncedRef from "@/components/useDebouncedRef";
+import Spinner from "@/components/Spinner";
 // import locale from "../locale";
-// const router = useRouter();
+const router = useRouter();
 const store = useStore();
 const is_electron = ref(process.env.IS_ELECTRON || false);
 onMounted(() => {
@@ -162,6 +171,10 @@ const handle_change_theme = () => {
     .querySelector('meta[name="theme-color"]')
     .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
 };
+const handle_go_detail = label => {
+  if (label) label = `?type=${label}`;
+  router.push(`/detail/${query.value || ""}${label || ""}`);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -190,16 +203,16 @@ const handle_change_theme = () => {
   .search-la {
     padding: 10px;
     font-size: 16px;
-    width: 40vw;
+    width: 50vw;
     max-width: 600px;
     min-width: 300px;
     border-width: 2px;
     font-weight: bold;
     outline: none;
-    height: 40px;
+    height: 45px;
     border: none;
     box-sizing: border-box;
-    border-radius: 5px;
+    max-width: 500px;
   }
   .search-la:focus .song-auto-complete-wapper {
     border: 2px solid var(--color-primary);
@@ -210,10 +223,12 @@ const handle_change_theme = () => {
     border-left: 2px solid #666;
     border-right: 2px solid #666;
     border-top: 2px solid #666;
-    border-radius: 5px;
-    cursor: pointer;
     position: relative;
-
+    .spinner {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+    }
     .auto-complete-wapper {
       overflow: auto;
       text-align: left;
@@ -237,6 +252,7 @@ const handle_change_theme = () => {
         font-size: 16px;
         font-weight: bold;
         background-color: var(--color-primary);
+        cursor: pointer;
       }
       .label:hover {
         background-color: var(--color-hover-primary);
@@ -247,6 +263,17 @@ const handle_change_theme = () => {
         background-color: var(--color-primary);
         font-weight: normal;
         cursor: unset;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .more {
+          font-weight: bold;
+        }
+        .more:hover {
+          font-weight: bold;
+          color: var(--color-hover-primary);
+          cursor: pointer;
+        }
       }
     }
   }

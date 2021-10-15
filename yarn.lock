@@ -3187,6 +3187,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001254:
   resolved "https://registry.nlark.com/caniuse-lite/download/caniuse-lite-1.0.30001259.tgz?cache=0&sync_timestamp=1632203439345&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001259.tgz#ae21691d3da9c4be6144403ac40f71d9f6efd790"
   integrity sha1-riFpHT2pxL5hREA6xA9x2fbv15A=
 
+canvas-confetti@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/canvas-confetti/-/canvas-confetti-1.4.0.tgz#840f6db4a566f8f32abe28c00dcd82acf39c92bd"
+  integrity sha512-S18o4Y9PqI/uabdlT/jI3MY7XBJjNxnfapFIkjkMwpz6qNxLFZOm2b22OMf4ZYDL9lpNWI+Ih4fEMVPwO1KHFQ==
+
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.4.0"
   resolved "https://registry.nlark.com/case-sensitive-paths-webpack-plugin/download/case-sensitive-paths-webpack-plugin-2.4.0.tgz#db64066c6422eed2e08cc14b986ca43796dbc6d4"
@@ -9879,6 +9884,11 @@ smart-buffer@^4.0.2:
   version "4.2.0"
   resolved "https://registry.nlark.com/smart-buffer/download/smart-buffer-4.2.0.tgz?cache=0&sync_timestamp=1628317903199&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsmart-buffer%2Fdownload%2Fsmart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
   integrity sha1-bh1x+k8YwF99D/IW3RakgdDo2a4=
+
+smoothscroll-polyfill@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.npmjs.org/smoothscroll-polyfill/-/smoothscroll-polyfill-0.4.4.tgz#3a259131dc6930e6ca80003e1cb03b603b69abf8"
+  integrity sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

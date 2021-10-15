@@ -23,7 +23,9 @@ export default {
     },
     init_audio_context(state) {
       audioContext =
-        AudioContext || window.AudioContext || window.webkitAudioContext;
+        window.AudioContext || // Default
+        window.webkitAudioContext || // Safari and old versions of Chrome
+        false;
       audio_context = new audioContext();
       audio = new Audio();
       audio.crossOrigin = "anonymous";
