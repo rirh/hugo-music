@@ -186,6 +186,13 @@ const handle_go_detail = label => {
   box-sizing: border-box;
   text-align: center;
   min-width: 400px;
+  background-image: url("~@/assets/image/bg.svg"),
+    url("~@/assets/image/bg2.svg");
+  background-repeat: no-repeat;
+  background-size: 60vh 60vh, 40vh 40vh;
+  background-position: right 120%, left -10%;
+  background-attachment: fixed;
+  box-shadow: 10px;
   .container {
     margin-top: -40vh;
   }

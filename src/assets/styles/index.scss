@@ -1,6 +1,7 @@
 :root {
-  --animate-duration: 300ms;
-  --animate-delay: 0.2s;
+  --animate-duration: 0.8s ;
+  --animate-delay: 0.8s ;
+  --animate-repeat: 1 ;
 }
 
 :root,
@@ -10,6 +11,8 @@
   --text-primary: #222;
   --color-hover-primary: #222;
   --lyric-active-default: #999;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "PingFang SC", Helvetica, Arial, sans-serif;
 }
 
 [data-theme="dark"] {
@@ -18,10 +21,18 @@
   --text-primary: #fff;
   --color-hover-primary: #fff;
   --lyric-active-default: #666;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "PingFang SC", Helvetica, Arial, sans-serif;
+}
+* {
+  font-family: "Barlow", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei,
+    Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif,
+    microsoft uighur;
+  // "Barlow", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif, microsoft uighur
 }
 html,
 body {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-primary);
@@ -49,4 +60,8 @@ body {
     aspect-ratio: 1/1;
     border: 1px solid rgba(0, 0, 0, 0.04);
   }
+}
+
+.link:hover {
+  background-color: hsla(0, 0%, 100%, 0.08);
 }

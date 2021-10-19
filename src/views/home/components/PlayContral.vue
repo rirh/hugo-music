@@ -18,11 +18,11 @@
           <transition name="fade">
             <div v-show="detail.al_name" class="artiles">
               <span class="al-name" :title="detail.al_name">
-                专辑： {{ detail.al_name }}
+                专辑： <span>{{ detail.al_name }}</span>
               </span>
               <span class="ar-name" :title="detail.ar_name">
-                歌手：{{ detail.ar_name }}</span
-              >
+                歌手： <span>{{ detail.ar_name }}</span>
+              </span>
             </div>
           </transition>
         </div>
@@ -141,9 +141,11 @@ const handle_toggle_play = () => {
         font-weight: bold;
         margin-bottom: 5px;
         text-align: left;
+        opacity: 0.88;
         .lyric {
           margin-left: 0px;
           font-size: 26px;
+          opacity: 0.9;
         }
       }
       .artiles {
@@ -160,6 +162,20 @@ const handle_toggle_play = () => {
           white-space: nowrap; /* 不换行 */
           overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
           text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+          span {
+            padding: 10px;
+            cursor: pointer;
+            opacity: 0.6;
+            border-radius: 0.75em;
+          }
+          span:hover {
+            background-color: hsla(0, 0%, 100%, 0.15);
+            color: #fff;
+            opacity: 0.8;
+          }
+          span:active {
+            transform: scale(0.92);
+          }
         }
         .al-name {
           display: inline-block; /*内联对象需加*/
@@ -169,6 +185,20 @@ const handle_toggle_play = () => {
           white-space: nowrap; /* 不换行 */
           overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
           text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+          span {
+            padding: 10px;
+            cursor: pointer;
+            opacity: 0.6;
+            border-radius: 0.75em;
+          }
+          span:hover {
+            background-color: hsla(0, 0%, 100%, 0.15);
+            color: #fff;
+            opacity: 0.8;
+          }
+          span:active {
+            transform: scale(0.92);
+          }
         }
       }
       @media screen and (min-width: 750px) {
@@ -198,10 +228,13 @@ const handle_toggle_play = () => {
         border-radius: 50%;
       }
       img:hover {
-        background: #fff;
+        background-color: hsla(0, 0%, 100%, 0.15);
         color: #fff;
         opacity: 0.8;
         padding: 5px;
+      }
+      &:active {
+        transform: scale(0.92);
       }
     }
   }
