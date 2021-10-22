@@ -1,7 +1,8 @@
 :root {
-  --animate-duration: 0.8s ;
-  --animate-delay: 0.8s ;
-  --animate-repeat: 1 ;
+  --animate-duration: 0.8s;
+  --animate-delay: 0.8s;
+  --animate-repeat: 1;
+  --duration-text-wrap: 12s 1.5s cubic-bezier(0.82, 0.82, 1, 1.01);
 }
 
 :root,
@@ -39,6 +40,7 @@ body {
   padding: 0;
   margin: 0;
   color: var(--text-primary);
+  overflow: hidden;
 }
 
 .drag {

@@ -193,6 +193,7 @@ const handle_go_detail = label => {
   background-position: right 120%, left -10%;
   background-attachment: fixed;
   box-shadow: 10px;
+  box-sizing: border-box;
   .container {
     margin-top: -40vh;
   }
@@ -283,6 +284,11 @@ const handle_go_detail = label => {
         }
       }
     }
+  }
+}
+@media only screen and (max-width: 800px) {
+  .app-container {
+    background-image: none;
   }
 }
 </style>

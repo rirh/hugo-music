@@ -10,10 +10,18 @@
       class="play-contral"
     >
       <div class="container" type="flex" align="middle">
-        <img class="pic" alt="" :src="detail.picUrl" />
+        <div class="pic">
+          <img class="img" alt="" :src="detail.picUrl" />
+          <div class="contal" @click.stop="handle_toggle_play">
+            <img :src="current_state !== 'play' ? play : pause" alt="" />
+          </div>
+        </div>
         <div class="con">
           <div class="title" v-show="detail.name">
-            {{ detail.name }} <strong class="lyric"> {{ detail.lyric }}</strong>
+            <span class="text-wrap">
+              {{ detail.name }}
+            </span>
+            <strong class="lyric"> {{ detail.lyric }}</strong>
           </div>
           <transition name="fade">
             <div v-show="detail.al_name" class="artiles">
@@ -25,9 +33,6 @@
               </span>
             </div>
           </transition>
-        </div>
-        <div class="contal" @click.stop="handle_toggle_play">
-          <img :src="current_state !== 'play' ? play : pause" alt="" />
         </div>
       </div>
       <div class="pro">
@@ -117,6 +122,7 @@ const handle_toggle_play = () => {
   bottom: 0;
   left: 0;
   background-color: black;
+  overflow: hidden;
   .container {
     position: relative;
     width: 100%;
@@ -125,13 +131,17 @@ const handle_toggle_play = () => {
     height: 100%;
 
     .pic {
-      height: 4vw;
-      width: 4vw;
-      min-height: 60px;
-      min-width: 60px;
-      border-radius: 5px;
-      margin: 0 10px;
-      border: 1px solid white;
+      position: relative;
+      .img {
+        height: 4vw;
+        width: 4vw;
+        min-height: 60px;
+        min-width: 60px;
+        border-radius: 5px;
+        margin: 0 10px;
+        border: 1px solid white;
+        filter: brightness(75%);
+      }
     }
     .con {
       flex: 1;
@@ -142,10 +152,15 @@ const handle_toggle_play = () => {
         margin-bottom: 5px;
         text-align: left;
         opacity: 0.88;
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
         .lyric {
           margin-left: 0px;
           font-size: 26px;
           opacity: 0.9;
+          margin-left: 10px;
         }
       }
       .artiles {
@@ -217,12 +232,16 @@ const handle_toggle_play = () => {
       border-radius: 50%;
       align-self: flex-end;
       margin: 10px 25px;
+      position: absolute;
+      z-index: 1;
+      left: -13px;
+      top: -10px;
       img {
         min-height: 40px;
         min-width: 40px;
         height: 2vw;
         width: 2vw;
-        color: #999;
+        color: white;
         opacity: 1;
         transition: all 0.3s;
         border-radius: 50%;
@@ -231,7 +250,6 @@ const handle_toggle_play = () => {
         background-color: hsla(0, 0%, 100%, 0.15);
         color: #fff;
         opacity: 0.8;
-        padding: 5px;
       }
       &:active {
         transform: scale(0.92);
@@ -280,6 +298,31 @@ const handle_toggle_play = () => {
     to {
       width: calc(100% * var(--percent) / 100);
     }
+  }
+}
+
+.text-wrap {
+  display: block;
+  white-space: pre;
+  width: fit-content;
+}
+
+@keyframes text-wrap {
+  75% {
+    transform: translate3d(-51.5%, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-51.5%, 0, 0);
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .lyric {
+    display: none;
+  }
+  .text-wrap {
+    animation: text-wrap var(--duration-text-wrap) infinite;
   }
 }
 </style>

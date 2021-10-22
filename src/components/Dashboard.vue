@@ -31,6 +31,7 @@
           color="#fff"
           :max="current_duration"
           track-color="rgba(255,255,255,.18)"
+          @drag-start="handle_toggle_play"
           @drag-end="handle_seek"
         />
         <span>{{ to_time(current_duration) }}</span>
@@ -134,8 +135,9 @@ const handle_load_back = () => {
   setTimeout(() => {
     let myImg = document.getElementById("pic");
     let { r, g, b } = getAverageRGB(myImg);
-
-    style.value = { "background-color": `rgb(${r},${g},${b})` };
+    style.value = {
+      background: `linear-gradient(to top left, rgb(${r},${g},${b}), #ff8344)`
+    };
   }, 100);
 };
 const getAverageRGB = imgEl => {
@@ -233,6 +235,7 @@ const to_time = value => {
 };
 const handle_seek = seek => {
   store.dispatch("seek", seek);
+  handle_toggle_play();
 };
 const handle_set_seek = row => {
   if (/\[(.*?)\]/g.test(row)) {
@@ -258,8 +261,8 @@ const handle_toggle_play = () => {
 
 <style lang="scss" scoped>
 .wapper {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
   position: fixed;
   left: 0;
@@ -392,5 +395,14 @@ const handle_toggle_play = () => {
   padding: 10px 15px;
   cursor: pointer;
   border-radius: 0.75em;
+}
+
+@media only screen and (max-width: 800px) {
+  .left {
+    display: none;
+  }
+  .right {
+    width: 100% !important;
+  }
 }
 </style>
