@@ -66,3 +66,11 @@ export function getVideoUrl(id) {
     method: "get"
   });
 }
+// 获取mv的url
+export function getPersonalizedNewsong() {
+  return request({
+    url: `/personalized/newsong`,
+    method: "get"
+  });
+}
+
