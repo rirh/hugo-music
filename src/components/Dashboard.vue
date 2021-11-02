@@ -1,5 +1,10 @@
 <template>
-  <div class="wapper" :style="style">
+  <div
+    class="wapper"
+    :style="{
+      background: style.background
+    }"
+  >
     <div class="left">
       <div>
         <img
@@ -8,40 +13,75 @@
           alt=""
           id="pic"
           :src="detail.picUrl"
+          @load="handle_load_back"
         />
       </div>
-      <h1 class="title" style="margin-top:30px;opacity: 0.88;">
+      <h1
+        class="title"
+        style="margin-top:30px;opacity: 0.88;"
+        :style="{
+          color: style.text_color
+        }"
+      >
         {{ detail.name }}
       </h1>
       <div class="title" style="margin-top:10px;opacity: 0.58;">
-        <strong class="al-name" :title="detail.al_name">
+        <strong
+          class="al-name"
+          :style="{
+            color: style.text_color
+          }"
+          :title="detail.al_name"
+        >
           专辑： <span class="link">{{ detail.al_name }}</span>
         </strong>
-        <strong class="ar-name" :title="detail.ar_name">
+        <strong
+          class="ar-name"
+          :style="{
+            color: style.text_color
+          }"
+          :title="detail.ar_name"
+        >
           歌手：<span class="link">{{ detail.ar_name }}</span>
         </strong>
       </div>
       <br />
       <div class="slider">
-        <span>{{ to_time(current_progress) || "00:00" }}</span>
+        <span
+          :style="{
+            color: style.text_color
+          }"
+          >{{ to_time(current_progress) || "00:00" }}</span
+        >
         <vue3-slider
           v-model="progress"
           width="70%"
           :height="4"
-          color="#fff"
+          :color="style.text_color"
           :max="current_duration"
           track-color="rgba(255,255,255,.18)"
           @drag-start="handle_toggle_play"
           @drag-end="handle_seek"
         />
-        <span>{{ to_time(current_duration) }}</span>
+        <span
+          :style="{
+            color: style.text_color
+          }"
+          >{{ to_time(current_duration) }}</span
+        >
       </div>
       <div class="con-contal">
         <div>
           <img src="" alt="" />
         </div>
         <div class="contal" @click.stop="handle_toggle_play">
-          <img :src="current_state !== 'play' ? play : pause" alt="" />
+          <img
+            :style="{
+              color: style.text_color
+            }"
+            :src="current_state !== 'play' ? play : pause"
+            alt=""
+          />
         </div>
       </div>
     </div>
@@ -51,7 +91,6 @@
         class="close"
         :src="down"
         alt="down"
-        @load="handle_load_back"
       />
       <!-- {{ detail.lyric }} -->
 
@@ -65,12 +104,12 @@
             @click="handle_set_seek(detail.lyric_arr_lyric[i])"
             :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
             class="text"
-            :class="{
-              load: detail.lyric_arr_lyric[i].includes(
-                to_time(current_progress)
-              )
+            :style="{
+              color: style.text_color
             }"
-            :style="{}"
+            :class="{
+              load: is_current_lyric(i)
+            }"
           >
             {{ lyric }}
           </li>
@@ -87,14 +126,18 @@ import vue3Slider from "vue3-slider";
 import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
 import { useStore } from "vuex";
+import rgbaster from "rgbaster";
+
 const store = useStore();
 const handle_close_dashboard = () => {
   store.commit("update_dashboard_open", false);
 };
 
-const style = ref(null);
+const style = ref({});
 
-const current_duration = computed(() => store.state.sound.current_duration);
+const current_duration = computed(
+  () => store.state.sound.current_duration || 100
+);
 const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
 const current_id = computed(() => store.state.sound.current_id);
@@ -103,88 +146,33 @@ const progress = computed({
   get: () => current_progress.value || 0,
   set: () => {}
 });
-// const percentage = computed(() => {
-//   let result = 0;
-//   result = Math.floor((current_progress.value / current_duration.value) * 100);
-//   return result;
-// });
-// const emit = defineEmits(["on-open-dashbord"]);
-// const handle_open_dashbord = () => {
-//   emit("on-open-dashbord");
-// };
 
 const handle_load_back = () => {
-  // const Vibrant = require("node-vibrant");
-  // const Color = require("color");
-  // Vibrant.from(detail.value.picUrl, { colorCount: 1 })
-  //   .getPalette()
-  //   .then(palette => {
-  //     const orignColor = Color.rgb(palette.DarkMuted._rgb);
-  //     const color = orignColor
-  //       .darken(0.1)
-  //       .rgb()
-  //       .string();
-  //     const color2 = orignColor
-  //       .lighten(0.28)
-  //       .rotate(-30)
-  //       .rgb()
-  //       .string();
-  //     this.background = `linear-gradient(to top left, ${color}, ${color2})`;
-  //   });
-
   setTimeout(() => {
-    let myImg = document.getElementById("pic");
-    let { r, g, b } = getAverageRGB(myImg);
-    style.value = {
-      background: `linear-gradient(to top left, rgb(${r},${g},${b}), #ff8344)`
-    };
+    rgbaster(
+      detail.value.picUrl, // 图片地址
+      {
+        ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
+        scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
+      }
+    ).then(response => {
+      const [primary, success] = response;
+      style.value = {
+        background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
+        text_color:
+          primary.color
+            .replace(new RegExp(/[rgb()]/g), ",")
+            .split(",")
+            .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
+            .replace(",", "rgb(") + ")"
+      };
+    });
   }, 100);
 };
-const getAverageRGB = imgEl => {
-  var blockSize = 5, // only visit every 5 pixels
-    defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
-    canvas = document.createElement("canvas"),
-    context = canvas.getContext && canvas.getContext("2d"),
-    data,
-    width,
-    height,
-    i = -4,
-    length,
-    rgb = { r: 0, g: 0, b: 0 },
-    count = 0;
 
-  if (!context) {
-    return defaultRGB;
-  }
-
-  height = canvas.height =
-    imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-  width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-
-  context.drawImage(imgEl, 0, 0);
-
-  try {
-    data = context.getImageData(0, 0, width, height);
-  } catch (e) {
-    /* security error, img on diff domain */
-    return defaultRGB;
-  }
-
-  length = data.data.length;
-
-  while ((i += blockSize * 4) < length) {
-    ++count;
-    rgb.r += data.data[i];
-    rgb.g += data.data[i + 1];
-    rgb.b += data.data[i + 2];
-  }
-
-  // ~~ used to floor values
-  rgb.r = ~~(rgb.r / count);
-  rgb.g = ~~(rgb.g / count);
-  rgb.b = ~~(rgb.b / count);
-
-  return rgb;
+const time_to_sec = time => {
+  const [m, s] = time.split(":");
+  return Number(m * 60) + Number(s);
 };
 
 const detail = computed(() => {
@@ -226,6 +214,20 @@ watch(current_progress, () => {
     el && el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 });
+
+const is_current_lyric = index => {
+  let result = false;
+  const lyric = JSON.parse(JSON.stringify(detail.value.lyric));
+  const now = current_progress.value;
+  const time = time_to_sec(Object.keys(lyric)[index]);
+  if (Object.keys(lyric).length > index + 1) {
+    const next_time = time_to_sec(Object.keys(lyric)[index + 1]);
+    if (now <= next_time && now >= time) {
+      result = true;
+    }
+  }
+  return result;
+};
 
 const to_time = value => {
   if (!value) return "";
@@ -347,6 +349,7 @@ const handle_toggle_play = () => {
       padding: 10px;
       border-radius: 10px;
       opacity: 0.7;
+      z-index: 3;
 
       &:hover {
         color: #fff;
@@ -368,7 +371,6 @@ const handle_toggle_play = () => {
         padding: 10px 30px;
         margin: 0 40px 0 0px;
         font-size: 24px;
-        color: var(--lyric-active-default);
         border-radius: 0.75em;
         cursor: pointer;
         opacity: 0.38;
@@ -388,8 +390,8 @@ const handle_toggle_play = () => {
 }
 .load {
   color: var(--color-primary) !important;
-  font-size: 26px;
-  opacity: 1;
+  font-size: 26px !important;
+  opacity: 0.8 !important;
 }
 .link {
   padding: 10px 15px;

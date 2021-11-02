@@ -67,8 +67,7 @@ export default {
     }
   },
   actions: {
-    seek({ commit }, len) {
-      console.log(commit, len);
+    seek(_, len) {
       audio.currentTime = len;
     },
     play({ commit }) {

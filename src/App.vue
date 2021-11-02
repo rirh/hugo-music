@@ -5,7 +5,7 @@
     leave-active-class="animate__animated animate__fadeOutDown"
     enter-active-class="animate__animated animate__fadeInUp"
   >
-    <Dashboard v-if="dashboard_open" />
+    <Dashboard v-show="dashboard_open" />
   </transition>
 </template>
 <script setup>

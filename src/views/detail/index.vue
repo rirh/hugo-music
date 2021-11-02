@@ -86,7 +86,7 @@ import djRadios from "./djRadios.vue";
 import videos from "./videos.vue";
 const route = useRoute();
 const router = useRouter();
-console.log(router)
+console.log(router);
 const response = ref([]);
 onMounted(async () => {
   // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
@@ -94,7 +94,7 @@ onMounted(async () => {
   Promise.all(
     types.map(type =>
       getCloudSearch({
-        ...route.params,
+        keywords: "王晰",
         type
       })
     )
@@ -156,15 +156,11 @@ onMounted(async () => {
   align-items: center;
 }
 main {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
   overflow: auto;
-  padding: 64px 10vw 96px 10vw;
+  padding: 64px 30px 96px 30px;
   box-sizing: border-box;
   background-color: var(--color-primary);
+  width: 100%;
 }
 @media (max-width: 1336px) {
   main {

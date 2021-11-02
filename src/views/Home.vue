@@ -1,15 +1,12 @@
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
-    <div class="container">
-      <div>
-        <img
-          @click="handle_change_theme"
-          class="logo"
-          alt="logo"
-          src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
-        />
-      </div>
-      <!-- <div v-t="{ path: 'message.hello' }"></div> -->
+    <div class="left">
+      <img
+        @click="handle_change_theme"
+        class="logo"
+        alt="logo"
+        src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
+      />
       <div>
         <div class="song-auto-complete-wapper no-drag">
           <input
@@ -55,43 +52,15 @@
             </transition>
           </div>
         </div>
-        <!-- <button @click="handle_change_theme('light')">白色</button>
-        <button @click="handle_change_theme('dark')">黑色</button>
-        <button @click="handle_change_language('en')">en</button>
-        <button @click="handle_change_language('zh')">zh</button> -->
-
-        <!-- <el-select
-          v-model="song"
-          filterable
-          remote
-          class="search-la"
-          ref="select"
-          autofocus
-          reserve-keyword
-          autocomplete
-          popper-append-to-body
-          placeholder=" "
-          :remote-method="fetch_search_song"
-          :loading="loading"
-          @change="handle_select"
-          @keyup.enter="handle_detail"
-        >
-          <el-option-group
-            v-for="group in song_options"
-            :key="group.label"
-            :label="group.label"
-          >
-            <el-option
-              v-for="item in group.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-option-group>
-        </el-select> -->
       </div>
     </div>
+    <div class="right">
+      <Main style="width:100%" />
+    </div>
+    <!-- <div class="container">
+     
+      
+    </div> -->
   </div>
 </template>
 
@@ -102,6 +71,7 @@ import { useStore } from "vuex";
 import { getSearchSuggest } from "@/api";
 import useDebouncedRef from "@/components/useDebouncedRef";
 import Spinner from "@/components/Spinner";
+import Main from "@/views/detail/index.vue";
 // import locale from "../locale";
 const router = useRouter();
 const store = useStore();
@@ -179,8 +149,7 @@ const handle_go_detail = label => {
 
 <style lang="scss" scoped>
 .app-container {
-  display: grid;
-  place-items: center;
+  display: flex;
   height: 100vh;
   width: 100vw;
   box-sizing: border-box;
@@ -189,31 +158,46 @@ const handle_go_detail = label => {
   background-image: url("~@/assets/image/bg.svg"),
     url("~@/assets/image/bg2.svg");
   background-repeat: no-repeat;
-  background-size: 60vh 60vh, 40vh 40vh;
-  background-position: right 120%, left -10%;
+  background-size: 30vh 30vh, 20vh 20vh;
+  background-position: right 113%, right -4%;
   background-attachment: fixed;
   box-shadow: 10px;
   box-sizing: border-box;
+  .left {
+    width: 260px;
+    min-width: 260px;
+    max-height: min-content;
+    height: 100%;
+    background: rgba(60, 60, 67, 0.03);
+    text-align: left;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+  }
+  .right {
+    flex: 1;
+    overflow: auto;
+  }
+
   .container {
     margin-top: -40vh;
   }
   .logo {
-    height: 8vmax;
-    min-height: 55px;
+    height: 50px;
+    min-height: 35px;
     max-height: 80px;
-    width: auto;
     background: transparent;
-    margin-bottom: 40px;
     border-radius: 0;
     filter: var(--img-primary);
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 30px;
+    // aspect-ratio: 1/1;
   }
 
   .search-la {
     padding: 10px;
     font-size: 16px;
-    width: 50vw;
     max-width: 600px;
-    min-width: 300px;
     border-width: 2px;
     font-weight: bold;
     outline: none;
@@ -232,6 +216,7 @@ const handle_go_detail = label => {
     border-right: 2px solid #666;
     border-top: 2px solid #666;
     position: relative;
+    background: #fff;
     .spinner {
       position: absolute;
       right: 0px;

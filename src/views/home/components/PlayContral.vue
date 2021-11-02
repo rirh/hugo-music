@@ -226,16 +226,18 @@ const handle_toggle_play = () => {
       }
     }
     .contal {
-      padding: 10px;
+      padding: 0 10px;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      align-self: flex-end;
-      margin: 10px 25px;
+      align-self: center;
       position: absolute;
       z-index: 1;
-      left: -13px;
-      top: -10px;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: 100%;
+      transform: translate(-50%, -50%);
       img {
         min-height: 40px;
         min-width: 40px;
@@ -251,7 +253,7 @@ const handle_toggle_play = () => {
         color: #fff;
         opacity: 0.8;
       }
-      &:active {
+      img:active {
         transform: scale(0.92);
       }
     }
