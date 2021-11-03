@@ -13,12 +13,10 @@ const props = defineProps({
 
 const { src } = toRefs(props);
 onMounted(() => {
-  console.log(imageRef);
-
   let intersectionObserver = new IntersectionObserver(entries => {
     entries.forEach(item => {
       if (item.intersectionRatio > 0) {
-        url.value = src;
+        url.value = src.value;
         intersectionObserver.unobserve(imageRef.value);
       }
     });
