@@ -11,9 +11,9 @@
     >
       <div class="container" type="flex" align="middle">
         <div class="pic">
-          <img class="img" alt="" :src="detail.picUrl" />
+          <Image class="img" alt="" :src="detail.picUrl" />
           <div class="contal" @click.stop="handle_toggle_play">
-            <img :src="current_state !== 'play' ? play : pause" alt="" />
+            <Image :src="current_state !== 'play' ? play : pause" alt="" />
           </div>
         </div>
         <div class="con">
@@ -49,6 +49,8 @@ import { computed, watch, defineEmits } from "vue";
 import { useStore } from "vuex";
 import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
+import Image from "@/components/Image";
+
 const store = useStore();
 
 const current_duration = computed(() => store.state.sound.current_duration);

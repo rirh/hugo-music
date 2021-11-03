@@ -1,29 +1,24 @@
 <template>
   <div class="wapper">
     <div class="z-music-cover z-music-cover-hover">
-      <img :src="item.picUrl" :alt="item.name" />
+      <Image :src="image" :alt="name" />
     </div>
     <div>
-      <div class="title" :title="item.name">{{ item.name }}</div>
-      <div class="auth" :title="auth">{{ auth }}</div>
+      <div class="title" :title="name">{{ name }}</div>
+      <div class="auth" :title="desc">{{ desc }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed } from "vue";
-const props = defineProps({
-  item: Object
+import { defineProps } from "vue";
+import Image from '@/components/Image'
+defineProps({
+  image: String,
+  name: String,
+  desc: String
 });
-const { item } = toRefs(props);
-const auth = computed(() => {
-  const foo = JSON.parse(JSON.stringify(item.value));
-  let result = "";
-  if (foo.artists) {
-    result = foo.artists.map(e => e.name).toString();
-  }
-  return result;
-});
+
 </script>
 
 <style lang="scss" scoped>

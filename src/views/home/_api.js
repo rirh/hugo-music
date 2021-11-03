@@ -73,4 +73,25 @@ export function getPersonalizedNewsong() {
     method: "get"
   });
 }
-
+// 获取排行榜
+export function getTopList() {
+  return request({
+    url: `/toplist`,
+    method: "get"
+  });
+}
+// 获取精品歌单
+export function getHighQuality() {
+  return request({
+    url: `/top/playlist/highquality`,
+    method: "get"
+  });
+}
+// 获取精品歌单
+export function getPlayListDetail(params) {
+  return request({
+    url: `/playlist/detail`,
+    method: "get",
+    params
+  });
+}

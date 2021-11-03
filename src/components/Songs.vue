@@ -1,29 +1,28 @@
 <template>
   <div class="wapper">
     <div class="song">
-      <img :src="item.al.picUrl" :alt="item.name" />
+      <Image class="image" :src="image" :alt="name" />
+      <Image class="play" :src="play" alt="play" />
     </div>
     <div class="">
-      <div class="title" :title="item.name">{{ item.name }}</div>
-      <div class="auth" :title="auth">{{ auth }}</div>
+      <div class="title" :title="name">{{ name }}</div>
+      <div class="auth" :title="desc">{{ desc }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed } from "vue";
-const props = defineProps({
-  item: Object
+import { defineProps} from "vue";
+import play from "@/assets/image/play.svg";
+import Image from "@/components/Image";
+
+defineProps({
+  image: String,
+  title: String,
+  name: String,
+  desc: String
 });
-const { item } = toRefs(props);
-const auth = computed(() => {
-  const foo = JSON.parse(JSON.stringify(item.value));
-  let result = "";
-  if (foo.ar) {
-    result = foo.ar.map(e => e.name).toString();
-  }
-  return result;
-});
+
 </script>
 
 <style lang="scss" scoped>
@@ -34,12 +33,15 @@ const auth = computed(() => {
   align-items: center;
   // background-color: #fff;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: all 200ms;
   .song {
     text-align: center;
     display: flex;
     align-items: center;
     transition: transform 0.3s;
-    img {
+    position: relative;
+    .image {
       width: 40px;
       border-radius: 0.5em;
       margin-right: 10px;
@@ -65,5 +67,18 @@ const auth = computed(() => {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+}
+.play {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+}
+.wapper:hover .play {
+  opacity: 0.65;
+}
+.wapper:active .play {
+  transform: scale(0.85);
 }
 </style>

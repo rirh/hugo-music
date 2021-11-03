@@ -7,7 +7,7 @@
   >
     <div class="left">
       <div>
-        <img
+        <Image
           class="pic"
           crossorigin="Anonymous"
           alt=""
@@ -72,10 +72,10 @@
       </div>
       <div class="con-contal">
         <div>
-          <img src="" alt="" />
+          <Image src="" alt="" />
         </div>
         <div class="contal" @click.stop="handle_toggle_play">
-          <img
+          <Image
             :style="{
               color: style.text_color
             }"
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="right">
-      <img
+      <Image
         @click.stop="handle_close_dashboard"
         class="close"
         :src="down"
@@ -127,6 +127,7 @@ import play from "@/assets/image/play.svg";
 import pause from "@/assets/image/pause.svg";
 import { useStore } from "vuex";
 import rgbaster from "rgbaster";
+import Image from "@/components/Image";
 
 const store = useStore();
 const handle_close_dashboard = () => {
@@ -350,10 +351,13 @@ const handle_toggle_play = () => {
       border-radius: 10px;
       opacity: 0.7;
       z-index: 3;
-
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.14);
+      transition: all 0.2s;
       &:hover {
         color: #fff;
-        background-color: hsla(0, 0%, 100%, 0.08);
+        background: rgba(255, 255, 255, 0.44);
       }
       &:active {
         transform: scale(0.92);

@@ -9,7 +9,7 @@
         autoplay
         muted
       ></video>
-      <img
+      <Image
         v-else
         class="img"
         @mouseenter="handle_load_video(item)"
@@ -26,6 +26,8 @@
 <script setup>
 import { defineProps, toRefs, ref } from "vue";
 import { getVideoUrl } from "@/api";
+import Image from '@/components/Image'
+
 const props = defineProps({
   item: Object
 });

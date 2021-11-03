@@ -11,10 +11,23 @@
           style="gap: 0px 10px;"
           v-if="it.label === 'songs'"
         >
-          <songs v-for="item in it.values" :key="item.id" :item="item" />
+          <songs
+            v-for="item in it.values"
+            :key="item.id"
+            :image="item?.al?.picUrl"
+            :name="item.name"
+            :desc="artoString(item?.song?.artists, 'name')"
+            @click="handle_play(item.id)"
+          />
         </div>
         <div class="box fr-5" v-if="it.label === 'albums'">
-          <albums v-for="item in it.values" :key="item.id" :item="item" />
+          <albums
+            v-for="item in it.values"
+            :key="item.id"
+            :image="item.picUrl"
+            :name="item.name"
+            :desc="artoString(item.artists, 'name')"
+          />
         </div>
         <div class="box fr-4" v-if="it.label === 'mvs'" style="gap: 36px 24px;">
           <mvs v-for="item in it.values" :key="item.id" :item="item" />
@@ -74,27 +87,28 @@
 
 <script setup>
 import { onMounted, ref, nextTick } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
-import songs from "./songs.vue";
-import albums from "./albums.vue";
-import artists from "./artists.vue";
-import playlists from "./playlists.vue";
-import userprofiles from "./userprofiles.vue";
-import mvs from "./mvs.vue";
-import djRadios from "./djRadios.vue";
-import videos from "./videos.vue";
+import { artoString } from "@/utils";
+import songs from "@/components/Songs.vue";
+import albums from "@/components/Albums.vue";
+import artists from "@/components/Artists.vue";
+import playlists from "@/components/Playlists.vue";
+import userprofiles from "@/components/Userprofiles.vue";
+import mvs from "@/components/Mvs.vue";
+import djRadios from "@/components/DjRadios.vue";
+import videos from "@/components/Videos.vue";
 const route = useRoute();
-const router = useRouter();
-console.log(router);
+// const router = useRouter();
 const response = ref([]);
+
 onMounted(async () => {
   // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
   const types = [1, 10, 100, 1000, 1002, 1004, 1009, 1014];
   Promise.all(
     types.map(type =>
       getCloudSearch({
-        keywords: "王晰",
+        ...route.params,
         type
       })
     )

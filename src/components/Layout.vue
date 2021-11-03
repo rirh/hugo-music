@@ -1,7 +1,7 @@
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
     <div class="left">
-      <img
+      <Image
         @click="handle_change_theme"
         class="logo"
         alt="logo"
@@ -56,6 +56,7 @@
     </div>
     <div class="right">
       <router-view></router-view>
+      <CopyRigth />
     </div>
   </div>
   <PlayCon @on-open-dashbord="handle_open_dashbord" />
@@ -74,7 +75,10 @@ import { useStore } from "vuex";
 import { getSearchSuggest } from "@/api";
 import useDebouncedRef from "@/components/useDebouncedRef";
 import Spinner from "@/components/Spinner";
-import PlayCon from "@/views/home/components/PlayContral.vue";
+import PlayCon from "@/components/PlayContral.vue";
+import Image from "@/components/Image";
+import CopyRigth from "@/components/CopyRigth";
+
 import Dashboard from "@/components/Dashboard.vue";
 document.title = "Z ORG | MUSIC";
 
@@ -170,6 +174,7 @@ const handle_go_detail = label => {
   background-attachment: fixed;
   box-shadow: 10px;
   box-sizing: border-box;
+  z-index: -1;
   .left {
     width: 260px;
     min-width: 260px;
@@ -248,10 +253,14 @@ const handle_go_detail = label => {
         font-weight: bold;
         background-color: var(--color-primary);
         cursor: pointer;
+        transition: all 0.2s;
       }
       .label:hover {
         background-color: var(--color-hover-primary);
         color: var(--color-primary);
+      }
+      .label:active {
+        transform: scale(0.85);
       }
       .title {
         font-size: 14px;
