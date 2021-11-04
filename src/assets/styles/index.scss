@@ -1,6 +1,6 @@
 :root {
-  --animate-duration: 0.8s;
-  --animate-delay: 0.8s;
+  --animate-duration: 0.2s;
+  --animate-delay: 0.2s;
   --animate-repeat: 1;
   --duration-text-wrap: 12s 1.5s cubic-bezier(0.82, 0.82, 1, 1.01);
 }
@@ -79,4 +79,17 @@ body {
   100% {
     transform: translateY(-50%);
   }
+}
+
+.icon-btn {
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.14);
+  transition: all 0.2s;
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.44);
+}
+.icon-btn:active {
+  transform: scale(0.85);
 }

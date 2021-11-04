@@ -13,7 +13,7 @@
     </div>
     <button @click="handle_play" class="play-button">
       <!-- <svg-icon icon-class="play" /> -->
-      <svg-icon class="play" icon-class="play" />
+      <svg-icon class="play" icon-class="next" />
     </button>
   </div>
 </template>

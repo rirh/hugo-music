@@ -18,7 +18,6 @@
             :name="item.name"
             :id="item.id"
             :desc="artoString(item?.song?.artists, 'name')"
-            @click="handle_play(item.id)"
           />
         </div>
         <div class="box fr-5" v-if="it.label === 'albums'">
@@ -110,7 +109,9 @@ onMounted(async () => {
     types.map(type =>
       getCloudSearch({
         ...route.params,
-        type
+        type,
+        limit: 10,
+        offset: 0
       })
     )
   ).then(res => {

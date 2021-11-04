@@ -1,7 +1,12 @@
 <template>
-  <div class="wapper">
-    <div class="song">
-      <Image class="image" :src="image" :alt="name" />
+  <div class="wapper" :class="[current_id === id && 'active']">
+    <div class="song" @click="handle_play(id)">
+      <Image
+        class="image"
+        animate="animate__slideInUp"
+        :src="image"
+        :alt="name"
+      />
       <svg-icon
         class="play"
         :icon-class="current_id === id ? 'pause' : 'play'"
@@ -28,6 +33,9 @@ defineProps({
   desc: String,
   id: Number
 });
+const handle_play = id => {
+  store.dispatch("fetch_song_data", id);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -37,7 +45,6 @@ defineProps({
   padding: 10px 15px;
   align-items: center;
   // background-color: #fff;
-  border-bottom: 1px solid #eee;
   cursor: pointer;
   transition: all 200ms;
   .song {
@@ -50,10 +57,9 @@ defineProps({
 
     .image {
       width: 40px;
-      border-radius: 0.5em;
+      border-radius: 0.3em;
       user-select: none;
       aspect-ratio: 1/1;
-      border: 1px solid rgba(0, 0, 0, 0.04);
     }
   }
   .title {
@@ -79,20 +85,27 @@ defineProps({
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 1em;
-  height: 1em;
+  width: 0.75em;
+  height: 0.75em;
   color: #fff;
   transform: translate(-50%, -50%);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(206, 126, 126, 0.08);
   background: rgba(255, 255, 255, 0.14);
+  padding: 8px;
   border-radius: 50%;
-  padding: 5px;
+}
+.active {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.wapper:hover {
+  background-color: rgba(60, 60, 67, 0.03);
 }
 
 .wapper:hover .play {
   opacity: 0.65;
 }
+
 .wapper:active .play {
   transform: translate(-50%, -50%) scale(0.85);
 }

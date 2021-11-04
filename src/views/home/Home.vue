@@ -24,7 +24,6 @@
           :name="item.name"
           :id="item.id"
           :desc="artoString(item?.song?.artists, 'name')"
-          @click="handle_play(item.id)"
         />
       </div>
     </div>

@@ -1,19 +1,21 @@
 <template>
   <img
     ref="imageRef"
-    :class="url ? 'show animate__animated animate__fadeInUp' : 'hidden'"
-    :src="url"
+    :class="[url ? 'show' : 'hidden', 'animate__animated', animate || '']"
+    :src="resizeImage(url)"
     :alt="alt"
   />
 </template>
 
 <script setup>
 import { defineProps, ref, onMounted, onBeforeUnmount, toRefs } from "vue";
+import { resizeImage } from "@/utils";
 const url = ref("");
 const imageRef = ref("imageRef");
 const props = defineProps({
   src: String,
-  alt: String
+  alt: String,
+  animate: String
 });
 
 const { src } = toRefs(props);

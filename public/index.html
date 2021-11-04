@@ -9,6 +9,28 @@
     <title>
       <%= htmlWebpackPlugin.options.title %>
     </title>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      .spinner-index {
+        height: 100vh;
+        width: 100vw;
+        background-color: #000;
+        color: #fff;
+        font-family: cursive;
+        font-size: 6em;
+        display: grid;
+        place-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        user-select: none;
+        pointer-events: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -19,7 +41,9 @@
         continue.</strong
       >
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <div class="spinner-index">Z ORG</div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

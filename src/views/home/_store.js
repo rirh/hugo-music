@@ -1,4 +1,5 @@
 import { getSongUrl, getSongDetail, getLyric } from "@/api";
+import { artoString } from "@/utils";
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
 let audioContext, audio_context, audio, source, gain, analyser;
@@ -52,6 +53,12 @@ export default {
       let song = state.play_list[payload.id];
       song = { ...song, ...payload };
       state.play_list[payload.id] = song;
+      if (song.is_detail) {
+        const songs = song?.songs[0];
+        const name = songs?.name || "";
+        const auth = artoString(songs.ar, "name");
+        document.title = `${name}-${auth}`;
+      }
     },
     update_current_url(state, payload) {
       state.current_url = payload;

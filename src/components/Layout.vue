@@ -7,6 +7,7 @@
         alt="logo"
         src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
       />
+      <NavHistory />
       <div>
         <div class="song-auto-complete-wapper no-drag">
           <input
@@ -87,6 +88,7 @@ import Spinner from "@/components/Spinner";
 import PlayCon from "@/components/PlayContral.vue";
 import Image from "@/components/Image";
 import CopyRigth from "@/components/CopyRigth";
+import NavHistory from "@/components/NavHistory";
 
 import Dashboard from "@/components/Dashboard.vue";
 document.title = "Z ORG | MUSIC";
@@ -189,10 +191,12 @@ const handle_go_detail = label => {
     min-width: 260px;
     max-height: min-content;
     height: 100%;
+    min-height: 100vh;
     background: rgba(60, 60, 67, 0.03);
     text-align: left;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 15px 20px;
+    position: relative;
   }
   .right {
     flex: 1;
