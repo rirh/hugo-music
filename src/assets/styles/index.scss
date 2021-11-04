@@ -71,3 +71,12 @@ body {
 .link:hover {
   background-color: hsla(0, 0%, 100%, 0.08);
 }
+
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}

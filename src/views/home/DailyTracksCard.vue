@@ -116,12 +116,4 @@ const handle_play = () => emit("on-play");
   }
 }
 
-@keyframes move {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-50%);
-  }
-}
 </style>
