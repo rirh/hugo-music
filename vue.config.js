@@ -1,7 +1,9 @@
 "use strict";
 const path = require("path");
 const port = process.env.port || process.env.npm_config_port || 80; // 端口
-
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档
@@ -47,6 +49,23 @@ module.exports = {
     config.plugins.delete("preload"); // TODO: need test
     config.plugins.delete("prefetch"); // TODO: need test
     config.resolve.symlinks(true); // 修复热更新失效
+    config.module.rules.delete("svg"); //重点:删除默认配置中处理svg,
+    // set svg-sprite-loader
+    config.module
+      .rule("svg")
+      .exclude.add(resolve("src/assets/icons"))
+      .end();
+    config.module
+      .rule("icons")
+      .test(/\.svg$/)
+      .include.add(resolve("src/assets/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]"
+      })
+      .end();
   },
   pwa: {
     name: "Z ORG | MUSIC",

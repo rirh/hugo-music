@@ -32,6 +32,7 @@
         <songs
           :image="item.picUrl"
           :name="item.name"
+          :id="item.id"
           :desc="artoString(item?.song?.artists, 'name')"
           @click="handle_play(item.id)"
         />
@@ -69,6 +70,7 @@ const new_song_list = ref([]);
 const quality_song_list = ref([]);
 const daily = ref([]);
 const fm_daily = ref({});
+
 const RandomNum = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 onMounted(() => {
@@ -106,6 +108,7 @@ const toggle_play_list = async () => {
   const fm_num = RandomNum(1, quality_song_list.value.length - 1);
   const fm_daily_temp = quality_song_list.value[fm_num];
   const song = await fetch_list_detail(fm_daily_temp.id);
+  fm_daily.value = {};
   fm_daily.value = song;
 };
 const fetch_list_detail = async id => {

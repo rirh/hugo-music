@@ -16,6 +16,7 @@
             :key="item.id"
             :image="item?.al?.picUrl"
             :name="item.name"
+            :id="item.id"
             :desc="artoString(item?.song?.artists, 'name')"
             @click="handle_play(item.id)"
           />

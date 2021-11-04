@@ -13,7 +13,10 @@
         <div class="pic">
           <Image class="img" alt="" :src="detail.picUrl" />
           <div class="contal" @click.stop="handle_toggle_play">
-            <Image :src="current_state !== 'play' ? play : pause" alt="" />
+            <svg-icon
+              class="play"
+              :icon-class="current_state !== 'play' ? 'play' : 'pause'"
+            />
           </div>
         </div>
         <div class="con">
@@ -47,8 +50,6 @@
 <script setup>
 import { computed, watch, defineEmits } from "vue";
 import { useStore } from "vuex";
-import play from "@/assets/image/play.svg";
-import pause from "@/assets/image/pause.svg";
 import Image from "@/components/Image";
 
 const store = useStore();
@@ -228,7 +229,6 @@ const handle_toggle_play = () => {
       }
     }
     .contal {
-      padding: 0 10px;
       display: grid;
       place-items: center;
       border-radius: 50%;
@@ -237,9 +237,16 @@ const handle_toggle_play = () => {
       z-index: 1;
       left: 50%;
       top: 50%;
-      height: 100%;
-      width: 100%;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(206, 126, 126, 0.08);
+      border-radius: 50%;
+      padding: 10px;
       transform: translate(-50%, -50%);
+      .play {
+        height: 1vw;
+        width: 1vw;
+        color: #fff;
+      }
       img {
         min-height: 40px;
         min-width: 40px;
@@ -250,14 +257,12 @@ const handle_toggle_play = () => {
         transition: all 0.3s;
         border-radius: 50%;
       }
-      img:hover {
-        background-color: hsla(0, 0%, 100%, 0.15);
-        color: #fff;
-        opacity: 0.8;
-      }
-      img:active {
-        transform: scale(0.92);
-      }
+    }
+    .contal:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .contal:active .play {
+      transform: scale(0.92);
     }
   }
   .pro {

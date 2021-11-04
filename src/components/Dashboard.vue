@@ -75,25 +75,26 @@
           <Image src="" alt="" />
         </div>
         <div class="contal" @click.stop="handle_toggle_play">
-          <Image
+          <svg-icon
+            class="play"
             :style="{
               color: style.text_color
             }"
-            :src="current_state !== 'play' ? play : pause"
-            alt=""
+            :icon-class="current_state !== 'play' ? 'play' : 'pause'"
           />
         </div>
       </div>
     </div>
     <div class="right">
-      <Image
-        @click.stop="handle_close_dashboard"
+      <svg-icon
         class="close"
-        :src="down"
-        alt="down"
+        :style="{
+          color: style.text_color
+        }"
+        icon-class="arrow-down"
+        @click.stop="handle_close_dashboard"
       />
       <!-- {{ detail.lyric }} -->
-
       <ul class="lyric-wapper">
         <template
           v-for="(lyric, i) in Object.values(detail.lyric || {})"
@@ -121,10 +122,7 @@
 
 <script setup>
 import { computed, watch, ref } from "vue";
-import down from "@/assets/image/down.svg";
 import vue3Slider from "vue3-slider";
-import play from "@/assets/image/play.svg";
-import pause from "@/assets/image/pause.svg";
 import { useStore } from "vuex";
 import rgbaster from "rgbaster";
 import Image from "@/components/Image";
@@ -318,18 +316,16 @@ const handle_toggle_play = () => {
       border-radius: 50%;
       align-self: flex-end;
       margin: 10px 25px;
-      img {
+      .play {
         min-height: 40px;
         min-width: 40px;
         height: 2vw;
         width: 2vw;
-        color: #999;
         opacity: 1;
         transition: all 0.3s;
-        border-radius: 50%;
         padding: 5px;
       }
-      img:hover {
+      .play:hover {
         background-color: hsla(0, 0%, 100%, 0.08);
         color: #fff;
         opacity: 0.8;
@@ -346,7 +342,8 @@ const handle_toggle_play = () => {
       position: absolute;
       right: 30px;
       top: 30px;
-      height: 24px;
+      height: 1.5em;
+      width: 1.5em;
       padding: 10px;
       border-radius: 10px;
       opacity: 0.7;

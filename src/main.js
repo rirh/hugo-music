@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import i18n from "./locale";
 import App from "./App.vue";
+import "@/assets/icons"; // global css
 import "animate.css";
 import "@/assets/styles/index.scss"; // global css
 import router from "./router";
@@ -8,12 +9,15 @@ import store from "./store";
 import "./registerServiceWorker";
 import smoothscroll from "smoothscroll-polyfill";
 import confetti from "canvas-confetti";
+import SvgIcon from "@/assets/icons/index"; // svg组件
+
 // kick off the polyfill!
 smoothscroll.polyfill();
 export default createApp(App)
   .use(store)
   .use(router)
   .use(i18n)
+  .use(SvgIcon)
   .mount("#app");
 
 var end = Date.now() + 5 * 1000;

@@ -15,15 +15,27 @@
       </div>
       <div class="controls">
         <div class="buttons">
-          <button class="play-button button-icon " title="不喜欢"></button>
-          <button
-            class="play-button button-icon "
-            @click="handle_play"
-          ></button>
-          <button
-            @click="handle_next"
-            class="play-button button-icon "
-          ></button>
+          <button class="play-button button-icon " title="不喜欢">
+            <svg-icon
+              :style="{ color: style.text_color }"
+              class="svg-icon"
+              icon-class="heart-solid"
+            />
+          </button>
+          <button class="play-button button-icon " @click="handle_play">
+            <svg-icon
+              :style="{ color: style.text_color }"
+              class="svg-icon"
+              icon-class="play"
+            />
+          </button>
+          <button @click="handle_next" class="play-button button-icon ">
+            <svg-icon
+              :style="{ color: style.text_color }"
+              class="svg-icon"
+              icon-class="next"
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -140,13 +152,10 @@ const handle_load_back = () => {
     }
 
     .svg-icon {
-      width: 24px;
-      height: 24px;
+      width: 1.2em;
+      height: 1.2em;
     }
-    .svg-icon#thumbs-down {
-      width: 22px;
-      height: 22px;
-    }
+
     .card-name {
       font-size: 1rem;
       opacity: 0.18;

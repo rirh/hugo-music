@@ -2,7 +2,11 @@
   <div class="wapper">
     <div class="song">
       <Image class="image" :src="image" :alt="name" />
-      <Image class="play" :src="play" alt="play" />
+      <svg-icon
+        class="play"
+        :icon-class="current_id === id ? 'pause' : 'play'"
+        alt=""
+      />
     </div>
     <div class="">
       <div class="title" :title="name">{{ name }}</div>
@@ -12,17 +16,18 @@
 </template>
 
 <script setup>
-import { defineProps} from "vue";
-import play from "@/assets/image/play.svg";
+import { defineProps, computed } from "vue";
 import Image from "@/components/Image";
-
+import { useStore } from "vuex";
+const store = useStore();
+const current_id = computed(() => store.state.sound.current_id);
 defineProps({
   image: String,
   title: String,
   name: String,
-  desc: String
+  desc: String,
+  id: Number
 });
-
 </script>
 
 <style lang="scss" scoped>
@@ -41,10 +46,11 @@ defineProps({
     align-items: center;
     transition: transform 0.3s;
     position: relative;
+    margin-right: 10px;
+
     .image {
       width: 40px;
       border-radius: 0.5em;
-      margin-right: 10px;
       user-select: none;
       aspect-ratio: 1/1;
       border: 1px solid rgba(0, 0, 0, 0.04);
@@ -71,14 +77,23 @@ defineProps({
 .play {
   opacity: 0;
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 40px;
+  left: 50%;
+  top: 50%;
+  width: 1em;
+  height: 1em;
+  color: #fff;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(206, 126, 126, 0.08);
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  padding: 5px;
 }
+
 .wapper:hover .play {
   opacity: 0.65;
 }
 .wapper:active .play {
-  transform: scale(0.85);
+  transform: translate(-50%, -50%) scale(0.85);
 }
 </style>

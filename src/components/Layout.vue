@@ -166,8 +166,8 @@ const handle_go_detail = label => {
   width: 100vw;
   box-sizing: border-box;
   min-width: 400px;
-  background-image: url("~@/assets/image/bg.svg"),
-    url("~@/assets/image/bg2.svg");
+  background-image: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-bc675619-37fc-44a5-a5ef-2ebfafdef02d/8ec3a59d-35f8-44aa-9ba3-166cce564194.svg"),
+    url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-bc675619-37fc-44a5-a5ef-2ebfafdef02d/05d04fac-5900-4adf-9cbe-71d4e7d74e95.svg");
   background-repeat: no-repeat;
   background-size: 30vh 30vh, 20vh 20vh;
   background-position: right 113%, right -4%;
