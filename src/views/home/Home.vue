@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 v-show="daily.coverImgUrl">For You</h1>
+    <h1 v-show="daily.coverImgUrl">浏览</h1>
     <div class="box fr-2">
       <DailyTracksCard
         v-show="daily.coverImgUrl"
@@ -8,25 +8,15 @@
         @on-play="handle_play_daily()"
       />
       <FMDailyTracksCard
-        v-show="fm_daily?.al?.picUrl"
-        :url="fm_daily?.al?.picUrl"
+        v-show="fm_daily.url"
+        :url="fm_daily.url"
         :name="fm_daily.name"
-        :desc="artoString(fm_daily?.ar, 'name')"
+        :desc="fm_daily.desc"
         @on-play="handle_play_fm"
         @on-next="handle_next_fm"
       />
     </div>
-    <h1>Top List</h1>
-    <div class="box fr-5">
-      <div v-for="(item, index) in top_list" :key="index">
-        <albums
-          :image="item.coverImgUrl"
-          :name="item.name"
-          :desc="item.updateFrequency"
-        />
-      </div>
-    </div>
-    <h1>New Songs</h1>
+    <h1>最新推出</h1>
     <div class="song fr-2">
       <div v-for="(item, index) in new_song_list" :key="index">
         <songs
@@ -38,9 +28,25 @@
         />
       </div>
     </div>
+    <h1>排行榜</h1>
+    <div class="box fr-5">
+      <div v-for="(item, index) in top_list" :key="index">
+        <albums
+          :image="item.coverImgUrl"
+          :name="item.name"
+          :desc="item.updateFrequency"
+        />
+      </div>
+    </div>
+
+    <h1>热门歌手</h1>
+    <div class="song fr-5">
+      <div v-for="(item, index) in aritsts_list" :key="index">
+        <artists :image="item.picUrl" :name="item.name" />
+      </div>
+    </div>
   </div>
 </template>
-
 <script setup>
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
@@ -51,13 +57,14 @@ import {
   getTopList,
   getHighQuality,
   getPlayListDetail,
-  getSongDetail
+  getSongDetail,
+  getTopArtists
 } from "@/api";
 import { artoString } from "@/utils";
 
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";
-// import artists from "@/components/Artists.vue";
+import artists from "@/components/Artists.vue";
 // import playlists from "@/components/Playlists.vue";
 // import userprofiles from "@/components/Userprofiles.vue";
 // import mvs from "@/components/Mvs.vue";
@@ -65,31 +72,38 @@ import albums from "@/components/Albums.vue";
 // import videos from "@/components/Videos.vue";
 
 const store = useStore();
+
 const top_list = ref([]);
 const new_song_list = ref([]);
 const quality_song_list = ref([]);
+const aritsts_list = ref([]);
+
 const daily = ref([]);
 const fm_daily = ref({});
 
 const RandomNum = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 onMounted(() => {
-  getTopList().then(response => {
-    const emun = ["热歌榜", "飙升榜", "新歌榜", "原创榜", "云音乐欧美热歌榜"];
-    top_list.value = emun.map(it =>
-      response.list.find(song => song.name === it)
-    );
-  });
-  getPersonalizedNewsong().then(response => {
-    new_song_list.value = response.result;
-  });
-  getHighQuality().then(async response => {
-    const { playlists } = response;
-    quality_song_list.value = playlists;
-    const num = RandomNum(1, playlists.length - 1);
-    daily.value = playlists[num];
-    toggle_play_list();
-  });
+  Promise.all([
+    getTopList(),
+    getPersonalizedNewsong(),
+    getHighQuality(),
+    getTopArtists()
+  ]).then(
+    ([response_hot, response_song, response_quality, response_aritsts]) => {
+      const emun = ["热歌榜", "飙升榜", "新歌榜", "原创榜", "云音乐欧美热歌榜"];
+      top_list.value = emun.map(it =>
+        response_hot.list.find(song => song.name === it)
+      );
+      new_song_list.value = response_song.result;
+      const { playlists } = response_quality;
+      quality_song_list.value = playlists;
+      const num = RandomNum(1, playlists.length - 1);
+      daily.value = playlists[num];
+      toggle_play_list();
+      aritsts_list.value = response_aritsts.artists;
+    }
+  );
 });
 const handle_play_daily = async () => {
   const { playlist } = await getPlayListDetail({ id: daily.value.id });
@@ -108,8 +122,14 @@ const toggle_play_list = async () => {
   const fm_num = RandomNum(1, quality_song_list.value.length - 1);
   const fm_daily_temp = quality_song_list.value[fm_num];
   const song = await fetch_list_detail(fm_daily_temp.id);
-  fm_daily.value = {};
-  fm_daily.value = song;
+  const url = song?.al?.picUrl;
+  const name = song.name;
+  const desc = artoString(song?.ar, "name");
+  fm_daily.value = {
+    url,
+    name,
+    desc
+  };
 };
 const fetch_list_detail = async id => {
   let result = {};
@@ -127,8 +147,10 @@ const handle_play = id => {
 
 <style lang="scss" scoped>
 .container {
-  padding: 20px;
-
+  padding: 2em;
+  h1 {
+    margin-top: 50px;
+  }
   .box {
     display: grid;
     gap: 44px 24px;

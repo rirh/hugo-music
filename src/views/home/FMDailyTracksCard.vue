@@ -91,7 +91,6 @@ const handle_load_back = () => {
   display: flex;
   height: 198px;
   box-sizing: border-box;
-  border: 1px solid rgba($color: #000000, $alpha: 0.1);
 }
 .cover {
   height: 100%;

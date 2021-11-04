@@ -55,7 +55,16 @@
       </div>
     </div>
     <div class="right">
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <transition
+          enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut"
+        >
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
+      </router-view>
       <CopyRigth />
     </div>
   </div>

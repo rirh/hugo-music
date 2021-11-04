@@ -323,11 +323,8 @@ const handle_toggle_play = () => {
         width: 2vw;
         opacity: 1;
         transition: all 0.3s;
-        padding: 5px;
       }
       .play:hover {
-        background-color: hsla(0, 0%, 100%, 0.08);
-        color: #fff;
         opacity: 0.8;
       }
       &:active {
@@ -368,7 +365,6 @@ const handle_toggle_play = () => {
       margin-top: 50px;
       li {
         list-style-type: none;
-        font-weight: bold;
         padding: 10px 30px;
         margin: 0 40px 0 0px;
         font-size: 24px;
@@ -376,6 +372,9 @@ const handle_toggle_play = () => {
         cursor: pointer;
         opacity: 0.38;
         transition: all 0.3s;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+
         &:hover {
           background-color: hsla(0, 0%, 100%, 0.08);
         }

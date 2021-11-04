@@ -1,5 +1,10 @@
 <template>
-  <img ref="imageRef" :class="url ? 'show' : 'hidden'" :src="url" :alt="alt" />
+  <img
+    ref="imageRef"
+    :class="url ? 'show animate__animated animate__fadeInUp' : 'hidden'"
+    :src="url"
+    :alt="alt"
+  />
 </template>
 
 <script setup>

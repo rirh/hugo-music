@@ -95,3 +95,15 @@ export function getPlayListDetail(params) {
     params
   });
 }
+
+// 获取热门歌手
+export function getTopArtists() {
+  return request({
+    url: `/top/artists`,
+    method: "get",
+    params: {
+      offset: 0,
+      limit: 5
+    }
+  });
+}
