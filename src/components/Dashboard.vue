@@ -85,15 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="right">
-      <svg-icon
-        class="close"
-        :style="{
-          color: style.text_color
-        }"
-        icon-class="arrow-down"
-        @click.stop="handle_close_dashboard"
-      />
+    <div class="right" v-if="Object.values(detail.lyric || {}).length">
       <!-- {{ detail.lyric }} -->
       <ul class="lyric-wapper">
         <template
@@ -117,6 +109,14 @@
         </template>
       </ul>
     </div>
+    <svg-icon
+      class="close"
+      :style="{
+        color: style.text_color
+      }"
+      icon-class="arrow-down"
+      @click.stop="handle_close_dashboard"
+    />
   </div>
 </template>
 
@@ -271,7 +271,7 @@ const handle_toggle_play = () => {
   background-color: var(--color-hover-primary);
 
   .left {
-    width: 60vw;
+    flex: 1;
     color: var(--color-primary);
     text-align: left;
     .title {
@@ -333,28 +333,7 @@ const handle_toggle_play = () => {
   .right {
     width: 40vw;
     color: var(--color-primary);
-    .close {
-      position: absolute;
-      right: 30px;
-      top: 30px;
-      height: 1.5em;
-      width: 1.5em;
-      padding: 10px;
-      border-radius: 10px;
-      opacity: 0.7;
-      z-index: 3;
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.14);
-      transition: all 0.2s;
-      &:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.44);
-      }
-      &:active {
-        transform: scale(0.92);
-      }
-    }
+
     .lyric-wapper {
       height: 90vh;
       overflow: auto;
@@ -385,11 +364,33 @@ const handle_toggle_play = () => {
       display: none;
     }
   }
+  .close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    height: 1.5em;
+    width: 1.5em;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0.7;
+    z-index: 3;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.14);
+    transition: all 0.2s;
+    &:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.44);
+    }
+    &:active {
+      transform: scale(0.92);
+    }
+  }
 }
 .load {
   color: var(--color-primary) !important;
   font-size: 26px !important;
-  opacity: 0.8 !important;
+  opacity: 0.98 !important;
 }
 .link {
   padding: 10px 15px;

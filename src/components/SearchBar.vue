@@ -50,6 +50,7 @@
     @click="handle_key_words(key.first)"
     v-for="(key, i) in hot_key_words"
     :key="i"
+    :title="key.first"
   >
     {{ key.first }}
   </div>

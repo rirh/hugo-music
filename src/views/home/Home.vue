@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 v-show="daily.coverImgUrl">浏览</h1>
-    <div class="box fr-2">
+    <div class="recommand box fr-2">
       <DailyTracksCard
         v-show="daily.coverImgUrl"
         :url="daily.coverImgUrl"
@@ -40,7 +40,7 @@
     </div>
 
     <h1>热门歌手</h1>
-    <div class="song fr-5">
+    <div class="song fr-6">
       <div v-for="(item, index) in aritsts_list" :key="index">
         <artists :image="item.picUrl" :name="item.name" />
       </div>
@@ -149,19 +149,26 @@ const handle_play = id => {
 
 <style lang="scss" scoped>
 .container {
-  padding: 2em;
+  padding: 3em;
   h1 {
     margin-top: 50px;
   }
+
   .box {
     display: grid;
     gap: 44px 24px;
+  }
+  .recommand {
+    gap: 50px 40px;
   }
   .fr-2 {
     grid-template-columns: repeat(2, 1fr);
   }
   .fr-5 {
     grid-template-columns: repeat(5, 1fr);
+  }
+  .fr-6 {
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 .song {

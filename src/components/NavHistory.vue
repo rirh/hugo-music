@@ -5,10 +5,12 @@
         title="点击可后退"
         icon-class="arrow-left"
         class="icon"
+        :class="{ disactive: false }"
       ></svg-icon>
     </span>
     <span class="icon-btn" @click="handle_next">
       <svg-icon
+        :class="{ disactive: false }"
         title="点击可前进"
         icon-class="arrow-right"
         class="icon"
@@ -20,11 +22,16 @@
 <script setup>
 import { useRouter } from "vue-router";
 const router = useRouter();
+
 const handle_back = () => {
-  router.go(-1);
+  if (history?.state?.back) {
+    router.go(-1);
+  }
 };
 const handle_next = () => {
-  history.forward();
+  if (history?.state?.forward) {
+    history.forward();
+  }
 };
 </script>
 
@@ -37,6 +44,9 @@ const handle_next = () => {
     height: 1.5em;
     width: 1.5em;
     color: #666;
+  }
+  .disactive {
+    color: #999;
   }
   .icon-btn:first-child {
     margin-right: 10px;
