@@ -111,7 +111,8 @@ export default {
         song = state.play_list[id];
       }
       commit("update_play_list", song);
-      const url = song.url.split("http").join("https");
+      if (!song?.url) return;
+      const url = song?.url?.split("http").join("https");
       audio.src = url;
       audio.onloadedmetadata = async () => {
         dispatch("toggle_play");

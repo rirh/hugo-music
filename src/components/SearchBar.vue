@@ -10,7 +10,7 @@
       autofocus
       @keyup.enter="handle_go_detail()"
     />
-    <Spinner v-if="loading" class="spinner" />
+    <Spinner v-if="loading" class="spinner-er" />
     <div class="auto-complete-wapper">
       <transition
         name="fade"
@@ -153,10 +153,12 @@ const handle_go_detail = label => {
   border-top: 2px solid #666;
   position: relative;
   background: #fff;
-  .spinner {
+  .spinner-er {
     position: absolute;
     right: 0px;
     top: 0px;
+    height: 20px;
+    width: 20px;
   }
   .auto-complete-wapper {
     overflow: auto;

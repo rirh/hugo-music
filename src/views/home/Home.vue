@@ -124,11 +124,13 @@ const toggle_play_list = async () => {
   const song = await fetch_list_detail(fm_daily_temp.id);
   const url = song?.al?.picUrl;
   const name = song.name;
+  const id = song.id;
   const desc = artoString(song?.ar, "name");
   fm_daily.value = {
     url,
     name,
-    desc
+    desc,
+    id
   };
 };
 const fetch_list_detail = async id => {

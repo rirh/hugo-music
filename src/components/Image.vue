@@ -2,7 +2,7 @@
   <img
     ref="imageRef"
     :class="[url ? 'show' : 'hidden', 'animate__animated', animate || '']"
-    :src="resizeImage(url)"
+    :src="url"
     :alt="alt"
   />
 </template>
@@ -10,7 +10,7 @@
 <script setup>
 import { defineProps, ref, onMounted, onBeforeUnmount, toRefs } from "vue";
 import { resizeImage } from "@/utils";
-const url = ref("");
+const url = ref(null);
 const imageRef = ref("imageRef");
 const props = defineProps({
   src: String,
@@ -24,7 +24,7 @@ onMounted(() => {
   intersectionObserver = new IntersectionObserver(entries => {
     entries.forEach(item => {
       if (item.intersectionRatio > 0) {
-        url.value = src.value;
+        url.value = resizeImage(src.value);
       }
     });
   });

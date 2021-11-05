@@ -147,26 +147,24 @@ const progress = computed({
 });
 
 const handle_load_back = () => {
-  setTimeout(() => {
-    rgbaster(
-      detail.value.picUrl, // 图片地址
-      {
-        ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
-        scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
-      }
-    ).then(response => {
-      const [primary, success] = response;
-      style.value = {
-        background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
-        text_color:
-          primary.color
-            .replace(new RegExp(/[rgb()]/g), ",")
-            .split(",")
-            .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
-            .replace(",", "rgb(") + ")"
-      };
-    });
-  }, 100);
+  rgbaster(
+    detail.value.picUrl, // 图片地址
+    {
+      ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
+      scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
+    }
+  ).then(response => {
+    const [primary, success] = response;
+    style.value = {
+      background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
+      text_color:
+        primary.color
+          .replace(new RegExp(/[rgb()]/g), ",")
+          .split(",")
+          .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
+          .replace(",", "rgb(") + ")"
+    };
+  });
 };
 
 const time_to_sec = time => {

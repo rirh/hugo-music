@@ -31,6 +31,7 @@ defineProps({
 .wapper {
   display: block;
   position: relative;
+  cursor: pointer;
   .play-con {
     position: absolute;
     right: 5%;
@@ -55,6 +56,7 @@ defineProps({
     opacity: 0.58;
     color: #000;
     font-size: 12px;
+
     .icon {
       margin-right: 3px;
       height: 8px;

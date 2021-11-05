@@ -5,7 +5,9 @@
     :style="{ background: style.background }"
     data-theme="dark"
   >
-    <Image class="cover" :src="url" @load="handle_load_back" />
+    <div class="cover">
+      <Image class="cover" v-show="src" :src="src" @load="handle_load_back" />
+    </div>
     <div class="right-part">
       <div class="info">
         <div class="title" :style="{ color: style.text_color }">{{ name }}</div>
@@ -15,15 +17,27 @@
       </div>
       <div class="controls">
         <div class="buttons">
-          <button class="play-button button-icon " @click="handle_play">
+          <button
+            :style="{ 'border-color': style.text_color }"
+            class="play-button button-icon "
+            @click="handle_play"
+          >
+            <Spinner :color="style.text_color" v-if="loading_play" />
             <svg-icon
+              v-else
               :style="{ color: style.text_color }"
               class="svg-icon"
               icon-class="play"
             />
           </button>
-          <button @click="handle_next" class="play-button button-icon ">
+          <button
+            :style="{ 'border-color': style.text_color }"
+            @click="handle_next"
+            class="play-button button-icon "
+          >
+            <Spinner :color="style.text_color" v-if="loading_next" />
             <svg-icon
+              v-else
               :style="{ color: style.text_color }"
               class="svg-icon"
               icon-class="next"
@@ -36,24 +50,56 @@
 </template>
 
 <script setup>
-import { defineProps, ref, toRefs, defineEmits } from "vue";
+import {
+  defineProps,
+  ref,
+  toRefs,
+  defineEmits,
+  computed,
+  watch,
+  nextTick
+} from "vue";
+import { useStore } from "vuex";
 import rgbaster from "rgbaster";
 import Image from "@/components/Image";
+import Spinner from "@/components/Spinner";
+const store = useStore();
+const src = ref("");
 const style = ref({
   background: "#fff"
 });
 const loading = ref(false);
+const loading_play = ref(false);
+const loading_next = ref(false);
+const current_state = computed(() => store.state.sound.current_state);
+
 const props = defineProps({
   url: String,
   name: String,
   desc: String
 });
 const { url } = toRefs(props);
+watch(current_state, state => {
+  if (state !== "play") {
+    loading_play.value = false;
+    loading_next.value = false;
+  }
+});
+watch(url, state => {
+  src.value = state;
+});
+
 const emit = defineEmits(["on-play", "on-next"]);
-const handle_next = () => emit("on-next");
-const handle_play = () => emit("on-play");
+const handle_next = () => {
+  loading_next.value = true;
+  src.value = "";
+  emit("on-next");
+};
+const handle_play = () => {
+  loading_play.value = true;
+  emit("on-play");
+};
 const handle_load_back = () => {
-  // setTimeout(() => {
   rgbaster(
     url.value, // 图片地址
     {
@@ -71,9 +117,10 @@ const handle_load_back = () => {
           .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
           .replace(",", "rgb(") + ")"
     };
-    loading.value = true;
+    nextTick(() => {
+      loading.value = true;
+    });
   });
-  // }, 100);
 };
 </script>
 
@@ -92,6 +139,9 @@ const handle_load_back = () => {
   margin-right: 1.2rem;
   cursor: pointer;
   user-select: none;
+  min-height: 100%;
+  min-width: 166px;
+  width: auto;
 }
 .right-part {
   display: flex;
@@ -135,6 +185,9 @@ const handle_load_back = () => {
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 40px;
+      width: 40px;
+      opacity: 0.65;
       &:hover {
         background: rgba(255, 255, 255, 0.44);
       }

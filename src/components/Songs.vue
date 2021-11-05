@@ -99,7 +99,7 @@ const handle_play = id => {
 }
 
 .wapper:hover {
-  background-color: rgba(60, 60, 67, 0.03);
+  background-color: rgba(60, 60, 67, 0.1);
 }
 
 .wapper:hover .play {

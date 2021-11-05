@@ -19,8 +19,8 @@ defineProps({
 <style lang="scss" scoped>
 .spinner {
   position: relative;
-  width: 25px;
-  height: 25px;
+  width: 80%;
+  height: 80%;
   display: inline-block;
   padding: 10px;
   border-radius: 10px;
