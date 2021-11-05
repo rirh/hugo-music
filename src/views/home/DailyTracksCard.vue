@@ -12,21 +12,34 @@
       </div>
     </div>
     <button @click="handle_play" class="play-button">
-      <!-- <svg-icon icon-class="play" /> -->
-      <svg-icon class="play" icon-class="next" />
+      <Spinner color="#fff" v-if="loading" />
+      <svg-icon v-else class="play" icon-class="next" />
     </button>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, ref, computed, watch } from "vue";
+import { useStore } from "vuex";
 import Image from "@/components/Image";
+import Spinner from "@/components/Spinner";
 
 defineProps({
   url: String
 });
+const store = useStore();
+const loading = ref(false);
+const current_state = computed(() => store.state.sound.current_state);
+watch(current_state, state => {
+  if (state !== "play") {
+    loading.value = false;
+  }
+});
 const emit = defineEmits(["on-play"]);
-const handle_play = () => emit("on-play");
+const handle_play = () => {
+  loading.value = true;
+  emit("on-play");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -115,5 +128,4 @@ const handle_play = () => emit("on-play");
     transform: scale(0.94);
   }
 }
-
 </style>

@@ -107,3 +107,11 @@ export function getTopArtists() {
     }
   });
 }
+// 获取建议搜索
+export function getSearchHot(params) {
+  return request({
+    url: `/search/hot`,
+    method: "get",
+    params
+  });
+}

@@ -22,5 +22,6 @@
   opacity: 0.5;
   padding-left: 20px;
   padding-top: calc(9vw - 45px);
+  box-sizing: border-box;
 }
 </style>

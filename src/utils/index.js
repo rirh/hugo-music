@@ -13,3 +13,17 @@ export const resizeImage = (imgUrl, size = 512) => {
   }
   return `${httpsImgUrl}?param=${size}y${size}`;
 };
+
+export const formatCount = count => {
+  if (!count) return "";
+  if (count > 100000000) {
+    return `${Math.floor((count / 100000000) * 100) / 100}亿`; // 2.32 亿
+  }
+  if (count > 100000) {
+    return `${Math.floor((count / 10000) * 10) / 10}万`; // 232.1 万
+  }
+  if (count > 10000) {
+    return `${Math.floor((count / 10000) * 100) / 100}万`; // 2.3 万
+  }
+  return count;
+};

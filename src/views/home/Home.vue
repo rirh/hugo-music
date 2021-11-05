@@ -34,6 +34,7 @@
           :image="item.coverImgUrl"
           :name="item.name"
           :desc="item.updateFrequency"
+          :count="formatCount(item.playCount)"
         />
       </div>
     </div>
@@ -59,7 +60,7 @@ import {
   getSongDetail,
   getTopArtists
 } from "@/api";
-import { artoString } from "@/utils";
+import { artoString, formatCount } from "@/utils";
 
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";

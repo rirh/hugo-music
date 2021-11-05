@@ -4,6 +4,9 @@
       <Image :src="image" animate="animate__slideInUp" :alt="name" />
     </div>
     <div>
+      <div v-if="count" class="count" :title="count">
+        <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
+      </div>
       <div class="title" :title="name">{{ name }}</div>
       <div class="auth" :title="desc">{{ desc }}</div>
     </div>
@@ -19,7 +22,8 @@ import Image from "@/components/Image";
 defineProps({
   image: String,
   name: String,
-  desc: String
+  desc: String,
+  count: String
 });
 </script>
 
@@ -29,8 +33,8 @@ defineProps({
   position: relative;
   .play-con {
     position: absolute;
-    right: 10px;
-    bottom: 55px;
+    right: 5%;
+    top: 58%;
     border-radius: 50%;
     height: 40px;
     width: 40px;
@@ -41,7 +45,20 @@ defineProps({
       width: 1.2em;
       color: #fff;
       padding-left: 2px;
-      opacity: .6;
+      opacity: 0.6;
+    }
+  }
+  .count {
+    line-height: 18px;
+    word-break: break-word;
+    font-weight: 600;
+    opacity: 0.58;
+    color: #000;
+    font-size: 12px;
+    .icon {
+      margin-right: 3px;
+      height: 8px;
+      width: 8px;
     }
   }
   .title {

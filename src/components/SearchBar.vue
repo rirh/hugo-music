@@ -1,0 +1,223 @@
+<template>
+  <div class="song-auto-complete-wapper no-drag">
+    <input
+      @focus="show_options = true"
+      @blur="handle_blur"
+      class="search-la"
+      type="text"
+      v-model="query"
+      ref="searchRef"
+      autofocus
+      @keyup.enter="handle_go_detail()"
+    />
+    <Spinner v-if="loading" class="spinner" />
+    <div class="auto-complete-wapper">
+      <transition
+        name="fade"
+        enter-active-class="animate__animated animate__fadeInDown"
+      >
+        <div v-if="show_options">
+          <div
+            v-for="group in song_options"
+            v-show="group.label === 'songs'"
+            :key="group.label"
+            :label="group.label"
+          >
+            <div class="title item">
+              <span>{{ group.label }}</span
+              ><span @click="handle_go_detail(group.label)" class="more"
+                >更多</span
+              >
+            </div>
+            <div
+              v-for="item in group.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              class="label item"
+              @click="handle_select(item.value)"
+            >
+              {{ item.label }}
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
+  <br />
+  <div
+    class="hot-words"
+    @click="handle_key_words(key.first)"
+    v-for="(key, i) in hot_key_words"
+    :key="i"
+  >
+    {{ key.first }}
+  </div>
+</template>
+
+<script setup>
+import { ref, watch, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { getSearchSuggest, getSearchHot } from "@/api";
+import useDebouncedRef from "@/components/useDebouncedRef";
+import Spinner from "@/components/Spinner";
+
+const router = useRouter();
+const store = useStore();
+
+const query = useDebouncedRef("", 400);
+
+watch(query, q => {
+  // 发起API请求
+  fetch_search_song(q);
+});
+const song_options = ref([]);
+const loading = ref(false);
+const show_options = ref(false);
+const hot_key_words = ref([]);
+const searchRef = ref();
+onMounted(() => {
+  getSearchHot().then(response => {
+    hot_key_words.value = response.result.hots;
+  });
+});
+
+const handle_key_words = keywords => {
+  query.value = keywords;
+  show_options.value = true;
+};
+const handle_blur = () => {
+  setTimeout(() => {
+    show_options.value = false;
+  }, 200);
+};
+const fetch_search_song = async e => {
+  loading.value = true;
+  const keywords = e;
+  const { result, code } = await getSearchSuggest({ keywords });
+  loading.value = false;
+  if (code !== 200) return;
+  if (!result.order) return;
+  song_options.value = result?.order.map(e => {
+    let options = result[e];
+    options = options.map(it => ({
+      ...it,
+      value: it.id,
+      label: `${it.name}${(it.artists &&
+        "-" + it.artists.map(artist => artist.name).join("/")) ||
+        ""}`
+    }));
+    return {
+      value: e,
+      label: e,
+      options
+    };
+  });
+  show_options.value = true;
+  searchRef.value?.focus();
+};
+// const handle_detail = () => {
+//   router.push(`/detail/${select.value.query}`);
+// };
+const handle_select = async id => {
+  store.dispatch("fetch_song_data", id);
+};
+const handle_go_detail = label => {
+  if (label) label = `?type=${label}`;
+  router.push(`/detail/${query.value || ""}${label || ""}`);
+};
+</script>
+
+<style lang="scss" scoped>
+.search-la {
+  padding: 10px;
+  font-size: 16px;
+  max-width: 600px;
+  border-width: 2px;
+  font-weight: bold;
+  outline: none;
+  height: 40px;
+  border: none;
+  box-sizing: border-box;
+  max-width: 500px;
+}
+.search-la:focus .song-auto-complete-wapper {
+  border: 2px solid var(--color-primary);
+  border-radius: 5px;
+}
+.song-auto-complete-wapper {
+  max-height: 45vh;
+  border-left: 2px solid #666;
+  border-right: 2px solid #666;
+  border-top: 2px solid #666;
+  position: relative;
+  background: #fff;
+  .spinner {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .auto-complete-wapper {
+    overflow: auto;
+    max-height: calc(45vh - 45px);
+    border-top: 1px solid #eee;
+    position: absolute;
+    /* bottom: 0; */
+    left: -2px;
+    width: 100%;
+    top: 100%;
+    z-index: 1;
+    border-left: 2px solid #666;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    top: calc(100% - 2px);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    .item {
+      padding: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: var(--color-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .label:hover {
+      background-color: var(--color-hover-primary);
+      color: var(--color-primary);
+    }
+    .label:active {
+      transform: scale(0.85);
+    }
+    .title {
+      font-size: 14px;
+      background-color: var(--color-primary);
+      font-weight: normal;
+      cursor: unset;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .more {
+        font-weight: bold;
+      }
+      .more:hover {
+        font-weight: bold;
+        color: var(--color-hover-primary);
+        cursor: pointer;
+      }
+    }
+  }
+}
+.hot-words {
+  font-size: 14px;
+  color: #666;
+  opacity: 0.75;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+.hot-words:hover {
+  opacity: 0.9;
+  text-decoration: underline;
+}
+</style>

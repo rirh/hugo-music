@@ -15,13 +15,6 @@
       </div>
       <div class="controls">
         <div class="buttons">
-          <button class="play-button button-icon " title="不喜欢">
-            <svg-icon
-              :style="{ color: style.text_color }"
-              class="svg-icon"
-              icon-class="heart-solid"
-            />
-          </button>
           <button class="play-button button-icon " @click="handle_play">
             <svg-icon
               :style="{ color: style.text_color }"

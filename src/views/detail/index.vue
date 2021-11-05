@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, nextTick } from "vue";
+import { onMounted, ref, nextTick, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
 import { artoString } from "@/utils";
@@ -103,6 +103,13 @@ const route = useRoute();
 const response = ref([]);
 
 onMounted(async () => {
+  init();
+});
+watch(route, () => {
+  console.log(route.params.keywords);
+  init();
+});
+const init = () => {
   // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
   const types = [1, 10, 100, 1000, 1002, 1004, 1009, 1014];
   Promise.all(
@@ -115,8 +122,6 @@ onMounted(async () => {
       })
     )
   ).then(res => {
-    console.log(res);
-
     response.value = res.map(({ result, code }) => {
       if (code !== 200) result = {};
       else {
@@ -146,7 +151,7 @@ onMounted(async () => {
       }
     });
   });
-});
+};
 </script>
 
 <style lang="scss" scoped>

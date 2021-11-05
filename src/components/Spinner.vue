@@ -1,21 +1,20 @@
 <template>
   <div class="spinner">
-    <div class="bar1"></div>
-    <div class="bar2"></div>
-    <div class="bar3"></div>
-    <div class="bar4"></div>
-    <div class="bar5"></div>
-    <div class="bar6"></div>
-    <div class="bar7"></div>
-    <div class="bar8"></div>
-    <div class="bar9"></div>
-    <div class="bar10"></div>
-    <div class="bar11"></div>
-    <div class="bar12"></div>
+    <div
+      v-for="(it, i) in Array(12).fill('ooxx')"
+      :key="i"
+      :style="{ background: color }"
+      :class="`bar${i + 1}`"
+    ></div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps } from "vue";
+defineProps({
+  color: String
+});
+</script>
 
 <style lang="scss" scoped>
 .spinner {
@@ -33,7 +32,7 @@
   background: #666;
   position: absolute;
   left: 49%;
-  top: 43%;
+  top: 40%;
   opacity: 0;
   border-radius: 50px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
