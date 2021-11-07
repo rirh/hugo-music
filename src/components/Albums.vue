@@ -7,8 +7,8 @@
       <div v-if="count" class="count" :title="count">
         <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
       </div>
-      <div class="title" :title="name">{{ name }}</div>
-      <div class="auth" :title="desc">{{ desc }}</div>
+      <div v-if="name" class="title" :title="name">{{ name }}</div>
+      <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
     </div>
     <span class="play-con icon-btn">
       <svg-icon class="play" icon-class="arrow-right"></svg-icon>

@@ -1,5 +1,6 @@
 <template>
   <main>
+    <h1>"{{ route.params.keywords }}"搜索结果</h1>
     <div v-for="(it, i) in response" :key="i">
       <div>
         <div class="title">
@@ -18,6 +19,18 @@
             :name="item.name"
             :id="item.id"
             :desc="artoString(item?.song?.artists, 'name')"
+          />
+        </div>
+        <div
+          class="box fr-5"
+          v-if="it.label === 'artists'"
+          style="gap: 36px 24px;"
+        >
+          <artists
+            v-for="item in it.values"
+            :key="item.id"
+            :image="item.picUrl"
+            :name="item.name"
           />
         </div>
         <div class="box fr-5" v-if="it.label === 'albums'">
@@ -39,26 +52,30 @@
         >
           <videos v-for="item in it.values" :key="item.id" :item="item" />
         </div>
-        <div
-          class="box fr-4"
-          v-if="it.label === 'artists'"
-          style="gap: 36px 24px;"
-        >
-          <artists v-for="item in it.values" :key="item.id" :item="item" />
-        </div>
+
         <div
           class="box fr-4"
           v-if="it.label === 'playlists'"
           style="gap: 36px 24px;"
         >
-          <playlists v-for="item in it.values" :key="item.id" :item="item" />
+          <playlists
+            v-for="item in it.values"
+            :key="item.id"
+            :image="item.coverImgUrl"
+            :name="item.name"
+          />
         </div>
         <div
           class="box fr-4"
           v-if="it.label === 'userprofiles'"
           style="gap: 36px 24px;"
         >
-          <userprofiles v-for="item in it.values" :key="item.id" :item="item" />
+          <userprofiles
+            v-for="item in it.values"
+            :key="item.id"
+            :image="item?.avatarDetail?.identityIconUrl"
+            :name="item.nickname"
+          />
         </div>
         <div
           class="box fr-4"
@@ -106,7 +123,6 @@ onMounted(async () => {
   init();
 });
 watch(route, () => {
-  console.log(route.params.keywords);
   init();
 });
 const init = () => {
@@ -175,6 +191,10 @@ const init = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  span {
+    color: #999;
+    font-size: 14px;
+  }
 }
 main {
   overflow: auto;
