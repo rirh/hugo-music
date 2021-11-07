@@ -35,6 +35,7 @@
           :name="item.name"
           :desc="item.updateFrequency"
           :count="formatCount(item.playCount)"
+          :id="item.id"
         />
       </div>
     </div>

@@ -1,19 +1,21 @@
 <template>
-  <div class="wapper">
-    <div class="z-music-cover z-music-cover-hover">
-      <Image :src="image" animate="animate__slideInUp" :alt="name" />
-    </div>
-    <div>
-      <div v-if="count" class="count" :title="count">
-        <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
+  <router-link :to="`/albums/${id}`">
+    <div class="wapper">
+      <div class="z-music-cover z-music-cover-hover">
+        <Image :src="image" animate="animate__slideInUp" :alt="name" />
       </div>
-      <div v-if="name" class="title" :title="name">{{ name }}</div>
-      <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
+      <div>
+        <div v-if="count" class="count" :title="count">
+          <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
+        </div>
+        <div v-if="name" class="title" :title="name">{{ name }}</div>
+        <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
+      </div>
+      <span class="play-con icon-btn">
+        <svg-icon class="play" icon-class="arrow-right"></svg-icon>
+      </span>
     </div>
-    <span class="play-con icon-btn">
-      <svg-icon class="play" icon-class="arrow-right"></svg-icon>
-    </span>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -23,7 +25,8 @@ defineProps({
   image: String,
   name: String,
   desc: String,
-  count: String
+  count: String,
+  id: Number
 });
 </script>
 
@@ -34,11 +37,12 @@ defineProps({
   cursor: pointer;
   .play-con {
     position: absolute;
-    right: 5%;
-    top: 58%;
+    left: 50%;
+    top: 50%;
     border-radius: 50%;
-    height: 40px;
-    width: 40px;
+    transform: translate(220%, 90%);
+    height: 20px;
+    width: 20px;
     display: grid;
     place-items: center;
     .play {
