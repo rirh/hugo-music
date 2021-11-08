@@ -1,5 +1,5 @@
 <template>
-  <router-link class="link" :to="`/albums/${id}`">
+  <Link :to="`/albums/${id}`">
     <div class="wapper">
       <div class="z-music-cover z-music-cover-hover">
         <Image :src="image" animate="animate__slideInUp" :alt="name" />
@@ -15,12 +15,14 @@
         <svg-icon class="play" icon-class="arrow-right"></svg-icon>
       </span>
     </div>
-  </router-link>
+  </Link>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
 import Image from "@/components/Image";
+import Link from "@/components/Link";
+
 defineProps({
   image: String,
   name: String,
@@ -84,12 +86,5 @@ defineProps({
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-}
-.link,
-.link:link,
-.link:hover,
-.link:active {
-  text-decoration: none;
-  color: inherit;
 }
 </style>

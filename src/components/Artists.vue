@@ -1,20 +1,28 @@
 <template>
-  <div class="wapper">
-    <div class="z-music-cover z-music-cover-hover">
-      <Image class="artists" :src="image" :alt="name" />
+  <Link :to="`/${path}/${id}`">
+    <div class="wapper">
+      <div class="z-music-cover z-music-cover-hover">
+        <Image class="artists" :src="image" :alt="name" />
+      </div>
+      <div>
+        <div class="title" :title="name">{{ name }}</div>
+      </div>
     </div>
-    <div>
-      <div class="title" :title="name">{{ name }}</div>
-    </div>
-  </div>
+  </Link>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
 import Image from "@/components/Image";
+import Link from "@/components/Link";
 defineProps({
   image: String,
-  name: String
+  name: String,
+  path: {
+    type: String,
+    default: () => "artists"
+  },
+  id: Number
 });
 </script>
 

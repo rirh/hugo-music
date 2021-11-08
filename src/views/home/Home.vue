@@ -18,32 +18,32 @@
     </div>
     <h1>最新推出</h1>
     <div class="song fr-2">
-      <div v-for="(item, index) in new_song_list" :key="index">
+      <div v-for="(it, index) in new_song_list" :key="index">
         <songs
-          :image="item.picUrl"
-          :name="item.name"
-          :id="item.id"
-          :desc="artoString(item?.song?.artists, 'name')"
+          :image="it.picUrl"
+          :name="it.name"
+          :id="it.id"
+          :desc="artoString(it?.song?.artists, 'name')"
         />
       </div>
     </div>
     <h1>排行榜</h1>
     <div class="box fr-5">
-      <div v-for="(item, index) in top_list" :key="index">
+      <div v-for="(it, index) in top_list" :key="index">
         <albums
-          :image="item.coverImgUrl"
-          :name="item.name"
-          :desc="item.updateFrequency"
-          :count="formatCount(item.playCount)"
-          :id="item.id"
+          :image="it.coverImgUrl"
+          :name="it.name"
+          :desc="it.updateFrequency"
+          :count="formatCount(it.playCount)"
+          :id="it.id"
         />
       </div>
     </div>
 
     <h1>热门歌手</h1>
     <div class="song fr-6">
-      <div v-for="(item, index) in aritsts_list" :key="index">
-        <artists :image="item.picUrl" :name="item.name" />
+      <div v-for="(it, index) in aritsts_list" :key="index">
+        <artists :image="it.picUrl" :name="it.name" :id="it.id" />
       </div>
     </div>
   </div>
@@ -102,7 +102,8 @@ onMounted(() => {
       const num = RandomNum(1, playlists.length - 1);
       daily.value = playlists[num];
       toggle_play_list();
-      aritsts_list.value = response_aritsts.artists;
+      const start = RandomNum(6, response_aritsts.artists.length - 7);
+      aritsts_list.value = response_aritsts.artists.slice(start, start + 6);
     }
   );
 });

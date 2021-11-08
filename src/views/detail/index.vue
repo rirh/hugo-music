@@ -1,11 +1,8 @@
 <template>
   <main>
     <h1>"{{ route.params.keywords }}"搜索结果</h1>
-   <div>
-     
-   </div>
+    <div></div>
     <div v-for="(it, i) in response" :key="i">
-
       <div>
         <div class="title">
           <h1 :id="it.label">{{ it.label || "" }}</h1>
@@ -17,12 +14,12 @@
           v-if="it.label === 'songs'"
         >
           <songs
-            v-for="item in it.values"
-            :key="item.id"
-            :image="item?.al?.picUrl"
-            :name="item.name"
-            :id="item.id"
-            :desc="artoString(item?.song?.artists, 'name')"
+            v-for="it in it.values"
+            :key="it.id"
+            :image="it?.al?.picUrl"
+            :name="it.name"
+            :id="it.id"
+            :desc="artoString(it?.song?.artists, 'name')"
           />
         </div>
         <div
@@ -31,31 +28,32 @@
           style="gap: 36px 24px;"
         >
           <artists
-            v-for="item in it.values"
-            :key="item.id"
-            :image="item.picUrl"
-            :name="item.name"
+            v-for="it in it.values"
+            :key="it.id"
+            :image="it.picUrl"
+            :name="it.name"
+            :id="it.id"
           />
         </div>
         <div class="box fr-5" v-if="it.label === 'albums'">
           <albums
-            v-for="item in it.values"
-            :key="item.id"
-            :image="item.picUrl"
-            :name="item.name"
-            :desc="artoString(item.artists, 'name')"
-            :id="item.id"
+            v-for="it in it.values"
+            :key="it.id"
+            :image="it.picUrl"
+            :name="it.name"
+            :desc="artoString(it.artists, 'name')"
+            :id="it.id"
           />
         </div>
         <div class="box fr-4" v-if="it.label === 'mvs'" style="gap: 36px 24px;">
-          <mvs v-for="item in it.values" :key="item.id" :item="item" />
+          <mvs v-for="it in it.values" :key="it.id" :item="it" />
         </div>
         <div
           class="box fr-4"
           v-if="it.label === 'videos'"
           style="gap: 36px 24px;"
         >
-          <videos v-for="item in it.values" :key="item.id" :item="item" />
+          <videos v-for="it in it.values" :key="it.id" :item="it" />
         </div>
 
         <div
@@ -64,22 +62,24 @@
           style="gap: 36px 24px;"
         >
           <playlists
-            v-for="item in it.values"
-            :key="item.id"
-            :image="item.coverImgUrl || ''"
-            :name="item.name"
+            v-for="it in it.values"
+            :key="it.id"
+            :image="it.coverImgUrl || ''"
+            :name="it.name"
+            :id="it.id"
           />
         </div>
         <div
-          class="box fr-4"
+          class="box fr-5"
           v-if="it.label === 'userprofiles'"
           style="gap: 36px 24px;"
         >
           <userprofiles
-            v-for="item in it.values"
-            :key="item.id"
-            :image="item?.avatarDetail?.identityIconUrl"
-            :name="item.nickname"
+            v-for="it in it.values"
+            :key="it.id"
+            :image="it?.avatarUrl"
+            :name="it.nickname"
+            :id="it.id"
           />
         </div>
         <div
@@ -87,20 +87,20 @@
           v-if="it.label === 'djRadios'"
           style="gap: 36px 24px;"
         >
-          <djRadios v-for="item in it.values" :key="item.id" :item="item" />
+          <djRadios v-for="it in it.values" :key="it.id" :it="it" />
         </div>
       </div>
       <!-- <h1 :id="it.label">{{ it.label || "" }}</h1>
       <div class="box">
-        <template v-for="item in it.values" :key="item.id">
-          <songs v-if="it.label === 'songs'" :item="item" />
-          <albums v-else-if="it.label === 'albums'" :item="item" />
-          <artists v-else-if="it.label === 'artists'" :item="item" />
-          <playlists v-else-if="it.label === 'playlists'" :item="item" />
-          <userprofiles v-else-if="it.label === 'userprofiles'" :item="item" />
-          <mvs v-else-if="it.label === 'mvs'" :item="item" />
-          <djRadios v-else-if="it.label === 'djRadios'" :item="item" />
-          <videos v-else-if="it.label === 'videos'" :item="item" />
+        <template v-for="it in it.values" :key="it.id">
+          <songs v-if="it.label === 'songs'" :it="it" />
+          <albums v-else-if="it.label === 'albums'" :it="it" />
+          <artists v-else-if="it.label === 'artists'" :it="it" />
+          <playlists v-else-if="it.label === 'playlists'" :it="it" />
+          <userprofiles v-else-if="it.label === 'userprofiles'" :it="it" />
+          <mvs v-else-if="it.label === 'mvs'" :it="it" />
+          <djRadios v-else-if="it.label === 'djRadios'" :it="it" />
+          <videos v-else-if="it.label === 'videos'" :it="it" />
         </template>
       </div> -->
     </div>

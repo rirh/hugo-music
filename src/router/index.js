@@ -22,10 +22,17 @@ const routes = [
       {
         path: "/albums/:id",
         name: "albums",
-
         component: () =>
           import(
             /* webpackChunkName: "albumsdetail" */ "@/views/detail/albumsdetail.vue"
+          )
+      },
+      {
+        path: "/artists/:id",
+        name: "artists",
+        component: () =>
+          import(
+            /* webpackChunkName: "artistsdetail" */ "@/views/detail/artistsdetail.vue"
           )
       }
     ]

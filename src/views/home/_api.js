@@ -100,11 +100,7 @@ export function getPlayListDetail(params) {
 export function getTopArtists() {
   return request({
     url: `/top/artists`,
-    method: "get",
-    params: {
-      offset: 0,
-      limit: 6
-    }
+    method: "get"
   });
 }
 // 获取建议搜索
