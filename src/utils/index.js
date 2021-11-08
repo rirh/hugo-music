@@ -1,4 +1,4 @@
-export const artoString = (data, key) => {
+export const artoString = (data, key="name") => {
   if (!data) return "";
   if (!key) return "";
   if (!Array.isArray(data)) return;

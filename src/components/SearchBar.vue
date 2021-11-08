@@ -19,7 +19,6 @@
         <div v-if="show_options">
           <div
             v-for="group in song_options"
-            v-show="group.label === 'songs'"
             :key="group.label"
             :label="group.label"
           >
@@ -35,7 +34,7 @@
               :label="item.label"
               :value="item.value"
               class="label item"
-              @click="handle_select(item.value)"
+              @click="handle_select(group.label, item.value)"
             >
               {{ item.label }}
             </div>
@@ -121,8 +120,14 @@ const fetch_search_song = async e => {
 // const handle_detail = () => {
 //   router.push(`/detail/${select.value.query}`);
 // };
-const handle_select = async id => {
-  store.dispatch("fetch_song_data", id);
+const handle_select = async (type, id) => {
+  switch (type) {
+    case "songs":
+      store.dispatch("fetch_song_data", id);
+      break;
+    default:
+      break;
+  }
 };
 const handle_go_detail = label => {
   if (label) label = `?type=${label}`;

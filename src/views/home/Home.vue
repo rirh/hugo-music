@@ -108,6 +108,7 @@ onMounted(() => {
 });
 const handle_play_daily = async () => {
   const { playlist } = await getPlayListDetail({ id: daily.value.id });
+  if (!playlist.trackIds) return;
   const num = RandomNum(1, playlist.trackIds.length - 1);
   const { id } = playlist.trackIds[num];
   handle_play(id);

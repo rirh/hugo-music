@@ -85,7 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="right" v-if="Object.values(detail.lyric || {}).length">
+    <div class="right" v-if="JSON.stringify(detail.lyric) !== '{}'">
       <!-- {{ detail.lyric }} -->
       <ul class="lyric-wapper">
         <template

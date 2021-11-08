@@ -1,8 +1,54 @@
+@font-face {
+  font-family: "Barlow";
+  font-weight: normal;
+  src: url("~@/assets/fonts/Barlow-Regular.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Barlow";
+  font-weight: medium;
+  src: url("~@/assets/fonts/Barlow-Medium.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Barlow";
+  font-weight: 600;
+  src: url("~@/assets/fonts/Barlow-SemiBold.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Barlow";
+  font-weight: bold;
+  src: url("~@/assets/fonts/Barlow-Bold.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Barlow";
+  font-weight: 800;
+  src: url("~@/assets/fonts/Barlow-ExtraBold.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-ExtraBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Barlow";
+  font-weight: 900;
+  src: url("~@/assets/fonts/Barlow-Black.woff2") format("woff2"),
+    url("~@/assets/fonts/Barlow-Black.ttf") format("truetype");
+}
 :root {
   --animate-duration: 0.2s;
   --animate-delay: 0.2s;
   --animate-repeat: 1;
   --duration-text-wrap: 12s 1.5s cubic-bezier(0.82, 0.82, 1, 1.01);
+  --color-body-bg: #ffffff;
+  --color-text: #000;
+  --color-primary: #000;
+  --color-primary-bg: #eaeffd;
+  --color-secondary: #7a7a7b;
+  --color-secondary-bg: #f5f5f7;
+  --color-navbar-bg: rgba(255, 255, 255, 0.86);
+  --color-primary-bg-for-transparent: rgba(189, 207, 255, 0.28);
+  --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
+  --html-overflow-y: overlay;
 }
 
 :root,
@@ -32,6 +78,7 @@
     microsoft uighur;
   // "Barlow", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif, microsoft uighur
 }
+
 html,
 body {
   -webkit-font-smoothing: antialiased;

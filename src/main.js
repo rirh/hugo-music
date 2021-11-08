@@ -20,28 +20,30 @@ export default createApp(App)
   .use(SvgIcon)
   .mount("#app");
 
-var end = Date.now() + 5 * 1000;
+if (process.env.NODE_ENV === "production") {
+  var end = Date.now() + 5 * 1000;
 
-// go Buckeyes!
-var colors = ["#bb0000", "#ff0000"];
+  // go Buckeyes!
+  var colors = ["#bb0000", "#ff0000"];
 
-(function frame() {
-  confetti({
-    particleCount: 2,
-    angle: 60,
-    spread: 55,
-    origin: { x: 0 },
-    colors: colors
-  });
-  confetti({
-    particleCount: 2,
-    angle: 120,
-    spread: 55,
-    origin: { x: 1 },
-    colors: colors
-  });
+  (function frame() {
+    confetti({
+      particleCount: 2,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: colors
+    });
+    confetti({
+      particleCount: 2,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: colors
+    });
 
-  if (Date.now() < end) {
-    requestAnimationFrame(frame);
-  }
-})();
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}

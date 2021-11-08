@@ -1,7 +1,11 @@
 <template>
   <main>
     <h1>"{{ route.params.keywords }}"搜索结果</h1>
+   <div>
+     
+   </div>
     <div v-for="(it, i) in response" :key="i">
+
       <div>
         <div class="title">
           <h1 :id="it.label">{{ it.label || "" }}</h1>
@@ -40,6 +44,7 @@
             :image="item.picUrl"
             :name="item.name"
             :desc="artoString(item.artists, 'name')"
+            :id="item.id"
           />
         </div>
         <div class="box fr-4" v-if="it.label === 'mvs'" style="gap: 36px 24px;">
@@ -61,7 +66,7 @@
           <playlists
             v-for="item in it.values"
             :key="item.id"
-            :image="item.coverImgUrl"
+            :image="item.coverImgUrl || ''"
             :name="item.name"
           />
         </div>

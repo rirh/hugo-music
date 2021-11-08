@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/albums/${id}`">
+  <router-link class="link" :to="`/albums/${id}`">
     <div class="wapper">
       <div class="z-music-cover z-music-cover-hover">
         <Image :src="image" animate="animate__slideInUp" :alt="name" />
@@ -84,5 +84,12 @@ defineProps({
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+}
+.link,
+.link:link,
+.link:hover,
+.link:active {
+  text-decoration: none;
+  color: inherit;
 }
 </style>
