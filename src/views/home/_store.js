@@ -1,8 +1,10 @@
 import { getSongUrl, getSongDetail, getLyric } from "@/api";
 import { artoString } from "@/utils";
+
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
-let audioContext, audio_context, audio, source, gain, analyser;
+let audioContext, audio_context, audio, source, gain, analyser, stereoInterval;
+
 export default {
   state: {
     audio,
@@ -74,6 +76,170 @@ export default {
     }
   },
   actions: {
+    splitterMerger({ dispatch }) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const lGain = context.createGain();
+      const rGain = context.createGain();
+      // 声道离合器
+      const splitter = context.createChannelSplitter(2);
+      const merger = context.createChannelMerger(2);
+      lGain.gain.value = 1;
+      rGain.gain.value = 1;
+
+      const leftFilter = context.createBiquadFilter();
+      leftFilter.type = "lowshelf";
+      // leftFilter.Q.value = 2;
+      leftFilter.gain.value = 10;
+      leftFilter.frequency.value = 392;
+
+      const rightFilter = context.createBiquadFilter();
+      rightFilter.type = "highshelf";
+      // rightFilter.Q.value = 2;
+      rightFilter.gain.value = 10;
+      rightFilter.frequency.value = 82; // 临界点的 Hz，
+
+      gain.connect(splitter);
+      splitter.connect(lGain, 0);
+      splitter.connect(rGain, 1);
+      lGain.connect(leftFilter);
+      rGain.connect(rightFilter);
+      leftFilter.connect(merger, 0, 0);
+      rightFilter.connect(merger, 0, 1);
+      merger.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    removeVocal({ dispatch }) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const gain1 = context.createGain();
+      const gain2 = context.createGain();
+      const gain3 = context.createGain();
+      const channelSplitter = context.createChannelSplitter(2);
+      const channelMerger = context.createChannelMerger(2);
+
+      // 反相音频组合
+      gain1.gain.value = -1;
+      gain2.gain.value = -1;
+
+      gain.connect(analyser);
+      analyser.connect(channelSplitter);
+
+      // 交叉音轨，减去相同的音频部分（即人声）
+      channelSplitter.connect(gain1, 0);
+      gain1.connect(channelMerger, 0, 1);
+      channelSplitter.connect(channelMerger, 1, 1);
+
+      channelSplitter.connect(gain2, 1);
+      gain2.connect(channelMerger, 0, 0);
+      channelSplitter.connect(channelMerger, 0, 0);
+
+      channelMerger.connect(gain3);
+      gain3.connect(context.destination);
+    },
+    delay({ dispatch }) {
+      dispatch("disconnect");
+      const context = audio_context;
+
+      const delay = context.createDelay();
+      const gain1 = context.createGain();
+
+      delay.delayTime.value = 0.06; // 延时0.06s
+      gain1.gain.value = 1.2;
+
+      // 两条平行通路
+
+      // 1.source -> destination
+      gain.connect(context.destination);
+
+      // 2.source -> delay -> gain -> destination
+      gain.connect(delay);
+      delay.connect(gain1);
+      gain1.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    highpassFilter({ dispatch }, freq) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const biquadFilter = context.createBiquadFilter();
+      biquadFilter.type = "highpass"; // 低阶通过
+      biquadFilter.Q.value = 4;
+      biquadFilter.frequency.value = freq || 800; // 临界点的 Hz，默认800Hz
+      gain.connect(biquadFilter);
+      biquadFilter.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    lowpassFilter({ dispatch }, freq) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const biquadFilter = context.createBiquadFilter();
+      biquadFilter.type = "lowpass"; // 低阶通过
+      biquadFilter.Q.value = 2;
+      biquadFilter.frequency.value = freq || 800; // 临界点的 Hz，默认800Hz
+      gain.connect(biquadFilter);
+      biquadFilter.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    stereo({ dispatch }, r) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const panner = context.createPanner();
+      const gain1 = context.createGain();
+
+      let index = 0;
+      const radius = r || 20;
+      panner.setOrientation(0, 0, 0, 0, 1, 0);
+      // 让声源绕着收听者以20的半径旋转
+      if (stereoInterval) clearInterval(stereoInterval);
+      stereoInterval = setInterval(() => {
+        panner.setPosition(
+          Math.sin(index) * radius,
+          0,
+          Math.cos(index) * radius
+        );
+        index += 1 / 100;
+      }, 16);
+      gain1.gain.value = 100;
+      gain.connect(gain1);
+      gain.connect(panner);
+      panner.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    enhanceVocal({ dispatch }) {
+      dispatch("disconnect");
+      const context = audio_context;
+      const gain1 = context.createGain();
+      const gain2 = context.createGain();
+      const channelSplitter = context.createChannelSplitter(2);
+      const channelMerger = context.createChannelMerger(2);
+
+      gain1.gain.value = 2;
+      gain2.gain.value = 2;
+
+      gain.connect(channelSplitter);
+
+      channelSplitter.connect(gain1, 0);
+      gain1.connect(channelMerger, 0, 1);
+      channelSplitter.connect(channelMerger, 1, 1);
+
+      channelSplitter.connect(gain2, 1);
+      gain2.connect(channelMerger, 0, 0);
+      channelSplitter.connect(channelMerger, 0, 0);
+
+      channelMerger.connect(analyser);
+      analyser.connect(context.destination);
+    },
+    disconnect() {
+      gain.disconnect(0);
+      analyser.disconnect(0);
+    },
+    // 取消音效
+    cancelEffect({ dispatch }) {
+      dispatch("disconnect");
+      const context = audio_context;
+      gain.connect(analyser);
+      analyser.connect(context.destination);
+    },
     seek(_, len) {
       audio.currentTime = len;
     },

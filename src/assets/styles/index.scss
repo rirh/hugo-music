@@ -140,3 +140,23 @@ body {
 .icon-btn:active {
   transform: scale(0.85);
 }
+
+.box {
+  display: grid;
+  gap: 44px 24px;
+}
+.fr-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.fr-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.fr-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.fr-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.fr-6 {
+  grid-template-columns: repeat(6, 1fr);
+}

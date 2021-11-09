@@ -71,8 +71,14 @@
         >
       </div>
       <div class="con-contal">
-        <div>
-          <Image src="" alt="" />
+        <div class="contal" @click.stop="handle_toggle_play">
+          <svg-icon
+            class="play"
+            :style="{
+              color: style.text_color
+            }"
+            icon-class="whale"
+          />
         </div>
         <div class="contal" @click.stop="handle_toggle_play">
           <svg-icon
@@ -83,10 +89,21 @@
             :icon-class="current_state !== 'play' ? 'play' : 'pause'"
           />
         </div>
+        <div class="contal" @click.stop="show_effect = true">
+          <svg-icon
+            class="play"
+            :style="{
+              color: style.text_color
+            }"
+            icon-class="whale"
+          />
+        </div>
       </div>
     </div>
-    <div class="right" v-if="JSON.stringify(detail.lyric) !== '{}'">
-      <!-- {{ detail.lyric }} -->
+    <div
+      class="right"
+      v-if="detail.lyric && JSON.stringify(detail.lyric) !== '{}'"
+    >
       <ul class="lyric-wapper">
         <template
           v-for="(lyric, i) in Object.values(detail.lyric || {})"
@@ -117,6 +134,31 @@
       icon-class="arrow-down"
       @click.stop="handle_close_dashboard"
     />
+    <Modal
+      :show="show_effect"
+      :close="handle_close"
+      :show-footer="false"
+      :click-outside-hide="true"
+      title="选择音效"
+    >
+      <div class="box fr-4">
+        <button @click="handle_set_effects('cancelEffect')">原声</button>
+        <button @click="handle_set_effects('delay')">人声环绕</button>
+        <button @click="handle_set_effects('lowpassFilter')">
+          低音增强
+        </button>
+        <button @click="handle_set_effects('highpassFilter')">
+          高音增强
+        </button>
+        <button @click="handle_set_effects('enhanceVocal')">人声增益</button>
+        <!-- <button @click="handle_set_effects('stereo')">stereo</button> -->
+
+        <button @click="handle_set_effects('removeVocal')">移除人声</button>
+        <button @click="handle_set_effects('splitterMerger')">
+          3D增强
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -126,6 +168,7 @@ import vue3Slider from "vue3-slider";
 import { useStore } from "vuex";
 import rgbaster from "rgbaster";
 import Image from "@/components/Image";
+import Modal from "@/components/Modal";
 
 const store = useStore();
 const handle_close_dashboard = () => {
@@ -133,6 +176,7 @@ const handle_close_dashboard = () => {
 };
 
 const style = ref({});
+const show_effect = ref(false);
 
 const current_duration = computed(
   () => store.state.sound.current_duration || 100
@@ -250,12 +294,13 @@ const handle_set_seek = row => {
 const handle_toggle_play = () => {
   store.dispatch("toggle_play");
 };
-// const handle_toggle_play = () => {
-//   store.dispatch("toggle_play");
-// };
-// const handle_seek_value = val => {
-//   store.dispatch("seek", val);
-// };
+// const handle_show_effec = () => {};
+const handle_close = () => {
+  show_effect.value = false;
+};
+const handle_set_effects = type => {
+  store.dispatch(type);
+};
 </script>
 
 <style lang="scss" scoped>
