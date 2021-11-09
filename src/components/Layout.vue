@@ -1,12 +1,14 @@
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
     <div class="left">
-      <Image
-        @click="handle_change_theme"
-        class="logo"
-        alt="logo"
-        src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
-      />
+      <Link to="/">
+        <Image
+          @click="handle_change_theme"
+          class="logo"
+          alt="logo"
+          src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
+        />
+      </Link>
       <NavHistory />
       <SearchBar />
     </div>
@@ -41,6 +43,7 @@ import Image from "@/components/Image";
 import CopyRigth from "@/components/CopyRigth";
 import NavHistory from "@/components/NavHistory";
 import SearchBar from "@/components/SearchBar";
+import Link from "@/components/Link";
 
 import Dashboard from "@/components/Dashboard.vue";
 document.title = "Z ORG | MUSIC";
@@ -54,6 +57,8 @@ const handle_open_dashbord = () => {
 };
 
 const handle_change_theme = () => {
+  const s = true;
+  if (s) return;
   let appearance =
     document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
   if (appearance === "auto" || appearance === undefined) {

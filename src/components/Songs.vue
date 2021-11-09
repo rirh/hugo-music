@@ -7,11 +7,14 @@
         :src="image"
         :alt="name"
       />
-      <svg-icon
-        class="play"
-        :icon-class="current_id === id ? 'pause' : 'play'"
-        alt=""
-      />
+      <div>
+        <Spinner v-if="loading" />
+        <svg-icon
+          class="play"
+          :icon-class="current_id === id ? 'pause' : 'play'"
+          alt=""
+        />
+      </div>
     </div>
     <div class="">
       <div class="title" :title="name">{{ name }}</div>
@@ -21,11 +24,20 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from "vue";
+import { defineProps, computed, ref, watch } from "vue";
 import Image from "@/components/Image";
 import { useStore } from "vuex";
+import Spinner from "@/components/Spinner";
 const store = useStore();
 const current_id = computed(() => store.state.sound.current_id);
+const current_state = computed(() => store.state.sound.current_state);
+const loading = ref(false);
+watch(current_state, state => {
+  if (state !== "play") {
+    loading.value = false;
+  }
+});
+
 defineProps({
   image: String,
   title: String,
@@ -34,6 +46,7 @@ defineProps({
   id: Number
 });
 const handle_play = id => {
+  loading.value = true;
   store.dispatch("fetch_song_data", id);
 };
 </script>

@@ -44,15 +44,30 @@
     </div>
   </div>
   <br />
-  <div
-    class="hot-words"
-    @click="handle_key_words(key.first)"
-    v-for="(key, i) in hot_key_words"
-    :key="i"
-    :title="key.first"
+  <transition
+    enter-active-class="animate__animated animate__fadeIn"
+    leave-active-class="animate__animated animate__fadeOut"
   >
-    {{ key.first }}
-  </div>
+    <div>
+      <Skeleton
+        v-if="!hot_key_words.length"
+        width="100%"
+        height="30vh"
+        animated
+        bg="transparent"
+      />
+      <div
+        v-else
+        class="hot-words"
+        @click="handle_key_words(key.first)"
+        v-for="(key, i) in hot_key_words"
+        :key="i"
+        :title="key.first"
+      >
+        {{ key.first }}
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script setup>
@@ -62,6 +77,7 @@ import { useStore } from "vuex";
 import { getSearchSuggest, getSearchHot } from "@/api";
 import useDebouncedRef from "@/components/useDebouncedRef";
 import Spinner from "@/components/Spinner";
+import Skeleton from "@/components/Skleleton";
 
 const router = useRouter();
 const store = useStore();

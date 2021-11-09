@@ -1,96 +1,111 @@
 <template>
-  <main>
-    <h1>"{{ route.params.keywords }}"搜索结果</h1>
-    <div></div>
-    <div v-for="(it, i) in response" :key="i">
-      <div>
-        <div class="title">
-          <h1 :id="it.label">{{ it.label || "" }}</h1>
-          <span>更多</span>
-        </div>
-        <div
-          class="box fr-3"
-          style="gap: 0px 10px;"
-          v-if="it.label === 'songs'"
-        >
-          <songs
-            v-for="it in it.values"
-            :key="it.id"
-            :image="it?.al?.picUrl"
-            :name="it.name"
-            :id="it.id"
-            :desc="artoString(it?.song?.artists, 'name')"
-          />
-        </div>
-        <div
-          class="box fr-5"
-          v-if="it.label === 'artists'"
-          style="gap: 36px 24px;"
-        >
-          <artists
-            v-for="it in it.values"
-            :key="it.id"
-            :image="it.picUrl"
-            :name="it.name"
-            :id="it.id"
-          />
-        </div>
-        <div class="box fr-5" v-if="it.label === 'albums'">
-          <albums
-            v-for="it in it.values"
-            :key="it.id"
-            :image="it.picUrl"
-            :name="it.name"
-            :desc="artoString(it.artists, 'name')"
-            :id="it.id"
-          />
-        </div>
-        <div class="box fr-4" v-if="it.label === 'mvs'" style="gap: 36px 24px;">
-          <mvs v-for="it in it.values" :key="it.id" :item="it" />
-        </div>
-        <div
-          class="box fr-4"
-          v-if="it.label === 'videos'"
-          style="gap: 36px 24px;"
-        >
-          <videos v-for="it in it.values" :key="it.id" :item="it" />
-        </div>
+  <transition
+    enter-active-class="animate__animated animate__fadeIn"
+    leave-active-class="animate__animated animate__fadeOut"
+  >
+    <main>
+      <h1>"{{ route.params.keywords }}"搜索结果</h1>
+      <Skeleton
+        style="margin:3%"
+        v-if="loading"
+        width="100%"
+        height="40vh"
+        animated
+        bg="transparent"
+      />
+      <div v-else v-for="(it, i) in response" :key="i">
+        <div>
+          <div class="title">
+            <h1 :id="it.label">{{ it.label || "" }}</h1>
+            <span>更多</span>
+          </div>
+          <div
+            class="box fr-3"
+            style="gap: 0px 10px;"
+            v-if="it.label === 'songs'"
+          >
+            <songs
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it?.al?.picUrl"
+              :name="it.name"
+              :id="it.id"
+              :desc="artoString(it?.song?.artists, 'name')"
+            />
+          </div>
+          <div
+            class="box fr-5"
+            v-if="it.label === 'artists'"
+            style="gap: 36px 24px;"
+          >
+            <artists
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it.picUrl"
+              :name="it.name"
+              :id="it.id"
+            />
+          </div>
+          <div class="box fr-5" v-if="it.label === 'albums'">
+            <albums
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it.picUrl"
+              :name="it.name"
+              :desc="artoString(it.artists, 'name')"
+              :id="it.id"
+            />
+          </div>
+          <div
+            class="box fr-4"
+            v-if="it.label === 'mvs'"
+            style="gap: 36px 24px;"
+          >
+            <mvs v-for="it in it.values" :key="it.id" :item="it" />
+          </div>
+          <div
+            class="box fr-4"
+            v-if="it.label === 'videos'"
+            style="gap: 36px 24px;"
+          >
+            <videos v-for="it in it.values" :key="it.id" :item="it" />
+          </div>
 
-        <div
-          class="box fr-4"
-          v-if="it.label === 'playlists'"
-          style="gap: 36px 24px;"
-        >
-          <playlists
-            v-for="it in it.values"
-            :key="it.id"
-            :image="it.coverImgUrl || ''"
-            :name="it.name"
-            :id="it.id"
-          />
+          <div
+            class="box fr-4"
+            v-if="it.label === 'playlists'"
+            style="gap: 36px 24px;"
+          >
+            <playlists
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it.coverImgUrl || ''"
+              :name="it.name"
+              :id="it.id"
+            />
+          </div>
+          <div
+            class="box fr-5"
+            v-if="it.label === 'userprofiles'"
+            style="gap: 36px 24px;"
+          >
+            <userprofiles
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it?.avatarUrl"
+              :name="it.nickname"
+              :id="it.id"
+            />
+          </div>
+          <div
+            class="box fr-4"
+            v-if="it.label === 'djRadios'"
+            style="gap: 36px 24px;"
+          >
+            <djRadios v-for="it in it.values" :key="it.id" :it="it" />
+          </div>
         </div>
-        <div
-          class="box fr-5"
-          v-if="it.label === 'userprofiles'"
-          style="gap: 36px 24px;"
-        >
-          <userprofiles
-            v-for="it in it.values"
-            :key="it.id"
-            :image="it?.avatarUrl"
-            :name="it.nickname"
-            :id="it.id"
-          />
-        </div>
-        <div
-          class="box fr-4"
-          v-if="it.label === 'djRadios'"
-          style="gap: 36px 24px;"
-        >
-          <djRadios v-for="it in it.values" :key="it.id" :it="it" />
-        </div>
-      </div>
-      <!-- <h1 :id="it.label">{{ it.label || "" }}</h1>
+        <!-- <h1 :id="it.label">{{ it.label || "" }}</h1>
       <div class="box">
         <template v-for="it in it.values" :key="it.id">
           <songs v-if="it.label === 'songs'" :it="it" />
@@ -103,8 +118,9 @@
           <videos v-else-if="it.label === 'videos'" :it="it" />
         </template>
       </div> -->
-    </div>
-  </main>
+      </div>
+    </main>
+  </transition>
 </template>
 
 <script setup>
@@ -112,6 +128,7 @@ import { onMounted, ref, nextTick, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
 import { artoString } from "@/utils";
+import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";
 import artists from "@/components/Artists.vue";
@@ -123,6 +140,7 @@ import videos from "@/components/Videos.vue";
 const route = useRoute();
 // const router = useRouter();
 const response = ref([]);
+const loading = ref(true);
 
 onMounted(async () => {
   init();
@@ -133,6 +151,7 @@ watch(route, () => {
 const init = () => {
   // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
   const types = [1, 10, 100, 1000, 1002, 1004, 1009, 1014];
+  loading.value = true;
   Promise.all(
     types.map(type =>
       getCloudSearch({
@@ -142,36 +161,42 @@ const init = () => {
         offset: 0
       })
     )
-  ).then(res => {
-    response.value = res.map(({ result, code }) => {
-      if (code !== 200) result = {};
-      else {
-        let temp = {};
-        for (const key in result) {
-          if (Object.hasOwnProperty.call(result, key)) {
-            const element = result[key];
-            if (Array.isArray(element)) {
-              temp.label = key;
-              temp.values = element;
-            } else {
-              temp[key] = element;
+  )
+    .then(res => {
+      loading.value = false;
+      response.value = res.map(({ result, code }) => {
+        if (code !== 200) result = {};
+        else {
+          let temp = {};
+          for (const key in result) {
+            if (Object.hasOwnProperty.call(result, key)) {
+              const element = result[key];
+              if (Array.isArray(element)) {
+                temp.label = key;
+                temp.values = element;
+              } else {
+                temp[key] = element;
+              }
             }
           }
+          result = temp;
         }
-        result = temp;
-      }
-      return result;
+        return result;
+      });
+      nextTick(() => {
+        if (route.query.type) {
+          const type = route.query.type;
+          document.getElementById(type).scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
+    })
+    .catch(error => {
+      loading.value = false;
+      throw error;
     });
-    nextTick(() => {
-      if (route.query.type) {
-        const type = route.query.type;
-        document.getElementById(type).scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    });
-  });
 };
 </script>
 

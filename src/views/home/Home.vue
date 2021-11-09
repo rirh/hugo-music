@@ -1,58 +1,70 @@
 <template>
-  <div class="container">
-    <h1 v-show="daily.coverImgUrl">浏览</h1>
-    <div class="recommand box fr-2">
-      <DailyTracksCard
-        v-show="daily.coverImgUrl"
-        :url="daily.coverImgUrl"
-        @on-play="handle_play_daily()"
-      />
-      <FMDailyTracksCard
-        v-show="fm_daily.url"
-        :url="fm_daily.url"
-        :name="fm_daily.name"
-        :desc="fm_daily.desc"
-        @on-play="handle_play_fm"
-        @on-next="handle_next_fm"
-      />
-    </div>
-    <h1>最新推出</h1>
-    <div class="song fr-2">
-      <div v-for="(it, index) in new_song_list" :key="index">
-        <songs
-          :image="it.picUrl"
-          :name="it.name"
-          :id="it.id"
-          :desc="artoString(it?.song?.artists, 'name')"
+  <transition
+    enter-active-class="animate__animated animate__fadeIn"
+    leave-active-class="animate__animated animate__fadeOut"
+  >
+    <Skeleton
+      style="margin:3%"
+      v-if="loading"
+      width="74%"
+      height="70vh"
+      animated
+      bg="transparent"
+    />
+    <div v-else class="container">
+      <h1 v-show="daily.coverImgUrl">浏览</h1>
+      <div class="recommand box fr-2">
+        <DailyTracksCard
+          v-show="daily.coverImgUrl"
+          :url="daily.coverImgUrl"
+          @on-play="handle_play_daily()"
+        />
+        <FMDailyTracksCard
+          v-show="fm_daily.url"
+          :url="fm_daily.url"
+          :name="fm_daily.name"
+          :desc="fm_daily.desc"
+          @on-play="handle_play_fm"
+          @on-next="handle_next_fm"
         />
       </div>
-    </div>
-    <h1>排行榜</h1>
-    <div class="box fr-5">
-      <div v-for="(it, index) in top_list" :key="index">
-        <albums
-          :image="it.coverImgUrl"
-          :name="it.name"
-          :desc="it.updateFrequency"
-          :count="formatCount(it.playCount)"
-          :id="it.id"
-        />
+      <h1>最新推出</h1>
+      <div class="song fr-2">
+        <div v-for="(it, index) in new_song_list" :key="index">
+          <songs
+            :image="it.picUrl"
+            :name="it.name"
+            :id="it.id"
+            :desc="artoString(it?.song?.artists, 'name')"
+          />
+        </div>
+      </div>
+      <h1>排行榜</h1>
+      <div class="box fr-5">
+        <div v-for="(it, index) in top_list" :key="index">
+          <albums
+            :image="it.coverImgUrl"
+            :name="it.name"
+            :desc="it.updateFrequency"
+            :count="formatCount(it.playCount)"
+            :id="it.id"
+          />
+        </div>
+      </div>
+      <h1>热门歌手</h1>
+      <div class="song fr-6">
+        <div v-for="(it, index) in aritsts_list" :key="index">
+          <artists :image="it.picUrl" :name="it.name" :id="it.id" />
+        </div>
       </div>
     </div>
-
-    <h1>热门歌手</h1>
-    <div class="song fr-6">
-      <div v-for="(it, index) in aritsts_list" :key="index">
-        <artists :image="it.picUrl" :name="it.name" :id="it.id" />
-      </div>
-    </div>
-  </div>
+  </transition>
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
-import DailyTracksCard from "./DailyTracksCard.vue";
-import FMDailyTracksCard from "./FMDailyTracksCard.vue";
+import DailyTracksCard from "./DailyTracksCard";
+import FMDailyTracksCard from "./FMDailyTracksCard";
 import {
   getPersonalizedNewsong,
   getTopList,
@@ -63,14 +75,16 @@ import {
 } from "@/api";
 import { artoString, formatCount } from "@/utils";
 
-import songs from "@/components/Songs.vue";
-import albums from "@/components/Albums.vue";
-import artists from "@/components/Artists.vue";
-// import playlists from "@/components/Playlists.vue";
-// import userprofiles from "@/components/Userprofiles.vue";
-// import mvs from "@/components/Mvs.vue";
-// import djRadios from "@/components/DjRadios.vue";
-// import videos from "@/components/Videos.vue";
+import Skeleton from "@/components/Skleleton";
+import songs from "@/components/Songs";
+import albums from "@/components/Albums";
+import artists from "@/components/Artists";
+
+// import playlists from "@/components/Playlists";
+// import userprofiles from "@/components/Userprofiles";
+// import mvs from "@/components/Mvs";
+// import djRadios from "@/components/DjRadios";
+// import videos from "@/components/Videos";
 
 const store = useStore();
 
@@ -81,31 +95,45 @@ const aritsts_list = ref([]);
 
 const daily = ref([]);
 const fm_daily = ref({});
+const loading = ref(true);
 
 const RandomNum = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 onMounted(() => {
+  loading.value = true;
   Promise.all([
     getTopList(),
     getPersonalizedNewsong(),
     getHighQuality(),
     getTopArtists()
-  ]).then(
-    ([response_hot, response_song, response_quality, response_aritsts]) => {
-      const emun = ["热歌榜", "飙升榜", "新歌榜", "原创榜", "云音乐欧美热歌榜"];
-      top_list.value = emun.map(it =>
-        response_hot.list.find(song => song.name === it)
-      );
-      new_song_list.value = response_song.result;
-      const { playlists } = response_quality;
-      quality_song_list.value = playlists;
-      const num = RandomNum(1, playlists.length - 1);
-      daily.value = playlists[num];
-      toggle_play_list();
-      const start = RandomNum(6, response_aritsts.artists.length - 7);
-      aritsts_list.value = response_aritsts.artists.slice(start, start + 6);
-    }
-  );
+  ])
+    .then(
+      ([response_hot, response_song, response_quality, response_aritsts]) => {
+        loading.value = false;
+        const emun = [
+          "热歌榜",
+          "飙升榜",
+          "新歌榜",
+          "原创榜",
+          "云音乐欧美热歌榜"
+        ];
+        top_list.value = emun.map(it =>
+          response_hot.list.find(song => song.name === it)
+        );
+        new_song_list.value = response_song.result;
+        const { playlists } = response_quality;
+        quality_song_list.value = playlists;
+        const num = RandomNum(1, playlists.length - 1);
+        daily.value = playlists[num];
+        toggle_play_list();
+        const start = RandomNum(6, response_aritsts.artists.length - 7);
+        aritsts_list.value = response_aritsts.artists.slice(start, start + 6);
+      }
+    )
+    .catch(error => {
+      loading.value = false;
+      throw error;
+    });
 });
 const handle_play_daily = async () => {
   const { playlist } = await getPlayListDetail({ id: daily.value.id });

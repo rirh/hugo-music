@@ -59,11 +59,7 @@
           </div>
         </div>
         <div class="publishTime">
-          {{
-            it.publishTime
-              ? dayjs(it.publishTime).format("YYYY年MM月DD日")
-              : it.name
-          }}
+          {{ dayjs(it.publishTime).format("YYYY年MM月DD日") }}
         </div>
         <div class="time">
           {{ to_time(it.dt) }}
@@ -106,6 +102,7 @@ const to_time = value => {
   return `${m}:${s}`;
 };
 const handle_play = id => {
+  console.log(id);
   store.dispatch("fetch_song_data", id);
 };
 watch(
