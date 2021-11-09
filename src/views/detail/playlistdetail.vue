@@ -91,7 +91,6 @@ const init = () => {
         label: `${playlist_res.trackCount}首音乐`
       });
     }
-
     const ids = playlist_res?.trackIds.map(it => it.id).toString();
     getSongDetail({ ids }).then(({ songs }) => {
       privileges.value = songs;
