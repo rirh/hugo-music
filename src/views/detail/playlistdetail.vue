@@ -1,29 +1,13 @@
 <template>
   <div class="wapper">
-    <div v-if="playlist?.coverImgUrl" class="base-info">
-      <Image
-        animate="animate__fadeIn"
-        v-if="playlist?.coverImgUrl"
-        :src="playlist?.coverImgUrl || ''"
-      />
-      <div class="desc">
-        <h1>{{ playlist.name }}</h1>
-        <div class="con">
-          最后更新于 {{ dayjs(playlist.updateTime).format("YYYY年MM月DD日") }} ·
-          {{ playlist.trackCount }} 首歌
-        </div>
-        <div class="det">{{ playlist.description }}</div>
-        <br /><br /><br />
-        <div>
-          <Button
-            v-if="privileges[0]?.id"
-            @click="handle_play(privileges[0]?.id)"
-            icon-class="play"
-            >播放</Button
-          >
-        </div>
-      </div>
-    </div>
+    <DescHeader
+      :image="playlist?.coverImgUrl"
+      :name="playlist.name"
+      :description="playlist.description"
+      :tracks="tracks"
+      :showActions="Boolean(privileges[0]?.id)"
+      @on-play="handle_play(privileges[0]?.id)"
+    />
     <ul class="songs">
       <li
         class="track"
@@ -78,8 +62,9 @@ import { useRoute } from "vue-router";
 import { getPlayListDetail, getSongDetail } from "@/api";
 import { artoString } from "@/utils";
 import dayjs from "dayjs";
+import DescHeader from "@/components/DescHeader";
 import Image from "@/components/Image";
-import Button from "@/components/Button";
+
 import { useStore } from "vuex";
 const store = useStore();
 const current_id = computed(() => store.state.sound.current_id);
@@ -87,12 +72,26 @@ const current_id = computed(() => store.state.sound.current_id);
 const route = useRoute();
 const playlist = ref({});
 const privileges = ref([]);
+const tracks = ref([]);
 
 const init = () => {
   const id = route.params.id;
   getPlayListDetail({ id }).then(response => {
     const { playlist: playlist_res } = response;
     playlist.value = playlist_res;
+    if (playlist_res.updateTime) {
+      tracks.value.push({
+        label: `最后更新于${dayjs(playlist_res.updateTime).format(
+          "YYYY年MM月DD日"
+        )}`
+      });
+    }
+    if (playlist_res.trackCount) {
+      tracks.value.push({
+        label: `${playlist_res.trackCount}首音乐`
+      });
+    }
+
     const ids = playlist_res?.trackIds.map(it => it.id).toString();
     getSongDetail({ ids }).then(({ songs }) => {
       privileges.value = songs;
@@ -106,7 +105,6 @@ const to_time = value => {
   return `${m}:${s}`;
 };
 const handle_play = id => {
-  console.log(id);
   store.dispatch("fetch_song_data", id);
 };
 watch(
@@ -120,51 +118,6 @@ watch(
 <style lang="scss" scoped>
 .wapper {
   padding: 20px;
-  .base-info {
-    display: grid;
-    grid-template-columns: 270px auto;
-    margin-bottom: 40px;
-    width: 100%;
-    // background-color: #fff;
-    border-radius: 0.75em;
-    padding: 20px;
-    box-sizing: border-box;
-    // align-items: flex-end;
-    img {
-      height: 270px;
-      width: 100%;
-      border-radius: 0.75em;
-      user-select: none;
-      aspect-ratio: 1/1;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      filter: blur(16 px) opacity(0.6);
-      transform: scale(0.92, 0.96);
-    }
-    .desc {
-      margin-left: 20px;
-      flex: 1;
-      align-self: center;
-      h1 {
-        font-weight: 36px;
-        font-weight: 700;
-      }
-      .con {
-        font-size: 14px;
-        opacity: 0.68;
-        margin-top: 2px;
-      }
-      .det {
-        font-size: 14px;
-        opacity: 0.68;
-        margin-top: 24px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
-        cursor: pointer;
-      }
-    }
-  }
   .songs {
     border-radius: 0.75em;
     box-sizing: border-box;

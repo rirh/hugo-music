@@ -141,45 +141,45 @@
       title="鲸海音效"
     >
       <div class="box fr-4 effecs">
-        <button
+        <Button
           title="原汁原味，听见音乐的力量"
           @click="handle_set_effects('cancelEffect')"
         >
           原声
-        </button>
-        <button
+        </Button>
+        <Button
           title="一般的耳机可用不起这个音效"
           @click="handle_set_effects('delay')"
         >
           人声环绕
-        </button>
-        <button
+        </Button>
+        <Button
           title="厚重的感觉如约而至"
           @click="handle_set_effects('lowpassFilter')"
         >
           低音增强
-        </button>
-        <button
+        </Button>
+        <Button
           title="婉转清晰的高音"
           @click="handle_set_effects('highpassFilter')"
         >
           高音增强
-        </button>
-        <button
+        </Button>
+        <Button
           title="真实重未如此美妙"
           @click="handle_set_effects('enhanceVocal')"
         >
           人声增益
-        </button>
-        <!-- <button @click="handle_set_effects('stereo')">stereo</button> -->
-        <button @click="handle_set_effects('removeVocal')">移除人声</button>
-        <button
+        </Button>
+        <!-- <Button @click="handle_set_effects('stereo')">stereo</Button> -->
+        <Button @click="handle_set_effects('removeVocal')">移除人声</Button>
+        <Button
           title="左耳伴奏增强，右耳人声增强，请尽情享受3D增强效果"
           @click="handle_set_effects('splitterMerger')"
         >
           3D增强
-        </button>
-        <button title="加入会员和大家一起交流">
+        </Button>
+        <Button title="加入会员和大家一起交流">
           <a
             href="http://signup.tigerzh.com"
             target="_blank"
@@ -187,7 +187,7 @@
           >
             敬请期待
           </a>
-        </button>
+        </Button>
       </div>
     </Modal>
   </div>
@@ -201,7 +201,7 @@ import rgbaster from "rgbaster";
 import vue3Slider from "vue3-slider";
 import Image from "@/components/Image";
 import Modal from "@/components/Modal";
-
+import Button from "@/components/Button";
 import { enModeToIcon } from "@/utils";
 
 const store = useStore();
@@ -502,6 +502,8 @@ const handle_change_mode = () => {
   border-radius: 0.75em;
 }
 .effecs {
+  margin-top: 10px;
+  gap: 20px 24px;
   button {
     border: none;
     padding: 10px;

@@ -75,6 +75,7 @@ button {
   user-select: none;
   backdrop-filter: blur(8px);
   background: rgba(0, 0, 0, 0.1);
+  border: none;
   .svg-icon {
     width: 16px;
     height: 16px;
