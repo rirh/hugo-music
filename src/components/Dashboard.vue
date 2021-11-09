@@ -9,9 +9,8 @@
       <div>
         <Image
           class="pic"
-          crossorigin="Anonymous"
           alt=""
-          id="pic"
+          crossorigin="Anonymous"
           :src="detail.picUrl"
           @load="handle_load_back"
         />
@@ -28,19 +27,19 @@
       <div class="title" style="margin-top:10px;opacity: 0.58;">
         <strong
           class="al-name"
+          :title="detail.al_name"
           :style="{
             color: style.text_color
           }"
-          :title="detail.al_name"
         >
           专辑： <span class="link">{{ detail.al_name }}</span>
         </strong>
         <strong
           class="ar-name"
+          :title="detail.ar_name"
           :style="{
             color: style.text_color
           }"
-          :title="detail.ar_name"
         >
           歌手：<span class="link">{{ detail.ar_name }}</span>
         </strong>
@@ -71,27 +70,27 @@
         >
       </div>
       <div class="con-contal">
-        <div class="contal" @click.stop="handle_toggle_play">
+        <div class="contal" @click.stop="handle_change_mode">
           <svg-icon
-            class="play"
+            class="sub-icon"
+            :icon-class="enModeToIcon(current_mode)"
             :style="{
               color: style.text_color
             }"
-            icon-class="whale"
           />
         </div>
-        <div class="contal" @click.stop="handle_toggle_play">
+        <div class="contal" @click.stop="handle_change_mode">
           <svg-icon
             class="play"
+            :icon-class="current_state !== 'play' ? 'play' : 'pause'"
             :style="{
               color: style.text_color
             }"
-            :icon-class="current_state !== 'play' ? 'play' : 'pause'"
           />
         </div>
         <div class="contal" @click.stop="show_effect = true">
           <svg-icon
-            class="play"
+            class="sub-icon"
             :style="{
               color: style.text_color
             }"
@@ -128,34 +127,66 @@
     </div>
     <svg-icon
       class="close"
+      icon-class="arrow-down"
+      @click.stop="handle_close_dashboard"
       :style="{
         color: style.text_color
       }"
-      icon-class="arrow-down"
-      @click.stop="handle_close_dashboard"
     />
     <Modal
       :show="show_effect"
       :close="handle_close"
       :show-footer="false"
       :click-outside-hide="true"
-      title="选择音效"
+      title="鲸海音效"
     >
-      <div class="box fr-4">
-        <button @click="handle_set_effects('cancelEffect')">原声</button>
-        <button @click="handle_set_effects('delay')">人声环绕</button>
-        <button @click="handle_set_effects('lowpassFilter')">
+      <div class="box fr-4 effecs">
+        <button
+          title="原汁原味，听见音乐的力量"
+          @click="handle_set_effects('cancelEffect')"
+        >
+          原声
+        </button>
+        <button
+          title="一般的耳机可用不起这个音效"
+          @click="handle_set_effects('delay')"
+        >
+          人声环绕
+        </button>
+        <button
+          title="厚重的感觉如约而至"
+          @click="handle_set_effects('lowpassFilter')"
+        >
           低音增强
         </button>
-        <button @click="handle_set_effects('highpassFilter')">
+        <button
+          title="婉转清晰的高音"
+          @click="handle_set_effects('highpassFilter')"
+        >
           高音增强
         </button>
-        <button @click="handle_set_effects('enhanceVocal')">人声增益</button>
+        <button
+          title="真实重未如此美妙"
+          @click="handle_set_effects('enhanceVocal')"
+        >
+          人声增益
+        </button>
         <!-- <button @click="handle_set_effects('stereo')">stereo</button> -->
-
         <button @click="handle_set_effects('removeVocal')">移除人声</button>
-        <button @click="handle_set_effects('splitterMerger')">
+        <button
+          title="左耳伴奏增强，右耳人声增强，请尽情享受3D增强效果"
+          @click="handle_set_effects('splitterMerger')"
+        >
           3D增强
+        </button>
+        <button title="加入会员和大家一起交流">
+          <a
+            href="http://signup.tigerzh.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            敬请期待
+          </a>
         </button>
       </div>
     </Modal>
@@ -164,11 +195,14 @@
 
 <script setup>
 import { computed, watch, ref } from "vue";
-import vue3Slider from "vue3-slider";
 import { useStore } from "vuex";
 import rgbaster from "rgbaster";
+
+import vue3Slider from "vue3-slider";
 import Image from "@/components/Image";
 import Modal from "@/components/Modal";
+
+import { enModeToIcon } from "@/utils";
 
 const store = useStore();
 const handle_close_dashboard = () => {
@@ -183,7 +217,12 @@ const current_duration = computed(
 );
 const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
+const current_mode = computed(() => store.state.sound.current_mode);
 const current_id = computed(() => store.state.sound.current_id);
+const current_mode_options = computed(
+  () => store.state.sound.current_mode_options
+);
+
 const play_list = computed(() => store.state.sound.play_list);
 const progress = computed({
   get: () => current_progress.value || 0,
@@ -191,13 +230,12 @@ const progress = computed({
 });
 
 const handle_load_back = () => {
-  rgbaster(
-    detail.value.picUrl, // 图片地址
-    {
-      ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
-      scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
-    }
-  ).then(response => {
+  const url = detail.value.picUrl; // 图片地址
+  const options = {
+    ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
+    scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
+  };
+  rgbaster(url, options).then(response => {
     const [primary, success] = response;
     style.value = {
       background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
@@ -301,6 +339,13 @@ const handle_close = () => {
 const handle_set_effects = type => {
   store.dispatch(type);
 };
+const handle_change_mode = () => {
+  const mode = current_mode.value;
+  const options = current_mode_options.value;
+  const index = options.findIndex(it => it === mode);
+  const next_mode = options[index + 1] || options[0];
+  store.commit("update_current_mode", next_mode);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -368,6 +413,20 @@ const handle_set_effects = type => {
         transition: all 0.3s;
       }
       .play:hover {
+        opacity: 0.8;
+      }
+      &:active {
+        transform: scale(0.92);
+      }
+      .sub-icon {
+        min-height: 30px;
+        min-width: 30px;
+        height: 1.5vw;
+        width: 1.5vw;
+        opacity: 1;
+        transition: all 0.3s;
+      }
+      .sub-icon:hover {
         opacity: 0.8;
       }
       &:active {
@@ -441,6 +500,26 @@ const handle_set_effects = type => {
   padding: 10px 15px;
   cursor: pointer;
   border-radius: 0.75em;
+}
+.effecs {
+  button {
+    border: none;
+    padding: 10px;
+    border-radius: 0.75em;
+    background-color: var(--color-secondary);
+    opacity: 0.6;
+    transition: all 200ms;
+    a,
+    a:link,
+    a:hover,
+    a:active {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+  button:hover {
+    opacity: 1;
+  }
 }
 
 @media only screen and (max-width: 800px) {

@@ -1,5 +1,5 @@
 <template>
-  <Link :to="`/albums/${id}`">
+  <Link :to="`/${path}/${id}`">
     <div class="wapper">
       <div class="z-music-cover z-music-cover-hover">
         <Image :src="image" animate="animate__slideInUp" :alt="name" />
@@ -28,7 +28,11 @@ defineProps({
   name: String,
   desc: String,
   count: String,
-  id: Number
+  id: Number,
+  path: {
+    default: () => "albums",
+    type: String
+  }
 });
 </script>
 

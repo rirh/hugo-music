@@ -4,7 +4,9 @@
     leave-active-class="animate__animated animate__fadeOut"
   >
     <main>
-      <h1>"{{ route.params.keywords }}"搜索结果</h1>
+      <h1>
+        <strong>"{{ route.params.keywords }}"</strong> <span>搜索结果</span>
+      </h1>
       <Skeleton
         style="margin:3%"
         v-if="loading"
@@ -232,6 +234,13 @@ main {
   box-sizing: border-box;
   background-color: var(--color-primary);
   width: 100%;
+  h1 {
+    color: #6e7187;
+    font-size: 36px;
+    strong {
+      color: #000;
+    }
+  }
 }
 @media (max-width: 1336px) {
   main {

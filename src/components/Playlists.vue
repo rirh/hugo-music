@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Albums v-bind="$attrs" />
+    <Albums v-bind="$attrs" path="playlist" />
   </div>
 </template>
 

@@ -82,7 +82,7 @@ import Skeleton from "@/components/Skleleton";
 const router = useRouter();
 const store = useStore();
 
-const query = useDebouncedRef("", 400);
+const query = useDebouncedRef("", 600);
 
 watch(query, q => {
   // 发起API请求

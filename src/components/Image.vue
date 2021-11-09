@@ -4,12 +4,14 @@
     :class="[url ? 'show' : 'hidden', 'animate__animated', animate || '']"
     :src="url"
     :alt="alt"
+    @error="error"
   />
 </template>
 
 <script setup>
 import { defineProps, ref, onMounted, onBeforeUnmount, toRefs } from "vue";
 import { resizeImage } from "@/utils";
+import errorImage from "@/assets/image/error.png";
 const url = ref(null);
 const imageRef = ref("imageRef");
 const props = defineProps({
@@ -33,6 +35,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   intersectionObserver && intersectionObserver.disconnect();
 });
+
+const error = () => {
+  url.value = errorImage;
+};
 </script>
 
 <style lang="scss" scoped>

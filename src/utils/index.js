@@ -1,8 +1,18 @@
-export const artoString = (data, key="name") => {
+export const artoString = (data, key = "name") => {
   if (!data) return "";
   if (!key) return "";
   if (!Array.isArray(data)) return;
   return data.map(e => e[key] || "").toString();
+};
+export const enModeToIcon = key => {
+  const data = {
+    loop: "repeat",
+    single: "repeat-1",
+    random: "shuffle"
+  };
+  if (!key) return;
+  if (!Object.hasOwnProperty.call(data, key)) return;
+  return data[key];
 };
 
 export const resizeImage = (imgUrl, size = 512) => {

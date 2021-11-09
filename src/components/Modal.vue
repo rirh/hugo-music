@@ -3,9 +3,9 @@
     <div class="modal" :style="modalStyles" @click.stop>
       <div class="header">
         <div class="title">{{ title }}</div>
-        <button class="close" @click="close"
-          ><svg-icon icon-class="x"
-        /></button>
+        <button class="close" @click="close">
+          <svg-icon icon-class="x" />
+        </button>
       </div>
       <div class="content"><slot></slot></div>
       <div v-if="showFooter" class="footer">
@@ -19,41 +19,41 @@
 
 <script>
 export default {
-  name: 'Modal',
+  name: "Modal",
   props: {
     show: Boolean,
     close: Function,
     title: {
       type: String,
-      default: 'Title',
+      default: "Title"
     },
     showFooter: {
       type: Boolean,
-      default: true,
+      default: true
     },
     width: {
       type: String,
-      default: '50vw',
+      default: "50vw"
     },
     clickOutsideHide: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     modalStyles() {
       return {
-        width: this.width,
+        width: this.width
       };
-    },
+    }
   },
   methods: {
     clickOutside() {
       if (this.clickOutsideHide) {
         this.close();
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -121,7 +121,7 @@ export default {
     font-size: 20px;
   }
   button {
-    color: var(--color-text);
+    color: rgba(255, 255, 255, 0.78);
     border-radius: 50%;
     height: 32px;
     width: 32px;
@@ -130,9 +130,11 @@ export default {
     align-items: center;
     opacity: 0.68;
     transition: 0.2s;
+    border: none;
+    background-color: var(--color-secondary);
     &:hover {
       opacity: 1;
-      background: var(--color-secondary-bg-for-transparent);
+      color: rgba(255, 255, 255, 0.98);
     }
   }
   .svg-icon {
@@ -174,7 +176,7 @@ export default {
   }
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   .shade {
     background: rgba(0, 0, 0, 0.38);
     color: var(--color-text);

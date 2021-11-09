@@ -6,6 +6,7 @@ const FEAD_SIZE = 0.8;
 let audioContext, audio_context, audio, source, gain, analyser, stereoInterval;
 
 export default {
+  namespace: true,
   state: {
     audio,
     audio_context,
@@ -17,10 +18,13 @@ export default {
     current_duration: 0,
     current_progress: 0,
     current_mode: "loop",
-    current_mode_options: ["loop", "order", "single", "random"],
+    current_mode_options: ["loop", "single", "random"],
     dashboard_open: false
   },
   mutations: {
+    update_current_mode(state, payload) {
+      state.current_mode = payload;
+    },
     update_dashboard_open(state, payload) {
       state.dashboard_open = payload;
     },
@@ -76,6 +80,10 @@ export default {
     }
   },
   actions: {
+    /**
+     * 左耳机伴奏增强 右边声道增强 合并以后再挣钱
+     *
+     */
     splitterMerger({ dispatch }) {
       dispatch("disconnect");
       const context = audio_context;
@@ -297,6 +305,9 @@ export default {
         console.log("onended");
         audio.currentTime = 0;
         dispatch("pause");
+        if (state.current_mode === "single" || state.current_mode === "loop") {
+          dispatch("toggle_play");
+        }
       };
       audio.ontimeupdate = () => {
         commit("update_current_progress", audio.currentTime);

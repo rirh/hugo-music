@@ -12,7 +12,6 @@ const debounce = (fn, delay = 0, immediate = false) => {
     return (...args) => {
         if (immediate && !timeout) fn(...args);
         clearTimeout(timeout);
-
         timeout = setTimeout(() => {
             fn(...args);
         }, delay);

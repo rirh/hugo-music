@@ -59,7 +59,11 @@
           </div>
         </div>
         <div class="publishTime">
-          {{ dayjs(it.publishTime).format("YYYY年MM月DD日") }}
+          {{
+            it.publishTime
+              ? dayjs(it.publishTime).format("YYYY年MM月DD日")
+              : it.name
+          }}
         </div>
         <div class="time">
           {{ to_time(it.dt) }}
@@ -168,7 +172,7 @@ watch(
     .index {
       font-weight: 600;
       font-size: 18px;
-      margin: 0 20px;
+      margin: 0 20px 0 0;
     }
     ul,
     li {

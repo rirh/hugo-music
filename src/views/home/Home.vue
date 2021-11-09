@@ -42,7 +42,7 @@
       <h1>排行榜</h1>
       <div class="box fr-5">
         <div v-for="(it, index) in top_list" :key="index">
-          <albums
+          <playlists
             :image="it.coverImgUrl"
             :name="it.name"
             :desc="it.updateFrequency"
@@ -77,10 +77,10 @@ import { artoString, formatCount } from "@/utils";
 
 import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs";
-import albums from "@/components/Albums";
+// import albums from "@/components/Albums";
 import artists from "@/components/Artists";
 
-// import playlists from "@/components/Playlists";
+import playlists from "@/components/Playlists";
 // import userprofiles from "@/components/Userprofiles";
 // import mvs from "@/components/Mvs";
 // import djRadios from "@/components/DjRadios";

@@ -86,7 +86,6 @@ const handle_change_theme = () => {
   background-size: 30vh 30vh, 20vh 20vh;
   background-position: right 113%, right -4%;
   background-attachment: fixed;
-  box-shadow: 10px;
   box-sizing: border-box;
   z-index: -1;
   .left {
@@ -95,7 +94,7 @@ const handle_change_theme = () => {
     max-height: min-content;
     height: 100%;
     min-height: 100vh;
-    background: rgba(60, 60, 67, 0.03);
+    background: var(--color-primary-bg);
     text-align: left;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 15px 20px;
