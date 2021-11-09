@@ -112,12 +112,10 @@
             v-if="lyric"
             @click="handle_set_seek(detail.lyric_arr_lyric[i])"
             :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
-            class="text"
             :style="{
-              color: style.text_color
-            }"
-            :class="{
-              load: is_current_lyric(i)
+              color: style.text_color,
+              opacity: is_current_lyric(i) ? 1 : 0.5,
+              'font-size': is_current_lyric(i) ? '26px' : '24px'
             }"
           >
             {{ lyric }}
@@ -490,11 +488,6 @@ const handle_change_mode = () => {
       transform: scale(0.92);
     }
   }
-}
-.load {
-  color: var(--color-primary) !important;
-  font-size: 26px !important;
-  opacity: 0.98 !important;
 }
 .link {
   padding: 10px 15px;
