@@ -169,7 +169,7 @@
           title="真实重未如此美妙"
           @click="handle_set_effects('enhanceVocal')"
         >
-          人声增益
+          杜比音效
         </Button>
         <!-- <Button @click="handle_set_effects('stereo')">stereo</Button> -->
         <Button @click="handle_set_effects('removeVocal')">移除人声</Button>
