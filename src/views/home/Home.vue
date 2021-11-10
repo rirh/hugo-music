@@ -29,8 +29,8 @@
         />
       </div>
       <h1>最新推出</h1>
-      <div class="song fr-2">
-        <div v-for="(it, index) in new_song_list" :key="index">
+      <div class="song fr-2 ">
+        <div  v-for="(it, index) in new_song_list" :key="index">
           <songs
             :image="it.picUrl"
             :name="it.name"
@@ -40,17 +40,29 @@
         </div>
       </div>
       <h1>排行榜</h1>
-      <div class="box fr-5">
-        <div v-for="(it, index) in top_list" :key="index">
+      <div class="box fr-3 ">
+        <div class="card" v-for="(it, index) in top_list" :key="index">
           <playlists
-            :image="it.coverImgUrl"
             :name="it.name"
             :desc="it.updateFrequency"
             :count="formatCount(it.playCount)"
             :id="it.id"
           />
+          <!-- <div v-for="(songs, index) in top_list_songs" :key="index"> -->
+          <br />
+          <songs
+            v-for="(it, rank) in top_list_songs[index]"
+            :key="it?.al?.id"
+            :image="it?.al?.picUrl"
+            :name="it?.al?.name"
+            :id="it?.al?.id"
+            :desc="artoString(it?.ar)"
+            :index="rank + 1"
+          />
+          <!-- </div> -->
         </div>
       </div>
+
       <h1>热门歌手</h1>
       <div class="song fr-6">
         <div v-for="(it, index) in aritsts_list" :key="index">
@@ -89,6 +101,7 @@ import playlists from "@/components/Playlists";
 const store = useStore();
 
 const top_list = ref([]);
+const top_list_songs = ref([]);
 const new_song_list = ref([]);
 const quality_song_list = ref([]);
 const aritsts_list = ref([]);
@@ -115,7 +128,8 @@ onMounted(() => {
           "飙升榜",
           "新歌榜",
           "原创榜",
-          "云音乐欧美热歌榜"
+          "云音乐欧美热歌榜",
+          "网络热歌榜"
         ];
         top_list.value = emun.map(it =>
           response_hot.list.find(song => song.name === it)
@@ -128,6 +142,7 @@ onMounted(() => {
         toggle_play_list();
         const start = RandomNum(6, response_aritsts.artists.length - 7);
         aritsts_list.value = response_aritsts.artists.slice(start, start + 6);
+        fetch_top_song();
       }
     )
     .catch(error => {
@@ -135,6 +150,21 @@ onMounted(() => {
       throw error;
     });
 });
+const fetch_top_song = () => {
+  const fetch_all_desc_arr = top_list.value.map(it =>
+    getPlayListDetail({ id: it.id })
+  );
+  Promise.all(fetch_all_desc_arr)
+    .then(async response => {
+      const songs = response.map(it => {
+        return it?.playlist?.tracks?.slice(0, 10);
+      });
+      top_list_songs.value = songs;
+    })
+    .catch(error => {
+      throw error;
+    });
+};
 const handle_play_daily = async () => {
   const { playlist } = await getPlayListDetail({ id: daily.value.id });
   if (!playlist.trackIds) return;
@@ -185,22 +215,16 @@ const handle_play = id => {
     margin-top: 50px;
   }
 
-  .box {
-    display: grid;
-    gap: 44px 24px;
-  }
   .recommand {
     gap: 50px 40px;
   }
-  .fr-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .fr-5 {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .fr-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
+}
+.card {
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
+  padding: 10px;
 }
 .song {
   display: grid;

@@ -1,6 +1,17 @@
 <template>
   <div class="wapper" :class="[current_id === id && 'active']">
-    <div class="song" @click="handle_play(id)">
+    <div
+      :class="[
+        index === 3 && 'rank-3',
+        index === 2 && 'rank-2',
+        index === 1 && 'rank-1'
+      ]"
+      class="index"
+      v-if="index"
+    >
+      {{ index }}
+    </div>
+    <div class="song" v-if="image" @click="handle_play(id)">
       <Image
         class="image"
         animate="animate__slideInUp"
@@ -43,7 +54,8 @@ defineProps({
   title: String,
   name: String,
   desc: String,
-  id: Number
+  id: Number,
+  index: Number
 });
 const handle_play = id => {
   loading.value = true;
@@ -60,6 +72,15 @@ const handle_play = id => {
   // background-color: #fff;
   cursor: pointer;
   transition: all 200ms;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 100%;
+  .index {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 20px 0 0;
+    columns: #666;
+  }
   .song {
     text-align: center;
     display: flex;
@@ -82,6 +103,10 @@ const handle_play = id => {
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   }
   .auth {
     font-size: 12px;
@@ -121,5 +146,16 @@ const handle_play = id => {
 
 .wapper:active .play {
   transform: translate(-50%, -50%) scale(0.85);
+}
+.rank-1 {
+  // font-size: 0px;
+  color: rgba($color: #f00, $alpha: 0.8);
+}
+.rank-2 {
+  // font-size: 19px;
+  color: rgba($color: #f00, $alpha: 0.6);
+}
+.rank-3 {
+  color: rgba($color: #f00, $alpha: 0.4);
 }
 </style>

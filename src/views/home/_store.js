@@ -62,7 +62,7 @@ export default {
       if (song.is_detail) {
         const songs = song?.songs[0];
         const name = songs?.name || "";
-        const auth = artoString(songs.ar, "name");
+        const auth = artoString(songs.ar);
         document.title = `${name}-${auth}`;
       }
     },
@@ -253,7 +253,6 @@ export default {
     },
     play({ commit }) {
       gain.gain.value = 0;
-      audio.play();
       const currentTime = audio_context.currentTime;
       gain.gain.linearRampToValueAtTime(1, currentTime + FEAD_SIZE);
       audio.play();
@@ -302,11 +301,30 @@ export default {
         commit("update_song_detail", responde_lyric_detail);
       };
       audio.onended = () => {
-        console.log("onended");
         audio.currentTime = 0;
-        dispatch("pause");
-        if (state.current_mode === "single" || state.current_mode === "loop") {
-          dispatch("toggle_play");
+        const list = Object.keys(state.play_list);
+        const id = state.current_id;
+        const randomNum = (min, max) =>
+          Math.floor(Math.random() * (max - min + 1)) + min;
+        const mode_func = {
+          single: () => {
+            dispatch("fetch_song_data", state.current_id);
+          },
+          loop: () => {
+            const index = list.findIndex(it => Number(it) === id);
+            const next_id = list[index + 1] || list[0];
+            dispatch("fetch_song_data", next_id);
+          },
+          random: () => {
+            const num = randomNum(0, list.length);
+            const random_id = list[num];
+            dispatch("fetch_song_data", random_id);
+          }
+        };
+        if (mode_func[state.current_mode]) {
+          mode_func[state.current_mode]();
+        } else {
+          dispatch("pause");
         }
       };
       audio.ontimeupdate = () => {

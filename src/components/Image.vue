@@ -9,7 +9,14 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted, onBeforeUnmount, toRefs } from "vue";
+import {
+  defineProps,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  toRefs,
+  watch
+} from "vue";
 import { resizeImage } from "@/utils";
 import errorImage from "@/assets/image/error.png";
 const url = ref(null);
@@ -22,6 +29,11 @@ const props = defineProps({
 
 const { src } = toRefs(props);
 let intersectionObserver = null;
+
+watch(src, params => {
+  url.value = resizeImage(params);
+});
+
 onMounted(() => {
   intersectionObserver = new IntersectionObserver(entries => {
     entries.forEach(item => {

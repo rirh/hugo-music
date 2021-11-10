@@ -2,8 +2,8 @@
   <div class="wapper">
     <DescHeader
       :image="playlist?.coverImgUrl"
-      :name="playlist.name"
-      :description="playlist.description"
+      :name="playlist?.name"
+      :description="playlist?.description"
       :tracks="tracks"
       :showActions="Boolean(privileges[0]?.id)"
       @on-play="handle_play(privileges[0]?.id)"
@@ -79,14 +79,14 @@ const init = () => {
   getPlayListDetail({ id }).then(response => {
     const { playlist: playlist_res } = response;
     playlist.value = playlist_res;
-    if (playlist_res.updateTime) {
+    if (playlist_res?.updateTime) {
       tracks.value.push({
         label: `最后更新于${dayjs(playlist_res.updateTime).format(
           "YYYY年MM月DD日"
         )}`
       });
     }
-    if (playlist_res.trackCount) {
+    if (playlist_res?.trackCount) {
       tracks.value.push({
         label: `${playlist_res.trackCount}首音乐`
       });

@@ -42,6 +42,14 @@ const routes = [
           import(
             /* webpackChunkName: "playlistdetail" */ "@/views/detail/playlistdetail.vue"
           )
+      },
+      {
+        path: "/next/",
+        name: "next",
+        component: () =>
+          import(
+            /* webpackChunkName: "next" */ "@/views/nextlist/index.vue"
+          )
       }
     ]
   },

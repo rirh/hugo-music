@@ -1,19 +1,24 @@
 <template>
   <Link :to="`/${path}/${id}`">
     <div class="wapper">
-      <div class="z-music-cover z-music-cover-hover">
-        <Image :src="image" animate="animate__slideInUp" :alt="name" />
+      <div v-if="image" class="z-music-cover z-music-cover-hover">
+        <Image
+          style="max-height:300px;max-width:300px"
+          :src="image"
+          animate="animate__slideInUp"
+          :alt="name"
+        />
       </div>
       <div>
+        <div v-if="name" class="title" :title="name">{{ name }}</div>
+        <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
         <div v-if="count" class="count" :title="count">
           <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
         </div>
-        <div v-if="name" class="title" :title="name">{{ name }}</div>
-        <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
       </div>
-      <span class="play-con icon-btn">
+      <!-- <span class="play-con icon-btn">
         <svg-icon class="play" icon-class="arrow-right"></svg-icon>
-      </span>
+      </span> -->
     </div>
   </Link>
 </template>

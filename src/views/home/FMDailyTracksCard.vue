@@ -6,7 +6,7 @@
     data-theme="dark"
   >
     <div class="cover">
-      <Image class="cover" v-show="src" :src="src" @load="handle_load_back" />
+      <Image class="cover" :src="url" @load="handle_load_back" />
     </div>
     <div class="right-part">
       <div class="info">
@@ -64,7 +64,6 @@ import rgbaster from "rgbaster";
 import Image from "@/components/Image";
 import Spinner from "@/components/Spinner";
 const store = useStore();
-const src = ref("");
 const style = ref({
   background: "#fff"
 });
@@ -85,14 +84,10 @@ watch(current_state, state => {
     loading_next.value = false;
   }
 });
-watch(url, state => {
-  src.value = state;
-});
 
 const emit = defineEmits(["on-play", "on-next"]);
 const handle_next = () => {
   loading_next.value = true;
-  src.value = "";
   emit("on-next");
 };
 const handle_play = () => {
