@@ -52,10 +52,10 @@
           <br />
           <songs
             v-for="(it, rank) in top_list_songs[index]"
-            :key="it?.al?.id"
+            :key="it?.id"
             :image="it?.al?.picUrl"
             :name="it?.al?.name"
-            :id="it?.al?.id"
+            :id="it?.id"
             :desc="artoString(it?.ar)"
             :index="rank + 1"
           />

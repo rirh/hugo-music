@@ -9,7 +9,7 @@
       class="index"
       v-if="index"
     >
-      {{ index }}
+      {{ `${index}`.padStart(2, "0") }}
     </div>
     <div class="song" v-if="image" @click="handle_play(id)">
       <Image
@@ -58,8 +58,10 @@ defineProps({
   index: Number
 });
 const handle_play = id => {
-  loading.value = true;
-  store.dispatch("fetch_song_data", id);
+  if (id) {
+    loading.value = true;
+    store.dispatch("fetch_song_data", id);
+  }
 };
 </script>
 
