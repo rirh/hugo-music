@@ -7,7 +7,7 @@
       <div class="desc">
         <h1>{{ name }}</h1>
         <slot name="tracks">
-          <div class="con">
+          <div class="con" v-if="tracks">
             <template v-for="(it, i) in tracks" :key="i">
               <span>{{ it.label }}</span>
               <span v-if="i !== tracks.length - 1">·</span>

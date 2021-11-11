@@ -18,9 +18,9 @@
           enter-active-class="animate__animated animate__fadeIn"
           leave-active-class="animate__animated animate__fadeOut"
         >
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
+          <!-- <keep-alive> -->
+          <component :is="Component" />
+          <!-- </keep-alive> -->
         </transition>
       </router-view>
       <CopyRigth />

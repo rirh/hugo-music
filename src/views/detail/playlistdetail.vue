@@ -12,7 +12,6 @@
       :image="playlist?.coverImgUrl"
       :name="playlist?.name"
       :description="playlist?.description"
-      :tracks="tracks"
       :showActions="Boolean(privileges[0]?.id)"
       @on-play="handle_play(privileges[0]?.id)"
     >
@@ -96,7 +95,7 @@
   </div>
 </template>
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getPlayListDetail, getSongDetail } from "@/api";
 import { artoString, formatCount } from "@/utils";
@@ -119,15 +118,18 @@ const init = () => {
   playlist.value = [];
   privileges.value = [];
   const id = route.params.id;
+  if (!id) return;
   getPlayListDetail({ id }).then(response => {
     const { playlist: playlist_res } = response;
     playlist.value = playlist_res;
     const ids = playlist_res?.trackIds.map(it => it.id).toString();
     getSongDetail({ ids }).then(({ songs }) => {
-      privileges.value = songs;
-      loading.value = false;
-      const el = document.getElementById(`top`);
-      el && el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (songs) {
+        privileges.value = songs;
+        loading.value = false;
+        const el = document.getElementById(`top`);
+        el && el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     });
   });
 };
@@ -140,12 +142,14 @@ const to_time = value => {
 const handle_play = id => {
   store.dispatch("fetch_song_data", id);
 };
+onMounted(() => {
+  init();
+});
 watch(
   () => route.params.id,
   () => {
     init();
-  },
-  { immediate: true }
+  }
 );
 </script>
 <style lang="scss" scoped>

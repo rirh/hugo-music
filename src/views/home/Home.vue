@@ -35,7 +35,7 @@
             :image="it.picUrl"
             :name="it.name"
             :id="it.id"
-            :desc="artoString(it?.song?.artists, 'name')"
+            :desc="artoString(it?.song?.artists)"
           />
         </div>
       </div>

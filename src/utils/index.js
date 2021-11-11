@@ -37,3 +37,10 @@ export const formatCount = count => {
   }
   return count;
 };
+
+export const dtToTime = value => {
+  if (!value) return "";
+  const m = `${Math.floor((value / 60) % 60)}`.padStart(2, "0"),
+    s = `${Math.floor(value % 60)}`.padStart(2, "0");
+  return `${m}:${s}`;
+};

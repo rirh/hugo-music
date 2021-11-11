@@ -329,7 +329,7 @@ export default {
           .then(music => {
             audio.src = music.url;
             audio.onloadedmetadata = async () => {
-              if (audio.pause) dispatch("pl");
+              if (audio.pause) dispatch("play");
               commit("update_current_duration", audio.duration);
               resolve();
             };
