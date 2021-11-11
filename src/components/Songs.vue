@@ -1,12 +1,12 @@
 <template>
   <div class="wapper" :class="[current_id === id && 'active']">
     <div
+      class="index"
       :class="[
         index === 3 && 'rank-3',
         index === 2 && 'rank-2',
         index === 1 && 'rank-1'
       ]"
-      class="index"
       v-if="index"
     >
       {{ `${index}`.padStart(2, "0") }}
@@ -18,9 +18,10 @@
         :src="image"
         :alt="name"
       />
-      <div>
-        <Spinner v-if="loading" />
+      <div class="btn-song">
+        <Spinner v-if="loading" color="#fafafa" />
         <svg-icon
+          v-else
           class="play"
           :icon-class="current_id === id ? 'pause' : 'play'"
           alt=""
@@ -35,19 +36,13 @@
 </template>
 
 <script setup>
-import { defineProps, computed, ref, watch } from "vue";
+import { defineProps, computed, ref } from "vue";
 import Image from "@/components/Image";
 import { useStore } from "vuex";
 import Spinner from "@/components/Spinner";
 const store = useStore();
 const current_id = computed(() => store.state.sound.current_id);
-const current_state = computed(() => store.state.sound.current_state);
 const loading = ref(false);
-watch(current_state, state => {
-  if (state !== "play") {
-    loading.value = false;
-  }
-});
 
 defineProps({
   image: String,
@@ -60,7 +55,14 @@ defineProps({
 const handle_play = id => {
   if (id) {
     loading.value = true;
-    store.dispatch("fetch_song_data", id);
+    store
+      .dispatch("fetch_song_data", id)
+      .then(() => {
+        loading.value = false;
+      })
+      .catch(() => {
+        loading.value = false;
+      });
   }
 };
 </script>
@@ -81,7 +83,19 @@ const handle_play = id => {
     font-weight: 600;
     font-size: 18px;
     margin: 0 20px 0 0;
-    columns: #666;
+    color: #999;
+  }
+
+  .rank-1 {
+    // font-size: 0px;
+    color: rgba($color: #000, $alpha: 0.9);
+  }
+  .rank-2 {
+    // font-size: 19px;
+    color: rgba($color: #000, $alpha: 0.8);
+  }
+  .rank-3 {
+    color: rgba($color: #000, $alpha: 0.7);
   }
   .song {
     text-align: center;
@@ -90,6 +104,13 @@ const handle_play = id => {
     transition: transform 0.3s;
     position: relative;
     margin-right: 10px;
+    .btn-song {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: grid;
+      place-items: center;
+    }
 
     .image {
       width: 40px;
@@ -114,40 +135,27 @@ const handle_play = id => {
     font-size: 12px;
     opacity: 0.68;
     line-height: 18px;
-    word-break: break-word;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   }
 }
 .play {
   opacity: 0;
-  position: absolute;
-  left: 50%;
-  top: 50%;
   width: 0.75em;
   height: 0.75em;
   color: #fff;
-  transform: translate(-50%, -50%);
   backdrop-filter: blur(8px);
   background: rgba(255, 255, 255, 0.14);
   padding: 8px;
   border-radius: 50%;
+  transition: all 200ms;
 }
 .active {
   background: rgba(0, 0, 0, 0.14);
-}
-
-.wapper:hover {
-  background-color: rgba(60, 60, 67, 0.1);
-}
-
-.wapper:hover .play {
-  opacity: 0.65;
-}
-
-.wapper:active .play {
-  transform: translate(-50%, -50%) scale(0.85);
 }
 .rank-1 {
   // font-size: 0px;
@@ -159,5 +167,8 @@ const handle_play = id => {
 }
 .rank-3 {
   color: rgba($color: #f00, $alpha: 0.4);
+}
+.wapper:hover .play {
+  opacity: 1;
 }
 </style>

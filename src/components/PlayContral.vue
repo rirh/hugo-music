@@ -13,6 +13,7 @@
         <div class="pic">
           <Image class="img" alt="" :src="detail.picUrl" />
           <div class="contal" @click.stop="handle_toggle_play">
+            <span> </span>
             <svg-icon
               class="play"
               :icon-class="current_state !== 'play' ? 'play' : 'pause'"
@@ -42,6 +43,17 @@
         <span>{{ to_time(current_progress) }}</span> /
         <span>{{ to_time(current_duration) }}</span>
       </div>
+      <div class="action">
+        <button class="play-button" @click.stop="handle_change_mode">
+          <svg-icon :icon-class="enModeToIcon(current_mode)" />
+        </button>
+        <button class="play-button" @click.stop="goNextList">
+          <svg-icon icon-class="list" />
+        </button>
+        <button class="play-button" @click.stop="goNextSong">
+          <svg-icon icon-class="next" />
+        </button>
+      </div>
       <div class="progress" :style="{ '--percent': percentage }"></div>
     </div>
   </transition>
@@ -50,13 +62,21 @@
 <script setup>
 import { computed, watch, defineEmits } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { enModeToIcon } from "@/utils";
 import Image from "@/components/Image";
 
 const store = useStore();
+const router = useRouter();
+const current_mode_options = computed(
+  () => store.state.sound.current_mode_options
+);
 
 const current_duration = computed(() => store.state.sound.current_duration);
 const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
+const current_mode = computed(() => store.state.sound.current_mode);
+
 const current_id = computed(() => store.state.sound.current_id);
 const play_list = computed(() => store.state.sound.play_list);
 const percentage = computed(() => {
@@ -110,6 +130,20 @@ const to_time = val => {
 
 const handle_toggle_play = () => {
   store.dispatch("toggle_play");
+};
+const goNextList = () => {
+  router.push("/next");
+};
+const goNextSong = () => {
+  store.dispatch("next");
+};
+
+const handle_change_mode = () => {
+  const mode = current_mode.value;
+  const options = current_mode_options.value;
+  const index = options.findIndex(it => it === mode);
+  const next_mode = options[index + 1] || options[0];
+  store.commit("update_current_mode", next_mode);
 };
 // const handle_seek_value = val => {
 //   store.dispatch("seek", val);
@@ -274,6 +308,13 @@ const handle_toggle_play = () => {
     font-size: 12px;
     font-weight: bold;
   }
+  .action {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    display: flex;
+  }
+
 
   .progress {
     width: 100%;

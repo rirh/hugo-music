@@ -80,6 +80,7 @@ export default {
     }
   },
   actions: {
+    play_tips() {},
     /**
      * 左耳机伴奏增强 右边声道增强 合并以后再挣钱
      *
@@ -271,68 +272,83 @@ export default {
         dispatch("pause");
       }
     },
-    async fetch_song_data({ commit, dispatch, state }, id) {
-      if (!audio) commit("init_audio_context");
-      dispatch("pause");
-      let song;
-      if (!state.play_list[id]) {
-        const { data, code } = await getSongUrl({ id });
-        if (code !== 200) return;
-        let [music] = data;
-        song = music;
-      } else {
-        song = state.play_list[id];
-      }
-      commit("update_play_list", song);
-      if (!song?.url) return;
-      const url = song?.url?.split("http").join("https");
-      audio.src = url;
-      audio.onloadedmetadata = async () => {
-        dispatch("toggle_play");
-        commit("update_current_duration", audio.duration);
-        const is_detail = state.play_list[id]?.is_detail;
-        if (is_detail) return;
-        const responde_song_detail = await getSongDetail({ ids: id });
-        responde_song_detail.id = id;
-        responde_song_detail.is_detail = true;
-        commit("update_song_detail", responde_song_detail);
-        const responde_lyric_detail = await getLyric({ id });
-        responde_lyric_detail.id = id;
-        commit("update_song_detail", responde_lyric_detail);
-      };
-      audio.onended = () => {
-        audio.currentTime = 0;
-        const list = Object.keys(state.play_list);
-        const id = state.current_id;
-        const randomNum = (min, max) =>
-          Math.floor(Math.random() * (max - min + 1)) + min;
-        const mode_func = {
-          single: () => {
-            dispatch("fetch_song_data", state.current_id);
-          },
-          loop: () => {
-            const index = list.findIndex(it => Number(it) === id);
-            const next_id = list[index + 1] || list[0];
-            dispatch("fetch_song_data", next_id);
-          },
-          random: () => {
-            const num = randomNum(0, list.length);
-            const random_id = list[num];
-            dispatch("fetch_song_data", random_id);
-          }
-        };
-        if (mode_func[state.current_mode]) {
-          mode_func[state.current_mode]();
-        } else {
-          dispatch("pause");
+    next({ dispatch, state }) {
+      const list = Object.keys(state.play_list);
+      const id = state.current_id;
+      const randomNum = (min, max) =>
+        Math.floor(Math.random() * (max - min + 1)) + min;
+      const mode_func = {
+        single: () => {
+          dispatch("fetch_song_data", state.current_id);
+        },
+        loop: () => {
+          const index = list.findIndex(it => Number(it) === id);
+          const next_id = list[index + 1] || list[0];
+          dispatch("fetch_song_data", next_id);
+        },
+        random: () => {
+          const num = randomNum(0, list.length);
+          const random_id = list[num];
+          dispatch("fetch_song_data", random_id);
         }
       };
-      audio.ontimeupdate = () => {
-        commit("update_current_progress", audio.currentTime);
-      };
-      audio.onerror = error => {
-        throw error;
-      };
+      if (mode_func[state.current_mode]) {
+        mode_func[state.current_mode]();
+      } else {
+        dispatch("pause");
+      }
+    },
+    fetch_song_data({ commit, dispatch, state }, id) {
+      return new Promise((resolve, reject) => {
+        if (!audio) commit("init_audio_context");
+        dispatch("pause");
+        const fetch_detail = play_list => {
+          return new Promise((res, err) => {
+            if (!play_list[id]) {
+              Promise.all([
+                getSongUrl({ id }),
+                getSongDetail({ ids: id }),
+                getLyric({ id })
+              ])
+                .then(([{ data, code }, detail, lyric]) => {
+                  if (code !== 200) reject();
+                  if (data[0]?.url) reject();
+                  const url = data[0]?.url?.split("http").join("https");
+                  const music = { ...data[0], ...detail, ...lyric, url };
+                  commit("update_play_list", music);
+                  res(music);
+                })
+                .catch(error => err(error));
+            } else {
+              res(play_list[id]);
+            }
+          });
+        };
+
+        fetch_detail(state.play_list)
+          .then(music => {
+            audio.src = music.url;
+            audio.onloadedmetadata = async () => {
+              if (audio.pause) dispatch("pl");
+              commit("update_current_duration", audio.duration);
+              resolve();
+            };
+            audio.onended = () => {
+              audio.currentTime = 0;
+              dispatch("next");
+            };
+            audio.ontimeupdate = () => {
+              commit("update_current_progress", audio.currentTime);
+            };
+            audio.onerror = error => {
+              reject(error);
+              throw error;
+            };
+          })
+          .catch(() => {
+            reject();
+          });
+      });
     }
   }
 };

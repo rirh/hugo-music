@@ -22,7 +22,7 @@
             class="play-button button-icon "
             @click="handle_play"
           >
-            <Spinner :color="style.text_color" v-if="loading_play" />
+            <Spinner :color="style.text_color" v-if="playloading" />
             <svg-icon
               v-else
               :style="{ color: style.text_color }"
@@ -35,7 +35,7 @@
             @click="handle_next"
             class="play-button button-icon "
           >
-            <Spinner :color="style.text_color" v-if="loading_next" />
+            <Spinner :color="style.text_color" v-if="nextloading" />
             <svg-icon
               v-else
               :style="{ color: style.text_color }"
@@ -50,48 +50,28 @@
 </template>
 
 <script setup>
-import {
-  defineProps,
-  ref,
-  toRefs,
-  defineEmits,
-  computed,
-  watch,
-  nextTick
-} from "vue";
-import { useStore } from "vuex";
+import { defineProps, ref, toRefs, defineEmits, nextTick } from "vue";
 import rgbaster from "rgbaster";
 import Image from "@/components/Image";
 import Spinner from "@/components/Spinner";
-const store = useStore();
 const style = ref({
   background: "#fff"
 });
 const loading = ref(false);
-const loading_play = ref(false);
-const loading_next = ref(false);
-const current_state = computed(() => store.state.sound.current_state);
 
 const props = defineProps({
   url: String,
   name: String,
-  desc: String
+  desc: String,
+  nextloading: Boolean,
+  playloading: Boolean
 });
 const { url } = toRefs(props);
-watch(current_state, state => {
-  if (state !== "play") {
-    loading_play.value = false;
-    loading_next.value = false;
-  }
-});
-
 const emit = defineEmits(["on-play", "on-next"]);
 const handle_next = () => {
-  loading_next.value = true;
   emit("on-next");
 };
 const handle_play = () => {
-  loading_play.value = true;
   emit("on-play");
 };
 const handle_load_back = () => {

@@ -44,12 +44,18 @@ const routes = [
           )
       },
       {
+        path: "/userprofile/:id",
+        name: "userdetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "userdetail" */ "@/views/detail/userdetail.vue"
+          )
+      },
+      {
         path: "/next/",
         name: "next",
         component: () =>
-          import(
-            /* webpackChunkName: "next" */ "@/views/nextlist/index.vue"
-          )
+          import(/* webpackChunkName: "next" */ "@/views/nextlist/index.vue")
       }
     ]
   },

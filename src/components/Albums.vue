@@ -46,6 +46,7 @@ defineProps({
   display: block;
   position: relative;
   cursor: pointer;
+  overflow: hidden;
   .play-con {
     position: absolute;
     left: 50%;

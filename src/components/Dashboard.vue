@@ -53,6 +53,7 @@
           >{{ to_time(current_progress) || "00:00" }}</span
         >
         <vue3-slider
+          v-if="detail.picUrl"
           v-model="progress"
           width="70%"
           :height="4"
@@ -79,7 +80,7 @@
             }"
           />
         </div>
-        <div class="contal" @click.stop="handle_change_mode">
+        <div class="contal" @click.stop="handle_toggle_play">
           <svg-icon
             class="play"
             :icon-class="current_state !== 'play' ? 'play' : 'pause'"
@@ -228,11 +229,12 @@ const progress = computed({
 });
 
 const handle_load_back = () => {
-  const url = detail.value.picUrl; // 图片地址
+  const url = detail?.value?.picUrl; // 图片地址
   const options = {
     ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
     scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
   };
+  if (!url) return;
   rgbaster(url, options)
     .then(response => {
       const [primary, success] = response;

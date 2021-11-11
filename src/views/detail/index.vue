@@ -93,10 +93,10 @@
           >
             <userprofiles
               v-for="it in it.values"
-              :key="it.id"
+              :key="it.userId"
               :image="it?.avatarUrl"
               :name="it.nickname"
-              :id="it.id"
+              :id="it.userId"
             />
           </div>
           <div
@@ -203,22 +203,6 @@ const init = () => {
 </script>
 
 <style lang="scss" scoped>
-.box {
-  display: grid;
-  gap: 44px 24px;
-}
-.fr-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-.fr-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-.fr-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-.fr-5 {
-  grid-template-columns: repeat(5, 1fr);
-}
 .title {
   display: flex;
   justify-content: space-between;

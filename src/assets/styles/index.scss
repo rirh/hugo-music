@@ -49,7 +49,6 @@
   --color-primary-bg-for-transparent: rgba(189, 207, 255, 0.28);
   --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
   --html-overflow-y: overlay;
-
 }
 
 :root,
@@ -147,17 +146,49 @@ body {
   gap: 44px 24px;
 }
 .fr-2 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .fr-3 {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .fr-4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .fr-5 {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 .fr-6 {
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.play-button {
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  width: 44px;
+  transition: 0.2s;
+  cursor: default;
+  z-index: 1;
+  margin-right: 20px;
+  padding-left: 1px;
+
+  .svg-icon {
+    margin-left: 4px;
+    height: 16px;
+    width: 16px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.44);
+  }
+  &:active {
+    transform: scale(0.94);
+  }
 }

@@ -19,25 +19,16 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed, watch } from "vue";
-import { useStore } from "vuex";
+import { defineProps, defineEmits } from "vue";
 import Image from "@/components/Image";
 import Spinner from "@/components/Spinner";
 
 defineProps({
-  url: String
-});
-const store = useStore();
-const loading = ref(false);
-const current_state = computed(() => store.state.sound.current_state);
-watch(current_state, state => {
-  if (state !== "play") {
-    loading.value = false;
-  }
+  url: String,
+  loading: Boolean
 });
 const emit = defineEmits(["on-play"]);
 const handle_play = () => {
-  loading.value = true;
   emit("on-play");
 };
 </script>

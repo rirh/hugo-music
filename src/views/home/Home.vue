@@ -1,22 +1,20 @@
 <template>
-  <transition
-    enter-active-class="animate__animated animate__fadeIn"
-    leave-active-class="animate__animated animate__fadeOut"
-  >
+  <div>
     <Skeleton
       style="margin:3%"
-      v-if="loading"
+      v-show="loading"
       width="74%"
       height="70vh"
       animated
       bg="transparent"
     />
-    <div v-else class="container">
+    <div v-show="!loading" class="container">
       <h1 v-show="daily.coverImgUrl">浏览</h1>
       <div class="recommand box fr-2">
         <DailyTracksCard
           v-show="daily.coverImgUrl"
           :url="daily.coverImgUrl"
+          :loading="loading_daily"
           @on-play="handle_play_daily()"
         />
         <FMDailyTracksCard
@@ -24,13 +22,15 @@
           :url="fm_daily.url"
           :name="fm_daily.name"
           :desc="fm_daily.desc"
+          :nextloading="loading_fm_next"
+          :playloading="loading_fm_play"
           @on-play="handle_play_fm"
           @on-next="handle_next_fm"
         />
       </div>
       <h1>最新推出</h1>
       <div class="song fr-2 ">
-        <div  v-for="(it, index) in new_song_list" :key="index">
+        <div v-for="(it, index) in new_song_list" :key="index">
           <songs
             :image="it.picUrl"
             :name="it.name"
@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
@@ -108,11 +108,17 @@ const aritsts_list = ref([]);
 
 const daily = ref([]);
 const fm_daily = ref({});
-const loading = ref(true);
+const loading = ref(false);
+const loading_daily = ref(false);
+const loading_fm_play = ref(false);
+const loading_fm_next = ref(false);
 
 const RandomNum = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 onMounted(() => {
+  init();
+});
+const init = () => {
   loading.value = true;
   Promise.all([
     getTopList(),
@@ -128,7 +134,7 @@ onMounted(() => {
           "飙升榜",
           "新歌榜",
           "原创榜",
-          "云音乐欧美热歌榜",
+          "美国Billboard榜",
           "网络热歌榜"
         ];
         top_list.value = emun.map(it =>
@@ -149,7 +155,7 @@ onMounted(() => {
       loading.value = false;
       throw error;
     });
-});
+};
 const fetch_top_song = () => {
   const fetch_all_desc_arr = top_list.value.map(it =>
     getPlayListDetail({ id: it.id })
@@ -166,6 +172,7 @@ const fetch_top_song = () => {
     });
 };
 const handle_play_daily = async () => {
+  loading_daily.value = true;
   const { playlist } = await getPlayListDetail({ id: daily.value.id });
   if (!playlist.trackIds) return;
   const num = RandomNum(1, playlist.trackIds.length - 1);
@@ -173,11 +180,13 @@ const handle_play_daily = async () => {
   handle_play(id);
 };
 const handle_play_fm = () => {
+  loading_fm_play.value = true;
   handle_play(fm_daily.value.id);
 };
 const handle_next_fm = async () => {
+  loading_fm_next.value = true;
   await toggle_play_list();
-  handle_play_fm();
+  handle_play(fm_daily.value.id);
 };
 const toggle_play_list = async () => {
   const fm_num = RandomNum(1, quality_song_list.value.length - 1);
@@ -204,7 +213,18 @@ const fetch_list_detail = async id => {
   return result;
 };
 const handle_play = id => {
-  store.dispatch("fetch_song_data", id);
+  store
+    .dispatch("fetch_song_data", id)
+    .then(() => {
+      loading_daily.value = false;
+      loading_fm_play.value = false;
+      loading_fm_next.value = false;
+    })
+    .catch(() => {
+      loading_daily.value = false;
+      loading_fm_play.value = false;
+      loading_fm_next.value = false;
+    });
 };
 </script>
 
@@ -225,6 +245,7 @@ const handle_play = id => {
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
   padding: 10px;
+  overflow: hidden;
 }
 .song {
   display: grid;

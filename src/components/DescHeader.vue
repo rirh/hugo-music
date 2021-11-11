@@ -1,24 +1,29 @@
 <template>
   <div>
     <div v-if="image" class="base-info">
-      <Image animate="animate__fadeIn" v-if="image" :src="image" />
+      <slot name="image">
+        <Image animate="animate__fadeIn" v-if="image" :src="image" />
+      </slot>
       <div class="desc">
         <h1>{{ name }}</h1>
-        <div class="con">
-          <template v-for="(it, i) in tracks" :key="i">
-            <span>{{ it.label }}</span>
-            <span v-if="i !== tracks.length - 1">·</span>
-          </template>
-        </div>
+        <slot name="tracks">
+          <div class="con">
+            <template v-for="(it, i) in tracks" :key="i">
+              <span>{{ it.label }}</span>
+              <span v-if="i !== tracks.length - 1">·</span>
+            </template>
+          </div>
+        </slot>
         <div @click="show = true" class="det" :title="description">
           {{ description }}
         </div>
-        <br /><br /><br />
-        <div>
-          <Button v-if="showActions" @click="handle_play" icon-class="play"
-            >播放</Button
-          >
-        </div>
+        <slot name="action">
+          <div class="action">
+            <Button v-if="showActions" @click="handle_play" icon-class="play"
+              >播放</Button
+            >
+          </div>
+        </slot>
       </div>
     </div>
     <Modal
@@ -107,6 +112,9 @@ const handle_close = () => {
       -webkit-line-clamp: 3;
       overflow: hidden;
       cursor: pointer;
+    }
+    .action {
+      margin-top: 30px;
     }
   }
 }
