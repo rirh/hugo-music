@@ -1,5 +1,4 @@
 import { getSongUrl, getSongDetail, getLyric } from "@/api";
-import { artoString } from "@/utils";
 
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
@@ -54,17 +53,6 @@ export default {
     },
     update_current_id(state, payload) {
       state.current_id = payload;
-    },
-    update_song_detail(state, payload) {
-      let song = state.play_list[payload.id];
-      song = { ...song, ...payload };
-      state.play_list[payload.id] = song;
-      if (song.is_detail) {
-        const songs = song?.songs[0];
-        const name = songs?.name || "";
-        const auth = artoString(songs.ar);
-        document.title = `${name}-${auth}`;
-      }
     },
     update_current_url(state, payload) {
       state.current_url = payload;
@@ -327,6 +315,7 @@ export default {
 
         fetch_detail(state.play_list)
           .then(music => {
+            commit("update_current_id", music.id);
             audio.src = music.url;
             audio.onloadedmetadata = async () => {
               if (audio.pause) dispatch("play");

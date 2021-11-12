@@ -313,8 +313,10 @@ const handle_change_mode = () => {
     right: 0;
     bottom: 20px;
     display: flex;
+    .play-button {
+      padding-left: 1px;
+    }
   }
-
 
   .progress {
     width: 100%;

@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <button @click="handle_play" class="play-button">
+    <button @click="handle_play" class="play-buttons">
       <Spinner color="#fff" v-if="loading" />
       <svg-icon v-else class="play" icon-class="next" />
     </button>
@@ -87,7 +87,7 @@ const handle_play = () => {
   }
 }
 
-.play-button {
+.play-buttons {
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: white;
