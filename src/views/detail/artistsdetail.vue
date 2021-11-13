@@ -1,111 +1,127 @@
 <template>
   <div class="wapper">
-    <div v-if="artist?.cover" class="base-info">
-      <Image
-        animate="animate__fadeIn"
-        v-if="artist?.cover"
-        :src="artist?.cover || ''"
-      />
-      <div class="desc">
-        <h1>{{ artist.name }}</h1>
-        <div class="title">
-          {{ artist?.identifyTag?.toString() }}
-          {{ secondaryExpertIdentiy?.toString() }}
-          {{ artist?.transNames?.toString() }}
-        </div>
-        <div class="con">
-          <span>{{ artist.musicSize }} 首歌</span> ·
-          <span>{{ artist.albumSize }} 张专辑</span> ·
-          <span>{{ artist.mvSize }} 个 MV</span>
-        </div>
-        <div class="det">{{ artist.briefDesc }}</div>
-        <br />
-        <div>
-          <Button icon-class="play">播放</Button>
-        </div>
-      </div>
-    </div>
-    <ul class="songs">
-      <li
-        class="track"
-        @click="handle_play(it.id)"
-        v-for="it in privileges"
-        :key="it.id"
-        :class="{ active: it.id === current_id }"
-      >
-        <div>
-          <Image
-            class="pic"
-            animate="animate__fadeInUp"
-            v-if="it?.al?.picUrl"
-            :src="it?.al?.picUrl || ''"
-          />
-        </div>
+    <DescHeader
+      :image="artist?.cover"
+      :name="artist?.name"
+      shape="round"
+      :description="artist?.briefDesc"
+    >
+      <template v-slot:tracks>
         <div>
           <div class="title">
-            <strong :title="it.name">{{ it.name }} </strong>
-            <span
-              :title="it?.alia?.toString() ? `(${it?.alia?.toString()})` : ''"
-            >
-              {{
-                it?.alia?.toString() ? `(${it?.alia?.toString()})` : ""
-              }}</span
-            >
+            {{ artist?.identifyTag?.toString() }}
+            {{ secondaryExpertIdentiy?.toString() }}
+            {{ artist?.transNames?.toString() }}
           </div>
-          <div class="title ar" :title="artoString(it.ar)">
-            {{ artoString(it.ar) }}
+          <div class="con">
+            <span>{{ artist.musicSize }} 首歌</span> ·
+            <span>{{ artist.albumSize }} 张专辑</span> ·
+            <span>{{ artist.mvSize }} 个 MV</span>
           </div>
         </div>
-        <div class="publishTime">
-          {{ dayjs(it.publishTime).format("YYYY年MM月DD日") }}
+      </template>
+      <template v-slot:action>
+        <br />
+        <div class="action">
+          <Button
+            v-if="Boolean(songslist[0]?.id)"
+            @click="handle_play"
+            icon-class="play"
+            >播放</Button
+          >&nbsp;
+          <!-- <Button
+            shape="round"
+            v-if="Boolean(songslist[0]?.id)"
+            @click="handle_play"
+            icon-class="plus"
+            class="play-button"
+          ></Button> -->
         </div>
-        <div class="time">
-          {{ to_time(it.dt) }}
-        </div>
-      </li>
-    </ul>
+      </template>
+    </DescHeader>
+    <h1>热门</h1>
+    <div class="box fr-3" style="gap: 2px 0px;">
+      <songs
+        v-for="it in songslist"
+        :key="it.id"
+        :image="it?.al?.picUrl"
+        :name="it.name"
+        :id="it.id"
+        :desc="it?.ar"
+      />
+    </div>
+    <h1>专辑</h1>
+    <div class="box fr-5">
+      <albums
+        v-for="it in albumslist"
+        :key="it.id"
+        :image="it.picUrl"
+        :name="it.name"
+        :desc="it.artists"
+        :id="it.id"
+      />
+    </div>
+    <h1>mv</h1>
+    <div class="box fr-4">
+      <mvs v-for="it in mvslist" :key="it.id" :item="it" />
+    </div>
   </div>
 </template>
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { getArtistDetail } from "@/api";
-import { artoString } from "@/utils";
-import dayjs from "dayjs";
-import Image from "@/components/Image";
+import {
+  getArtistDetail,
+  getArtistTopSong,
+  getArtistAlbum,
+  getArtistMv
+} from "@/api";
+import DescHeader from "@/components/DescHeader";
+import songs from "@/components/Songs.vue";
+import albums from "@/components/Albums.vue";
+import mvs from "@/components/Mvs.vue";
 import Button from "@/components/Button";
 import { useStore } from "vuex";
 const store = useStore();
-const current_id = computed(() => store.state.sound.current_id);
 
 const route = useRoute();
 const artist = ref({});
-const privileges = ref([]);
 const secondaryExpertIdentiy = ref([]);
+const songslist = ref([]);
+const albumslist = ref([]);
+const mvslist = ref([]);
+const loading = ref(true);
 
 const init = () => {
+  loading.value = true;
   const id = route.params.id;
-  getArtistDetail({ id }).then(response => {
-    const {
-      artist: artist_res,
-      secondaryExpertIdentiy: secondaryExpertIdentiy_res
-    } = response.data;
-    artist.value = artist_res;
-    secondaryExpertIdentiy.value = secondaryExpertIdentiy_res.map(
-      it => it.expertIdentiyName
-    );
-    // const ids = playlist_res?.trackIds.map(it => it.id).toString();
-    // getSongDetail({ ids }).then(({ songs }) => {
-    //   privileges.value = songs;
-    // });
-  });
+  Promise.all([
+    getArtistDetail({ id }),
+    getArtistTopSong({ id }),
+    getArtistAlbum({ id, limit: 10 }),
+    getArtistMv({ id })
+  ])
+    .then(response => {
+      loading.value = false;
+      console.log(response);
+      const [artistDetail, songs, albums, mvs] = response;
+      const {
+        artist: artist_res,
+        secondaryExpertIdentiy: secondaryExpertIdentiy_res
+      } = artistDetail.data;
+      artist.value = artist_res;
+      secondaryExpertIdentiy.value = secondaryExpertIdentiy_res.map(
+        it => it.expertIdentiyName
+      );
+      songslist.value = songs.songs;
+      albumslist.value = albums.hotAlbums;
+      mvslist.value = mvs.mvs;
+    })
+    .catch(() => {
+      loading.value = false;
+    });
 };
-const to_time = value => {
-  if (!value) return "";
-  const m = `${Math.floor((value / 60) % 60)}`.padStart(2, "0"),
-    s = `${Math.floor(value % 60)}`.padStart(2, "0");
-  return `${m}:${s}`;
-};
+
 const handle_play = id => {
   store.dispatch("fetch_song_data", id);
 };

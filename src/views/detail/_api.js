@@ -33,10 +33,36 @@ export function getAlbumDetail(params) {
   });
 }
 
-// 获取精品歌单
+// 获取歌单详情
 export function getAlbum(params) {
   return request({
     url: `/album`,
+    method: "get",
+    params
+  });
+}
+// 获取歌手热门50首
+export function getArtistTopSong(params) {
+  return request({
+    url: `/artist/top/song`,
+    method: "get",
+    params
+  });
+}
+
+// 获取歌手专辑
+export function getArtistAlbum(params) {
+  return request({
+    url: `/artist/album`,
+    method: "get",
+    params
+  });
+}
+
+// 获取歌手MV
+export function getArtistMv(params) {
+  return request({
+    url: `/artist/mv`,
     method: "get",
     params
   });

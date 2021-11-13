@@ -1,3 +1,4 @@
+
 <template>
   <button :style="buttonStyle" :class="color">
     <svg-icon

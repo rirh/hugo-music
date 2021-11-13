@@ -19,7 +19,9 @@
         <div>
           <div class="title">
             <h1 :id="it.label">{{ it.label || "" }}</h1>
-            <span>更多</span>
+            <Link :to="`/detail/${route.params.keywords}/${it.label}`">
+              <span>更多</span>
+            </Link>
           </div>
           <div
             class="box fr-3"
@@ -124,6 +126,7 @@ import userprofiles from "@/components/Userprofiles.vue";
 import mvs from "@/components/Mvs.vue";
 import djRadios from "@/components/DjRadios.vue";
 import videos from "@/components/Videos.vue";
+import Link from "@/components/Link";
 const route = useRoute();
 // const router = useRouter();
 const response = ref([]);

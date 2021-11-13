@@ -20,6 +20,15 @@ const routes = [
           import(/* webpackChunkName: "detail" */ "@/views/detail/index.vue")
       },
       {
+        path: "/detail/:keywords/:type",
+        name: "detaillist",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "detail" */ "@/views/detail/detaillist.vue")
+      },
+      {
         path: "/albums/:id",
         name: "albums",
         component: () =>

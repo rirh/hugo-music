@@ -2,7 +2,12 @@
   <div>
     <div v-if="image" class="base-info">
       <slot name="image">
-        <Image animate="animate__fadeIn" v-if="image" :src="image" />
+        <Image
+          :class="[shape && 'shape']"
+          animate="animate__fadeIn"
+          v-if="image"
+          :src="image"
+        />
       </slot>
       <div class="desc">
         <h1>{{ name }}</h1>
@@ -50,6 +55,7 @@ defineProps({
   image: String,
   name: String,
   description: String,
+  shape: String,
   tracks: {
     type: Array,
     default: () => []
@@ -89,6 +95,9 @@ const handle_close = () => {
     border: 1px solid rgba(0, 0, 0, 0.04);
     filter: blur(16 px) opacity(0.6);
     transform: scale(0.92, 0.96);
+  }
+  .shape {
+    border-radius: 50%;
   }
   .desc {
     margin-left: 20px;

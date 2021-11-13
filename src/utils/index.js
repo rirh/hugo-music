@@ -44,3 +44,18 @@ export const dtToTime = value => {
     s = `${Math.floor(value % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
 };
+
+export const typeToText = value => {
+  if (!value) return "";
+  const list = {
+    songs: "单曲",
+    albums: "专辑",
+    artists: "歌手",
+    playlists: "歌单",
+    userprofiles: "用户",
+    mvs: "MV",
+    djRadios: "电台",
+    videos: "视频"
+  };
+  return list[value] || "";
+};

@@ -191,3 +191,7 @@ body {
     transform: scale(0.94);
   }
 }
+
+.no-select {
+  user-select: none;
+}

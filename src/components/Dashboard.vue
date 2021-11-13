@@ -31,17 +31,24 @@
           :style="{
             color: style.text_color
           }"
+          @click="handle_go_albums(detail.al_name_id)"
         >
           专辑： <span class="link">{{ detail.al_name }}</span>
         </strong>
         <strong
           class="ar-name"
-          :title="detail.ar_name"
+          :title="detail?.ar_name?.map(it => it.name).toString()"
           :style="{
             color: style.text_color
           }"
         >
-          歌手：<span class="link">{{ detail.ar_name }}</span>
+          歌手：<span
+            class="link"
+            v-for="(it, i) in detail.ar_name"
+            :key="it.id"
+            @click="handle_go_artists(it.id)"
+            >{{ it.name }}{{ i !== detail.ar_name.length - 1 ? "/" : "" }}</span
+          >
         </strong>
       </div>
       <br />
@@ -50,6 +57,7 @@
           :style="{
             color: style.text_color
           }"
+          class="no-select"
           >{{ to_time(current_progress) || "00:00" }}</span
         >
         <vue3-slider
@@ -67,6 +75,7 @@
           :style="{
             color: style.text_color
           }"
+          class="no-select "
           >{{ to_time(current_duration) }}</span
         >
       </div>
@@ -111,6 +120,7 @@
         >
           <li
             v-if="lyric"
+            class="no-select"
             @click="handle_set_seek(detail.lyric_arr_lyric[i])"
             :id="`lyric-${Object.keys(detail.lyric || {})[i]}`"
             :style="{
@@ -195,6 +205,7 @@
 <script setup>
 import { computed, watch, ref } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import rgbaster from "rgbaster";
 
 import vue3Slider from "vue3-slider";
@@ -204,6 +215,7 @@ import Button from "@/components/Button";
 import { enModeToIcon } from "@/utils";
 
 const store = useStore();
+const router = useRouter();
 const handle_close_dashboard = () => {
   store.commit("update_dashboard_open", false);
 };
@@ -267,7 +279,8 @@ const detail = computed(() => {
       result.name = detail.name;
       result.picUrl = detail.al.picUrl;
       result.al_name = detail.al.name;
-      result.ar_name = detail.ar.map(e => e.name).join("/");
+      result.al_name_id = detail.al.id;
+      result.ar_name = detail.ar;
 
       const lyr = song?.lrc?.lyric;
       if (lyr) {
@@ -350,6 +363,14 @@ const handle_change_mode = () => {
   const next_mode = options[index + 1] || options[0];
   store.commit("update_current_mode", next_mode);
 };
+const handle_go_albums = id => {
+  router.push(`/albums/${id}`);
+  handle_close_dashboard();
+};
+const handle_go_artists = id => {
+  router.push(`/artists/${id}`);
+  handle_close_dashboard();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -372,6 +393,20 @@ const handle_change_mode = () => {
       margin: 0 auto;
       text-align: center;
       cursor: pointer;
+      .al-name {
+        width: 25vw;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ar-name {
+        width: 15vw;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
     .pic {
       margin: 0 auto;
@@ -383,6 +418,7 @@ const handle_change_mode = () => {
       user-select: none;
       object-fit: cover;
     }
+
     .slider {
       display: flex;
       align-items: center;
