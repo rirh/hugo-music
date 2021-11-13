@@ -44,7 +44,7 @@
         <div class="card" v-for="(it, index) in top_list" :key="index">
           <playlists
             :name="it.name"
-            :desc="it.updateFrequency"
+            :oldesc="it.updateFrequency"
             :count="formatCount(it.playCount)"
             :id="it.id"
           />

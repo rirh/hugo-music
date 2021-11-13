@@ -14,6 +14,11 @@
         <div v-if="desc" class="auth">
           <LinkWithArtists :artisits="desc"></LinkWithArtists>
         </div>
+        <div v-if="oldesc" class="auth">
+          <div>
+            {{ oldesc }}
+          </div>
+        </div>
         <div v-if="count" class="count" :title="count">
           <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
         </div>
@@ -38,6 +43,7 @@ defineProps({
     type: Array,
     default: () => []
   },
+  oldesc: String,
   count: String,
   id: Number,
   path: {
