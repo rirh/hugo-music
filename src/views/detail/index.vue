@@ -32,7 +32,7 @@
               :image="it?.al?.picUrl"
               :name="it.name"
               :id="it.id"
-              :desc="artoString(it?.song?.artists, 'name')"
+              :desc="it?.song?.artists"
             />
           </div>
           <div
@@ -54,7 +54,7 @@
               :key="it.id"
               :image="it.picUrl"
               :name="it.name"
-              :desc="artoString(it.artists, 'name')"
+              :desc="it.artists"
               :id="it.id"
             />
           </div>
@@ -129,7 +129,6 @@
 import { onMounted, ref, nextTick, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
-import { artoString } from "@/utils";
 import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";

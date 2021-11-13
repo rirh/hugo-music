@@ -19,7 +19,7 @@
 <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { artoString, dtToTime } from "@/utils";
+import { dtToTime } from "@/utils";
 import Songs from "@/components/Songs";
 
 const store = useStore();
@@ -31,7 +31,7 @@ const current_song = computed(() => {
   if (it) {
     const image = it?.songs[0]?.al?.picUrl;
     const name = it?.songs[0]?.name;
-    const auth = artoString(it?.songs[0]?.ar);
+    const auth = it?.songs[0]?.ar;
     const durt = dtToTime(it?.songs[0]?.dt);
     const id = it.id;
     result = {
@@ -74,7 +74,7 @@ const list = computed(() => {
     const it = play_list[key];
     const image = it?.songs[0]?.al?.picUrl;
     const name = it?.songs[0]?.name;
-    const auth = artoString(it?.songs[0]?.ar);
+    const auth = it?.songs[0]?.ar;
     const durt = dtToTime(it?.songs[0]?.dt);
     const id = it.id;
     return {

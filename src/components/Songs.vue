@@ -1,5 +1,5 @@
 <template>
-  <div class="wapper" :class="[current_id === id && 'active']">
+  <div class="wapper" :class="[current_id === id && !notShowHover && 'active']">
     <div
       class="index"
       :class="[
@@ -29,8 +29,13 @@
       </div>
     </div>
     <div class="">
-      <div class="title" :title="name">{{ name }}</div>
-      <div class="auth" :title="desc">{{ desc }}</div>
+      <div class="title" :title="name">
+        {{ name }}
+        <span v-if="subtitle" :title="subtitle">{{ subtitle }}</span>
+      </div>
+      <div class="auth" :title="artoString(desc)">
+        <LinkWithArtists :artisits="desc" />
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +44,9 @@
 import { defineProps, computed, ref } from "vue";
 import Image from "@/components/Image";
 import { useStore } from "vuex";
+import { artoString } from "@/utils";
 import Spinner from "@/components/Spinner";
+import LinkWithArtists from "@/components/LinkWithArtists";
 const store = useStore();
 const current_id = computed(() => store.state.sound.current_id);
 const loading = ref(false);
@@ -48,9 +55,14 @@ defineProps({
   image: String,
   title: String,
   name: String,
-  desc: String,
+  desc: {
+    type: Array,
+    default: () => []
+  },
   id: Number,
-  index: Number
+  index: Number,
+  subtitle: String,
+  notShowHover: Boolean
 });
 const handle_play = id => {
   if (id) {
@@ -130,6 +142,11 @@ const handle_play = id => {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
+    span {
+      color: #aeaeae;
+      margin-left: 4px;
+      font-weight: 600;
+    }
   }
   .auth {
     font-size: 12px;

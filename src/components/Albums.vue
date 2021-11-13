@@ -11,7 +11,9 @@
       </div>
       <div>
         <div v-if="name" class="title" :title="name">{{ name }}</div>
-        <div v-if="desc" class="auth" :title="desc">{{ desc }}</div>
+        <div v-if="desc" class="auth">
+          <LinkWithArtists :artisits="desc"></LinkWithArtists>
+        </div>
         <div v-if="count" class="count" :title="count">
           <svg-icon class="icon" icon-class="play"></svg-icon> {{ count }}
         </div>
@@ -27,6 +29,7 @@
 import { defineProps } from "vue";
 import Image from "@/components/Image";
 import Link from "@/components/Link";
+import LinkWithArtists from "@/components/LinkWithArtists";
 
 defineProps({
   image: String,

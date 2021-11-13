@@ -300,7 +300,7 @@ export default {
               ])
                 .then(([{ data, code }, detail, lyric]) => {
                   if (code !== 200) reject();
-                  if (data[0]?.url) reject();
+                  if (!data[0].url) reject();
                   const url = data[0]?.url?.split("http").join("https");
                   const music = { ...data[0], ...detail, ...lyric, url };
                   commit("update_play_list", music);
@@ -331,7 +331,6 @@ export default {
             };
             audio.onerror = error => {
               reject(error);
-              throw error;
             };
           })
           .catch(() => {

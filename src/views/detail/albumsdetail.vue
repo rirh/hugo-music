@@ -1,73 +1,92 @@
 <template>
-  <div class="wapper">
-    <div v-if="playlist?.coverImgUrl" class="base-info">
-      <Image
-        animate="animate__fadeIn"
-        v-if="playlist?.coverImgUrl"
-        :src="playlist?.coverImgUrl || ''"
-      />
-      <div class="desc">
-        <h1>{{ playlist.name }}</h1>
-        <div class="con">
-          最后更新于 {{ dayjs(playlist.updateTime).format("YYYY年MM月DD日") }} ·
-          {{ playlist.trackCount }} 首歌
-        </div>
-        <div class="det">{{ playlist.description }}</div>
-        <br /><br /><br />
+  <Skeleton
+    style="margin:3%"
+    v-if="loading"
+    width="74%"
+    height="70vh"
+    animated
+    bg="transparent"
+  />
+  <div class="albumsdetail" v-else>
+    <DescHeader
+      :image="playlist?.picUrl"
+      :name="playlist?.name"
+      :description="playlist?.description"
+    >
+      <template v-slot:tracks>
         <div>
+          <div class="">
+            <Link
+              class="link"
+              :to="`/artists/${it.id}`"
+              v-for="it in playlist.artists"
+              :key="it.id"
+            >
+              <strong>{{ it.name }}</strong>
+            </Link>
+
+            {{
+              `发布于${dayjs(playlist?.publishTime).format("YYYY年MM月DD日")}`
+            }}
+            ·
+            <span @click="handle_to_song">{{ `${playlist?.size}首音乐` }}</span>
+          </div>
+          <div class="count">
+            {{ !playlist.onSale && "不" }}提供售卖
+            <span class="link">
+              {{ playlist.company && ` · ${playlist?.company}` }}
+            </span>
+
+            <span class="link">
+              {{ playlist.subType && ` · ${playlist?.subType}` }}
+            </span>
+          </div>
+        </div>
+      </template>
+      <template v-slot:action>
+        <br />
+        <div class="action">
           <Button
-            v-if="privileges[0]?.id"
-            @click="handle_play(privileges[0]?.id)"
+            v-if="Boolean(privileges[0]?.id)"
+            @click="handle_play"
             icon-class="play"
             >播放</Button
-          >
+          >&nbsp;
+          <!-- <Button
+            shape="round"
+            v-if="Boolean(privileges[0]?.id)"
+            @click="handle_play"
+            icon-class="plus"
+            class="play-button"
+          ></Button> -->
         </div>
-      </div>
-    </div>
-    <ul class="songs">
+      </template>
+    </DescHeader>
+    <ul class="songs" name="songs" id="songs">
       <li
         class="track"
         @click="handle_play(it.id)"
-        v-for="(it, i) in privileges"
+        v-for="it in privileges"
         :key="it.id"
         :class="{ active: it.id === current_id }"
       >
-        <div class="index">
-          {{ i + 1 }}
-        </div>
-        <div>
-          <Image
-            class="pic"
-            animate="animate__fadeInUp"
-            v-if="it?.al?.picUrl"
-            :src="it?.al?.picUrl || ''"
-          />
-        </div>
-        <div>
-          <div class="title">
-            <strong :title="it.name">{{ it.name }} </strong>
-            <span
-              :title="it?.alia?.toString() ? `(${it?.alia?.toString()})` : ''"
-            >
-              {{
-                it?.alia?.toString() ? `(${it?.alia?.toString()})` : ""
-              }}</span
-            >
-          </div>
-          <div class="title ar" :title="artoString(it.ar)">
-            {{ artoString(it.ar) }}
-          </div>
-        </div>
-        <div class="publishTime">
-          {{
+        <SongWithInfo
+          :image="it?.al?.picUrl"
+          :name="it?.name"
+          :subtitle="
+            `${it.alia ? it.alia.toString() : ''} ${
+              it.tns ? it.tns.toString() : ''
+            }`
+          "
+          :id="it?.id"
+          :desc="it?.ar"
+          :publishTime="
             it.publishTime
-              ? dayjs(it.publishTime).format("YYYY年MM月DD日")
+              ? dayjs(it.publishTime).format('YYYY年MM月DD日')
               : it.name
-          }}
-        </div>
-        <div class="time">
-          {{ to_time(it.dt) }}
-        </div>
+          "
+          :duration="to_time(it.dt / 1000)"
+        />
       </li>
     </ul>
   </div>
@@ -75,11 +94,14 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
-import { getPlayListDetail, getSongDetail } from "@/api";
-import { artoString } from "@/utils";
+import { getSongDetail, getAlbum } from "@/api";
 import dayjs from "dayjs";
-import Image from "@/components/Image";
 import Button from "@/components/Button";
+import DescHeader from "@/components/DescHeader";
+import SongWithInfo from "@/components/SongWithInfo";
+import Skeleton from "@/components/Skleleton";
+import Link from "@/components/Link";
+
 import { useStore } from "vuex";
 const store = useStore();
 const current_id = computed(() => store.state.sound.current_id);
@@ -87,17 +109,28 @@ const current_id = computed(() => store.state.sound.current_id);
 const route = useRoute();
 const playlist = ref({});
 const privileges = ref([]);
-
+const loading = ref(true);
 const init = () => {
   const id = route.params.id;
-  getPlayListDetail({ id }).then(response => {
-    const { playlist: playlist_res } = response;
-    playlist.value = playlist_res;
-    const ids = playlist_res?.trackIds.map(it => it.id).toString();
-    getSongDetail({ ids }).then(({ songs }) => {
-      privileges.value = songs;
+  loading.value = true;
+  getAlbum({ id })
+    .then(response => {
+      const { album, songs: s } = response;
+      playlist.value = album;
+      if (!s) return;
+      const ids = s.map(it => it.id).toString();
+      getSongDetail({ ids })
+        .then(({ songs }) => {
+          loading.value = false;
+          privileges.value = songs;
+        })
+        .catch(() => {
+          loading.value = false;
+        });
+    })
+    .catch(() => {
+      loading.value = false;
     });
-  });
 };
 const to_time = value => {
   if (!value) return "";
@@ -115,128 +148,33 @@ watch(
   },
   { immediate: true }
 );
+const handle_to_song = () => {
+  document.getElementById("songs").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+};
 </script>
 <style lang="scss" scoped>
-.wapper {
+.albumsdetail {
   padding: 20px;
-  .base-info {
-    display: grid;
-    grid-template-columns: 270px auto;
-    margin-bottom: 40px;
-    width: 100%;
-    // background-color: #fff;
-    border-radius: 0.75em;
-    padding: 20px;
-    box-sizing: border-box;
-    // align-items: flex-end;
-    img {
-      height: 270px;
-      width: 100%;
-      border-radius: 0.75em;
-      user-select: none;
-      aspect-ratio: 1/1;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      filter: blur(16 px) opacity(0.6);
-      transform: scale(0.92, 0.96);
-    }
-    .desc {
-      margin-left: 20px;
-      flex: 1;
-      align-self: center;
-      h1 {
-        font-weight: 36px;
-        font-weight: 700;
-      }
-      .con {
-        font-size: 14px;
-        opacity: 0.68;
-        margin-top: 2px;
-      }
-      .det {
-        font-size: 14px;
-        opacity: 0.68;
-        margin-top: 24px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
-        cursor: pointer;
-      }
-    }
+  .count {
+    font-size: 12px;
   }
-  .songs {
-    border-radius: 0.75em;
-    box-sizing: border-box;
-    padding: 0 40px;
-    .index {
-      font-weight: 600;
-      font-size: 18px;
-      margin: 0 20px;
-    }
-    ul,
-    li {
-      padding: 0;
-      margin: 0;
-    }
-    li {
-      list-style-type: none;
-      display: flex;
-      align-items: center;
-      padding: 8px;
-      border-radius: 12px;
-      user-select: none;
-      .pic {
-        border-radius: 8px;
-        height: 46px;
-        width: 46px;
-        margin-right: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.04);
-        cursor: pointer;
-      }
-      .pic:hover {
-        filter: drop-shadow(100 200 0 black);
-      }
-      .title {
-        width: 25vw;
-        min-width: 30vw;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
-        font-size: 18px;
-        span {
-          color: #aeaeae;
-          margin-left: 4px;
-          font-weight: 600;
-        }
-      }
-      .ar {
-        font-size: 13px;
-      }
-      .publishTime {
-        width: 25vw;
-        text-align: center;
-        font-size: 16px;
-        opacity: 0.88;
-      }
-      .time {
-        font-size: 16px;
-        opacity: 0.88;
-        text-align: right;
-        flex: 1;
-      }
-    }
-    .active {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-    li:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    list-style-type: none;
+    padding: 0 15px;
+  }
 
-    li.focus {
-      transition: all 0.3s;
-      background: var(--color-secondary-bg);
-    }
+  .action {
+    display: flex;
+  }
+  .play-button {
+    border-radius: 50%;
   }
 }
 </style>

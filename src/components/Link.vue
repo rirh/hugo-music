@@ -1,5 +1,5 @@
 <template>
-  <router-link class="link" :to="to"><slot /> </router-link>
+  <router-link class="link" :to="to"><slot /></router-link>
 </template>
 
 <script setup>
@@ -14,7 +14,7 @@ defineProps({
 .link:link,
 .link:hover,
 .link:active {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 </style>

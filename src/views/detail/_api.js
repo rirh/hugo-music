@@ -16,3 +16,29 @@ export function getUserDetail(params) {
     params
   });
 }
+// 获取精品歌单
+export function getPlayListDetail(params) {
+  return request({
+    url: `/playlist/detail`,
+    method: "get",
+    params
+  });
+}
+// 获取精品歌单
+export function getAlbumDetail(params) {
+  return request({
+    url: `/album/detail`,
+    method: "get",
+    params
+  });
+}
+
+// 获取精品歌单
+export function getAlbum(params) {
+  return request({
+    url: `/album`,
+    method: "get",
+    params
+  });
+}
+

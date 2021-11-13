@@ -87,14 +87,6 @@ export function getHighQuality() {
     method: "get"
   });
 }
-// 获取精品歌单
-export function getPlayListDetail(params) {
-  return request({
-    url: `/playlist/detail`,
-    method: "get",
-    params
-  });
-}
 
 // 获取热门歌手
 export function getTopArtists() {
