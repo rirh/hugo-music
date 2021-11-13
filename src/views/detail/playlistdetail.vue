@@ -7,7 +7,7 @@
     animated
     bg="transparent"
   />
-  <div class="wapper" id="top" v-else>
+  <div class="playlistdetail" id="top" v-else>
     <DescHeader
       :image="playlist?.coverImgUrl"
       :name="playlist?.name"
@@ -50,46 +50,27 @@
       <li
         class="track"
         @click="handle_play(it.id)"
-        v-for="(it, i) in privileges"
+        v-for="it in privileges"
         :key="it.id"
         :class="{ active: it.id === current_id }"
       >
-        <div class="index">
-          {{ i + 1 }}
-        </div>
-        <div>
-          <Image
-            class="pic"
-            animate="animate__fadeInUp"
-            v-if="it?.al?.picUrl"
-            :src="it?.al?.picUrl || ''"
-          />
-        </div>
-        <div>
-          <div class="title">
-            <strong :title="it.name">{{ it.name }} </strong>
-            <span
-              :title="it?.alia?.toString() ? `(${it?.alia?.toString()})` : ''"
-            >
-              {{
-                it?.alia?.toString() ? `(${it?.alia?.toString()})` : ""
-              }}</span
-            >
-          </div>
-          <div class="title ar" :title="artoString(it.ar)">
-            {{ artoString(it.ar) }}
-          </div>
-        </div>
-        <div class="publishTime">
-          {{
+        <SongWithInfo
+          :image="it?.al?.picUrl"
+          :name="it?.name"
+          :subtitle="
+            `${it.alia ? it.alia.toString() : ''} ${
+              it.tns ? it.tns.toString() : ''
+            }`
+          "
+          :id="it?.id"
+          :desc="it?.ar"
+          :publishTime="
             it.publishTime
-              ? dayjs(it.publishTime).format("YYYY年MM月DD日")
+              ? dayjs(it.publishTime).format('YYYY年MM月DD日')
               : it.name
-          }}
-        </div>
-        <div class="time">
-          {{ to_time(it.dt) }}
-        </div>
+          "
+          :duration="to_time(it.dt / 1000)"
+        />
       </li>
     </ul>
   </div>
@@ -98,11 +79,11 @@
 import { ref, watch, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getPlayListDetail, getSongDetail } from "@/api";
-import { artoString, formatCount } from "@/utils";
+import { formatCount } from "@/utils";
 import dayjs from "dayjs";
 import DescHeader from "@/components/DescHeader";
-import Image from "@/components/Image";
 import Skeleton from "@/components/Skleleton";
+import SongWithInfo from "@/components/SongWithInfo";
 
 import { useStore } from "vuex";
 const store = useStore();
@@ -153,7 +134,7 @@ watch(
 );
 </script>
 <style lang="scss" scoped>
-.wapper {
+.playlistdetail {
   padding: 20px;
   .count {
     line-height: 18px;

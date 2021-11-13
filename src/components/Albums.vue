@@ -34,7 +34,10 @@ import LinkWithArtists from "@/components/LinkWithArtists";
 defineProps({
   image: String,
   name: String,
-  desc: String,
+  desc: {
+    type: Array,
+    default: () => []
+  },
   count: String,
   id: Number,
   path: {

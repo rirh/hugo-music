@@ -72,7 +72,6 @@
           >
             <videos v-for="it in it.values" :key="it.id" :item="it" />
           </div>
-
           <div
             class="box fr-4"
             v-if="it.label === 'playlists'"
@@ -107,19 +106,6 @@
             <djRadios v-for="it in it.values" :key="it.id" :it="it" />
           </div>
         </div>
-        <!-- <h1 :id="it.label">{{ it.label || "" }}</h1>
-      <div class="box">
-        <template v-for="it in it.values" :key="it.id">
-          <songs v-if="it.label === 'songs'" :it="it" />
-          <albums v-else-if="it.label === 'albums'" :it="it" />
-          <artists v-else-if="it.label === 'artists'" :it="it" />
-          <playlists v-else-if="it.label === 'playlists'" :it="it" />
-          <userprofiles v-else-if="it.label === 'userprofiles'" :it="it" />
-          <mvs v-else-if="it.label === 'mvs'" :it="it" />
-          <djRadios v-else-if="it.label === 'djRadios'" :it="it" />
-          <videos v-else-if="it.label === 'videos'" :it="it" />
-        </template>
-      </div> -->
       </div>
     </main>
   </transition>
