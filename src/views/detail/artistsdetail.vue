@@ -1,5 +1,13 @@
 <template>
-  <div class="wapper">
+  <Skeleton
+    style="margin:3%"
+    v-if="loading"
+    width="74%"
+    height="70vh"
+    animated
+    bg="transparent"
+  />
+  <div v-else class="artistsdetail">
     <DescHeader
       :image="artist?.cover"
       :name="artist?.name"
@@ -81,6 +89,8 @@ import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";
 import mvs from "@/components/Mvs.vue";
 import Button from "@/components/Button";
+import Skeleton from "@/components/Skleleton";
+
 import { useStore } from "vuex";
 const store = useStore();
 
@@ -134,7 +144,7 @@ watch(
 );
 </script>
 <style lang="scss" scoped>
-.wapper {
+.artistsdetail {
   padding: 20px;
   .base-info {
     display: grid;

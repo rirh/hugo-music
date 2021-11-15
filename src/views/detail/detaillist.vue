@@ -4,18 +4,21 @@
       搜索{{ typeToText(router.params.type) }}
       <strong>"{{ router.params.keywords }}"</strong>， {{ total }}&nbsp;条结果
     </h1>
+    <br />
     <div
       class="box"
-      :class="{
-        'fr-3': router.params.type.includes('songs'),
-        'fr-4': router.params.type.includes('playlists'),
-        'fr-4': router.params.type.includes('mvs'),
-        'fr-4': router.params.type.includes('videos'),
-        'fr-5': router.params.type.includes('albums'),
-        'fr-5': router.params.type.includes('artists'),
-        'fr-5': router.params.type.includes('userprofiles')
-      }"
-      style="gap: 16px 20px;"
+      :class="[
+        router.params.type === 'songs' && 'fr-3',
+        (router.params.type === 'playlists' ||
+          router.params.type === 'mvs' ||
+          router.params.type === 'videos') &&
+          'fr-4',
+        (router.params.type === 'albums' ||
+          router.params.type === 'artists' ||
+          router.params.type === 'userprofiles') &&
+          'fr-5'
+      ]"
+      style="gap: 30px 35px;"
     >
       <div v-for="it in list" :key="it.id">
         <component

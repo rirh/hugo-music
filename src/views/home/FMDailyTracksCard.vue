@@ -12,7 +12,7 @@
       <div class="info">
         <div class="title" :style="{ color: style.text_color }">{{ name }}</div>
         <div class="artist" :style="{ color: style.text_color }">
-          {{ desc }}
+          <LinkWithArtists :artisits="desc"></LinkWithArtists>
         </div>
       </div>
       <div class="controls">
@@ -54,6 +54,7 @@ import { defineProps, ref, toRefs, defineEmits, nextTick } from "vue";
 import rgbaster from "rgbaster";
 import Image from "@/components/Image";
 import Spinner from "@/components/Spinner";
+import LinkWithArtists from "@/components/LinkWithArtists";
 const style = ref({
   background: "#fff"
 });
@@ -62,7 +63,10 @@ const loading = ref(false);
 const props = defineProps({
   url: String,
   name: String,
-  desc: String,
+  desc: {
+    type: Array,
+    default: () => []
+  },
   nextloading: Boolean,
   playloading: Boolean
 });

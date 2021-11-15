@@ -18,7 +18,7 @@
       <div v-else v-for="(it, i) in response" :key="i">
         <div>
           <div class="title">
-            <h1 :id="it.label">{{ it.label || "" }}</h1>
+            <h1 :id="it.label">{{ typeToText(it.label) || "" }}</h1>
             <Link :to="`/detail/${route.params.keywords}/${it.label}`">
               <span>更多</span>
             </Link>
@@ -34,7 +34,7 @@
               :image="it?.al?.picUrl"
               :name="it.name"
               :id="it.id"
-              :desc="it?.song?.artists"
+              :desc="it?.ar"
             />
           </div>
           <div
@@ -117,6 +117,7 @@
 import { onMounted, ref, nextTick, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
+import { typeToText } from "@/utils";
 import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";

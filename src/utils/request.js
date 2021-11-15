@@ -15,6 +15,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // 是否需要设置 token
+    if (config.params) config.params.timestamp = Date.now();
     return config;
   },
   error => {
@@ -27,6 +28,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   res => {
     // 未设置状态码则默认成功状态
+    if (res?.data?.cookie[0]) document.cookie = res.data.cookie[0];
     return res.data?.body;
   },
   error => {

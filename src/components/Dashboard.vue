@@ -44,10 +44,10 @@
         >
           歌手：<span
             class="link"
-            v-for="(it, i) in detail.ar_name"
+            v-for="it in detail.ar_name"
             :key="it.id"
             @click="handle_go_artists(it.id)"
-            >{{ it.name }}{{ i !== detail.ar_name.length - 1 ? "/" : "" }}</span
+            >{{ it.name }}</span
           >
         </strong>
       </div>

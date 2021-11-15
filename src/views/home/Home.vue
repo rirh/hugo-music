@@ -85,7 +85,7 @@ import {
   getSongDetail,
   getTopArtists
 } from "@/api";
-import { artoString, formatCount } from "@/utils";
+import { formatCount } from "@/utils";
 
 import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs";
@@ -108,7 +108,7 @@ const aritsts_list = ref([]);
 
 const daily = ref([]);
 const fm_daily = ref({});
-const loading = ref(false);
+const loading = ref(true);
 const loading_daily = ref(false);
 const loading_fm_play = ref(false);
 const loading_fm_next = ref(false);
@@ -195,7 +195,7 @@ const toggle_play_list = async () => {
   const url = song?.al?.picUrl;
   const name = song.name;
   const id = song.id;
-  const desc = artoString(song?.ar, "name");
+  const desc = song?.ar;
   fm_daily.value = {
     url,
     name,
