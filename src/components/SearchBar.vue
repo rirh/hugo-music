@@ -142,6 +142,7 @@ const handle_select = async (type, id) => {
       store.dispatch("fetch_song_data", id);
       break;
     default:
+      router.push(`/${type}/${id}`);
       break;
   }
 };

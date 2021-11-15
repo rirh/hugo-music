@@ -8,7 +8,7 @@
     <div
       class="box"
       :class="[
-        router.params.type === 'songs' && 'fr-3',
+        router.params.type === 'songs' && 'fr-3 gap-sm',
         (router.params.type === 'playlists' ||
           router.params.type === 'mvs' ||
           router.params.type === 'videos') &&
@@ -18,7 +18,6 @@
           router.params.type === 'userprofiles') &&
           'fr-5'
       ]"
-      style="gap: 30px 35px;"
     >
       <div v-for="it in list" :key="it.id">
         <component
@@ -137,6 +136,9 @@ const handle_load_more = () => {
     display: grid;
     place-items: center;
     margin-top: 30px;
+  }
+  .gap-sm {
+    gap: 10px 10px;
   }
 }
 </style>
