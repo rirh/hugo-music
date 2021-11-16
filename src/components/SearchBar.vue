@@ -148,7 +148,13 @@ const handle_select = async (type, id) => {
 };
 const handle_go_detail = label => {
   if (label) label = `?type=${label}`;
-  router.push(`/detail/${query.value || ""}${label || ""}`);
+  if (query.value) {
+    router.push(`/detail/${query.value || ""}${label || ""}`);
+  } else {
+    setTimeout(() => {
+      handle_go_detail();
+    }, 600);
+  }
 };
 </script>
 

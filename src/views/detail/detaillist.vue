@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, shallowRef } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
 import { typeToText } from "@/utils";
@@ -61,14 +61,14 @@ import mvs from "@/components/Mvs.vue";
 import djRadios from "@/components/DjRadios.vue";
 import videos from "@/components/Videos.vue";
 const componentslist = ref({
-  songs,
-  albums,
-  artists,
-  playlists,
-  userprofiles,
-  mvs,
-  djRadios,
-  videos
+  songs: shallowRef(songs),
+  albums: shallowRef(albums),
+  artists: shallowRef(artists),
+  playlists: shallowRef(playlists),
+  userprofiles: shallowRef(userprofiles),
+  mvs: shallowRef(mvs),
+  djRadios: shallowRef(djRadios),
+  videos: shallowRef(videos)
 });
 const router = useRoute();
 const query = ref({

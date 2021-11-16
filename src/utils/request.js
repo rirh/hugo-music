@@ -14,6 +14,7 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
+    config.headers["X-Real-IP"] = "76.223.126.88";
     // 是否需要设置 token
     if (config.params) config.params.timestamp = Date.now();
     return config;
