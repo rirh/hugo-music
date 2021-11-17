@@ -42,12 +42,14 @@
             color: style.text_color
           }"
         >
-          歌手：<span
+          歌手：
+          <span
             class="link"
-            v-for="it in detail.ar_name"
+            v-for="(it, i) in detail.ar_name"
             :key="it.id"
             @click="handle_go_artists(it.id)"
-            >{{ it.name }}</span
+            >{{ it.name
+            }}{{ i !== detail?.ar_name?.length - 1 ? "/" : "" }}</span
           >
         </strong>
       </div>
@@ -207,7 +209,6 @@ import { computed, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import rgbaster from "rgbaster";
-
 import vue3Slider from "vue3-slider";
 import Image from "@/components/Image";
 import Modal from "@/components/Modal";
@@ -394,14 +395,14 @@ const handle_go_artists = id => {
       text-align: center;
       cursor: pointer;
       .al-name {
-        width: 25vw;
+        width: 20vw;
         overflow: hidden;
         display: inline-block;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
       .ar-name {
-        width: 15vw;
+        width: 20vw;
         overflow: hidden;
         display: inline-block;
         text-overflow: ellipsis;
@@ -532,9 +533,11 @@ const handle_go_artists = id => {
   }
 }
 .link {
-  padding: 10px 15px;
   cursor: pointer;
-  border-radius: 0.75em;
+  transition: all 0.2s;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 .effecs {
   margin-top: 10px;

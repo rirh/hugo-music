@@ -51,6 +51,9 @@ export default {
       state.current_id = payload.id;
       state.current_url = payload.url;
     },
+    clear_play_list(state) {
+      state.play_list = {};
+    },
     update_current_id(state, payload) {
       state.current_id = payload;
     },
@@ -68,9 +71,20 @@ export default {
     }
   },
   actions: {
-    play_tips() {},
+    clear_play_list({ commit, dispatch }) {
+      dispatch("pause");
+      commit("update_current_id", null);
+      commit("update_current_duration", null);
+      commit("clear_play_list");
+    },
+    delete_play_song({ state }, id) {
+      Reflect.deleteProperty(state.play_list, id);
+    },
+    play_tips() {
+      
+    },
     /**
-     * 左耳机伴奏增强 右边声道增强 合并以后再挣钱
+     * 左耳机伴奏增强 右边声道增强 合并以后增强
      *
      */
     splitterMerger({ dispatch }) {

@@ -37,6 +37,7 @@
         <LinkWithArtists :artisits="desc" />
       </div>
     </div>
+    <slot></slot>
   </div>
 </template>
 
