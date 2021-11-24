@@ -13776,8 +13776,8 @@ vue@^3.0.0:
 
 vuex-persistedstate@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.npmjs.org/vuex-persistedstate/-/vuex-persistedstate-4.1.0.tgz#127165f85f5b4534fb3170a5d3a8be9811bd2a53"
-  integrity sha512-3SkEj4NqwM69ikJdFVw6gObeB0NHyspRYMYkR/EbhR0hbvAKyR5gksVhtAfY1UYuWUOCCA0QNGwv9pOwdj+XUQ==
+  resolved "https://registry.nlark.com/vuex-persistedstate/download/vuex-persistedstate-4.1.0.tgz#127165f85f5b4534fb3170a5d3a8be9811bd2a53"
+  integrity sha1-EnFl+F9bRTT7MXCl06i+mBG9KlM=
   dependencies:
     deepmerge "^4.2.2"
     shvl "^2.0.3"

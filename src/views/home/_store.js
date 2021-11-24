@@ -80,9 +80,7 @@ export default {
     delete_play_song({ state }, id) {
       Reflect.deleteProperty(state.play_list, id);
     },
-    play_tips() {
-      
-    },
+    play_tips() {},
     /**
      * 左耳机伴奏增强 右边声道增强 合并以后增强
      *
@@ -322,11 +320,15 @@ export default {
                 })
                 .catch(error => err(error));
             } else {
-              res(play_list[id]);
+              getSongUrl({ id }).then(({ data, code }) => {
+                if (code !== 200) reject();
+                if (!data[0].url) reject();
+                commit("update_play_list", { ...play_list[id], ...data[0] });
+                res({ ...play_list[id], ...data[0] });
+              });
             }
           });
         };
-
         fetch_detail(state.play_list)
           .then(music => {
             commit("update_current_id", music.id);

@@ -155,7 +155,7 @@ const handle_change_mode = () => {
   min-height: 100px;
   height: 8vw;
   width: 100%;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
   background-color: black;

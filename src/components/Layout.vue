@@ -3,7 +3,6 @@
     <div class="left">
       <Link to="/">
         <Image
-          @click="handle_change_theme"
           class="logo"
           alt="logo"
           src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
@@ -11,6 +10,9 @@
       </Link>
       <NavHistory />
       <SearchBar />
+      <Link class="setting" to="/settings">
+        <svg-icon class="icon" icon-class="settings" />
+      </Link>
     </div>
     <div class="right">
       <router-view v-slot="{ Component }">
@@ -24,9 +26,9 @@
         </transition>
       </router-view>
       <CopyRigth />
+      <PlayCon @on-open-dashbord="handle_open_dashbord" />
     </div>
   </div>
-  <PlayCon @on-open-dashbord="handle_open_dashbord" />
   <transition
     leave-active-class="animate__animated animate__fadeOutDown"
     enter-active-class="animate__animated animate__fadeInUp"
@@ -56,21 +58,6 @@ const handle_open_dashbord = () => {
   store.commit("update_dashboard_open", true);
 };
 
-const handle_change_theme = () => {
-  const s = true;
-  if (s) return;
-  let appearance =
-    document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  if (appearance === "auto" || appearance === undefined) {
-    appearance = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-  document.body.setAttribute("data-theme", appearance);
-  document
-    .querySelector('meta[name="theme-color"]')
-    .setAttribute("content", appearance === "dark" ? "#222" : "#fff");
-};
 </script>
 
 <style lang="scss" scoped>
@@ -99,10 +86,29 @@ const handle_change_theme = () => {
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 15px 20px;
     position: relative;
+    .setting {
+      position: absolute;
+      left: 10px;
+      bottom: 40px;
+
+      .icon {
+        color: #666;
+        height: 24px;
+        width: 24px;
+        transition: all 0.2s;
+      }
+      .icon:hover {
+        color: #333;
+      }
+      .icon:active {
+        transform: scale(0.85);
+      }
+    }
   }
   .right {
     flex: 1;
     overflow: auto;
+    position: relative;
   }
   .logo {
     height: 45px;

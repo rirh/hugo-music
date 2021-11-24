@@ -69,8 +69,39 @@ module.exports = {
   },
   pwa: {
     name: "Z ORG | MUSIC",
+    appleMobileWebAppCapable: "yes",
+    appleMobileWebAppStatusBarStyle: "black",
     manifestOptions: {
-      background_color: "#335eea"
+      background_color: "#335eea",
+      icons: [
+        {
+          src:
+            "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png",
+
+          sizes: "192x192",
+          type: "image/png"
+        },
+        {
+          src:
+            "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/512x512.png",
+          sizes: "512x512",
+          type: "image/png"
+        },
+        {
+          src:
+            "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/1024x1024.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "maskable"
+        },
+        {
+          src:
+            "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable"
+        }
+      ]
     },
     themeColor: "#000",
     iconPaths: {
@@ -86,6 +117,13 @@ module.exports = {
         "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png",
       msTileImage:
         "https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/128x128.png"
+    },
+
+    workboxPluginMode: "InjectManifest",
+    workboxOptions: {
+      // swSrc is required in InjectManifest mode.
+      swSrc: "src/service-work.js"
+      // ...other Workbox options...
     }
   },
   // 添加插件的配置

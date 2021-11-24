@@ -65,6 +65,12 @@ const routes = [
         name: "next",
         component: () =>
           import(/* webpackChunkName: "next" */ "@/views/nextlist/index.vue")
+      },
+      {
+        path: "/settings/",
+        name: "settings",
+        component: () =>
+          import(/* webpackChunkName: "settings" */ "@/views/settings/index.vue")
       }
     ]
   },

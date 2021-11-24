@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="box fr-3">
+    <div class="box fr-3" style=" gap: 10px 10px;">
       <Songs
         v-for="it in list"
         :key="it"
