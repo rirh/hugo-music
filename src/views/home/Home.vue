@@ -130,12 +130,12 @@ const init = () => {
       ([response_hot, response_song, response_quality, response_aritsts]) => {
         loading.value = false;
         const emun = [
-          "热歌榜",
-          "飙升榜",
           "新歌榜",
-          "原创榜",
+          "飙升榜",
+          "热歌榜",
+          "网络热歌榜",
           "美国Billboard榜",
-          "网络热歌榜"
+          "原创榜"
         ];
         top_list.value = emun.map(it =>
           response_hot.list.find(song => song.name === it)
@@ -240,8 +240,8 @@ const handle_play = id => {
   }
 }
 .card {
-  background: #fff;
-  border: 1px solid #fff;
+  background: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
   padding: 10px;

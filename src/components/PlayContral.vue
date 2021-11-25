@@ -156,7 +156,7 @@ const handle_change_mode = () => {
   height: 8vw;
   width: 100%;
   position: sticky;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   background-color: black;
   overflow: hidden;

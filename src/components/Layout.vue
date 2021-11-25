@@ -57,7 +57,6 @@ const dashboard_open = computed(() => store.state.sound.dashboard_open);
 const handle_open_dashbord = () => {
   store.commit("update_dashboard_open", true);
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -81,15 +80,15 @@ const handle_open_dashbord = () => {
     max-height: min-content;
     height: 100%;
     min-height: 100vh;
-    background: var(--color-primary-bg);
+    background: var(--color-primary);
     text-align: left;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(var(--color-hover-primary-rgb), 0.1);
     padding: 15px 20px;
     position: relative;
     .setting {
       position: absolute;
-      left: 10px;
-      bottom: 40px;
+      left: 20px;
+      bottom: 50px;
 
       .icon {
         color: #666;
@@ -98,7 +97,8 @@ const handle_open_dashbord = () => {
         transition: all 0.2s;
       }
       .icon:hover {
-        color: #333;
+        color: var(--color-text);
+        transform: scale(1.1);
       }
       .icon:active {
         transform: scale(0.85);

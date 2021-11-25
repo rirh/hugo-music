@@ -96,19 +96,22 @@ const handle_play = id => {
     font-weight: 600;
     font-size: 18px;
     margin: 0 20px 0 0;
-    color: #999;
+    opacity: (0.7);
   }
 
   .rank-1 {
     // font-size: 0px;
-    color: rgba($color: #000, $alpha: 0.9);
+    // color: rgba($color: #000, $alpha: 0.9);
+    opacity: (0.9);
   }
   .rank-2 {
     // font-size: 19px;
-    color: rgba($color: #000, $alpha: 0.8);
+    // color: rgba($color: #000, $alpha: 0.8);
+    opacity: (0.8);
   }
   .rank-3 {
-    color: rgba($color: #000, $alpha: 0.7);
+    // color: rgba($color: #000, $alpha: 0.7);
+    opacity: (0.7);
   }
   .song {
     text-align: center;
