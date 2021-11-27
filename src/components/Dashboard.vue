@@ -82,13 +82,13 @@
         >
       </div>
       <div class="con-contal">
-        <div class="contal" @click.stop="handle_change_mode">
+        <div class="contal" @click.stop="show_effect = true">
           <svg-icon
             class="sub-icon"
-            :icon-class="enModeToIcon(current_mode)"
             :style="{
               color: style.text_color
             }"
+            icon-class="whale"
           />
         </div>
         <div class="contal" @click.stop="handle_toggle_play">
@@ -100,13 +100,13 @@
             }"
           />
         </div>
-        <div class="contal" @click.stop="show_effect = true">
+        <div class="contal" @click.stop="handle_change_mode">
           <svg-icon
             class="sub-icon"
+            :icon-class="enModeToIcon(current_mode)"
             :style="{
               color: style.text_color
             }"
-            icon-class="whale"
           />
         </div>
       </div>
@@ -541,7 +541,7 @@ const handle_go_artists = id => {
 }
 .effecs {
   margin-top: 10px;
-  gap: 20px 24px;
+  gap: 10px 10px;
   button {
     border: none;
     padding: 10px;

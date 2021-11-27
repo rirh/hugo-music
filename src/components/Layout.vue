@@ -1,6 +1,6 @@
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
-    <div class="left">
+    <div class="left" :style="{ 'padding-top': is_electron ? '30px' : 0 }">
       <Link to="/">
         <Image
           class="logo"
