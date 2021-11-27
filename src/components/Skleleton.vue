@@ -12,7 +12,7 @@ export default {
   props: {
     bg: {
       type: String,
-      default: "#fafafa"
+      default: "var(--color-body-bg)"
     },
     width: {
       type: String,

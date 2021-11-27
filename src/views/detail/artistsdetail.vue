@@ -113,7 +113,6 @@ const init = () => {
   ])
     .then(response => {
       loading.value = false;
-      console.log(response);
       const [artistDetail, songs, albums, mvs] = response;
       const {
         artist: artist_res,

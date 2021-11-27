@@ -19,7 +19,7 @@
         :alt="name"
       />
       <div class="btn-song">
-        <Spinner v-if="loading" color="#fafafa" />
+        <Spinner v-if="loading" color="var(--color-body-bg)" />
         <svg-icon
           v-else
           class="play"

@@ -83,5 +83,6 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "__npminstall_done": false
 }

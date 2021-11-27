@@ -15,6 +15,20 @@
         <option value="dark">🌑&nbsp;深色</option>
       </select>
     </div>
+    <div class="cell">
+      <label for="theme">语言</label>
+      <select
+        @change="hanedleChangelang"
+        name="theme"
+        class="theme"
+        id="theme"
+        v-model="appearance"
+      >
+        <!-- <option value="auto"></option>
+        <option value="light">🌕&nbsp;浅色</option>
+        <option value="dark">🌑&nbsp;深色</option> -->
+      </select>
+    </div>
   </div>
 </template>
 
@@ -33,7 +47,7 @@ const hanedleChangeTheme = () => {
 
 <style lang="scss" scoped>
 .settings {
-  padding: 20px;
+  padding: 35px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +58,7 @@ const hanedleChangeTheme = () => {
     justify-content: space-between;
     align-items: center;
     width: 720px;
-    margin: 0 20px;
+    margin: 3px 20px;
     label {
       font-size: 16px;
       font-weight: 500;
@@ -53,11 +67,11 @@ const hanedleChangeTheme = () => {
     select {
       min-width: 192px;
       font-weight: 600;
-      border: none;
       padding: 8px 12px 8px 12px;
       border-radius: 8px;
+      border: none;
       color: var(--color-text);
-      background: var(--color-secondary-bg);
+      background: var(--color-secondary);
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;

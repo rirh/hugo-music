@@ -103,7 +103,7 @@
         <div class="contal" @click.stop="handle_change_mode">
           <svg-icon
             class="sub-icon"
-            :icon-class="enModeToIcon(current_mode)"
+            icon-class="topic"
             :style="{
               color: style.text_color
             }"
@@ -213,7 +213,6 @@ import vue3Slider from "vue3-slider";
 import Image from "@/components/Image";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
-import { enModeToIcon } from "@/utils";
 
 const store = useStore();
 const router = useRouter();

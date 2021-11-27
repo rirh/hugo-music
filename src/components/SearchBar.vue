@@ -60,6 +60,7 @@
         v-else
         class="hot-words"
         @click="handle_key_words(key.first)"
+        @dblclick="handle_go_search_page(key.first)"
         v-for="(key, i) in hot_key_words"
         :key="i"
         :title="key.first"
@@ -136,6 +137,9 @@ const fetch_search_song = async e => {
 // const handle_detail = () => {
 //   router.push(`/detail/${select.value.query}`);
 // };
+const handle_go_search_page = keywords => {
+  router.push(`/detail/${keywords}`);
+};
 const handle_select = async (type, id) => {
   switch (type) {
     case "songs":

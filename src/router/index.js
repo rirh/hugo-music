@@ -26,7 +26,9 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(/* webpackChunkName: "detail" */ "@/views/detail/detaillist.vue")
+          import(
+            /* webpackChunkName: "detail" */ "@/views/detail/detaillist.vue"
+          )
       },
       {
         path: "/albums/:id",
@@ -70,7 +72,9 @@ const routes = [
         path: "/settings/",
         name: "settings",
         component: () =>
-          import(/* webpackChunkName: "settings" */ "@/views/settings/index.vue")
+          import(
+            /* webpackChunkName: "settings" */ "@/views/settings/index.vue"
+          )
       }
     ]
   },
@@ -82,7 +86,15 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior() {
+    // always scroll to top
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({ left: 0, top: 0 });
+      }, 500);
+    });
+  }
 });
 
 export default router;
