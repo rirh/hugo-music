@@ -103,3 +103,13 @@ export function getSearchHot(params) {
     params
   });
 }
+
+// 获取音乐评论
+export function getCommentMusic(params) {
+  return request({
+    url: `/comment/music`,
+    method: "get",
+    params
+  });
+}
+

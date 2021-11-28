@@ -1,4 +1,4 @@
-import { getSongUrl, getSongDetail, getLyric } from "@/api";
+import { getSongUrl, getSongDetail, getLyric, getCommentMusic } from "@/api";
 
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
@@ -68,9 +68,29 @@ export default {
     },
     update_current_progress(state, payload) {
       state.current_progress = payload;
+    },
+    update_play_list_commit(state, payload) {
+      state.current_comments = payload;
+      state.play_list[payload.id] = {
+        ...state.play_list[payload.id],
+        comments: payload
+      };
     }
   },
   actions: {
+    fetch_comment_music({ commit }, payload) {
+      return new Promise((reslove, reject) => {
+        getCommentMusic(payload)
+          .then(response => {
+            commit('update_play_list_commit',response.comments)
+            reslove(response);
+          })
+          .catch(err => {
+            reject(err);
+            throw err;
+          });
+      });
+    },
     clear_play_list({ commit, dispatch }) {
       dispatch("pause");
       commit("update_current_id", null);
