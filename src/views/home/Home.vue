@@ -58,6 +58,7 @@
             :id="it?.id"
             :desc="it?.ar"
             :index="rank + 1"
+            notShowHover
           />
           <!-- </div> -->
         </div>
