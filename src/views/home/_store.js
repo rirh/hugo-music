@@ -17,6 +17,7 @@ export default {
     current_duration: 0,
     current_progress: 0,
     current_mode: "loop",
+    current_comments: [],
     current_mode_options: ["loop", "single", "random"],
     dashboard_open: false
   },
@@ -71,18 +72,22 @@ export default {
     },
     update_play_list_commit(state, payload) {
       state.current_comments = payload;
-      state.play_list[payload.id] = {
-        ...state.play_list[payload.id],
+      state.play_list[state.current_id] = {
+        ...state.play_list[state.current_id],
         comments: payload
       };
     }
   },
   actions: {
-    fetch_comment_music({ commit }, payload) {
+    fetch_comment_music({ commit, state }, payload) {
       return new Promise((reslove, reject) => {
-        getCommentMusic(payload)
+        getCommentMusic({
+          id: state.current_id,
+          ...payload
+        })
           .then(response => {
-            commit('update_play_list_commit',response.comments)
+            const list = [...state.current_comments, ...response.comments];
+            commit("update_play_list_commit", list);
             reslove(response);
           })
           .catch(err => {
@@ -279,11 +284,15 @@ export default {
       audio.play();
       commit("update_current_state", "play");
     },
-    pause({ commit }) {
-      const currentTime = audio_context.currentTime;
-      gain.gain.linearRampToValueAtTime(0, currentTime + FEAD_SIZE);
-      audio.pause();
-      commit("update_current_state", "pause");
+    pause({ commit, state, dispatch }) {
+      if (audio_context) {
+        const currentTime = audio_context.currentTime;
+        gain.gain.linearRampToValueAtTime(0, currentTime + FEAD_SIZE);
+        audio.pause();
+        commit("update_current_state", "pause");
+      } else {
+        dispatch("fetch_song_data", state.current_id);
+      }
     },
     toggle_play({ state, dispatch }) {
       if (state.current_state !== "play") {

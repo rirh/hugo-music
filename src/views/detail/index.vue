@@ -65,7 +65,14 @@
             v-if="it.label === 'mvs'"
             style="gap: 36px 24px;"
           >
-            <mvs v-for="it in it.values" :key="it.id" :item="it" />
+            <mvs
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it.cover"
+              :name="it.name"
+              :desc="it.artistName"
+              :id="it.id"
+            />
           </div>
           <div
             class="box fr-4"

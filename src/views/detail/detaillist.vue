@@ -23,11 +23,16 @@
         <component
           :is="componentslist[router.params.type]"
           :image="
-            it?.avatarUrl || it.coverImgUrl || it.picUrl || it?.al?.picUrl
+            it?.avatarUrl ||
+              it.cover ||
+              it.coverImgUrl ||
+              it.picUrl ||
+              it?.al?.picUrl
           "
           :name="it.name || it.nickname"
           :id="it.id || it.userId"
-          :desc="it.artists || it?.song?.artists"
+          :desc="it.artistName || it.artists || it?.song?.artists"
+          @on-play="handle_show_video"
         ></component>
       </div>
     </div>
@@ -43,10 +48,28 @@
       <Button @click="handle_load_more">加载更多</Button>
     </div>
   </div>
+  <Modal
+    :show="modal_options.open"
+    :close="handle_close_comments"
+    :show-footer="false"
+    frame
+    :width="'80vw'"
+    :click-outside-hide="true"
+  >
+    <video
+      ref="videoRef"
+      class="video-ref"
+      autoplay
+      controls
+      :src="modal_options.url"
+    >
+      <!-- <source type="video/mp4" /> -->
+    </video>
+  </Modal>
 </template>
 
 <script setup>
-import { onMounted, ref, shallowRef } from "vue";
+import { onMounted, reactive, ref, shallowRef } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
 import { typeToText } from "@/utils";
@@ -60,6 +83,22 @@ import userprofiles from "@/components/Userprofiles.vue";
 import mvs from "@/components/Mvs.vue";
 import djRadios from "@/components/DjRadios.vue";
 import videos from "@/components/Videos.vue";
+import Modal from "@/components/Modal";
+import Plyr from "plyr";
+const videoRef = ref();
+const modal_options = reactive({
+  open: false,
+  url: "",
+  plyr: null,
+  options: {
+    settings: ["quality"],
+    autoplay: true,
+    quality: {
+      default: 1080,
+      options: [1080, 720, 480, 240]
+    }
+  }
+});
 const componentslist = ref({
   songs: shallowRef(songs),
   albums: shallowRef(albums),
@@ -99,6 +138,19 @@ onMounted(() => {
   };
   init();
 });
+const handle_close_comments = () => {
+  modal_options.open = false;
+  modal_options.plyr.pause();
+};
+const handle_show_video = url => {
+  modal_options.open = true;
+  modal_options.url = url;
+  if (!modal_options.plyr) {
+    modal_options.plyr = new Plyr(videoRef.value, modal_options.options);
+  } else {
+    modal_options.plyr.play();
+  }
+};
 const init = () => {
   loading.value = true;
   getCloudSearch(query.value)
@@ -140,5 +192,9 @@ const handle_load_more = () => {
   .gap-sm {
     gap: 10px 10px;
   }
+}
+.video-ref {
+  max-height: 67vh;
+  width: 100%;
 }
 </style>

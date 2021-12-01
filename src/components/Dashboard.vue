@@ -100,7 +100,7 @@
             }"
           />
         </div>
-        <div class="contal" @click.stop="handle_change_mode">
+        <div class="contal" @click.stop="handle_open_commit">
           <svg-icon
             class="sub-icon"
             icon-class="topic"
@@ -192,7 +192,7 @@
         </Button>
         <Button title="加入会员和大家一起交流">
           <a
-            href="http://signup.tigerzh.com"
+            href="http://signup.tigerzh.com?appname=music"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -201,11 +201,39 @@
         </Button>
       </div>
     </Modal>
+    <Modal
+      :show="comments.open"
+      :close="handle_close_comments"
+      :show-footer="false"
+      :click-outside-hide="true"
+      title="歌曲评论"
+    >
+      <Comment
+        v-for="it in current_comments"
+        :key="it.id"
+        :avatar="it.user.avatarUrl"
+        :auth="it.user.nickname"
+        :content="it.content"
+        :time="it.time"
+        :beReplied="it.beReplied"
+      />
+      <Skeleton
+        style="margin:3%"
+        v-if="comments.loading"
+        width="74%"
+        height="60vh"
+        animated
+        bg="transparent"
+      />
+      <div class="loadmore" v-show="comments.more">
+        <Button @click="handle_load_more_comments">加载更多</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
-import { computed, watch, ref } from "vue";
+import { computed, watch, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import rgbaster from "rgbaster";
@@ -213,26 +241,31 @@ import vue3Slider from "vue3-slider";
 import Image from "@/components/Image";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
+import Comment from "@/components/Comment";
+import Skeleton from "@/components/Skleleton";
 
 const store = useStore();
 const router = useRouter();
-const handle_close_dashboard = () => {
-  store.commit("update_dashboard_open", false);
-};
 
 const style = ref({});
 const show_effect = ref(false);
-
+const commentsQuery = reactive({
+  limit: 20,
+  offset: 0,
+  pageSize: 0,
+  before: null
+});
+const comments = reactive({
+  open: false,
+  more: false
+});
 const current_duration = computed(
   () => store.state.sound.current_duration || 100
 );
 const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
-const current_mode = computed(() => store.state.sound.current_mode);
 const current_id = computed(() => store.state.sound.current_id);
-const current_mode_options = computed(
-  () => store.state.sound.current_mode_options
-);
+const current_comments = computed(() => store.state.sound.current_comments);
 
 const play_list = computed(() => store.state.sound.play_list);
 const progress = computed({
@@ -265,11 +298,6 @@ const handle_load_back = () => {
     });
 };
 
-const time_to_sec = time => {
-  const [m, s] = time.split(":");
-  return Number(m * 60) + Number(s);
-};
-
 const detail = computed(() => {
   let result = {};
   if (play_list.value[current_id.value]) {
@@ -281,6 +309,7 @@ const detail = computed(() => {
       result.al_name = detail.al.name;
       result.al_name_id = detail.al.id;
       result.ar_name = detail.ar;
+      result.comments = song?.comments || [];
 
       const lyr = song?.lrc?.lyric;
       if (lyr) {
@@ -311,6 +340,21 @@ watch(current_progress, () => {
   }
 });
 
+const time_to_sec = time => {
+  const [m, s] = time.split(":");
+  return Number(m * 60) + Number(s);
+};
+
+const handle_close_dashboard = () => {
+  store.commit("update_dashboard_open", false);
+};
+
+const handle_load_more_comments = () => {
+  commentsQuery.pageSize = commentsQuery.pageSize + 1;
+  commentsQuery.offset = commentsQuery.pageSize * commentsQuery.limit;
+  handle_fetch_commit();
+};
+
 const is_current_lyric = index => {
   let result = false;
   const lyric = JSON.parse(JSON.stringify(detail.value.lyric));
@@ -331,6 +375,20 @@ const to_time = value => {
     s = `${Math.floor(value % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
 };
+const handle_open_commit = () => {
+  comments.open = true;
+  commentsQuery.pageSize = 0;
+  store.commit("update_play_list_commit", []);
+  handle_fetch_commit();
+};
+const handle_fetch_commit = () => {
+  comments.loading = true;
+  store.dispatch("fetch_comment_music", commentsQuery).then(response => {
+    comments.more = response.more;
+    comments.loading = false;
+  });
+};
+
 const handle_seek = seek => {
   store.dispatch("seek", seek);
   handle_toggle_play();
@@ -353,15 +411,11 @@ const handle_toggle_play = () => {
 const handle_close = () => {
   show_effect.value = false;
 };
+const handle_close_comments = () => {
+  comments.open = false;
+};
 const handle_set_effects = type => {
   store.dispatch(type);
-};
-const handle_change_mode = () => {
-  const mode = current_mode.value;
-  const options = current_mode_options.value;
-  const index = options.findIndex(it => it === mode);
-  const next_mode = options[index + 1] || options[0];
-  store.commit("update_current_mode", next_mode);
 };
 const handle_go_albums = id => {
   router.push(`/albums/${id}`);
@@ -559,6 +613,12 @@ const handle_go_artists = id => {
   button:hover {
     opacity: 1;
   }
+}
+.loadmore {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-content: center;
 }
 
 @media only screen and (max-width: 800px) {

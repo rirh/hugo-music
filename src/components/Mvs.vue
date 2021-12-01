@@ -1,6 +1,6 @@
 <template>
   <div class="wapper">
-    <div class="mvs">
+    <div class="mvs" @click="handle_play">
       <video
         v-if="current_url"
         @mouseleave="current_url = null"
@@ -12,41 +12,47 @@
       <Image
         v-else
         class="img"
-        @mouseenter="handle_load_video(item)"
-        :src="item.cover"
+        @mouseenter="handle_load_video"
+        :src="image"
         alt=""
       />
     </div>
     <div>
-      <div class="title" :title="item.name">{{ item.name }}</div>
-      <div class="auth" :title="auth">{{ auth }}</div>
+      <div class="title" :title="name">{{ name }}</div>
+      <div class="auth" :title="desc">{{ desc }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed, ref } from "vue";
+import { defineProps, ref, defineEmits, reactive } from "vue";
 import { getMvUrl } from "@/api";
-import Image from '@/components/Image'
+import Image from "@/components/Image";
 
-const props = defineProps({
-  item: Object
+const _props = defineProps({
+  name: String,
+  image: String,
+  desc: {
+    type: String,
+    default: () => ""
+  },
+  id: Number
 });
-const { item } = toRefs(props);
+const props = reactive(_props);
 const current_url = ref(null);
-const auth = computed(() => {
-  const foo = JSON.parse(JSON.stringify(item.value));
-  let result = "";
-  if (foo.artists) {
-    result = foo.artists.map(e => e.name).toString();
-  }
-  return result;
-});
-const handle_load_video = async item => {
-  const { data, code } = await getMvUrl(item.id);
-  if (code === 200) {
-    const url = data.url;
-    if (url !== current_url.value) current_url.value = url;
+const current_urls = reactive({});
+const emit = defineEmits(["on-play"]);
+const handle_play = () => emit("on-play", current_url.value);
+const handle_load_video = async () => {
+  if (!current_urls[props.id]) {
+    const { data, code } = await getMvUrl(props.id);
+    if (code === 200) {
+      const url = data.url;
+      current_urls[props.id] = url;
+      if (url !== current_url.value) current_url.value = url;
+    }
+  } else {
+    current_url.value = current_urls[props.id];
   }
 };
 </script>

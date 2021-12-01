@@ -1,13 +1,15 @@
 <template>
   <div v-show="show" class="shade" @click="clickOutside">
     <div class="modal" :style="modalStyles" @click.stop>
-      <div class="header">
+      <div class="header" v-if="title">
         <div class="title">{{ title }}</div>
         <button class="close" @click="close">
           <svg-icon icon-class="x" />
         </button>
       </div>
-      <div class="content"><slot></slot></div>
+      <div class="content" :style="{ padding: frame ? '0' : '0 24px' }">
+        <slot></slot>
+      </div>
       <div v-if="showFooter" class="footer">
         <!-- <button>取消</button>
         <button class="primary">确定</button> -->
@@ -21,11 +23,15 @@
 export default {
   name: "Modal",
   props: {
+    frame: {
+      type: Boolean,
+      default: () => false
+    },
     show: Boolean,
     close: Function,
     title: {
       type: String,
-      default: "Title"
+      default: ""
     },
     showFooter: {
       type: Boolean,
@@ -43,7 +49,8 @@ export default {
   computed: {
     modalStyles() {
       return {
-        width: this.width
+        width: this.width,
+        padding: this.frame ? "0" : " 24px 0"
       };
     }
   },
@@ -108,7 +115,6 @@ export default {
 .content {
   overflow: auto;
   overflow-x: hidden;
-  padding: 0 24px;
 }
 
 .header {
@@ -121,7 +127,6 @@ export default {
     font-size: 20px;
   }
   button {
-    color: rgba(255, 255, 255, 0.78);
     border-radius: 50%;
     height: 32px;
     width: 32px;
@@ -134,7 +139,6 @@ export default {
     background-color: var(--color-secondary);
     &:hover {
       opacity: 1;
-      color: rgba(255, 255, 255, 0.98);
     }
   }
   .svg-icon {

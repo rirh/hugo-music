@@ -176,7 +176,9 @@ const handle_play = id => {
   transition: all 200ms;
 }
 .active {
-  background: rgba(0, 0, 0, 0.14);
+  box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
+  border: 1px solid var(--color-secondary);
+  background: var(--color-secondary);
 }
 .rank-1 {
   // font-size: 0px;

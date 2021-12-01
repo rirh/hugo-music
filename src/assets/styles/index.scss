@@ -1,40 +1,53 @@
 @font-face {
   font-family: "Barlow";
   font-weight: normal;
-  src: url("~@/assets/fonts/Barlow-Regular.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-Regular.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Regular.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Regular.ttf")
+      format("truetype");
 }
 @font-face {
   font-family: "Barlow";
   font-weight: medium;
-  src: url("~@/assets/fonts/Barlow-Medium.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-Medium.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Medium.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Medium.ttf")
+      format("truetype");
 }
 @font-face {
   font-family: "Barlow";
   font-weight: 600;
-  src: url("~@/assets/fonts/Barlow-SemiBold.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-SemiBold.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-SemiBold.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-SemiBold.ttf")
+      format("truetype");
 }
 @font-face {
   font-family: "Barlow";
   font-weight: bold;
-  src: url("~@/assets/fonts/Barlow-Bold.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-Bold.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Bold.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Bold.ttf")
+      format("truetype");
 }
 @font-face {
   font-family: "Barlow";
   font-weight: 800;
-  src: url("~@/assets/fonts/Barlow-ExtraBold.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-ExtraBold.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-ExtraBold.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-ExtraBold.ttf")
+      format("truetype");
 }
 @font-face {
   font-family: "Barlow";
   font-weight: 900;
-  src: url("~@/assets/fonts/Barlow-Black.woff2") format("woff2"),
-    url("~@/assets/fonts/Barlow-Black.ttf") format("truetype");
+  src: url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Black.woff2")
+      format("woff2"),
+    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Black.ttf")
+      format("truetype");
 }
 :root {
+  --plyr-color-main: rgba(209, 209, 214, 0.28);
   --animate-duration: 0.2s;
   --animate-delay: 0.2s;
   --animate-repeat: 1;
@@ -53,6 +66,7 @@
 
 :root,
 [data-theme="light"] {
+  --plyr-color-main: #000;
   --color-primary: #f7f8f9;
   --color-secondary: white;
   --img-primary: invert(0%);
@@ -67,6 +81,8 @@
 }
 
 [data-theme="dark"] {
+  --plyr-color-main: white;
+
   --color-primary: #222;
   --color-secondary: #000000b5;
   --img-primary: invert(100%);

@@ -1,6 +1,6 @@
 <template>
   <div class="wapper">
-    <div class="mvs">
+    <div class="mvs" @click="handle_play">
       <video
         v-if="current_url"
         @mouseleave="current_url = null"
@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, ref } from "vue";
+import { defineProps, toRefs, ref, defineEmits } from "vue";
 import { getVideoUrl } from "@/api";
-import Image from '@/components/Image'
+import Image from "@/components/Image";
 
 const props = defineProps({
   item: Object
@@ -34,6 +34,10 @@ const props = defineProps({
 const { item } = toRefs(props);
 const current_url = ref(null);
 
+const emit = defineEmits(["on-play"]);
+const handle_play = () => {
+  emit("on-play", item);
+};
 const handle_load_video = async item => {
   const { urls: data, code } = await getVideoUrl(item.vid);
   if (code === 200) {
