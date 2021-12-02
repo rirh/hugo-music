@@ -47,7 +47,7 @@
       format("truetype");
 }
 :root {
-  --plyr-color-main: rgba(209, 209, 214, 0.28);
+  --plyr-color-main: #409eff;
   --animate-duration: 0.2s;
   --animate-delay: 0.2s;
   --animate-repeat: 1;
@@ -66,7 +66,7 @@
 
 :root,
 [data-theme="light"] {
-  --plyr-color-main: #000;
+  --plyr-color-main: black;
   --color-primary: #f7f8f9;
   --color-secondary: white;
   --img-primary: invert(0%);
@@ -81,8 +81,7 @@
 }
 
 [data-theme="dark"] {
-  --plyr-color-main: white;
-
+  --plyr-color-main: #409eff;
   --color-primary: #222;
   --color-secondary: #000000b5;
   --img-primary: invert(100%);

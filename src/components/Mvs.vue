@@ -32,10 +32,7 @@ import Image from "@/components/Image";
 const _props = defineProps({
   name: String,
   image: String,
-  desc: {
-    type: String,
-    default: () => ""
-  },
+  desc: String,
   id: Number
 });
 const props = reactive(_props);

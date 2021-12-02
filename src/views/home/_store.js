@@ -277,12 +277,16 @@ export default {
     seek(_, len) {
       audio.currentTime = len;
     },
-    play({ commit }) {
-      gain.gain.value = 0;
-      const currentTime = audio_context.currentTime;
-      gain.gain.linearRampToValueAtTime(1, currentTime + FEAD_SIZE);
-      audio.play();
-      commit("update_current_state", "play");
+    play({ commit, dispatch, state }) {
+      if (audio_context) {
+        gain.gain.value = 0;
+        const currentTime = audio_context.currentTime;
+        gain.gain.linearRampToValueAtTime(1, currentTime + FEAD_SIZE);
+        audio.play();
+        commit("update_current_state", "play");
+      } else {
+        dispatch("fetch_song_data", state.current_id);
+      }
     },
     pause({ commit, state, dispatch }) {
       if (audio_context) {

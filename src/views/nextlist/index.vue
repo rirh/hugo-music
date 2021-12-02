@@ -108,6 +108,7 @@ const handle_delete_song = id => {
 <style lang="scss" scoped>
 .nextlist {
   padding: 20px;
+  min-height: 100vh;
   .contal {
     display: flex;
     align-items: center;

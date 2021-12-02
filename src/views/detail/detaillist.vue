@@ -48,24 +48,11 @@
       <Button @click="handle_load_more">加载更多</Button>
     </div>
   </div>
-  <Modal
-    :show="modal_options.open"
-    :close="handle_close_comments"
-    :show-footer="false"
-    frame
-    :width="'80vw'"
-    :click-outside-hide="true"
-  >
-    <video
-      ref="videoRef"
-      class="video-ref"
-      autoplay
-      controls
-      :src="modal_options.url"
-    >
-      <!-- <source type="video/mp4" /> -->
-    </video>
-  </Modal>
+  <ModalWithVideo
+    :open="videoData.open"
+    :url="videoData.url"
+    @on-close="handle_close_video"
+  />
 </template>
 
 <script setup>
@@ -83,22 +70,8 @@ import userprofiles from "@/components/Userprofiles.vue";
 import mvs from "@/components/Mvs.vue";
 import djRadios from "@/components/DjRadios.vue";
 import videos from "@/components/Videos.vue";
-import Modal from "@/components/Modal";
-import Plyr from "plyr";
-const videoRef = ref();
-const modal_options = reactive({
-  open: false,
-  url: "",
-  plyr: null,
-  options: {
-    settings: ["quality"],
-    autoplay: true,
-    quality: {
-      default: 1080,
-      options: [1080, 720, 480, 240]
-    }
-  }
-});
+import ModalWithVideo from "@/components/ModalWithVideo";
+const router = useRoute();
 const componentslist = ref({
   songs: shallowRef(songs),
   albums: shallowRef(albums),
@@ -109,16 +82,6 @@ const componentslist = ref({
   djRadios: shallowRef(djRadios),
   videos: shallowRef(videos)
 });
-const router = useRoute();
-const query = ref({
-  limit: 20,
-  offset: 0,
-  type: 1,
-  keywords: ""
-});
-const list = ref([]);
-const total = ref(0);
-const loading = ref(true);
 const type_list = {
   songs: 1,
   albums: 10,
@@ -129,6 +92,19 @@ const type_list = {
   djRadios: 1009,
   videos: 1014
 };
+const query = ref({
+  limit: 20,
+  offset: 0,
+  type: 1,
+  keywords: ""
+});
+const list = ref([]);
+const total = ref(0);
+const loading = ref(true);
+const videoData = reactive({
+  open: false,
+  url: ""
+});
 onMounted(() => {
   const { keywords, type } = router.params;
   query.value = {
@@ -138,18 +114,12 @@ onMounted(() => {
   };
   init();
 });
-const handle_close_comments = () => {
-  modal_options.open = false;
-  modal_options.plyr.pause();
+const handle_close_video = () => {
+  videoData.open = false;
 };
 const handle_show_video = url => {
-  modal_options.open = true;
-  modal_options.url = url;
-  if (!modal_options.plyr) {
-    modal_options.plyr = new Plyr(videoRef.value, modal_options.options);
-  } else {
-    modal_options.plyr.play();
-  }
+  videoData.open = true;
+  videoData.url = url;
 };
 const init = () => {
   loading.value = true;
@@ -178,6 +148,7 @@ const handle_load_more = () => {
 <style lang="scss" scoped>
 .detaillist {
   padding: 20px;
+  min-height: 100vh;
   h1 {
     color: #999;
     strong {
@@ -192,9 +163,5 @@ const handle_load_more = () => {
   .gap-sm {
     gap: 10px 10px;
   }
-}
-.video-ref {
-  max-height: 67vh;
-  width: 100%;
 }
 </style>

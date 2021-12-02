@@ -12,37 +12,44 @@
       <Image
         v-else
         class="img"
-        @mouseenter="handle_load_video(item)"
-        :src="item.coverUrl"
+        @mouseenter="handle_load_video"
+        :src="image"
         alt=""
       />
     </div>
     <div>
-      <div class="title" :title="item.title">{{ item.title }}</div>
+      <div class="title" :title="name">{{ name }}</div>
+      <div class="auth" :title="desc">{{ desc }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs, ref, defineEmits } from "vue";
+import { defineProps, ref, defineEmits, reactive } from "vue";
 import { getVideoUrl } from "@/api";
 import Image from "@/components/Image";
 
-const props = defineProps({
-  item: Object
+const _props = defineProps({
+  name: String,
+  image: String,
+  desc: String,
+  id: Number
 });
-const { item } = toRefs(props);
+const props = reactive(_props);
 const current_url = ref(null);
-
+const current_urls = reactive({});
 const emit = defineEmits(["on-play"]);
-const handle_play = () => {
-  emit("on-play", item);
-};
-const handle_load_video = async item => {
-  const { urls: data, code } = await getVideoUrl(item.vid);
-  if (code === 200) {
-    const url = data[0].url;
-    if (url && url !== current_url.value) current_url.value = url;
+const handle_play = () => emit("on-play", current_url.value);
+const handle_load_video = async () => {
+  if (!current_urls[props.id]) {
+    const { data, code } = await getVideoUrl(props.id);
+    if (code === 200) {
+      const url = data.url;
+      current_urls[props.id] = url;
+      if (url !== current_url.value) current_url.value = url;
+    }
+  } else {
+    current_url.value = current_urls[props.id];
   }
 };
 </script>
@@ -104,3 +111,4 @@ const handle_load_video = async item => {
   }
 }
 </style>
+

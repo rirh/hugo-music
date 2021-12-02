@@ -72,6 +72,7 @@
               :name="it.name"
               :desc="it.artistName"
               :id="it.id"
+              @on-play="handle_show_video"
             />
           </div>
           <div
@@ -79,7 +80,15 @@
             v-if="it.label === 'videos'"
             style="gap: 36px 24px;"
           >
-            <videos v-for="it in it.values" :key="it.id" :item="it" />
+            <videos
+              v-for="it in it.values"
+              :key="it.id"
+              :image="it.coverUrl"
+              :name="it.title"
+              :desc="it.aliaName"
+              :id="it.vid"
+              @on-play="handle_show_video"
+            />
           </div>
           <div
             class="box fr-4"
@@ -88,10 +97,10 @@
           >
             <playlists
               v-for="it in it.values"
-              :key="it.id"
-              :image="it.coverImgUrl || ''"
-              :name="it.name"
-              :id="it.id"
+              :key="it.vid"
+              :image="it.coverUrl || ''"
+              :name="it.title"
+              :id="it.vid"
             />
           </div>
           <div
@@ -118,10 +127,15 @@
       </div>
     </main>
   </transition>
+  <ModalWithVideo
+    :open="videoData.open"
+    :url="videoData.url"
+    @on-close="handle_close_video"
+  />
 </template>
 
 <script setup>
-import { onMounted, ref, nextTick, watch } from "vue";
+import { onMounted, ref, nextTick, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
 import { typeToText } from "@/utils";
@@ -135,17 +149,30 @@ import mvs from "@/components/Mvs.vue";
 import djRadios from "@/components/DjRadios.vue";
 import videos from "@/components/Videos.vue";
 import Link from "@/components/Link";
+import ModalWithVideo from "@/components/ModalWithVideo";
 const route = useRoute();
 // const router = useRouter();
 const response = ref([]);
 const loading = ref(true);
-
+const videoData = reactive({
+  open: false,
+  url: ""
+});
 onMounted(async () => {
   init();
 });
 watch(route, () => {
   init();
 });
+const handle_close_video = () => {
+  videoData.open = false;
+};
+const handle_show_video = url => {
+  console.log(url);
+
+  videoData.open = true;
+  videoData.url = url;
+};
 const init = () => {
   // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
   const types = [1, 10, 100, 1000, 1002, 1004, 1009, 1014];
