@@ -1,11 +1,15 @@
 export default {
   namespace: true,
   state: {
-    appearance: "auto"
+    appearance: "auto",
+    userinfo: {}
   },
   mutations: {
     update_appearance(state, payload) {
       state.appearance = payload;
+    },
+    update_userinfo(state, payload) {
+      state.userinfo = payload;
     }
   },
   actions: {

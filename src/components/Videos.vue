@@ -42,11 +42,13 @@ const emit = defineEmits(["on-play"]);
 const handle_play = () => emit("on-play", current_url.value);
 const handle_load_video = async () => {
   if (!current_urls[props.id]) {
-    const { data, code } = await getVideoUrl(props.id);
+    const { urls, code } = await getVideoUrl(props.id);
     if (code === 200) {
-      const url = data.url;
-      current_urls[props.id] = url;
-      if (url !== current_url.value) current_url.value = url;
+      const url = urls[0]?.url || "";
+      if (url) {
+        current_urls[props.id] = url;
+        if (url !== current_url.value) current_url.value = url;
+      }
     }
   } else {
     current_url.value = current_urls[props.id];
@@ -111,4 +113,3 @@ const handle_load_video = async () => {
   }
 }
 </style>
-

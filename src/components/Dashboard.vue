@@ -191,12 +191,8 @@
           3D增强
         </Button>
         <Button title="加入会员和大家一起交流">
-          <a
-            href="http://signup.tigerzh.com?appname=music"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            敬请期待
+          <a :href="signin_href" rel="noopener noreferrer">
+            现在探索
           </a>
         </Button>
       </div>
@@ -249,6 +245,7 @@ const router = useRouter();
 
 const style = ref({});
 const show_effect = ref(false);
+const signin_href = ref(`${process.env.VUE_APP_SIGINUP_HREF}?appname=music`);
 const commentsQuery = reactive({
   limit: 20,
   offset: 0,

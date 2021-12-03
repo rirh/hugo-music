@@ -4,7 +4,7 @@
       style="margin:3%"
       v-show="loading"
       width="74%"
-      height="70vh"
+      height="80vh"
       animated
       bg="transparent"
     />

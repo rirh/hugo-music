@@ -4,6 +4,7 @@ const port = process.env.port || process.env.npm_config_port || 80; // 端口
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
+const name = process.env.VUE_APP_TITLE; // 网页标题
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档
@@ -34,11 +35,18 @@ module.exports = {
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ""
         }
+      },
+      [process.env.VUE_APP_AURH_API]: {
+        target: process.env.VUE_APP_AURH_HOST,
+        changeOrigin: true,
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_AURH_API]: ""
+        }
       }
     }
   },
   configureWebpack: {
-    name: "Z ORG | MUSIC",
+    name,
     resolve: {
       alias: {
         "@": path.join(__dirname, "src")
@@ -68,7 +76,7 @@ module.exports = {
       .end();
   },
   pwa: {
-    name: "Z ORG | MUSIC",
+    name,
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "black",
     manifestOptions: {

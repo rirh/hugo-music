@@ -75,17 +75,17 @@ const handle_load_video = async () => {
       cursor: pointer;
     }
     .img {
-      height: 120px;
+      height: 130px;
       width: 100%;
       border-radius: 0.75em;
       transition: all 0.3s;
-
       user-select: none;
       aspect-ratio: 1/1;
       border: 1px solid rgba(0, 0, 0, 0.04);
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      object-fit: cover;
       &:hover {
         transform: scale(2.2);
         transform-origin: center;

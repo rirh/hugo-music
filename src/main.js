@@ -11,7 +11,7 @@ import smoothscroll from "smoothscroll-polyfill";
 import confetti from "canvas-confetti";
 import SvgIcon from "@/assets/icons/index"; // svg组件
 import "@/assets/styles/plyr.css";
-
+import "./router/permission";
 // kick off the polyfill!
 smoothscroll.polyfill();
 export default createApp(App)

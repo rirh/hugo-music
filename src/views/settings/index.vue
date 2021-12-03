@@ -1,5 +1,40 @@
 <template>
-  <h1 style="padding-left:20px">设置</h1>
+  <div class="settings">
+    <div class="left">
+      <h1 class="title">
+        设置
+      </h1>
+
+      <Link to="/settings/account/" v-if="userinfo._id">
+        <div class="cell" :class="{ active: route.name === 'account' }">
+          我的账户 <svg-icon class="arrow" icon-class="arrow-right" />
+        </div>
+      </Link>
+      <Link v-else to="/login">
+        <div class="cell" :class="{ active: route.name === 'account' }">
+          我的账户
+        </div>
+      </Link>
+      <Link to="/settings/theme/">
+        <div class="cell" :class="{ active: route.name === 'theme' }">
+          外观 <svg-icon class="arrow" icon-class="arrow-right" />
+        </div>
+      </Link>
+      <Link to="/settings/language/">
+        <div class="cell" :class="{ active: route.name === 'language' }">
+          语言 <svg-icon class="arrow" icon-class="arrow-right" />
+        </div>
+      </Link>
+      <br />
+      <div class="cell">
+        <strong>退出登录</strong>
+      </div>
+    </div>
+    <div class="right">
+      <router-view></router-view>
+    </div>
+  </div>
+  <!-- <h1 style="padding-left:20px">设置</h1>
   <div class="settings">
     <div class="cell">
       <label for="theme">外观</label>
@@ -24,41 +59,60 @@
         id="theme"
         v-model="appearance"
       >
-        <!-- <option value="auto"></option>
+        <option value="auto"></option>
         <option value="light">🌕&nbsp;浅色</option>
-        <option value="dark">🌑&nbsp;深色</option> -->
+        <option value="dark">🌑&nbsp;深色</option>
       </select>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import Link from "@/components/Link";
 import { useStore } from "vuex";
+import { computed } from "vue";
 const store = useStore();
-const appearance = ref("auto");
-onMounted(() => {
-  appearance.value = store.state.settings.appearance;
-});
-const hanedleChangeTheme = () => {
-  store.dispatch("chengeApparance", appearance.value);
-};
+const route = useRoute();
+const userinfo = computed(() => store.state.settings.userinfo);
 </script>
 
 <style lang="scss" scoped>
 .settings {
-  padding: 35px 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 85vh;
+  height: 85vh;
+  .left {
+    width: 30vw;
+    min-width: 200px;
+    padding: 35px 0;
+    height: 100%;
+    border-right: 1px solid rgba(var(--color-hover-primary-rgb), 0.1);
+    .title {
+      padding-left: 40px;
+    }
+  }
+  .right {
+    flex: 1;
+    padding: 35px 0;
+  }
   .cell {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 720px;
-    margin: 3px 20px;
+    line-height: 55px;
+    padding: 0 40px;
+    box-sizing: border-box;
+    height: 55px;
+    cursor: pointer;
+    // width: 720px;
+    // margin: 3px 20px;
+    .arrow {
+      height: 30px;
+      width: 30px;
+      color: var(--text-primary);
+      opacity: 0.6;
+    }
     label {
       font-size: 16px;
       font-weight: 500;
@@ -76,6 +130,16 @@ const hanedleChangeTheme = () => {
       -moz-appearance: none;
       appearance: none;
     }
+  }
+  .cell:hover {
+    // box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
+    // border: 1px solid var(--color-secondary);
+    background: var(--color-secondary-bg-for-transparent);
+  }
+  .active {
+    // box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
+    // border: 1px solid var(--color-secondary);
+    background: var(--color-secondary);
   }
 }
 </style>

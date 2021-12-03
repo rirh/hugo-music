@@ -71,12 +71,30 @@
     </div>
     <h1>mv</h1>
     <div class="box fr-4">
-      <mvs v-for="it in mvslist" :key="it.id" :item="it" />
+      <mvs
+        v-for="it in mvslist"
+        :key="it.id"
+        :image="it.imgurl"
+        :name="it.name"
+        :desc="it.artistName || it.imgurl16v9"
+        :id="it.id"
+        @on-play="handle_show_video"
+      />
     </div>
   </div>
+  <transition
+    enter-active-class="animate__animated animate__fadeIn"
+    leave-active-class="animate__animated animate__fadeOut"
+  >
+    <ModalWithVideo
+      :open="videoData.open"
+      :url="videoData.url"
+      @on-close="handle_close_video"
+    />
+  </transition>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import {
   getArtistDetail,
@@ -90,6 +108,7 @@ import albums from "@/components/Albums.vue";
 import mvs from "@/components/Mvs.vue";
 import Button from "@/components/Button";
 import Skeleton from "@/components/Skleleton";
+import ModalWithVideo from "@/components/ModalWithVideo";
 
 import { useStore } from "vuex";
 const store = useStore();
@@ -101,7 +120,10 @@ const songslist = ref([]);
 const albumslist = ref([]);
 const mvslist = ref([]);
 const loading = ref(true);
-
+const videoData = reactive({
+  open: false,
+  url: ""
+});
 const init = () => {
   loading.value = true;
   const id = route.params.id;
@@ -141,6 +163,16 @@ watch(
   },
   { immediate: true }
 );
+const handle_close_video = () => {
+  videoData.open = false;
+};
+const handle_show_video = url => {
+  console.log(url);
+  if (url) {
+    videoData.open = true;
+    videoData.url = url;
+  }
+};
 </script>
 <style lang="scss" scoped>
 .artistsdetail {

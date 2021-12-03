@@ -71,12 +71,44 @@ const routes = [
       {
         path: "/settings/",
         name: "settings",
+        redirect: "/settings/theme/",
         component: () =>
           import(
             /* webpackChunkName: "settings" */ "@/views/settings/index.vue"
-          )
+          ),
+        children: [
+          {
+            path: "/settings/theme/",
+            name: "theme",
+            component: () =>
+              import(
+                /* webpackChunkName: "theme" */ "@/views/settings/theme.vue"
+              )
+          },
+          {
+            path: "/settings/account/",
+            name: "account",
+            component: () =>
+              import(
+                /* webpackChunkName: "account" */ "@/views/settings/account.vue"
+              )
+          },
+          {
+            path: "/settings/language/",
+            name: "language",
+            component: () =>
+              import(
+                /* webpackChunkName: "language" */ "@/views/settings/language.vue"
+              )
+          }
+        ]
       }
     ]
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import(/* webpackChunkName: "login" */ "@/views/login.vue")
   },
   {
     path: "/*",

@@ -29,8 +29,15 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   res => {
     // 未设置状态码则默认成功状态
-    if (res?.data?.cookie[0]) document.cookie = res.data.cookie[0];
-    return res.data?.body;
+    if (res?.data?.cookie && res?.data?.cookie[0])
+      document.cookie = res.data.cookie[0];
+    if (res.data?.body) {
+      return res.data?.body;
+    } else if (res.data.code === 0) {
+      return res.data;
+    } else {
+      return Promise.reject(res.data);
+    }
   },
   error => {
     console.log("err" + error);

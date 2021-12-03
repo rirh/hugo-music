@@ -89,7 +89,6 @@ const handle_play = id => {
   // background-color: #fff;
   cursor: pointer;
   transition: all 200ms;
-  width: 100%;
   box-sizing: border-box;
   min-width: 100%;
   .index {
