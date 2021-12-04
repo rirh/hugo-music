@@ -19,7 +19,7 @@
           电子邮箱
         </div>
         <div class="cell">
-          <input v-model="form.email" type="text" />
+          <input placeholder="请输入邮箱" v-model="form.email" type="text" />
           <Button class="tips" @click="handle_send_code">{{
             form.tips
           }}</Button>
@@ -28,7 +28,7 @@
         <div class="label">
           验证码
         </div>
-        <div><input v-model="form.code" type="text" /></div>
+        <div><input placeholder="请输入验证码" v-model="form.code" type="text" /></div>
         <Button class="login-btn" @click="handle_login">登录</Button>
       </div>
     </div>

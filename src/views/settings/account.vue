@@ -12,6 +12,12 @@
           "
           :alt="userinfo.username"
         />
+        <input
+          type="file"
+          class="file"
+          @change="hanle_cheng_file"
+          accept="image/*"
+        />
       </div>
       <div style="margin-top:50px" class="cell">
         <label for="nickname">昵称:</label>
@@ -52,7 +58,7 @@
           <div class="tips">简单介绍一下自己吧～1～140个字符</div>
         </div>
       </div>
-       <div class="cell">
+      <div class="cell">
         <label for="my_invite_code">邀请码:</label>
         <div class="textfaild">
           <input
@@ -95,6 +101,7 @@
 import { useStore } from "vuex";
 import { computed, reactive, watchEffect } from "vue";
 import Image from "@/components/Image";
+import { postUploadFile } from "@/api";
 const store = useStore();
 const _userinfo = computed(() => store.state.settings.userinfo);
 const userinfo = reactive({});
@@ -104,6 +111,26 @@ watchEffect(() => {
 
   return _userinfo.value;
 });
+const hanle_cheng_file = e => {
+  const [file] = e.target.files;
+  if (file) {
+    console.log(file);
+
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = e => {
+      // console.log(e.currentTarget.result);
+      userinfo.avatar = e.currentTarget.result;
+      // https://apiauth.tigerzh.com/upload
+      let param = new FormData(); // 创建form对象
+      param.append("file", file); // 通过append向form对象添加数据
+      param.append("filename", file.name); // 通过append向form对象添加数据
+      postUploadFile(param, { filename: file.name }).then(response => {
+        console.log(response);
+      });
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -116,11 +143,21 @@ watchEffect(() => {
     .header {
       width: 100%;
       text-align: center;
+      position: relative;
+
       .image {
         width: 100px;
         height: 100px;
         border: 1px solid var(--color-secondary);
         border-radius: 50%;
+      }
+      .file {
+        position: absolute;
+        opacity: 0;
+        // left: cala(50% - 50px);
+        height: 100px;
+        width: 100px;
+        left: calc(50% - 50px);
       }
     }
     .textfaild {

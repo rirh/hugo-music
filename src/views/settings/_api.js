@@ -17,3 +17,14 @@ export function postEmailCode(data) {
     data
   });
 }
+//上传文件
+export function postUploadFile(data, params) {
+  return request({
+    baseURL: process.env.VUE_APP_AURH_API,
+    url: `/upload`,
+    method: "post",
+    headers: { "Content-Type": "multipart/form-data" },
+    data,
+    params
+  });
+}

@@ -31,7 +31,7 @@ const { src } = toRefs(props);
 let intersectionObserver = null;
 
 watch(src, params => {
-  url.value = resizeImage(params);
+  url.value = params.startsWith("http") ? resizeImage(params) : params;
 });
 
 onMounted(() => {
