@@ -312,17 +312,17 @@ export default {
         Math.floor(Math.random() * (max - min + 1)) + min;
       const mode_func = {
         single: () => {
-          dispatch("fetch_song_data", state.current_id);
+          return dispatch("fetch_song_data", state.current_id);
         },
         loop: () => {
           const index = list.findIndex(it => Number(it) === id);
           const next_id = list[index + 1] || list[0];
-          dispatch("fetch_song_data", next_id);
+          return dispatch("fetch_song_data", next_id);
         },
         random: () => {
           const num = randomNum(0, list.length);
           const random_id = list[num];
-          dispatch("fetch_song_data", random_id);
+          return dispatch("fetch_song_data", random_id);
         }
       };
       if (mode_func[state.current_mode]) {

@@ -65,6 +65,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { enModeToIcon } from "@/utils";
 import Image from "@/components/Image";
+import Button from "@/components/Button";
 
 const store = useStore();
 const router = useRouter();
@@ -135,7 +136,9 @@ const goNextList = () => {
   router.push("/next");
 };
 const goNextSong = () => {
-  store.dispatch("next");
+  store.dispatch("next").then(() => {
+    console.log("done!");
+  });
 };
 
 const handle_change_mode = () => {
