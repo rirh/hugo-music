@@ -20,16 +20,31 @@
         </div>
         <div class="cell">
           <input placeholder="请输入邮箱" v-model="form.email" type="text" />
-          <Button class="tips" @click="handle_send_code">{{
-            form.tips
-          }}</Button>
+          <Button
+            class="tips"
+            :loading="form.loading"
+            :disabled="form.is_send"
+            @click="handle_send_code"
+            >{{ form.tips }}</Button
+          >
         </div>
         <br />
         <div class="label">
           验证码
         </div>
-        <div><input placeholder="请输入验证码" v-model="form.code" type="text" /></div>
-        <Button class="login-btn" @click="handle_login">登录</Button>
+        <div>
+          <input placeholder="请输入验证码" v-model="form.code" type="text" />
+        </div>
+
+        <Button
+          :loading="form.sumbiting"
+          :disabled="form.sumbiting"
+          class="login-btn"
+          :style="{ width: form.sumbiting ? '60px!important' : '' }"
+          @click="handle_login"
+        >
+          登录
+        </Button>
       </div>
     </div>
   </div>
@@ -49,22 +64,27 @@ const form = reactive({
   email: "huibikuile@qq.com",
   code: "",
   tips: "发送验证码",
-  is_send: false
+  is_send: false,
+  loading: false,
+  sumbiting: false
 });
 
 const handle_login = () => {
+  form.sumbiting = true;
   postUserParams({
     email: form.email,
     code: form.code,
     function: "loginByEmail"
   })
     .then(response => {
+      form.sumbiting = false;
       if (response.userInfo) {
         store.commit("update_userinfo", response.userInfo);
         router.push("/");
       }
     })
     .catch(error => {
+      form.sumbiting = false;
       throw error;
     });
 };
@@ -85,16 +105,20 @@ const start_compute_code = () => {
 };
 const handle_send_code = () => {
   if (form.is_send) return;
+  form.loading = true;
   postEmailCode({
     type: "login",
     email: form.email
   })
     .then(() => {
+      form.loading = false;
       form.tips = "60s";
       form.code = "";
+      form.is_send = true;
       start_compute_code();
     })
     .catch(error => {
+      form.loading = false;
       throw error;
     });
 };

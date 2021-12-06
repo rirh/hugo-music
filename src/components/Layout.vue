@@ -75,8 +75,8 @@ const handle_open_dashbord = () => {
   box-sizing: border-box;
   z-index: -1;
   .left {
-    width: 260px;
-    min-width: 260px;
+    width: 295px;
+    min-width: 295px;
     max-height: min-content;
     height: 100%;
     min-height: 100vh;
@@ -85,10 +85,11 @@ const handle_open_dashbord = () => {
     border-right: 1px solid rgba(var(--color-hover-primary-rgb), 0.1);
     padding: 15px 20px;
     position: relative;
+    box-sizing: border-box;
     .setting {
       position: absolute;
       left: 20px;
-      bottom: 50px;
+      bottom: 20px;
 
       .icon {
         color: #666;

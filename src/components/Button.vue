@@ -1,24 +1,46 @@
-
 <template>
-  <button :style="buttonStyle" :class="color">
+  <button :disabled="disabled" :style="buttonStyle" :class="color">
+    <!-- <transition
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    > -->
+      <Loading v-if="loading" />
+    <!-- </transition> -->
     <svg-icon
       v-if="iconClass !== null"
       :icon-class="iconClass"
       :style="{ marginRight: iconButton ? '0px' : '8px' }"
     />
-    <slot></slot>
+    <transition
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <slot v-if="!loading"></slot>
+    </transition>
   </button>
 </template>
 
 <script>
+import Loading from "@/components/Spinner";
 export default {
   name: "ButtonTwoTone",
+  components: {
+    Loading
+  },
   props: {
     iconClass: {
       type: String,
       default: null
     },
     iconButton: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },

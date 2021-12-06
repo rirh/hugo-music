@@ -154,12 +154,13 @@ const handle_change_mode = () => {
 .play-contral {
   min-height: 100px;
   height: 8vw;
-  width: 100%;
-  position: sticky;
-  bottom: -1px;
-  left: 0;
+  width: calc(100% - 295px);
+  position: fixed;
+  bottom: 0;
+  right: 0;
   background-color: black;
   overflow: hidden;
+  z-index: 2;
   .container {
     position: relative;
     width: 100%;

@@ -1,3 +1,4 @@
+import { postUserParams } from "@/api";
 export default {
   namespace: true,
   state: {
@@ -13,6 +14,23 @@ export default {
     }
   },
   actions: {
+    verifedToken({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        postUserParams({
+          function: "checkToken",
+          token: state.userinfo.token && state.userinfo.token[0]
+        })
+          .then(response => {
+            commit("update_userinfo", response.userInfo);
+            resolve(response);
+          })
+          .catch(error => {
+            commit("update_userinfo", {});
+            reject(error);
+            throw error;
+          });
+      });
+    },
     chengeApparance({ commit }, playload) {
       commit("update_appearance", playload);
       if (playload !== "auto") {

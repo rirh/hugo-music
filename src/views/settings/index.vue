@@ -26,7 +26,7 @@
         </div>
       </Link>
       <br />
-      <div class="cell">
+      <div class="cell" @click="handle_logout">
         <strong>退出登录</strong>
       </div>
     </div>
@@ -75,13 +75,16 @@ import { computed } from "vue";
 const store = useStore();
 const route = useRoute();
 const userinfo = computed(() => store.state.settings.userinfo);
+const handle_logout = () => {
+  store.commit("update_userinfo", {});
+};
 </script>
 
 <style lang="scss" scoped>
 .settings {
   display: flex;
-  min-height: 85vh;
-  height: 85vh;
+  // min-height: 80vh;
+  height: 80vh;
   .left {
     width: 30vw;
     min-width: 200px;

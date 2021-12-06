@@ -28,6 +28,7 @@
             id="nickname"
             type="text"
             class="input"
+            @blur="handle_change_nickname"
           />
           <div class="tips">4～30个字符，支持中英文、数字</div>
         </div>
@@ -41,6 +42,7 @@
             id="email"
             type="text"
             class="input"
+            @blur="handle_change_email"
           />
           <div class="tips">符合规范的邮箱</div>
         </div>
@@ -49,11 +51,12 @@
         <label for="mark">简介:</label>
         <div class="textfaild">
           <input
-            v-model="userinfo.mark"
+            v-model="userinfo.description"
             name="mark"
             id="mark"
             type="text"
             class="input"
+            @blur="handle_change_description"
           />
           <div class="tips">简单介绍一下自己吧～1～140个字符</div>
         </div>
@@ -67,8 +70,9 @@
             id="my_invite_code"
             type="text"
             class="input"
+            readonly
           />
-          <div class="tips">简单介绍一下自己吧～1～140个字符</div>
+          <div class="tips">邀请小伙伴一起来玩耍吧～</div>
         </div>
       </div>
 
@@ -77,65 +81,188 @@
         <label for="nickname">性别:</label>
         <div class="textfaild">
           <div class="textfaild-radio">
-            <input v-model="userinfo.sex" name="sex" id="man" type="radio" />
+            <input
+              v-model="userinfo.gender"
+              name="sex"
+              :value="1"
+              id="man"
+              type="radio"
+              @change="handle_update_gender"
+            />
             <label for="man">男</label>
             <input
-              v-model="userinfo.sex"
+              v-model="userinfo.gender"
               name="sex"
               id="woman"
               type="radio"
               checked
+              :value="2"
+              @change="handle_update_gender"
             />
             <label for="woman">女</label>
           </div>
           <div class="tips"></div>
         </div>
       </div>
+      <h2 style="margin-top:50px">设备信息</h2>
+      <div class="cell">
+        <label for="nickname">设备信息:</label>
+        <div class="textfaild">
+          <span
+            style="margin-right:5px;line-height:32px"
+            v-for="(it, i) in userinfo.token"
+            :title="it"
+            :key="it"
+          >
+            设备{{ i + 1 }}
+            <svg-icon
+              class="icon"
+              title="下线"
+              @click="handle_logout(it)"
+              icon-class="x"
+            />
+          </span>
+        </div>
+      </div>
+
+      <div class="cell">
+        <label for="nickname">上次登录IP:</label>
+        <div class="textfaild">
+          <span>{{ userinfo.last_login_ip }}</span>
+        </div>
+      </div>
+      <div class="cell">
+        <label for="nickname">上次登录时间:</label>
+        <div class="textfaild">
+          <span>{{
+            userinfo.last_login_date
+              ? dayjs(userinfo.last_login_date).format("YYYY年MM月DD日")
+              : ""
+          }}</span>
+        </div>
+      </div>
+      <div class="cell">
+        <label for="nickname">注册时间:</label>
+        <div class="textfaild">
+          <span>{{
+            dayjs(userinfo.register_date).format("YYYY年MM月DD日")
+          }}</span>
+        </div>
+      </div>
     </div>
+    <br />
 
     <!-- {{ userinfo }} -->
   </div>
 </template>
 
 <script setup>
+import dayjs from "dayjs";
 import { useStore } from "vuex";
-import { computed, reactive, watchEffect } from "vue";
+import { computed, reactive, watchEffect, ref } from "vue";
 import Image from "@/components/Image";
-import { postUploadFile } from "@/api";
+
+// import Button from "@/components/Button";
+import { postUploadFile, postUserParams } from "@/api";
 const store = useStore();
+const loading = ref(false);
 const _userinfo = computed(() => store.state.settings.userinfo);
 const userinfo = reactive({});
 watchEffect(() => {
   Object.assign(userinfo, _userinfo.value);
-  console.log(userinfo);
-
   return _userinfo.value;
 });
+const handle_change_nickname = () => {
+  const nickname = userinfo.nickname;
+  const username = nickname;
+  if (_userinfo.value.nickname !== nickname && username) {
+    handle_update_user_info({
+      uid: userinfo._id,
+      nickname,
+      username
+    });
+  }
+};
+const handle_change_email = () => {
+  const email = userinfo.email;
+  if (
+    _userinfo.value.email !== email &&
+    /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)
+  ) {
+    handle_update_user_info({
+      uid: userinfo._id,
+      email
+    });
+  } else {
+    //todo
+  }
+};
+
+const handle_change_description = () => {
+  const description = userinfo.description;
+  if (description && _userinfo.value.description !== description) {
+    handle_update_user_info({
+      uid: userinfo._id,
+      description
+    });
+  }
+};
+
+const handle_update_gender = () => {
+  const gender = userinfo.gender;
+  if (_userinfo.value.gender !== gender) {
+    handle_update_user_info({
+      uid: userinfo._id,
+      gender
+    });
+  }
+};
+
+const handle_logout = token => {
+  postUserParams({
+    function: "logout",
+    token
+  }).then(() => {
+    // Object.assign(userinfo, _userinfo.value);
+  });
+};
 const hanle_cheng_file = e => {
   const [file] = e.target.files;
   if (file) {
-    console.log(file);
-
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = e => {
-      // console.log(e.currentTarget.result);
-      userinfo.avatar = e.currentTarget.result;
-      // https://apiauth.tigerzh.com/upload
-      let param = new FormData(); // 创建form对象
-      param.append("file", file); // 通过append向form对象添加数据
-      param.append("filename", file.name); // 通过append向form对象添加数据
-      postUploadFile(param, { filename: file.name }).then(response => {
-        console.log(response);
-      });
-    };
+    let param = new FormData(); // 创建form对象
+    param.append("file", file); // 通过append向form对象添加数据
+    postUploadFile(param).then(response => {
+      console.log(response);
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = e => {
+        // console.log(e.currentTarget.result);
+        userinfo.avatar = e.currentTarget.result;
+        // https://apiauth.tigerzh.com/upload
+      };
+    });
   }
+};
+const handle_update_user_info = params => {
+  loading.value = true;
+  postUserParams({
+    function: "updateUser",
+    ...params
+  })
+    .then(() => {
+      loading.value = false;
+    })
+    .catch(error => {
+      throw error;
+    });
 };
 </script>
 
 <style lang="scss" scoped>
 .account {
   padding: 0 40px;
+  height: 85vh;
+  overflow-y: scroll;
   .contant {
     width: 100%;
     white-space: break-spaces;
@@ -163,6 +290,9 @@ const hanle_cheng_file = e => {
     .textfaild {
       width: 100%;
       flex: 1;
+      span {
+        line-height: 32px;
+      }
     }
     .cell {
       display: flex;
@@ -204,6 +334,13 @@ const hanle_cheng_file = e => {
       }
     }
   }
+}
+.icon {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 3px;
 }
 .textfaild-radio {
   display: flex;
