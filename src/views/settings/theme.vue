@@ -1,6 +1,6 @@
 <template>
   <div class="contant">
-    <h1>外观</h1>
+    <h1>{{ $t("settings.theme") }}</h1>
     <div class="cell">
       <input
         v-model="appearance"
@@ -10,7 +10,7 @@
         value="auto"
         checked
       />
-      <label for="auto">😋&nbsp;自动</label>
+      <label for="auto">😋&nbsp; {{ $t("settings.auto") }}</label>
     </div>
     <div class="cell">
       <input
@@ -20,7 +20,7 @@
         name="theme"
         value="light"
       />
-      <label for="light">🌕&nbsp;浅色</label>
+      <label for="light">🌕&nbsp; {{ $t("settings.light") }}</label>
     </div>
 
     <div class="cell">
@@ -31,7 +31,7 @@
         name="theme"
         value="dark"
       />
-      <label for="dark">🌑&nbsp;深色</label>
+      <label for="dark">🌑&nbsp; {{ $t("settings.dark") }}</label>
     </div>
   </div>
 </template>

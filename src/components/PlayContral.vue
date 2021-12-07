@@ -30,10 +30,12 @@
           <transition name="fade">
             <div v-show="detail.al_name" class="artiles">
               <span class="al-name" :title="detail.al_name">
-                专辑： <span>{{ detail.al_name }}</span>
+                {{ $t("home.playerArtist") }}：
+                <span>{{ detail.al_name }}</span>
               </span>
               <span class="ar-name" :title="detail.ar_name">
-                歌手： <span>{{ detail.ar_name }}</span>
+                {{ $t("home.playerSinger") }}：
+                <span>{{ detail.ar_name }}</span>
               </span>
             </div>
           </transition>
@@ -65,7 +67,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { enModeToIcon } from "@/utils";
 import Image from "@/components/Image";
-import Button from "@/components/Button";
+// import Button from "@/components/Button";
 
 const store = useStore();
 const router = useRouter();

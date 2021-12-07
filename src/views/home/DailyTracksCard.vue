@@ -4,10 +4,11 @@
     <div class="container">
       <div class="title-box">
         <div class="title">
-          <span>每</span>
+          {{ $t("home.dailyRecommand") }}
+          <!-- <span>每</span>
           <span>日</span>
           <span>推</span>
-          <span>荐</span>
+          <span>荐</span> -->
         </div>
       </div>
     </div>
@@ -78,12 +79,13 @@ const handle_play = () => {
     width: 100%;
     font-weight: 600;
     font-size: 64px;
-    line-height: 48px;
+    line-height: 74px;
     opacity: 0.96;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    place-items: center;
+    text-transform: uppercase;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+    // justify-items: center;
+    // place-items: center;
   }
 }
 

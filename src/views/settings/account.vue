@@ -231,15 +231,20 @@ const hanle_cheng_file = e => {
   if (file) {
     let param = new FormData(); // 创建form对象
     param.append("file", file); // 通过append向form对象添加数据
-    postUploadFile(param).then(response => {
-      console.log(response);
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = e => {
-        // console.log(e.currentTarget.result);
-        userinfo.avatar = e.currentTarget.result;
-        // https://apiauth.tigerzh.com/upload
-      };
+    postUploadFile(param).then(({ fileList }) => {
+      const [{ download_url }] = fileList;
+      userinfo.avatar = download_url;
+      handle_update_user_info({
+        uid: userinfo._id,
+        avatar: download_url
+      });
+      // var reader = new FileReader();
+      // reader.readAsDataURL(file);
+      // reader.onload = e => {
+      //   // console.log(e.currentTarget.result);
+
+      //   // https://apiauth.tigerzh.com/upload
+      // };
     });
   }
 };
@@ -275,7 +280,7 @@ const handle_update_user_info = params => {
       .image {
         width: 100px;
         height: 100px;
-        border: 1px solid var(--color-secondary);
+        border: 3px solid var(--color-secondary);
         border-radius: 50%;
       }
       .file {

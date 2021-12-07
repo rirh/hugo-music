@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <Link to="/login">
+      <Link to="/">
         <Image
           class="logo"
           alt="logo"
@@ -35,10 +35,15 @@
         <div>
           <input placeholder="请输入验证码" v-model="form.code" type="text" />
         </div>
+        <div class="login-signin">
+          <a class="link" href="http://signup.tigerzh.com/?appname=music">
+            现在加入我们？</a
+          >
+        </div>
 
         <Button
           :loading="form.sumbiting"
-          :disabled="form.sumbiting"
+          :disabled="!(form.code && form.email)"
           class="login-btn"
           :style="{ width: form.sumbiting ? '60px!important' : '' }"
           @click="handle_login"
@@ -70,23 +75,30 @@ const form = reactive({
 });
 
 const handle_login = () => {
-  form.sumbiting = true;
-  postUserParams({
-    email: form.email,
-    code: form.code,
-    function: "loginByEmail"
-  })
-    .then(response => {
-      form.sumbiting = false;
-      if (response.userInfo) {
-        store.commit("update_userinfo", response.userInfo);
-        router.push("/");
-      }
+  if (form.code && form.email) {
+    form.sumbiting = true;
+    postUserParams({
+      email: form.email,
+      code: form.code,
+      function: "loginByEmail"
     })
-    .catch(error => {
-      form.sumbiting = false;
-      throw error;
-    });
+      .then(response => {
+        form.sumbiting = false;
+        if (response.userInfo) {
+          store.commit("update_userinfo", response.userInfo);
+          router.push("/");
+        }
+      })
+      .catch(error => {
+        if (form.is_send) {
+          form.tips = "0s";
+          form.is_send = false;
+          form.code = "";
+        }
+        form.sumbiting = false;
+        throw error;
+      });
+  }
 };
 
 const start_compute_code = () => {
@@ -94,7 +106,7 @@ const start_compute_code = () => {
   code = Number(code);
   code = code - 1;
   form.tips = `${code}s`;
-  if (code === 0) {
+  if (code <= 0) {
     form.tips = "重新获取";
     form.is_send = false;
   } else {
@@ -190,5 +202,18 @@ const handle_send_code = () => {
       }
     }
   }
+}
+.login-signin {
+  text-align: right;
+  margin-top: 5px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+.link,
+.link:link,
+.link:hover,
+.link:active {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

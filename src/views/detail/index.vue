@@ -5,7 +5,8 @@
   >
     <main>
       <h1>
-        <strong>"{{ route.params.keywords }}"</strong> <span>搜索结果</span>
+        <strong>"{{ route.params.keywords }}"</strong>
+        <span>&nbsp;{{ $t("searchResult.searchResult") }}</span>
       </h1>
       <Skeleton
         style="margin:3%"
@@ -18,9 +19,9 @@
       <div v-else v-for="(it, i) in response" :key="i">
         <div>
           <div class="title">
-            <h1 :id="it.label">{{ typeToText(it.label) || "" }}</h1>
+            <h1 :id="it.label">{{ $t(`searchResult.${it.label}`) }}</h1>
             <Link :to="`/detail/${route.params.keywords}/${it.label}`">
-              <span>更多</span>
+              <span>{{ $t("searchResult.more") }}</span>
             </Link>
           </div>
           <div
@@ -138,7 +139,6 @@
 import { onMounted, ref, nextTick, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
-import { typeToText } from "@/utils";
 import Skeleton from "@/components/Skleleton";
 import songs from "@/components/Songs.vue";
 import albums from "@/components/Albums.vue";

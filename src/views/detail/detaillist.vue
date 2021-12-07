@@ -1,8 +1,10 @@
 <template>
   <div class="detaillist">
     <h1>
-      搜索{{ typeToText(router.params.type) }}
-      <strong>"{{ router.params.keywords }}"</strong>， {{ total }}&nbsp;条结果
+      {{ $t(`searchResult.search`) }}
+      {{ $t(`searchResult.${router.params.type}`) }}
+      <strong>"{{ router.params.keywords }}"</strong>， {{ total }}&nbsp;
+      {{ $t(`searchResult.count`) }}
     </h1>
     <br />
     <div
@@ -45,7 +47,9 @@
       bg="transparent"
     />
     <div class="loadmore" v-show="list.length < total">
-      <Button @click="handle_load_more">加载更多</Button>
+      <Button @click="handle_load_more">{{
+        $t(`searchResult.loadMore`)
+      }}</Button>
     </div>
   </div>
   <ModalWithVideo
@@ -59,7 +63,6 @@
 import { onMounted, reactive, ref, shallowRef } from "vue";
 import { useRoute } from "vue-router";
 import { getCloudSearch } from "@/api";
-import { typeToText } from "@/utils";
 import Skeleton from "@/components/Skleleton";
 import Button from "@/components/Button";
 import songs from "@/components/Songs.vue";

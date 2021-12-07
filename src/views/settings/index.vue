@@ -2,32 +2,35 @@
   <div class="settings">
     <div class="left">
       <h1 class="title">
-        设置
+        {{ $t("settings.settings") }}
       </h1>
 
       <Link to="/settings/account/" v-if="userinfo._id">
         <div class="cell" :class="{ active: route.name === 'account' }">
-          我的账户 <svg-icon class="arrow" icon-class="arrow-right" />
+          {{ $t("settings.account") }}
+          <svg-icon class="arrow" icon-class="arrow-right" />
         </div>
       </Link>
       <Link v-else to="/login">
         <div class="cell" :class="{ active: route.name === 'account' }">
-          我的账户
+          {{ $t("settings.account") }}
         </div>
       </Link>
       <Link to="/settings/theme/">
         <div class="cell" :class="{ active: route.name === 'theme' }">
-          外观 <svg-icon class="arrow" icon-class="arrow-right" />
+          {{ $t("settings.theme") }}
+          <svg-icon class="arrow" icon-class="arrow-right" />
         </div>
       </Link>
       <Link to="/settings/language/">
         <div class="cell" :class="{ active: route.name === 'language' }">
-          语言 <svg-icon class="arrow" icon-class="arrow-right" />
+          {{ $t("settings.language") }}
+          <svg-icon class="arrow" icon-class="arrow-right" />
         </div>
       </Link>
       <br />
       <div class="cell" @click="handle_logout">
-        <strong>退出登录</strong>
+        <strong> {{ $t("settings.logout") }}</strong>
       </div>
     </div>
     <div class="right">
@@ -68,15 +71,17 @@
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Link from "@/components/Link";
 import { useStore } from "vuex";
 import { computed } from "vue";
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const userinfo = computed(() => store.state.settings.userinfo);
 const handle_logout = () => {
   store.commit("update_userinfo", {});
+  router.push("/settings");
 };
 </script>
 
@@ -93,6 +98,7 @@ const handle_logout = () => {
     border-right: 1px solid rgba(var(--color-hover-primary-rgb), 0.1);
     .title {
       padding-left: 40px;
+      text-transform: capitalize;
     }
   }
   .right {
@@ -108,6 +114,7 @@ const handle_logout = () => {
     box-sizing: border-box;
     height: 55px;
     cursor: pointer;
+    text-transform: capitalize;
     // width: 720px;
     // margin: 3px 20px;
     .arrow {

@@ -33,7 +33,8 @@
           }"
           @click="handle_go_albums(detail.al_name_id)"
         >
-          专辑： <span class="link">{{ detail.al_name }}</span>
+          {{ $t("home.playerArtist") }}：
+          <span class="link">{{ detail.al_name }}</span>
         </strong>
         <strong
           class="ar-name"
@@ -42,7 +43,7 @@
             color: style.text_color
           }"
         >
-          歌手：
+          {{ $t("home.playerSinger") }}：
           <span
             class="link"
             v-for="(it, i) in detail.ar_name"
@@ -149,50 +150,55 @@
       :close="handle_close"
       :show-footer="false"
       :click-outside-hide="true"
-      title="鲸海音效"
+      :title="$t('home.whaleAudioEffect')"
     >
       <div class="box fr-4 effecs">
         <Button
-          title="原汁原味，听见音乐的力量"
+          :title="$t('home.originalEffectTips')"
           @click="handle_set_effects('cancelEffect')"
         >
-          原声
+          {{ $t("home.originalEffect") }}
         </Button>
         <Button
-          title="一般的耳机可用不起这个音效"
+          :title="$t('home.vocalSurroundEffectTips')"
           @click="handle_set_effects('delay')"
         >
-          人声环绕
+          {{ $t("home.vocalSurroundEffect") }}
         </Button>
         <Button
-          title="厚重的感觉如约而至"
+          :title="$t('home.bassBoostEffectTips')"
           @click="handle_set_effects('lowpassFilter')"
         >
-          低音增强
+          {{ $t("home.bassBoostEffect") }}
         </Button>
         <Button
-          title="婉转清晰的高音"
+          :title="$t('home.trebleEnhancementEffectTips')"
           @click="handle_set_effects('highpassFilter')"
         >
-          高音增强
+          {{ $t("home.trebleEnhancementEffect") }}
         </Button>
         <Button
-          title="真实重未如此美妙"
+          :title="$t('home.dolbySoundEffectTips')"
           @click="handle_set_effects('enhanceVocal')"
         >
-          杜比音效
+          {{ $t("home.dolbySoundEffect") }}
         </Button>
         <!-- <Button @click="handle_set_effects('stereo')">stereo</Button> -->
-        <Button @click="handle_set_effects('removeVocal')">移除人声</Button>
         <Button
-          title="左耳伴奏增强，右耳人声增强，请尽情享受3D增强效果"
+          :title="$t('home.removeVoiceEffectTips')"
+          @click="handle_set_effects('removeVocal')"
+        >
+          {{ $t("home.removeVoiceEffect") }}</Button
+        >
+        <Button
+          :title="$t('home.3DEnhancementEffectTips')"
           @click="handle_set_effects('splitterMerger')"
         >
-          3D增强
+          {{ $t("home.3DEnhancementEffect") }}
         </Button>
-        <Button title="加入会员和大家一起交流">
+        <Button :title="$t('home.exploreNowTips')">
           <a :href="signin_href" rel="noopener noreferrer">
-            现在探索
+            {{ $t("home.exploreNow") }}
           </a>
         </Button>
       </div>
@@ -599,6 +605,7 @@ const handle_go_artists = id => {
     background-color: var(--color-secondary);
     opacity: 0.6;
     transition: all 200ms;
+    text-transform: capitalize;
     a,
     a:link,
     a:hover,

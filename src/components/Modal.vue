@@ -1,22 +1,24 @@
 <template>
-  <div v-show="show" class="shade" @click="clickOutside">
-    <div class="modal" :style="modalStyles" @click.stop>
-      <div class="header" v-if="title">
-        <div class="title">{{ title }}</div>
-        <button class="close" @click="close">
-          <svg-icon icon-class="x" />
-        </button>
-      </div>
-      <div class="content" :style="{ padding: frame ? '0' : '0 24px' }">
-        <slot></slot>
-      </div>
-      <div v-if="showFooter" class="footer">
-        <!-- <button>取消</button>
+  <teleport to="body">
+    <div v-show="show" class="shade" @click="clickOutside">
+      <div class="modal" :style="modalStyles" @click.stop>
+        <div class="header" v-if="title">
+          <div class="title">{{ title }}</div>
+          <button class="close" @click="close">
+            <svg-icon icon-class="x" />
+          </button>
+        </div>
+        <div class="content" :style="{ padding: frame ? '0' : '0 24px' }">
+          <slot></slot>
+        </div>
+        <div v-if="showFooter" class="footer">
+          <!-- <button>取消</button>
         <button class="primary">确定</button> -->
-        <slot name="footer"></slot>
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script>

@@ -42,6 +42,13 @@ module.exports = {
         pathRewrite: {
           ["^" + process.env.VUE_APP_AURH_API]: ""
         }
+      },
+      [process.env.VUE_APP_UPLOAD_API]: {
+        target: process.env.VUE_APP_UPLOAD_HOST,
+        changeOrigin: true,
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_UPLOAD_API]: ""
+        }
       }
     }
   },

@@ -4,6 +4,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { useStore } from "vuex";
+
 const store = useStore();
 if ("serviceWorker" in navigator)
   navigator.serviceWorker.register("/service-worker.js").then(reg => {

@@ -31,9 +31,12 @@ service.interceptors.response.use(
     // 未设置状态码则默认成功状态
     if (res?.data?.cookie && res?.data?.cookie[0])
       document.cookie = res.data.cookie[0];
+    // 返回数据判断
     if (res.data?.body) {
       return res.data?.body;
     } else if (res.data.code === 0) {
+      return res.data;
+    } else if (res.data.fileList) {
       return res.data;
     } else {
       return Promise.reject(res.data);

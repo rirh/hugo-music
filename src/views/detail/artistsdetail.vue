@@ -22,9 +22,12 @@
             {{ artist?.transNames?.toString() }}
           </div>
           <div class="con">
-            <span>{{ artist.musicSize }} 首歌</span> ·
-            <span>{{ artist.albumSize }} 张专辑</span> ·
-            <span>{{ artist.mvSize }} 个 MV</span>
+            <span>{{ artist.musicSize }} {{ $t("searchResult.plays") }}</span> ·
+            <span
+              >{{ artist.albumSize }} {{ $t("searchResult.albumsDesc") }}</span
+            >
+            ·
+            <span>{{ artist.mvSize }} {{ $t("searchResult.mvs") }}</span>
           </div>
         </div>
       </template>
@@ -35,7 +38,7 @@
             v-if="Boolean(songslist[0]?.id)"
             @click="handle_play"
             icon-class="play"
-            >播放</Button
+            >{{ $t("searchResult.play") }}</Button
           >&nbsp;
           <!-- <Button
             shape="round"

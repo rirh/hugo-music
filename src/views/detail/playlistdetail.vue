@@ -19,28 +19,36 @@
         <div>
           <div>
             {{
-              `最后更新于${dayjs(playlist?.updateTime).format(
-                "YYYY年MM月DD日"
-              )}`
+              `${$t("searchResult.lastUpdate")}&nbsp;${dayjs(
+                playlist?.updateTime
+              ).format("YYYY/MM/DD")}`
             }}
-            · {{ `${playlist?.trackCount}首音乐` }}
+            · {{ `${playlist?.trackCount} ${$t("searchResult.songsTips")}` }}
           </div>
           <div class="count">
             <span>
               <svg-icon class="icon" icon-class="play"></svg-icon>
-              {{ formatCount(playlist?.playCount) }}次播放
+              {{ Number(playlist?.playCount).toLocaleString() }}&nbsp;{{
+                $t("searchResult.plays")
+              }}
             </span>
             ·
             <span class="link">
-              {{ formatCount(playlist?.subscribedCount) }}人订阅
+              {{ Number(playlist?.subscribedCount).toLocaleString() }}&nbsp;{{
+                $t("searchResult.subscribed")
+              }}
             </span>
             ·
             <span class="link">
-              {{ formatCount(playlist?.shareCount) }}次分享
+              {{ Number(playlist?.shareCount).toLocaleString() }}&nbsp;{{
+                $t("searchResult.shares")
+              }}
             </span>
             ·
             <span class="link">
-              {{ formatCount(playlist?.commentCount) }}条留言
+              {{ Number(playlist?.commentCount).toLocaleString() }}&nbsp;{{
+                $t("searchResult.comments")
+              }}
             </span>
           </div>
         </div>
@@ -79,7 +87,6 @@
 import { ref, watch, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getPlayListDetail, getSongDetail } from "@/api";
-import { formatCount } from "@/utils";
 import dayjs from "dayjs";
 import DescHeader from "@/components/DescHeader";
 import Skeleton from "@/components/Skleleton";

@@ -20,11 +20,11 @@
         <div>
           <div>
             {{
-              `最后更新于${dayjs(playlist?.updateTime).format(
-                "YYYY年MM月DD日"
+              `${$t("searchResult.lastUpdate")}&nbsp;${dayjs(playlist?.updateTime).format(
+                "YYYY/MM/DD/"
               )}`
             }}
-            · {{ `${playlist?.trackCount}首音乐` }}
+            · {{ `${playlist?.trackCount}${$t("searchResult.songsTips")}` }}
           </div>
           <div class="count">
             <span>

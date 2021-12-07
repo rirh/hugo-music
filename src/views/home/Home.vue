@@ -9,7 +9,7 @@
       bg="transparent"
     />
     <div v-show="!loading" class="container">
-      <h1 v-show="daily.coverImgUrl">浏览</h1>
+      <h1 v-show="daily.coverImgUrl">{{ $t("home.browser") }}</h1>
       <div class="recommand box fr-2">
         <DailyTracksCard
           v-show="daily.coverImgUrl"
@@ -28,7 +28,7 @@
           @on-next="handle_next_fm"
         />
       </div>
-      <h1>最新推出</h1>
+      <h1>{{ $t("home.new") }}</h1>
       <div class="song fr-2 ">
         <div v-for="(it, index) in new_song_list" :key="index">
           <songs
@@ -39,7 +39,7 @@
           />
         </div>
       </div>
-      <h1>排行榜</h1>
+      <h1>{{ $t("home.top") }}</h1>
       <div class="box fr-3 ">
         <div class="card" v-for="(it, index) in top_list" :key="index">
           <playlists
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <h1>热门歌手</h1>
+      <h1>{{ $t("home.singer") }}</h1>
       <div class="song fr-6">
         <div v-for="(it, index) in aritsts_list" :key="index">
           <artists :image="it.picUrl" :name="it.name" :id="it.id" />
@@ -234,6 +234,7 @@ const handle_play = id => {
   padding: 3em;
   h1 {
     margin-top: 50px;
+    text-transform: capitalize;
   }
 
   .recommand {

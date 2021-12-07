@@ -17,8 +17,8 @@ smoothscroll.polyfill();
 export default createApp(App)
   .use(store)
   .use(router)
-  .use(i18n)
   .use(SvgIcon)
+  .use(i18n)
   .mount("#app");
 
 if (process.env.NODE_ENV === "production") {

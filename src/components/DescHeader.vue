@@ -24,9 +24,9 @@
         </div>
         <slot name="action">
           <div class="action">
-            <Button v-if="showActions" @click="handle_play" icon-class="play"
-              >播放</Button
-            >
+            <Button v-if="showActions" @click="handle_play" icon-class="play">{{
+              $t("searchResult.play")
+            }}</Button>
           </div>
         </slot>
       </div>
@@ -36,7 +36,7 @@
       :close="handle_close"
       :show-footer="false"
       :click-outside-hide="true"
-      title="详情"
+      :title="$t('searchResult.detail')"
     >
       <p>
         {{ description }}

@@ -3,11 +3,15 @@ export default {
   namespace: true,
   state: {
     appearance: "auto",
-    userinfo: {}
+    userinfo: {},
+    locales: process.env.VUE_APP_DEFAULT_LOCALE
   },
   mutations: {
     update_appearance(state, payload) {
       state.appearance = payload;
+    },
+    update_locales(state, payload) {
+      state.locales = payload;
     },
     update_userinfo(state, payload) {
       state.userinfo = payload;
