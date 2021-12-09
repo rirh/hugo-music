@@ -154,7 +154,7 @@ module.exports = {
       preload: "src/preload.js",
       externals: ["@revincx/unblockneteasemusic"],
       builderOptions: {
-        productName: "Z ORG MUSIC",
+        productName: "ZORGMusic",
         copyright: "Copyright © Z ORG",
         // compression: "maximum", // 机器好的可以打开，配置压缩，开启后会让 .AppImage 格式的客户端启动缓慢
         asar: true,
@@ -192,7 +192,7 @@ module.exports = {
               arch: ["x64"]
             }
           ],
-          publisherName: "Z ORG MUSIC",
+          publisherName: "MUSIC",
           icon: "build/icons/icon.ico",
           publish: ["github"]
         },
@@ -237,6 +237,10 @@ module.exports = {
       },
       // 主线程的配置文件
       chainWebpackMainProcess: config => {
+        // 修复HMR
+        config.resolve.symlinks(true);
+        config.resolve.alias.set("@", path.join(__dirname, "./src"));
+        // Chain webpack config for electron main process only
         config.plugin("define").tap(args => {
           args[0]["IS_ELECTRON"] = true;
           return args;
@@ -244,6 +248,8 @@ module.exports = {
       },
       // 渲染线程的配置文件
       chainWebpackRendererProcess: config => {
+        // 修复HMR
+        config.resolve.symlinks(true);
         // 渲染线程的一些其他配置
         // Chain webpack config for electron renderer process only
         // The following example will set IS_ELECTRON to true in your app
