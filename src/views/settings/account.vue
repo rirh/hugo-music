@@ -1,6 +1,6 @@
 <template>
   <div class="account">
-    <h1>账号信息设置</h1>
+    <h1>{{ $t("settings.account") }}</h1>
     <div class="contant">
       <div class="header">
         <Image
@@ -12,6 +12,7 @@
           "
           :alt="userinfo.username"
         />
+        <svg-icon class="icon" icon-class="plus"></svg-icon>
         <input
           type="file"
           class="file"
@@ -290,7 +291,21 @@ const handle_update_user_info = params => {
         height: 100px;
         width: 100px;
         left: calc(50% - 50px);
+        transition: all ease-in-out 200ms;
       }
+      .icon {
+        position: absolute;
+        opacity: 0;
+        // left: cala(50% - 50px);
+        height: 50px;
+        width: 50px;
+        left: calc(50% - 25px);
+        top: calc(50% - 25px);
+        transition: all ease-in-out 200ms;
+      }
+    }
+    .header:hover .icon {
+      opacity: 0.65;
     }
     .textfaild {
       width: 100%;

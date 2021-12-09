@@ -89,7 +89,8 @@ const handle_logout = () => {
 .settings {
   display: flex;
   // min-height: 80vh;
-  height: 80vh;
+  height: 90vh;
+  margin-bottom: 10px;
   .left {
     width: 30vw;
     min-width: 200px;

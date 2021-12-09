@@ -67,6 +67,9 @@ function change_language() {
 <style lang="scss" scoped>
 .language {
   padding: 0 40px;
+  height: 80vh;
+  overflow-y: scroll;
+  padding-bottom: 20px;
   .cell {
     // line-height: 30px;
     margin-bottom: 5px;

@@ -22,7 +22,7 @@
     v-for="it in beReplied"
     :key="it.beRepliedCommentId"
     :avatar="it.user.avatarUrl"
-    :auth="`${it.user.nickname}回复${auth}`"
+    :auth="`@${it.user.nickname} ${$t('home.reply')} @${auth}`"
     :content="it.content"
     :beReplied="it.beReplied"
   />

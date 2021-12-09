@@ -11,10 +11,10 @@
     <!-- <h1>即将播放</h1> -->
     <!-- <Songs :image="it.image" :name="it.name" :id="it.id" :desc="it.auth" /> -->
     <div class="contal">
-      <h1 v-if="list.length">播放列表</h1>
+      <h1 v-if="list.value.length">播放列表</h1>
       <div>
         <Button
-          v-if="list.length"
+          v-if="list.value.length"
           @click="handle_clear_list"
           class="icon"
           icon-class="clear"
@@ -26,7 +26,7 @@
 
     <div class="box fr-3" style=" gap: 10px 10px;">
       <Songs
-        v-for="it in list"
+        v-for="(it, i) in list.value"
         :key="it"
         :image="it.image"
         :name="it.name"
@@ -35,8 +35,8 @@
       >
         <div class="flex-1">
           <Button
-            v-if="list.length"
-            @click="handle_delete_song(it.id)"
+            v-if="list.value.length"
+            @click="handle_delete_song(it.id, i)"
             class="flex-1-btn"
             icon-class="clear"
             iconButton
@@ -49,12 +49,33 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, reactive, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { dtToTime } from "@/utils";
 import Songs from "@/components/Songs";
 import Button from "@/components/Button";
 const store = useStore();
+const list = reactive({ value: [] });
+watchEffect(() => {
+  const play_list = store.state.sound.play_list;
+  list.value = Object.keys(play_list).map(key => {
+    const it = play_list[key];
+    const image = it?.songs[0]?.al?.picUrl;
+    const name = it?.songs[0]?.name;
+    const auth = it?.songs[0]?.ar;
+    const durt = dtToTime(it?.songs[0]?.dt);
+    const id = it.id;
+    return {
+      image,
+      name,
+      auth,
+      durt,
+      id
+    };
+  });
+  return store.state.sound.play_list;
+});
+
 const current_song = computed(() => {
   let result = {};
   const play_list = store.state.sound.play_list;
@@ -77,30 +98,11 @@ const current_song = computed(() => {
   return result;
 });
 
-const list = computed(() => {
-  let result = [];
-  const play_list = store.state.sound.play_list;
-  result = Object.keys(play_list).map(key => {
-    const it = play_list[key];
-    const image = it?.songs[0]?.al?.picUrl;
-    const name = it?.songs[0]?.name;
-    const auth = it?.songs[0]?.ar;
-    const durt = dtToTime(it?.songs[0]?.dt);
-    const id = it.id;
-    return {
-      image,
-      name,
-      auth,
-      durt,
-      id
-    };
-  });
-  return result;
-});
 const handle_clear_list = () => {
   store.dispatch("clear_play_list");
 };
-const handle_delete_song = id => {
+const handle_delete_song = (id, i) => {
+  list.value.splice(i, 1);
   store.dispatch("delete_play_song", id);
 };
 </script>

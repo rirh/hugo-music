@@ -7,3 +7,17 @@ Content-Type: application/json
     "password":"123456",
     "username":"huibikuile@qq.com"
 }
+###
+POST https://fanyi-api.baidu.com/api/trans/vip/translate HTTP/1.1
+Content-Type: application/json
+
+{
+    "q":"hello",
+    "from":"auto",
+    "to":"zh",
+    "appid":"20211208001022355",
+    "salt":"1638943349775",
+    "sign":"ddc250615439175208987497e72cbdef"
+}
+### 
+GET http://api.fanyi.baidu.com/api/trans/vip/translate?q=hello&from=auto&to=zh&appid=20211208001022355&salt=1638943349775&sign=ddc250615439175208987497e72cbdef HTTP/1.1

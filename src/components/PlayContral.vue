@@ -6,14 +6,13 @@
   >
     <div
       @click="handle_open_dashbord"
-      v-if="detail.ar_name"
+      v-if="detail.al_id"
       class="play-contral"
     >
       <div class="container" type="flex" align="middle">
         <div class="pic">
           <Image class="img" alt="" :src="detail.picUrl" />
           <div class="contal" @click.stop="handle_toggle_play">
-            <span> </span>
             <svg-icon
               class="play"
               :icon-class="current_state !== 'play' ? 'play' : 'pause'"
@@ -31,11 +30,19 @@
             <div v-show="detail.al_name" class="artiles">
               <span class="al-name" :title="detail.al_name">
                 {{ $t("home.playerArtist") }}：
-                <span>{{ detail.al_name }}</span>
+                <span @click.stop="handle_go_artist(detail.al_id)">{{
+                  detail.al_name
+                }}</span>
               </span>
-              <span class="ar-name" :title="detail.ar_name">
+              <span class="ar-name" :title="detail.ar">
                 {{ $t("home.playerSinger") }}：
-                <span>{{ detail.ar_name }}</span>
+                <span
+                  @click.stop="handle_go_singer(it.id)"
+                  v-for="(it, i) in detail.ar"
+                  :key="i"
+                  >{{ it.name }}
+                  {{ i !== detail?.ar?.length - 1 ? "/" : "" }}
+                </span>
               </span>
             </div>
           </transition>
@@ -105,7 +112,8 @@ const detail = computed(() => {
       result.name = detail.name;
       result.picUrl = detail.al.picUrl;
       result.al_name = detail.al.name;
-      result.ar_name = detail.ar.map(e => e.name).join("/");
+      result.al_id = detail.al.id;
+      result.ar = detail.ar;
       const lyr = song?.lrc?.lyric;
       if (lyr) {
         const lyric = lyr.split("\n");
@@ -129,6 +137,12 @@ const to_time = val => {
   const m = `${Math.floor((val / 60) % 60)}`.padStart(2, "0"),
     s = `${Math.floor(val % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
+};
+const handle_go_artist = id => {
+  router.push(`/albums/${id}`);
+};
+const handle_go_singer = id => {
+  router.push(`/artists/${id}`);
 };
 
 const handle_toggle_play = () => {
@@ -200,7 +214,6 @@ const handle_change_mode = () => {
         display: flex;
         align-items: center;
         .lyric {
-          margin-left: 0px;
           font-size: 26px;
           opacity: 0.9;
           margin-left: 10px;

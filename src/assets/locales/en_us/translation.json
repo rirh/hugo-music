@@ -1,4 +1,16 @@
 {
+  "login": {
+    "welcomeBack": "Welcome back ",
+    "loginaccount": "Log in to your ZORG MUSIC account.",
+    "email": "email",
+    "emailPlaceholder": "please input email",
+    "code": "code",
+    "codePlaceholder": "please input code",
+    "joinNow": "getting start",
+    "login": "log in",
+    "sendCode": "send code",
+    "sendAgain": "send again"
+  },
   "home": {
     "browser": "browser",
     "new": "best new songs",
@@ -23,7 +35,9 @@
     "3DEnhancementEffect": "3D enhancement",
     "3DEnhancementEffectTips": "Left ear accompaniment enhancement, right ear vocal enhancement, please enjoy the 3D enhancement effect",
     "exploreNow": "explore now",
-    "exploreNowTips": "Join members and communicate with everyone"
+    "exploreNowTips": "Join members and communicate with everyone",
+    "suggtion": "enter search",
+    "reply": "reply"
   },
   "settings": {
     "settings": "settings",

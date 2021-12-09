@@ -11,15 +11,19 @@
     </div>
     <div class="contant">
       <div class="card">
-        <h1>欢迎回来</h1>
-        <h3>登录您的账户</h3>
+        <h1>{{ $t("login.welcomeBack") }}</h1>
+        <h3>{{ $t("login.loginaccount") }}</h3>
         <br />
         <br />
         <div class="label">
-          电子邮箱
+          {{ $t("login.email") }}
         </div>
         <div class="cell">
-          <input placeholder="请输入邮箱" v-model="form.email" type="text" />
+          <input
+            :placeholder="$t('login.emailPlaceholder')"
+            v-model="form.email"
+            type="text"
+          />
           <Button
             class="tips"
             :loading="form.loading"
@@ -30,15 +34,17 @@
         </div>
         <br />
         <div class="label">
-          验证码
+          {{ $t("login.code") }}
         </div>
         <div>
-          <input placeholder="请输入验证码" v-model="form.code" type="text" />
+          <input
+            :placeholder="$t('login.codePlaceholder')"
+            v-model="form.code"
+            type="text"
+          />
         </div>
         <div class="login-signin">
-          <a class="link" href="http://signup.tigerzh.com/?appname=music">
-            现在加入我们？</a
-          >
+          <span @click="handle_go_sigin"> {{ $t("login.joinNow") }}? </span>
         </div>
 
         <Button
@@ -48,7 +54,7 @@
           :style="{ width: form.sumbiting ? '60px!important' : '' }"
           @click="handle_login"
         >
-          登录
+          {{ $t("login.login") }}
         </Button>
       </div>
     </div>
@@ -63,17 +69,26 @@ import { reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { postEmailCode, postUserParams } from "@/api";
+import { useI18n } from "vue-i18n";
+const i18n = useI18n();
 const store = useStore();
 const router = useRouter();
 const form = reactive({
   email: "huibikuile@qq.com",
   code: "",
-  tips: "发送验证码",
+  tips: i18n.t("login.sendCode"),
   is_send: false,
   loading: false,
   sumbiting: false
 });
-
+const handle_go_sigin = () => {
+  if (process.env.IS_ELECTRON) {
+    const { shell } = require("electron");
+    shell.openExternal("http://signup.tigerzh.com/?appname=music");
+  } else {
+    window.location.href = "http://signup.tigerzh.com/?appname=music";
+  }
+};
 const handle_login = () => {
   if (form.code && form.email) {
     form.sumbiting = true;
@@ -107,7 +122,7 @@ const start_compute_code = () => {
   code = code - 1;
   form.tips = `${code}s`;
   if (code <= 0) {
-    form.tips = "重新获取";
+    form.tips = i18n.t("login.sendAgain");
     form.is_send = false;
   } else {
     setTimeout(() => {
@@ -208,6 +223,11 @@ const handle_send_code = () => {
   margin-top: 5px;
   font-size: 14px;
   opacity: 0.6;
+  cursor: pointer;
+  transition: all ease-in-out 200ms;
+}
+.login-signin:hover {
+  opacity: 0.9;
 }
 .link,
 .link:link,

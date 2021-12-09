@@ -197,7 +197,7 @@
           {{ $t("home.3DEnhancementEffect") }}
         </Button>
         <Button :title="$t('home.exploreNowTips')">
-          <a :href="signin_href" rel="noopener noreferrer">
+          <a href="#" @click="handle_go_export" rel="noopener noreferrer">
             {{ $t("home.exploreNow") }}
           </a>
         </Button>
@@ -251,7 +251,6 @@ const router = useRouter();
 
 const style = ref({});
 const show_effect = ref(false);
-const signin_href = ref(`${process.env.VUE_APP_SIGINUP_HREF}?appname=music`);
 const commentsQuery = reactive({
   limit: 20,
   offset: 0,
@@ -342,6 +341,14 @@ watch(current_progress, () => {
     el && el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 });
+const handle_go_export = () => {
+  if (process.env.IS_ELECTRON) {
+    const { shell } = require("electron");
+    shell.openExternal("http://signup.tigerzh.com/?appname=music");
+  } else {
+    window.location.href = "http://signup.tigerzh.com/?appname=music";
+  }
+};
 
 const time_to_sec = time => {
   const [m, s] = time.split(":");

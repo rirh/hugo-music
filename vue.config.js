@@ -145,7 +145,13 @@ module.exports = {
   pluginOptions: {
     // electron-builder的配置文件
     electronBuilder: {
+      // List native deps here if they don't work
+      // If you are using Yarn Workspaces, you may have multiple node_modules folders
+      // List them all here so that VCP Electron Builder can find them
+      nodeModulesPath: ["../../node_modules", "./node_modules"],
+      // seting background nodeIntegration
       nodeIntegration: true,
+      preload: "src/preload.js",
       externals: ["@revincx/unblockneteasemusic"],
       builderOptions: {
         productName: "Z ORG MUSIC",

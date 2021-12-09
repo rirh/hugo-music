@@ -98,6 +98,9 @@
   font-family: var(--font-family);
   text-transform: capitalize;
 }
+input {
+  text-transform: none;
+}
 
 html,
 body {

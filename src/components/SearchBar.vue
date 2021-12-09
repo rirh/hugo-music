@@ -8,6 +8,7 @@
       v-model="query"
       ref="searchRef"
       autofocus
+      :placeholder="$t('home.suggtion')"
       @keyup.enter="handle_go_detail()"
     />
     <Spinner v-if="loading" class="spinner-er" />
@@ -174,6 +175,7 @@ const handle_go_detail = label => {
   border: none;
   box-sizing: border-box;
   max-width: 500px;
+  text-transform: capitalize;
 }
 .search-la:focus .song-auto-complete-wapper {
   border: 2px solid var(--color-primary);
