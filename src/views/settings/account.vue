@@ -110,16 +110,17 @@
         <label for="nickname">设备信息:</label>
         <div class="textfaild">
           <span
-            style="margin-right:5px;line-height:32px"
             v-for="(it, i) in userinfo.token"
             :title="it"
             :key="it"
+            class="tag"
           >
             设备{{ i + 1 }}
             <svg-icon
               class="icon"
               title="下线"
-              @click="handle_logout(it)"
+              v-if="userinfo.token.length>1"
+              @click="handle_logout(it,i)"
               icon-class="x"
             />
           </span>
@@ -160,19 +161,25 @@
 <script setup>
 import dayjs from "dayjs";
 import { useStore } from "vuex";
-import { computed, reactive, watchEffect, ref } from "vue";
+import {useRouter} from 'vue-router'
+import { computed, reactive, watchEffect, ref} from "vue";
 import Image from "@/components/Image";
 
 // import Button from "@/components/Button";
 import { postUploadFile, postUserParams } from "@/api";
 const store = useStore();
+const router = useRouter()
 const loading = ref(false);
 const _userinfo = computed(() => store.state.settings.userinfo);
 const userinfo = reactive({});
 watchEffect(() => {
   Object.assign(userinfo, _userinfo.value);
+  if(!_userinfo.value._id){
+router.push('login')
+  }
   return _userinfo.value;
 });
+
 const handle_change_nickname = () => {
   const nickname = userinfo.nickname;
   const username = nickname;
@@ -219,11 +226,13 @@ const handle_update_gender = () => {
   }
 };
 
-const handle_logout = token => {
+const handle_logout = (token,index) => {
   postUserParams({
     function: "logout",
     token
   }).then(() => {
+   userinfo.token.splice(index,1)
+   store.dispatch("verifedToken");
     // Object.assign(userinfo, _userinfo.value);
   });
 };
@@ -243,7 +252,6 @@ const hanle_cheng_file = e => {
       // reader.readAsDataURL(file);
       // reader.onload = e => {
       //   // console.log(e.currentTarget.result);
-
       //   // https://apiauth.tigerzh.com/upload
       // };
     });
@@ -251,9 +259,11 @@ const hanle_cheng_file = e => {
 };
 const handle_update_user_info = params => {
   loading.value = true;
-  postUserParams({
+  const {appearance,locales,spreadflower} = store.state.settings
+  store.dispatch('postUpdateUser',{
     function: "updateUser",
-    ...params
+    ...params,
+    appearance,locales,spreadflower
   })
     .then(() => {
       loading.value = false;
@@ -385,5 +395,14 @@ input[type="radio"] {
 
 input[type="radio"]:checked {
   border: 6px solid black;
+}
+.tag {
+  margin-right: 5px;
+  background-color: var(--color-hover-primary);
+  color: var(--color-primary);
+  padding: 0.5em;
+  border-radius: 0.75em;
+  vertical-align: middle;
+  cursor: pointer;
 }
 </style>

@@ -26,6 +26,7 @@ const router = useRouter();
 const route = useRoute();
 const dis_back = ref(false);
 const dis_forward = ref(false);
+
 watch(
   () => route.fullPath,
   () => {

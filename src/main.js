@@ -21,7 +21,7 @@ export default createApp(App)
   .use(i18n)
   .mount("#app");
 
-if (process.env.NODE_ENV === "production") {
+if (store.state.settings.spreadflower) {
   var end = Date.now() + 5 * 1000;
 
   // go Buckeyes!

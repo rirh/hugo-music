@@ -279,7 +279,7 @@ const handle_load_back = () => {
   const url = detail?.value?.picUrl; // 图片地址
   const options = {
     ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
-    scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
+    scale: 0.4 // 查询时缩小图片，降低精度。换取识别速度提高
   };
   if (!url) return;
   rgbaster(url, options)

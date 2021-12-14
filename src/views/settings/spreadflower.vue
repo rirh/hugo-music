@@ -1,37 +1,28 @@
 <template>
   <div class="contant">
-    <h1>{{ $t("settings.theme") }}</h1>
-    <div class="cell">
-      <input
-        v-model="appearance"
-        type="radio"
-        id="auto"
-        name="theme"
-        value="auto"
-        checked
-      />
-      <label for="auto">😋&nbsp; {{ $t("settings.auto") }}</label>
-    </div>
-    <div class="cell">
-      <input
-        v-model="appearance"
-        type="radio"
-        id="light"
-        name="theme"
-        value="light"
-      />
-      <label for="light">🌕&nbsp; {{ $t("settings.light") }}</label>
-    </div>
+    <h1>{{ $t("settings.spreadflower") }} 🎉</h1>
+    <p>{{ $t("settings.sprflquertion1") }} ?</p>
 
     <div class="cell">
       <input
-        v-model="appearance"
+        v-model="spreadflower"
         type="radio"
-        id="dark"
+        id="auto"
         name="theme"
-        value="dark"
+        :value="true"
+        checked
       />
-      <label for="dark">🌑&nbsp; {{ $t("settings.dark") }}</label>
+      <label for="auto"> {{ $t("settings.yes") }}</label>
+    </div>
+    <div class="cell">
+      <input
+        v-model="spreadflower"
+        type="radio"
+        id="light"
+        name="theme"
+        :value="false"
+      />
+      <label for="light">{{ $t("settings.no") }}</label>
     </div>
   </div>
 </template>
@@ -41,16 +32,16 @@ import { ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 
-const appearance = ref("auto");
+const spreadflower = ref("auto");
 watchEffect(() => {
-  appearance.value = store.state.settings.appearance;
-  return store.state.settings.appearance;
+  spreadflower.value = store.state.settings.spreadflower;
+  return store.state.settings.spreadflower;
 });
 watchEffect(() => {
-  store.dispatch("chengeApparance", appearance.value);
-      store.dispatch("postUpdateUser", {appearance:appearance.value});
+  store.commit("update_spread_flower", spreadflower.value);
+  store.dispatch("postUpdateUser", { spreadflower: spreadflower.value });
 
-  return appearance.value;
+  return spreadflower.value;
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="language">
-    <h1>{{ $t("settings.settings") }}</h1>
+    <h1>{{ $t("settings.language") }}</h1>
     <p>
       <strong>{{ $t("settings.languageTips") }}</strong>
     </p>
@@ -60,6 +60,7 @@ function change_language() {
     const value = availableLocales.find(it => it.match(language.value));
     locale.value = value;
     store.commit("update_locales", value);
+    store.dispatch("postUpdateUser", {locales:value});
   }
 }
 </script>

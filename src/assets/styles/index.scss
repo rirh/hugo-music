@@ -63,7 +63,6 @@
   --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
   --html-overflow-y: overlay;
 }
-
 :root,
 [data-theme="light"] {
   --plyr-color-main: black;
@@ -79,7 +78,7 @@
     Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif,
     microsoft uighur;
 }
-
+:root,
 [data-theme="dark"] {
   --plyr-color-main: #409eff;
   --color-primary: #222;
@@ -94,6 +93,12 @@
     Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif,
     microsoft uighur;
 }
+
+[data-electron="true"] {
+  --electron-drag: drag;
+  --electron-no-drag: no-drag;
+}
+
 * {
   font-family: var(--font-family);
   text-transform: capitalize;
@@ -114,11 +119,10 @@ body {
 }
 
 .drag {
-  -webkit-app-region: drag;
-  cursor: move;
+  -webkit-app-region: var(--electron-drag);
 }
 .no-drag {
-  -webkit-app-region: no-drag;
+  -webkit-app-region: var(--electron-no-drag);
 }
 
 .z-music-cover {

@@ -154,6 +154,7 @@ const handle_send_code = () => {
 <style lang="scss" scoped>
 .login {
   padding: 20px;
+  height: 100vh;
   .logo {
     height: 45px;
     min-height: 35px;
@@ -169,6 +170,7 @@ const handle_send_code = () => {
   .contant {
     display: grid;
     place-items: center;
+    margin-top: 10vh;
     .card {
       text-align: left;
       width: 30vw;
@@ -235,5 +237,8 @@ const handle_send_code = () => {
 .link:active {
   color: inherit;
   text-decoration: none;
+}
+h1{
+  text-transform: uppercase;
 }
 </style>

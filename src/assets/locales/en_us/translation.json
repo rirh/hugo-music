@@ -48,7 +48,11 @@
     "languageTips": "You can browse the website in various languages",
     "auto": "auto",
     "light": "light",
-    "dark": "dark"
+    "dark": "dark",
+    "spreadflower":"spread flower",
+    "sprflquertion1":"Whether to turn on the special effects for the first time to enter the flower spraying",
+    "yes":"yes",
+    "no":"no"
   },
   "searchResult": {
     "searchResult": "search results",

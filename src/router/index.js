@@ -86,6 +86,14 @@ const routes = [
               )
           },
           {
+            path: "/settings/spreadflower/",
+            name: "spreadflower",
+            component: () =>
+              import(
+                /* webpackChunkName: "spreadflower" */ "@/views/settings/spreadflower.vue"
+              )
+          },
+          {
             path: "/settings/account/",
             name: "account",
             component: () =>
@@ -111,7 +119,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ "@/views/login.vue")
   },
   {
-    path: "/*",
+    path: "/:pathMatch(.*)*",
     redirect: "/"
   }
 ];

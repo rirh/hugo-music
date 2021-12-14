@@ -12,11 +12,12 @@ if ("serviceWorker" in navigator)
     reg.update();
   });
 onMounted(() => {
-  store.dispatch("chengeApparance", store.state.settings.appearance);
+  store.dispatch("chengeApparance", store.state.settings.appearance||process.env.VUE_APP_DEFAULT_THEME);
+  document.body.setAttribute("data-electron", process.env.IS_ELECTRON || false);
 });
 window.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
-    store.dispatch("chengeApparance", store.state.settings.appearance);
+    store.dispatch("chengeApparance", store.state.settings.appearance||process.env.VUE_APP_DEFAULT_THEME);
   }
 });
 </script>

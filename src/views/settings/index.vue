@@ -28,6 +28,12 @@
           <svg-icon class="arrow" icon-class="arrow-right" />
         </div>
       </Link>
+      <Link to="/settings/spreadflower/">
+        <div class="cell" :class="{ active: route.name === 'spreadflower' }">
+          {{ $t("settings.spreadflower") }}
+          <svg-icon class="arrow" icon-class="arrow-right" />
+        </div>
+      </Link>
       <br />
       <div class="cell" @click="handle_logout">
         <strong> {{ $t("settings.logout") }}</strong>

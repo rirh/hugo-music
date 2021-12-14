@@ -248,6 +248,7 @@ const handle_play = id => {
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 7px 6px;
   padding: 10px;
   overflow: hidden;
+  z-index: 1;
 }
 .song {
   display: grid;
