@@ -105,7 +105,6 @@ export default {
     delete_play_song({ state }, id) {
       Reflect.deleteProperty(state.play_list, id);
     },
-    play_tips() {},
     /**
      * 左耳机伴奏增强 右边声道增强 合并以后增强
      *

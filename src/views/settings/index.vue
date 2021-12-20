@@ -16,6 +16,12 @@
           {{ $t("settings.account") }}
         </div>
       </Link>
+      <Link to="/settings/general/">
+        <div class="cell" :class="{ active: route.name === 'general' }">
+          {{ $t("settings.general") }}
+          <svg-icon class="arrow" icon-class="arrow-right" />
+        </div>
+      </Link>
       <Link to="/settings/theme/">
         <div class="cell" :class="{ active: route.name === 'theme' }">
           {{ $t("settings.theme") }}
@@ -25,12 +31,6 @@
       <Link to="/settings/language/">
         <div class="cell" :class="{ active: route.name === 'language' }">
           {{ $t("settings.language") }}
-          <svg-icon class="arrow" icon-class="arrow-right" />
-        </div>
-      </Link>
-      <Link to="/settings/spreadflower/">
-        <div class="cell" :class="{ active: route.name === 'spreadflower' }">
-          {{ $t("settings.spreadflower") }}
           <svg-icon class="arrow" icon-class="arrow-right" />
         </div>
       </Link>
@@ -95,13 +95,14 @@ const handle_logout = () => {
 .settings {
   display: flex;
   // min-height: 80vh;
-  height: 90vh;
+  height: 82vh;
   margin-bottom: 10px;
   .left {
     width: 30vw;
     min-width: 200px;
     padding: 35px 0;
     height: 100%;
+    box-sizing: border-box;
     border-right: 1px solid rgba(var(--color-hover-primary-rgb), 0.1);
     .title {
       padding-left: 40px;
@@ -111,6 +112,8 @@ const handle_logout = () => {
   .right {
     flex: 1;
     padding: 35px 0;
+    height: 100%;
+    overflow-y: scroll;
   }
   .cell {
     display: flex;

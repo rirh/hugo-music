@@ -1,8 +1,8 @@
 <template>
   <div class="contant">
-    <h1>{{ $t("settings.spreadflower") }} 🎉</h1>
+    <h1>{{ $t("settings.general") }}</h1>
+    <h3>{{ $t("settings.spreadflower") }} 🎉</h3>
     <p>{{ $t("settings.sprflquertion1") }} ?</p>
-
     <div class="cell">
       <input
         v-model="spreadflower"
@@ -24,6 +24,39 @@
       />
       <label for="light">{{ $t("settings.no") }}</label>
     </div>
+    <h3>{{ $t("settings.lyricBackgroundTips") }}</h3>
+    <p>{{ $t("settings.lyricBackgroundTips") }} ?</p>
+    <div class="cell">
+      <input
+        v-model="lyricBgMode"
+        type="radio"
+        id="blur"
+        name="lyricBackgroundTips"
+        :value="'blur'"
+        checked
+      />
+      <label for="blur"> {{ $t("settings.blur") }}</label>
+    </div>
+    <div class="cell">
+      <input
+        v-model="lyricBgMode"
+        type="radio"
+        id="dynamic"
+        name="lyricBackgroundTips"
+        :value="'dynamic'"
+      />
+      <label for="dynamic">{{ $t("settings.motionBlur") }}</label>
+    </div>
+    <div class="cell">
+      <input
+        v-model="lyricBgMode"
+        type="radio"
+        id="gradient"
+        name="lyricBackgroundTips"
+        :value="'gradient'"
+      />
+      <label for="gradient">{{ $t("settings.gradient") }}</label>
+    </div>
   </div>
 </template>
 
@@ -33,14 +66,20 @@ import { useStore } from "vuex";
 const store = useStore();
 
 const spreadflower = ref("auto");
+const lyricBgMode = ref("blur");
 watchEffect(() => {
   spreadflower.value = store.state.settings.spreadflower;
+  lyricBgMode.value = store.state.settings.lyricBgMode;
   return store.state.settings.spreadflower;
 });
 watchEffect(() => {
   store.commit("update_spread_flower", spreadflower.value);
   store.dispatch("postUpdateUser", { spreadflower: spreadflower.value });
-
+  return spreadflower.value;
+});
+watchEffect(() => {
+  store.commit("update_lyric_bg_mode", lyricBgMode.value);
+  store.dispatch("postUpdateUser", { lyricBgMode: lyricBgMode.value });
   return spreadflower.value;
 });
 </script>

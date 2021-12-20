@@ -8,18 +8,20 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API || process.env.VUE_APP_BASE_API,
   withCredentials: true,
   // 超时
-  timeout: 60000
+  timeout: 60000,
 });
 
 // request拦截器
 service.interceptors.request.use(
-  config => {
-    config.headers["X-Real-IP"] = "76.223.126.88";
+  (config) => {
+    config.headers["X-Real-IP"] = "211.161.244.70";
     // 是否需要设置 token
-    if (config.params) config.params.timestamp = Date.now();
+    if (config.params) {
+      config.params.timestamp = Date.now();
+    }
     return config;
   },
-  error => {
+  (error) => {
     console.log(error);
     Promise.reject(error);
   }
@@ -27,7 +29,7 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  res => {
+  (res) => {
     // 未设置状态码则默认成功状态
     if (res?.data?.cookie && res?.data?.cookie[0])
       document.cookie = res.data.cookie[0];
@@ -42,7 +44,7 @@ service.interceptors.response.use(
       return Promise.reject(res.data);
     }
   },
-  error => {
+  (error) => {
     console.log("err" + error);
     let { message } = error;
     if (message == "Network Error") {

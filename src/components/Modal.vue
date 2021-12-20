@@ -1,23 +1,28 @@
 <template>
   <teleport to="body">
-    <div v-show="show" class="shade" @click="clickOutside">
-      <div class="modal" :style="modalStyles" @click.stop>
-        <div class="header" v-if="title">
-          <div class="title">{{ title }}</div>
-          <button class="close" @click="close">
-            <svg-icon icon-class="x" />
-          </button>
-        </div>
-        <div class="content" :style="{ padding: frame ? '0' : '0 24px' }">
-          <slot></slot>
-        </div>
-        <div v-if="showFooter" class="footer">
-          <!-- <button>取消</button>
+    <transition
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div v-show="show" class="shade" @click="clickOutside">
+        <div class="modal" :style="modalStyles" @click.stop>
+          <div class="header" v-if="title">
+            <div class="title">{{ title }}</div>
+            <button class="close" @click="close">
+              <svg-icon icon-class="x" />
+            </button>
+          </div>
+          <div class="content" :style="{ padding: frame ? '0' : '0 24px' }">
+            <slot></slot>
+          </div>
+          <div v-if="showFooter" class="footer">
+            <!-- <button>取消</button>
         <button class="primary">确定</button> -->
-          <slot name="footer"></slot>
+            <slot name="footer"></slot>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </teleport>
 </template>
 
@@ -27,42 +32,42 @@ export default {
   props: {
     frame: {
       type: Boolean,
-      default: () => false
+      default: () => false,
     },
     show: Boolean,
     close: Function,
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     showFooter: {
       type: Boolean,
-      default: true
+      default: true,
     },
     width: {
       type: String,
-      default: "50vw"
+      default: "50vw",
     },
     clickOutsideHide: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     modalStyles() {
       return {
         width: this.width,
-        padding: this.frame ? "0" : " 24px 0"
+        padding: this.frame ? "0" : " 24px 0",
       };
-    }
+    },
   },
   methods: {
     clickOutside() {
       if (this.clickOutsideHide) {
         this.close();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

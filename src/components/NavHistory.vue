@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div class="nav" :style="{ top: is_electron ? '30px' : '20px' }">
     <span class="icon-btn" @click="handle_back">
       <svg-icon
         title="点击可后退"
@@ -26,6 +26,7 @@ const router = useRouter();
 const route = useRoute();
 const dis_back = ref(false);
 const dis_forward = ref(false);
+const is_electron = ref(process.env.IS_ELECTRON || false);
 
 watch(
   () => route.fullPath,
@@ -34,7 +35,7 @@ watch(
     dis_forward.value = Boolean(!history?.state?.forward);
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 

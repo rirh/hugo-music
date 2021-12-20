@@ -79,7 +79,7 @@ const form = reactive({
   tips: i18n.t("login.sendCode"),
   is_send: false,
   loading: false,
-  sumbiting: false
+  sumbiting: false,
 });
 const handle_go_sigin = () => {
   if (process.env.IS_ELECTRON) {
@@ -95,16 +95,16 @@ const handle_login = () => {
     postUserParams({
       email: form.email,
       code: form.code,
-      function: "loginByEmail"
+      function: "loginByEmail",
     })
-      .then(response => {
+      .then((response) => {
         form.sumbiting = false;
         if (response.userInfo) {
           store.commit("update_userinfo", response.userInfo);
           router.push("/");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (form.is_send) {
           form.tips = "0s";
           form.is_send = false;
@@ -135,7 +135,7 @@ const handle_send_code = () => {
   form.loading = true;
   postEmailCode({
     type: "login",
-    email: form.email
+    email: form.email,
   })
     .then(() => {
       form.loading = false;
@@ -144,7 +144,7 @@ const handle_send_code = () => {
       form.is_send = true;
       start_compute_code();
     })
-    .catch(error => {
+    .catch((error) => {
       form.loading = false;
       throw error;
     });
@@ -165,7 +165,8 @@ const handle_send_code = () => {
     cursor: pointer;
     text-decoration: none;
     margin-bottom: 30px;
-    // aspect-ratio: 1/1;
+    margin-top: 15px;
+    aspect-ratio: 1/1;
   }
   .contant {
     display: grid;
@@ -238,7 +239,7 @@ const handle_send_code = () => {
   color: inherit;
   text-decoration: none;
 }
-h1{
+h1 {
   text-transform: uppercase;
 }
 </style>

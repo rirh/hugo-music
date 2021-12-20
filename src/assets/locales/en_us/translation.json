@@ -49,10 +49,17 @@
     "auto": "auto",
     "light": "light",
     "dark": "dark",
-    "spreadflower":"spread flower",
-    "sprflquertion1":"Whether to turn on the special effects for the first time to enter the flower spraying",
-    "yes":"yes",
-    "no":"no"
+    "spreadflower": "spread flower",
+    "sprflquertion1": "Whether to turn on the special effects for the first time to enter the flower spraying",
+    "yes": "yes",
+    "no": "no",
+    "general": "general",
+    "lyricBackgroundTips": "Which lyrics background do you prefer",
+    "blur": "Gaussian Blur",
+    "motionBlur": "Motion blur",
+    "gradient": "Gradient theme color"
+    
+
   },
   "searchResult": {
     "searchResult": "search results",

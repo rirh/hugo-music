@@ -4,11 +4,7 @@
     leave-active-class="animate__animated animate__fadeOutDown"
     enter-active-class="animate__animated animate__fadeInUp"
   >
-    <div
-      @click="handle_open_dashbord"
-      v-if="detail.al_id"
-      class="play-contral"
-    >
+    <div @click="handle_open_dashbord" v-if="detail.al_id" class="play-contral">
       <div class="container" type="flex" align="middle">
         <div class="pic">
           <Image class="img" alt="" :src="detail.picUrl" />
@@ -29,13 +25,13 @@
           <transition name="fade">
             <div v-show="detail.al_name" class="artiles">
               <span class="al-name" :title="detail.al_name">
-                {{ $t("home.playerArtist") }}：
+                <span class="label">{{ $t("home.playerArtist") }}：</span>
                 <span @click.stop="handle_go_artist(detail.al_id)">{{
                   detail.al_name
                 }}</span>
               </span>
-              <span class="ar-name" :title="detail.ar">
-                {{ $t("home.playerSinger") }}：
+              <span class="ar-name" >
+                <span class="label"> {{ $t("home.playerSinger") }}：</span>
                 <span
                   @click.stop="handle_go_singer(it.id)"
                   v-for="(it, i) in detail.ar"
@@ -61,6 +57,9 @@
         </button>
         <button class="play-button" @click.stop="goNextSong">
           <svg-icon icon-class="next" />
+        </button>
+        <button class="play-button" @click.stop="handle_open_dashbord">
+          <svg-icon icon-class="arrow-up" />
         </button>
       </div>
       <div class="progress" :style="{ '--percent': percentage }"></div>
@@ -118,7 +117,7 @@ const detail = computed(() => {
       if (lyr) {
         const lyric = lyr.split("\n");
         let lyric_result = {};
-        lyric.forEach(lyri => {
+        lyric.forEach((lyri) => {
           const [time, value] = lyri.split("]");
           let key = time.substr(1).split(".");
           key.splice(-1, 1);
@@ -133,15 +132,15 @@ const detail = computed(() => {
   return result;
 });
 
-const to_time = val => {
+const to_time = (val) => {
   const m = `${Math.floor((val / 60) % 60)}`.padStart(2, "0"),
     s = `${Math.floor(val % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
 };
-const handle_go_artist = id => {
+const handle_go_artist = (id) => {
   router.push(`/albums/${id}`);
 };
-const handle_go_singer = id => {
+const handle_go_singer = (id) => {
   router.push(`/artists/${id}`);
 };
 
@@ -160,7 +159,7 @@ const goNextSong = () => {
 const handle_change_mode = () => {
   const mode = current_mode.value;
   const options = current_mode_options.value;
-  const index = options.findIndex(it => it === mode);
+  const index = options.findIndex((it) => it === mode);
   const next_mode = options[index + 1] || options[0];
   store.commit("update_current_mode", next_mode);
 };
@@ -233,16 +232,19 @@ const handle_change_mode = () => {
           white-space: nowrap; /* 不换行 */
           overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
           text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
-          span {
-            padding: 10px;
-            cursor: pointer;
+
+          .label {
             opacity: 0.6;
+          }
+          span {
+            cursor: pointer;
+            opacity: 0.9;
             border-radius: 0.75em;
           }
           span:hover {
             background-color: hsla(0, 0%, 100%, 0.15);
             color: #fff;
-            opacity: 0.8;
+            opacity: 1;
           }
           span:active {
             transform: scale(0.92);
@@ -256,16 +258,18 @@ const handle_change_mode = () => {
           white-space: nowrap; /* 不换行 */
           overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
           text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
-          span {
-            padding: 10px;
-            cursor: pointer;
+          .label {
             opacity: 0.6;
+          }
+          span {
+            cursor: pointer;
+            opacity: 0.9;
             border-radius: 0.75em;
           }
           span:hover {
             background-color: hsla(0, 0%, 100%, 0.15);
             color: #fff;
-            opacity: 0.8;
+            opacity: 1;
           }
           span:active {
             transform: scale(0.92);

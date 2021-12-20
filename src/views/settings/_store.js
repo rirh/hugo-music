@@ -5,9 +5,13 @@ export default {
     appearance: "auto",
     userinfo: {},
     locales: process.env.VUE_APP_DEFAULT_LOCALE,
-    spreadflower: process.env.VUE_APP_DEFAULT_SPREAD_FLOWERS
+    spreadflower: process.env.VUE_APP_DEFAULT_SPREAD_FLOWERS,
+    lyricBgMode: process.env.VUE_APP_DEFAULT_BG_MODE,
   },
   mutations: {
+    update_lyric_bg_mode(state, payload) {
+      state.lyricBgMode = payload;
+    },
     update_spread_flower(state, payload) {
       state.spreadflower = payload;
     },

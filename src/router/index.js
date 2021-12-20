@@ -86,11 +86,11 @@ const routes = [
               )
           },
           {
-            path: "/settings/spreadflower/",
-            name: "spreadflower",
+            path: "/settings/general/",
+            name: "general",
             component: () =>
               import(
-                /* webpackChunkName: "spreadflower" */ "@/views/settings/spreadflower.vue"
+                /* webpackChunkName: "general" */ "@/views/settings/general.vue"
               )
           },
           {

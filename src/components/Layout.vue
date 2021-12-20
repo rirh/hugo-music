@@ -1,3 +1,4 @@
+
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
     <div class="left" :style="{ 'padding-top': is_electron ? '30px' : '15px' }">
@@ -26,21 +27,21 @@
         </transition>
       </router-view>
       <CopyRigth />
-      <PlayCon @on-open-dashbord="handle_open_dashbord" />
+      <PlayerBar @on-open-dashbord="handle_open_dashbord" />
     </div>
   </div>
   <transition
     leave-active-class="animate__animated animate__fadeOutDown"
     enter-active-class="animate__animated animate__fadeInUp"
   >
-    <Dashboard v-if="dashboard_open" />
+    <Dashboard v-show="dashboard_open" />
   </transition>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
-import PlayCon from "@/components/PlayContral.vue";
+import PlayerBar from "@/components/PlayerBar.vue";
 import Image from "@/components/Image";
 import CopyRigth from "@/components/CopyRigth";
 import NavHistory from "@/components/NavHistory";

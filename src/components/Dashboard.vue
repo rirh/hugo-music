@@ -1,10 +1,27 @@
 <template>
-  <div
-    class="wapper"
-    :style="{
-      background: style.background
-    }"
-  >
+  <div class="wapper">
+    <div
+      class="lyrics-bg"
+      :class="{
+        'dynamic-background': bg_mode === 'dynamic',
+        filter: bg_mode !== 'gradient',
+      }"
+      :style="{
+        background: bg_mode === 'gradient' && style.background,
+      }"
+    >
+      <div
+        v-if="bg_mode !== 'gradient'"
+        class="bg-l"
+        :style="{ backgroundImage: `url(${detail.picUrl})` }"
+      ></div>
+      <div
+        v-if="bg_mode === 'dynamic'"
+        class="bg-r"
+        :style="{ backgroundImage: `url(${detail.picUrl})` }"
+      ></div>
+    </div>
+
     <div class="left">
       <div>
         <Image
@@ -17,19 +34,19 @@
       </div>
       <h1
         class="title"
-        style="margin-top:30px;opacity: 0.88;"
+        style="margin-top: 30px; opacity: 0.88"
         :style="{
-          color: style.text_color
+          color: style.text_color,
         }"
       >
         {{ detail.name }}
       </h1>
-      <div class="title" style="margin-top:10px;opacity: 0.58;">
+      <div class="title" style="margin-top: 10px; opacity: 0.58">
         <strong
           class="al-name"
           :title="detail.al_name"
           :style="{
-            color: style.text_color
+            color: style.text_color,
           }"
           @click="handle_go_albums(detail.al_name_id)"
         >
@@ -38,9 +55,9 @@
         </strong>
         <strong
           class="ar-name"
-          :title="detail?.ar_name?.map(it => it.name).toString()"
+          :title="detail?.ar_name?.map((it) => it.name).toString()"
           :style="{
-            color: style.text_color
+            color: style.text_color,
           }"
         >
           {{ $t("home.playerSinger") }}：
@@ -58,7 +75,7 @@
       <div class="slider">
         <span
           :style="{
-            color: style.text_color
+            color: style.text_color,
           }"
           class="no-select"
           >{{ to_time(current_progress) || "00:00" }}</span
@@ -71,14 +88,13 @@
           :color="style.text_color"
           :max="current_duration"
           track-color="rgba(255,255,255,.18)"
-          @drag-start="handle_toggle_play"
           @drag-end="handle_seek"
         />
         <span
           :style="{
-            color: style.text_color
+            color: style.text_color,
           }"
-          class="no-select "
+          class="no-select"
           >{{ to_time(current_duration) }}</span
         >
       </div>
@@ -87,7 +103,7 @@
           <svg-icon
             class="sub-icon"
             :style="{
-              color: style.text_color
+              color: style.text_color,
             }"
             icon-class="whale"
           />
@@ -97,7 +113,7 @@
             class="play"
             :icon-class="current_state !== 'play' ? 'play' : 'pause'"
             :style="{
-              color: style.text_color
+              color: style.text_color,
             }"
           />
         </div>
@@ -106,7 +122,7 @@
             class="sub-icon"
             icon-class="topic"
             :style="{
-              color: style.text_color
+              color: style.text_color,
             }"
           />
         </div>
@@ -129,7 +145,7 @@
             :style="{
               color: style.text_color,
               opacity: is_current_lyric(i) ? 1 : 0.5,
-              'font-size': is_current_lyric(i) ? '26px' : '24px'
+              'font-size': is_current_lyric(i) ? '26px' : '24px',
             }"
           >
             {{ lyric }}
@@ -142,67 +158,10 @@
       icon-class="arrow-down"
       @click.stop="handle_close_dashboard"
       :style="{
-        color: style.text_color
+        color: style.text_color,
       }"
     />
-    <Modal
-      :show="show_effect"
-      :close="handle_close"
-      :show-footer="false"
-      :click-outside-hide="true"
-      :title="$t('home.whaleAudioEffect')"
-    >
-      <div class="box fr-4 effecs">
-        <Button
-          :title="$t('home.originalEffectTips')"
-          @click="handle_set_effects('cancelEffect')"
-        >
-          {{ $t("home.originalEffect") }}
-        </Button>
-        <Button
-          :title="$t('home.vocalSurroundEffectTips')"
-          @click="handle_set_effects('delay')"
-        >
-          {{ $t("home.vocalSurroundEffect") }}
-        </Button>
-        <Button
-          :title="$t('home.bassBoostEffectTips')"
-          @click="handle_set_effects('lowpassFilter')"
-        >
-          {{ $t("home.bassBoostEffect") }}
-        </Button>
-        <Button
-          :title="$t('home.trebleEnhancementEffectTips')"
-          @click="handle_set_effects('highpassFilter')"
-        >
-          {{ $t("home.trebleEnhancementEffect") }}
-        </Button>
-        <Button
-          :title="$t('home.dolbySoundEffectTips')"
-          @click="handle_set_effects('enhanceVocal')"
-        >
-          {{ $t("home.dolbySoundEffect") }}
-        </Button>
-        <!-- <Button @click="handle_set_effects('stereo')">stereo</Button> -->
-        <Button
-          :title="$t('home.removeVoiceEffectTips')"
-          @click="handle_set_effects('removeVocal')"
-        >
-          {{ $t("home.removeVoiceEffect") }}</Button
-        >
-        <Button
-          :title="$t('home.3DEnhancementEffectTips')"
-          @click="handle_set_effects('splitterMerger')"
-        >
-          {{ $t("home.3DEnhancementEffect") }}
-        </Button>
-        <Button :title="$t('home.exploreNowTips')">
-          <a href="#" @click="handle_go_export" rel="noopener noreferrer">
-            {{ $t("home.exploreNow") }}
-          </a>
-        </Button>
-      </div>
-    </Modal>
+    <AudioEffect :open="show_effect" @on-close="handle_close" />
     <Modal
       :show="comments.open"
       :close="handle_close_comments"
@@ -220,7 +179,7 @@
         :beReplied="it.beReplied"
       />
       <Skeleton
-        style="margin:3%"
+        style="margin: 3%"
         v-if="comments.loading"
         width="74%"
         height="60vh"
@@ -245,6 +204,8 @@ import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import Comment from "@/components/Comment";
 import Skeleton from "@/components/Skleleton";
+import AudioEffect from "@/components/AudioEffect";
+import { debounce } from "lodash";
 
 const store = useStore();
 const router = useRouter();
@@ -255,11 +216,11 @@ const commentsQuery = reactive({
   limit: 20,
   offset: 0,
   pageSize: 0,
-  before: null
+  before: null,
 });
 const comments = reactive({
   open: false,
-  more: false
+  more: false,
 });
 const current_duration = computed(
   () => store.state.sound.current_duration || 100
@@ -268,22 +229,23 @@ const current_progress = computed(() => store.state.sound.current_progress);
 const current_state = computed(() => store.state.sound.current_state);
 const current_id = computed(() => store.state.sound.current_id);
 const current_comments = computed(() => store.state.sound.current_comments);
+const bg_mode = computed(() => store.state.settings.lyricBgMode);
 
 const play_list = computed(() => store.state.sound.play_list);
 const progress = computed({
   get: () => current_progress.value || 0,
-  set: () => {}
+  set: () => {},
 });
 
 const handle_load_back = () => {
   const url = detail?.value?.picUrl; // 图片地址
   const options = {
     ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
-    scale: 0.4 // 查询时缩小图片，降低精度。换取识别速度提高
+    scale: 0.4, // 查询时缩小图片，降低精度。换取识别速度提高
   };
   if (!url) return;
   rgbaster(url, options)
-    .then(response => {
+    .then((response) => {
       const [primary, success] = response;
       style.value = {
         background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
@@ -292,14 +254,13 @@ const handle_load_back = () => {
             .replace(new RegExp(/[rgb()]/g), ",")
             .split(",")
             .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
-            .replace(",", "rgb(") + ")"
+            .replace(",", "rgb(") + ")",
       };
     })
-    .catch(error => {
+    .catch((error) => {
       throw error;
     });
 };
-
 const detail = computed(() => {
   let result = {};
   if (play_list.value[current_id.value]) {
@@ -320,7 +281,7 @@ const detail = computed(() => {
         result.lyric_arr_lyric = lyric;
 
         let lyric_result = {};
-        lyric.forEach(lyri => {
+        lyric.forEach((lyri) => {
           const [time, value] = lyri.split("]");
           let key = time.substr(1).split(".");
           key.splice(-1, 1);
@@ -337,20 +298,15 @@ watch(current_progress, () => {
   const progress = to_time(current_progress.value);
   const times = Object.keys(detail.value.lyric || {});
   if (times.includes(progress)) {
-    const el = document.getElementById(`lyric-${progress}`);
-    el && el.scrollIntoView({ behavior: "smooth", block: "center" });
+    const debounce_scroll = debounce(() => {
+      const el = document.getElementById(`lyric-${progress}`);
+      el && el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 200);
+    debounce_scroll();
   }
 });
-const handle_go_export = () => {
-  if (process.env.IS_ELECTRON) {
-    const { shell } = require("electron");
-    shell.openExternal("http://signup.tigerzh.com/?appname=music");
-  } else {
-    window.location.href = "http://signup.tigerzh.com/?appname=music";
-  }
-};
 
-const time_to_sec = time => {
+const time_to_sec = (time) => {
   const [m, s] = time.split(":");
   return Number(m * 60) + Number(s);
 };
@@ -365,7 +321,7 @@ const handle_load_more_comments = () => {
   handle_fetch_commit();
 };
 
-const is_current_lyric = index => {
+const is_current_lyric = (index) => {
   let result = false;
   const lyric = JSON.parse(JSON.stringify(detail.value.lyric));
   const now = current_progress.value;
@@ -379,7 +335,7 @@ const is_current_lyric = index => {
   return result;
 };
 
-const to_time = value => {
+const to_time = (value) => {
   if (!value) return "";
   const m = `${Math.floor((value / 60) % 60)}`.padStart(2, "0"),
     s = `${Math.floor(value % 60)}`.padStart(2, "0");
@@ -393,17 +349,17 @@ const handle_open_commit = () => {
 };
 const handle_fetch_commit = () => {
   comments.loading = true;
-  store.dispatch("fetch_comment_music", commentsQuery).then(response => {
+  store.dispatch("fetch_comment_music", commentsQuery).then((response) => {
     comments.more = response.more;
     comments.loading = false;
   });
 };
 
-const handle_seek = seek => {
+const handle_seek = (seek) => {
   store.dispatch("seek", seek);
-  handle_toggle_play();
+  // handle_toggle_play();
 };
-const handle_set_seek = row => {
+const handle_set_seek = (row) => {
   if (/\[(.*?)\]/g.test(row)) {
     const [, time] = /\[(.*?)\]/g.exec(row);
     if (time) {
@@ -424,14 +380,11 @@ const handle_close = () => {
 const handle_close_comments = () => {
   comments.open = false;
 };
-const handle_set_effects = type => {
-  store.dispatch(type);
-};
-const handle_go_albums = id => {
+const handle_go_albums = (id) => {
   router.push(`/albums/${id}`);
   handle_close_dashboard();
 };
-const handle_go_artists = id => {
+const handle_go_artists = (id) => {
   router.push(`/artists/${id}`);
   handle_close_dashboard();
 };
@@ -439,20 +392,55 @@ const handle_go_artists = id => {
 
 <style lang="scss" scoped>
 .wapper {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
   position: fixed;
   left: 0;
   top: 0;
   z-index: 2;
   display: flex;
+  box-sizing: border-box;
   background-color: var(--color-hover-primary);
+  .filter {
+    --contrast-lyrics-background: 75%;
+    --brightness-lyrics-background: 150%;
+  }
+  .filter {
+    filter: blur(50px) contrast(var(--contrast-lyrics-background))
+      brightness(var(--brightness-lyrics-background));
+  }
+  .lyrics-bg {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
 
+    .bg-l,
+    .bg-r {
+      z-index: 0;
+      width: 140vw;
+      height: 140vw;
+      opacity: 0.6;
+      position: absolute;
+      background-size: cover;
+    }
+    .bg-r {
+      right: 0;
+      top: 0;
+      mix-blend-mode: luminosity;
+    }
+    .bg-l {
+      left: 0;
+      bottom: 0;
+      animation-direction: reverse;
+      animation-delay: 10s;
+    }
+  }
   .left {
     flex: 1;
     color: var(--color-primary);
     text-align: left;
+    z-index: 3;
     .title {
       margin: 0 auto;
       text-align: center;
@@ -541,7 +529,8 @@ const handle_go_artists = id => {
   .right {
     width: 40vw;
     color: var(--color-primary);
-
+    box-sizing: border-box;
+    z-index: 3;
     .lyric-wapper {
       height: 90vh;
       overflow: auto;
@@ -602,29 +591,6 @@ const handle_go_artists = id => {
     text-decoration: underline;
   }
 }
-.effecs {
-  margin-top: 10px;
-  gap: 10px 10px;
-  button {
-    border: none;
-    padding: 10px;
-    border-radius: 0.75em;
-    background-color: var(--color-secondary);
-    opacity: 0.6;
-    transition: all 200ms;
-    text-transform: capitalize;
-    a,
-    a:link,
-    a:hover,
-    a:active {
-      text-decoration: none;
-      color: inherit;
-    }
-  }
-  button:hover {
-    opacity: 1;
-  }
-}
 .loadmore {
   display: flex;
   padding: 10px;
@@ -639,5 +605,24 @@ const handle_go_artists = id => {
   .right {
     width: 100% !important;
   }
+}
+
+.dynamic-background > div {
+  animation: rotate 150s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.gradient-background {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
 }
 </style>
