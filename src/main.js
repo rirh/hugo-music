@@ -12,7 +12,7 @@ import confetti from "canvas-confetti";
 import SvgIcon from "@/assets/icons/index"; // svg组件
 import "@/assets/styles/plyr.css";
 import "@/router/permission";
-import "@/assets/styles/tailwind.css"
+import _package from "../package.json";
 
 // kick off the polyfill!
 smoothscroll.polyfill();
@@ -25,7 +25,6 @@ export default createApp(App)
 
 if (store.state.settings.spreadflower) {
   var end = Date.now() + 5 * 1000;
-
   // go Buckeyes!
   var colors = ["#bb0000", "#ff0000"];
 
@@ -35,14 +34,14 @@ if (store.state.settings.spreadflower) {
       angle: 60,
       spread: 55,
       origin: { x: 0 },
-      colors: colors
+      colors: colors,
     });
     confetti({
       particleCount: 2,
       angle: 120,
       spread: 55,
       origin: { x: 1 },
-      colors: colors
+      colors: colors,
     });
 
     if (Date.now() < end) {
@@ -50,3 +49,13 @@ if (store.state.settings.spreadflower) {
     }
   })();
 }
+
+const print = (key, value) =>
+  console.log(
+    `%c ${key} %c ${value} %c `,
+    "background:#20232a ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff",
+    "background:#61dafb ;padding: 1px; border-radius: 0 3px 3px 0;  color: #20232a; font-weight: bold;",
+    "background:transparent"
+  );
+print(_package.name, _package.version);
+print("build time", `${process.env.VUE_APP_BUILD_TIME}`);

@@ -35,7 +35,7 @@
         </div>
       </Link>
       <br />
-      <div class="cell" @click="handle_logout">
+      <div class="cell" @click="handle_logout" v-if="userinfo._id">
         <strong> {{ $t("settings.logout") }}</strong>
       </div>
     </div>
@@ -95,7 +95,7 @@ const handle_logout = () => {
 .settings {
   display: flex;
   // min-height: 80vh;
-  height: 82vh;
+  height: 70vh;
   margin-bottom: 10px;
   .left {
     width: 30vw;

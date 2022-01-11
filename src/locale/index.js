@@ -1,11 +1,12 @@
-import { createI18n } from "vue-i18n";
+import { createI18n } from "vue-i18n/index";
 
 const modules = require.context("@/assets/locales/", true, /\.json$/);
 
 export const get_all_lang = () => {
   let messages = {};
-  modules.keys().forEach(key => {
-    const _key = key.split("/")[1];
+  modules.keys().forEach((key) => {
+    let [, _key] = key.split("/");
+    [_key] = _key.split(".");
     messages[_key] = modules(key);
   });
   return messages;
@@ -23,5 +24,5 @@ export default createI18n({
   global: true,
   locale: get_default_locale(),
   fallbackLocale: get_default_locale(), // 默认语言
-  messages
+  messages,
 });

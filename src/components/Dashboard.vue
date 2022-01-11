@@ -301,6 +301,7 @@ watch(current_progress, () => {
     const debounce_scroll = debounce(() => {
       const el = document.getElementById(`lyric-${progress}`);
       el && el.scrollIntoView({ behavior: "smooth", block: "center" });
+      // el && (el.parentNode.scrollTop = el.offsetTop);
     }, 200);
     debounce_scroll();
   }

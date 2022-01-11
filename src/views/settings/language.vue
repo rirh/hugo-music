@@ -5,7 +5,7 @@
       <strong>{{ $t("settings.languageTips") }}</strong>
     </p>
 
-    <div class="cell" v-for="it in Object.keys(languages)" :key="it">
+    <div class="cell" v-for="it in Object.keys(options)" :key="it">
       <input
         v-model="language"
         type="radio"
@@ -15,7 +15,7 @@
         :checked="!!it.match(language)"
         @change="change_language"
       />
-      <label :for="it">{{ options[it] }} </label>
+      <label :for="it">{{ options[it] }}</label>
     </div>
   </div>
 </template>
@@ -40,27 +40,40 @@ onMounted(() => {
 const languages = ref(messages);
 
 const options = reactive({
-  de_de: "德语 - German - Deutsch ",
-  en_us: "英语 - English - English",
-  es: "西班牙语 - Spanish - Español",
-  fr: "法语 - French - français",
-  gr: "希腊语 - Greek (Greece) - Ελληνικά",
-  ha: "豪萨语 - Hausa - Hausa",
-  hi: "印地语 - Hindi - हिंदी ",
-  hu_hu: "匈牙利语（匈牙利）- Hungarian (Hungary) - magyar (Magyarország)",
-  ja: "日本語 - Japanese - 日本語",
-  ko: "韩语 - Korean - 한국어",
-  pt_br: "葡萄牙语（巴西）- Portuguese (Brazil) - Português (Brasil)",
-  pt_pt: "葡萄牙语（葡萄牙） - Portuguese (Portugal) - Português (Portugal)",
-  tw: "汉语 - Chinese (Traditional) - 中文（繁體）",
-  zh: "汉语 - Chinese (Simplified) - 中文（简体）"
+  zh: "zh - 简体中文",
+  en: "en - 英语",
+  yue: "yue - 粤语",
+  kor: "kor - 韩语",
+  th: "th - 泰语",
+  pt: "pt - 葡萄牙语",
+  el: "el - 希腊语",
+  bul: "bul - 保加利亚语",
+  fin: "fin - 芬兰语",
+  slo: "slo - 斯洛文尼亚语",
+  cht: "cht - 繁体中文",
+  fra: "fra - 法语",
+  ara: "ara - 阿拉伯语",
+  de: "de - 德语",
+  nl: "nl - 荷兰语",
+  est: "est - 爱沙尼亚语",
+  cs: "cs - 捷克语",
+  swe: "swe - 瑞典语",
+  vie: "vie - 越南语",
+  jp: "jp - 日语",
+  spa: "spa - 西班牙语",
+  ru: "ru - 俄语",
+  it: "it - 意大利语",
+  pl: "pl - 波兰语",
+  dan: "dan - 丹麦语",
+  rom: "rom - 罗马尼亚语",
+  hu: "hu - 匈牙利语",
 });
 function change_language() {
   if (languages.value) {
-    const value = availableLocales.find(it => it.match(language.value));
+    const value = availableLocales.find((it) => it.match(language.value));
     locale.value = value;
     store.commit("update_locales", value);
-    store.dispatch("postUpdateUser", {locales:value});
+    store.dispatch("postUpdateUser", { locales: value });
   }
 }
 </script>
