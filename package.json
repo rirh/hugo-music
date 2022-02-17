@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:prod": "vite build",
+    "build:stage": "vite build --mode staging"
   },
   "dependencies": {
     "@types/canvas-confetti": "^1.4.2",

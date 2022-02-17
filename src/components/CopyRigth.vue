@@ -4,11 +4,14 @@
       Site data is provided by NetEase Cloud. Please contact to delete
       infringement.
     </div>
-    <div>Copyright © 2021 tigerzh.com All Rights Reserved.</div>
+    <div>Copyright © 2021 - {{year}} tigerzh.com All Rights Reserved.</div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+const year = ref((new Date).getFullYear())
+</script>
 
 <style lang="scss" scoped>
 .copyright {
