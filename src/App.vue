@@ -1,29 +1,26 @@
-<template>
-  <router-view />
-</template>
-<script setup>
+<script setup lang="ts">
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { onMounted } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-if ("serviceWorker" in navigator)
-  navigator.serviceWorker.register("/service-worker.js").then((reg) => {
-    // sometime later…
-    reg.update();
-  });
 onMounted(() => {
   store.dispatch(
     "chengeApparance",
-    store.state.settings.appearance || process.env.VUE_APP_DEFAULT_THEME
+    store.state.settings.appearance || import.meta.env.VITE_APP_DEFAULT_THEME
   );
-  document.body.setAttribute("data-electron", process.env.IS_ELECTRON || false);
 });
 window.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     store.dispatch(
       "chengeApparance",
-      store.state.settings.appearance || process.env.VUE_APP_DEFAULT_THEME
+      store.state.settings.appearance || import.meta.env.VITE_APP_DEFAULT_THEME
     );
   }
 });
 </script>
+
+<template>
+  <router-view></router-view>
+</template>

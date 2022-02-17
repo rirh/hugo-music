@@ -82,9 +82,9 @@ const handle_close = () => {
   _emits("on-close");
 };
 const handle_go_export = () => {
-  if (process.env.IS_ELECTRON) {
-    const { shell } = require("electron");
-    shell.openExternal("http://signup.tigerzh.com/?appname=music");
+  if ( import.meta.env.IS_ELECTRON) {
+    // const { shell } = require("electron");
+    // shell.openExternal("http://signup.tigerzh.com/?appname=music");
   } else {
     window.location.href = "http://signup.tigerzh.com/?appname=music";
   }

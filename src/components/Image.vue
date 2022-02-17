@@ -1,7 +1,7 @@
 <template>
   <img
     ref="imageRef"
-    :class="[url ? 'show' : 'hidden', 'animate__animated', animate || '']"
+    :class="[src ? 'show' : 'hidden', 'animate__animated', animate || '']"
     :src="url"
     :alt="alt"
     @error="error"
@@ -41,7 +41,7 @@ onMounted(() => {
         url.value = resizeImage(src.value);
       }
     });
-  });
+  });  
   intersectionObserver.observe(imageRef.value);
 });
 onBeforeUnmount(() => {

@@ -1,5 +1,5 @@
 <template>
-<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <!-- <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
       <div>
         <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
@@ -52,8 +52,8 @@
         </div>
       </form>
     </div>
-  </div>
-  <!-- <div class="login">
+  </div> -->
+  <div class="login">
     <div>
       <Link to="/">
         <Image
@@ -112,7 +112,7 @@
         </Button>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup>
@@ -136,9 +136,9 @@ const form = reactive({
   sumbiting: false,
 });
 const handle_go_sigin = () => {
-  if (process.env.IS_ELECTRON) {
-    const { shell } = require("electron");
-    shell.openExternal("http://signup.tigerzh.com/?appname=music");
+  if (import.meta.env.IS_ELECTRON) {
+    // const { shell } = require("electron");
+    // shell.openExternal("http://signup.tigerzh.com/?appname=music");
   } else {
     window.location.href = "http://signup.tigerzh.com/?appname=music";
   }

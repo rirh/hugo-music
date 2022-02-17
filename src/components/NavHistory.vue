@@ -26,7 +26,7 @@ const router = useRouter();
 const route = useRoute();
 const dis_back = ref(false);
 const dis_forward = ref(false);
-const is_electron = ref(process.env.IS_ELECTRON || false);
+const is_electron = ref( import.meta.env.IS_ELECTRON || false);
 
 watch(
   () => route.fullPath,

@@ -52,7 +52,7 @@ import Dashboard from "@/components/Dashboard.vue";
 document.title = "Z ORG | MUSIC";
 
 const store = useStore();
-const is_electron = ref(process.env.IS_ELECTRON || false);
+const is_electron = ref( import.meta.env.IS_ELECTRON || false);
 const dashboard_open = computed(() => store.state.sound.dashboard_open);
 
 const handle_open_dashbord = () => {

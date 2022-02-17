@@ -8,7 +8,7 @@
       animated
       bg="transparent"
     />
-    <div v-show="!loading" class="container">
+    <div v-show="!loading" class="home-container">
       <h1 v-show="daily.coverImgUrl">{{ $t("home.browser") }}</h1>
       <div class="recommand box fr-2">
         <DailyTracksCard
@@ -230,7 +230,7 @@ const handle_play = id => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.home-container {
   padding: 3em;
   h1 {
     margin-top: 50px;
