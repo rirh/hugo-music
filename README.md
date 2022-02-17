@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AliMales/NotesMusic">
-    <img src="src/assets/images/logo192.png" alt="Logo" width="80" height="80">
+    <img src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/32x32.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Z ORG | MUSIC</h3>
@@ -20,7 +20,7 @@
     <a href="https://github.com/AliMales/NotesMusic"><strong>探索文档 »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/AliMales/NotesMusic">查看 Demo</a>
+    <a href="https://music.tigerzh.com">访问网站</a>
     ·
     <a href="https://github.com/AliMales/NotesMusic/issues">反馈bug</a>
     ·
@@ -60,15 +60,24 @@
 
 <!-- ABOUT THE PROJECT -->
 ## 关于项目
-西筹OpenAlpha(大V支持)是西筹金融科技出品的一站式基金投研平台，提供投前基金筛选、基金经理排名、市场总览、基金组合回测、业绩归因等功能。
-据基金业协会公布的数据，截止2021年一季度，我国公募基金的总规模已经达到了21亿元，同时，购买基金的人数也达到了6亿人，均为历史新高。随着基金的蓬勃发展，财富管理行业已经成为一个未来火热的方向。
-西筹金融科技致力于为财富管理机构及相关从业者打造一站式基金投研平台。
+
+##### 首页截图
+
+![index][product-screenshot-index]
+
+##### 歌词页截图
+
+![lyric][product-screenshot-lyric]
+
+##### 搜索结果页截图
+
+##### ![result][product-screenshot-result]
+
+##### 评论页面截图
+
+![comment][product-screenshot-comment]
 
 
-
-![Product Name Screen Shot][product-screenshot]
-
-首页截图.
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
 
@@ -131,117 +140,7 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 <!-- ROADMAP -->
 ## 看板
 
-##### 2022-02-16
-
-- 解决小程序端缓存问题
-- 错误引导页面上线
-
-##### 2022-01-26
-
-- 解决画图重复数据
-- 优化列表
-- 新增单选弹窗逻辑
-
-##### 2022-01-25
-
-- 解决bug
-
-##### 2022-01-24
-
-- 增加提示弹窗
-- 增加排序
-- 结果查询
-- 删除缓存
-- 解决弹窗问题
-
-##### 2022-01-22
-
-- 修改成立年限和获奖次数
-
-##### 2022-01-21
-
-- 小程序通过审核 配置金融科技小程序信息
-- 调试小程序从单聊界面进入
-- 配置金融科技公众号
-
-##### 2022-01-20
-
-- 小程序审核未通过重新提交审核
-  （因为审核人员无法进入小程序 这里的方案是截取小程序模拟器的运行图 加上录屏）
-- 多级条件联动讨论以及处理方案
-
-##### 2022-01-19
-
-- 配置正式环境
-- 发布大openalpha程序体验版本
-- 修改获取属性接口拆分成两个接口
-- 调试修改参数接口（修改无变化问题）
-- 提交小程序审核
-
-##### 2022-01-18
-
-- 小程序提交审核
-- 线上正式环境切换
-- 小程序正式环境部署
-- 每日会议小程序问题
-- 确定jssdk跳转方案
-- 小程序返回方案确定
-- 小程序获取用户信息方案确定
-
-##### 2022-01-17
-
-- 部署测试环境
-- 对接基金接口
-- 讨论关于基金筛选属性对应相关会议
-- 部署后台系统
-
-##### 2022-01-08
-
-- 小程序申请
-
-##### 2021-12-27
-
-- 讨论新方案回复关键字时候
-- 实践回复关键字链接不可行
-- 寻找前端技术专家交流方案
-- 解决方案
-  - 使用小程序嵌套Webview进行开发
-  - 各项功能使用网页形式
-  - 小程序使用西筹主体
-  - 通过场景值获取公众号信息
-
-##### 2021-12-24
-
-- 开发搜索页面
-- 部署服务
-
-##### 2021-12-23
-
-- 搭建页面框架
-- 搭建管理系统框架
-
-##### 2021-12-22
-
-- 讨论会议
-- 方案
-  - 使用HideMenu 隐藏传播入口
-  - 使用超长的链接
-  - 接管后台 获取用户与大V之间的关系
-- 遗留问题
-  - 方式入侵性太大
-  - 目标用户难以接受
-  - 开发工作量大 重复工作大
-
-##### 2021-12-21
-
-- 决定使用菜单栏值配置方案
-- 遗留问题
-  1. 如何保证用户从指定的公众号进入？
-  2. 如何拿到用户信息
-
-##### 2021-12-20
-
-- 需求会议
+- 
 
 
 
@@ -301,4 +200,8 @@ Project Link: [https://github.com/AliMales/NotesMusic](https://github.com/AliMal
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/AliMales/NotesMusic/blob/master/README.md
-[product-screenshot]: ./src/assets/images/banner.png
+
+[product-screenshot-index]: src/assets/image/index.jpg
+[product-screenshot-comment]: src/assets/image/comment.png
+[product-screenshot-lyric]: src/assets/image/lyric.png
+[product-screenshot-result]: src/assets/image/result.png
