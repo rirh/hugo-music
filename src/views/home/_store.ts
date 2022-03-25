@@ -1,8 +1,8 @@
-import { getSongUrl, getSongDetail, getLyric, getCommentMusic } from "@/api";
+import { getSongUrl, getSongDetail, getLyric, getCommentMusic } from "src/api";
 
 const DEF_ANALYSER_FFSIZE = 2048;
 const FEAD_SIZE = 0.8;
-let audioContext, audio_context, audio, source, gain, analyser, stereoInterval;
+let audioContext, audio_context: any, audio: any, source, gain: any, analyser: any, stereoInterval: any;
 
 export default {
   namespace: true,
@@ -31,7 +31,7 @@ export default {
     init_audio_context(state) {
       audioContext =
         window.AudioContext || // Default
-        window.webkitAudioContext || // Safari and old versions of Chrome
+        (window as any).webkitAudioContext || // Safari and old versions of Chrome
         false;
       audio_context = new audioContext();
       audio = new Audio();
@@ -307,9 +307,9 @@ export default {
     next({ dispatch, state }) {
       const list = Object.keys(state.play_list);
       const id = state.current_id;
-      const randomNum = (min, max) =>
+      const randomNum = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
-      const mode_func = {
+      const mode_func: any = {
         single: () => {
           return dispatch("fetch_song_data", state.current_id);
         },

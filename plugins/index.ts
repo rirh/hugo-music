@@ -3,7 +3,7 @@ import createAutoImport from './auto-import'
 import createCompression from './compression'
 import createSvgIcon from './svg-icon'
 
-export default function createVitePlugins(viteEnv, isBuild = false) {
+export default function createVitePlugins(viteEnv: any, isBuild = false) {
     process.env.VITE_APP_BUILD_TIME = `${Date.now()}`;
     const vitePlugins = [vue()]
     vitePlugins.push(createAutoImport())

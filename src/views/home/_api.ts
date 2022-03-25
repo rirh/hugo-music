@@ -1,14 +1,15 @@
-import request from "@/utils/request";
-// 多选搜索
-export function getSearchMultimatch(params) {
-  return request({
-    url: "/search/multimatch",
-    method: "get",
-    params
-  });
-}
+import request from "src/utils/request";
+import { Home } from 'src/@types/index'
+// // 多选搜索
+// export function getSearchMultimatch(params) {
+//   return request({
+//     url: "/search/multimatch",
+//     method: "get",
+//     params
+//   });
+// }
 // 搜索
-export function getCloudSearch(params) {
+export function getCloudSearch(params: Home.cloudSearchRequest) {
   return request({
     url: "/cloudsearch",
     method: "get",
@@ -17,7 +18,7 @@ export function getCloudSearch(params) {
 }
 
 // 搜索建议
-export function getSearchSuggest(params) {
+export function getSearchSuggest(params: Home.searchSuggetsRequest) {
   return request({
     url: "/search/suggest",
     method: "get",
@@ -26,7 +27,7 @@ export function getSearchSuggest(params) {
 }
 
 // 获取音乐的url
-export function getSongUrl(params) {
+export function getSongUrl(params: Home.songsRulRequest) {
   return request({
     url: "/song/url",
     method: "get",
@@ -35,7 +36,7 @@ export function getSongUrl(params) {
 }
 
 // 获取音乐的url
-export function getSongDetail(params) {
+export function getSongDetail(params: Home.songsDetail) {
   return request({
     url: "/song/detail",
     method: "get",
@@ -44,7 +45,7 @@ export function getSongDetail(params) {
 }
 
 // 获取音乐的url
-export function getLyric(params) {
+export function getLyric(params: Home.lyricRequest) {
   return request({
     url: "/lyric",
     method: "get",
@@ -53,14 +54,14 @@ export function getLyric(params) {
 }
 
 // 获取mv的url
-export function getMvUrl(id) {
+export function getMvUrl(id: number) {
   return request({
     url: `/mv/url?id=${id}`,
     method: "get"
   });
 }
 // 获取mv的url
-export function getVideoUrl(id) {
+export function getVideoUrl(id: number) {
   return request({
     url: `/video/url?id=${id}`,
     method: "get"
@@ -96,16 +97,15 @@ export function getTopArtists() {
   });
 }
 // 获取建议搜索
-export function getSearchHot(params) {
+export function getSearchHot() {
   return request({
     url: `/search/hot`,
     method: "get",
-    params
   });
 }
 
 // 获取音乐评论
-export function getCommentMusic(params) {
+export function getCommentMusic(params: Home.commentMusicRequest) {
   return request({
     url: `/comment/music`,
     method: "get",

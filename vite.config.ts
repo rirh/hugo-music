@@ -5,9 +5,8 @@ import createVitePlugins from "./plugins/index";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd());
-  console.log(env.VITE_APP_BASE_PATH)
   return {
-    base: env.VITE_APP_BASE_PATH,
+    base: env.VITE_APP_BASE_URL,
     plugins: createVitePlugins(env, command === "build"),
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias

@@ -1,6 +1,6 @@
 <template>
   <Skeleton
-    style="margin:3%"
+    style="margin: 3%"
     v-if="loading"
     width="74%"
     height="70vh"
@@ -73,11 +73,9 @@
         <SongWithInfo
           :image="it?.al?.picUrl"
           :name="it?.name"
-          :subtitle="
-            `${it.alia ? it.alia.toString() : ''} ${
-              it.tns ? it.tns.toString() : ''
-            }`
-          "
+          :subtitle="`${it.alia ? it.alia.toString() : ''} ${
+            it.tns ? it.tns.toString() : ''
+          }`"
           :id="it?.id"
           :desc="it?.ar"
           :publishTime="
@@ -114,11 +112,11 @@ const init = () => {
   const id = route.params.id;
   loading.value = true;
   getAlbum({ id })
-    .then(response => {
+    .then((response) => {
       const { album, songs: s } = response;
       playlist.value = album;
       if (!s) return;
-      const ids = s.map(it => it.id).toString();
+      const ids = s.map((it) => it.id).toString();
       getSongDetail({ ids })
         .then(({ songs }) => {
           loading.value = false;
@@ -132,13 +130,13 @@ const init = () => {
       loading.value = false;
     });
 };
-const to_time = value => {
+const to_time = (value) => {
   if (!value) return "";
   const m = `${Math.floor((value / 60) % 60)}`.padStart(2, "0"),
     s = `${Math.floor(value % 60)}`.padStart(2, "0");
   return `${m}:${s}`;
 };
-const handle_play = id => {
+const handle_play = (id) => {
   store.dispatch("fetch_song_data", id);
 };
 watch(
@@ -151,7 +149,7 @@ watch(
 const handle_to_song = () => {
   document.getElementById("songs").scrollIntoView({
     behavior: "smooth",
-    block: "start"
+    block: "start",
   });
 };
 </script>

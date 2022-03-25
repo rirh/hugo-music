@@ -7,7 +7,7 @@ import router from 'src/routes/index'
 // default english language
 import i18n from "src/locale/index";
 
- // svg icon
+// svg icon
 import 'virtual:svg-icons-register'
 import SvgIcon from "src/components/SVGicon.vue";
 
@@ -29,7 +29,7 @@ app.component('svg-icon', SvgIcon)
 
 smoothscroll.polyfill();
 
-if (true) {
+if ((store as any).state.settings.spreadflower) {
   var end = Date.now() + 5 * 1000;
   // go Buckeyes!
   var colors = ["#bb0000", "#ff0000"];
