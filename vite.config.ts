@@ -32,6 +32,17 @@ export default defineConfig(({ mode, command }) => {
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, ""),
         },
+        [env.VITE_APP_AURH_API]: {
+          target: env.VITE_APP_AURH_HOST,
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/auth-api/, ""),
+        },
+        [env.VITE_APP_UPLOAD_API]: {
+          target: env.VITE_APP_UPLOAD_HOST,
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/upload-api/, ""),
+        },
+
       },
     },
   };
