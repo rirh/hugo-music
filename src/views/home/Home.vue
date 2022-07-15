@@ -1,7 +1,7 @@
 <template>
   <div>
     <Skeleton
-      style="margin:3%"
+      style="margin: 3%"
       v-show="loading"
       width="74%"
       height="80vh"
@@ -29,7 +29,7 @@
         />
       </div>
       <h1>{{ $t("home.new") }}</h1>
-      <div class="song fr-2 ">
+      <div class="song fr-2">
         <div v-for="(it, index) in new_song_list" :key="index">
           <songs
             :image="it.picUrl"
@@ -40,7 +40,7 @@
         </div>
       </div>
       <h1>{{ $t("home.top") }}</h1>
-      <div class="box fr-3 ">
+      <div class="box fr-3">
         <div class="card" v-for="(it, index) in top_list" :key="index">
           <playlists
             :name="it.name"
@@ -51,7 +51,7 @@
           <!-- <div v-for="(songs, index) in top_list_songs" :key="index"> -->
           <br />
           <songs
-            v-for="(it, rank) in top_list_songs[index]"
+            v-for="(it, rank) in top_list_songs[it.name]"
             :key="it?.id"
             :image="it?.al?.picUrl"
             :name="it?.al?.name"
@@ -84,7 +84,7 @@ import {
   getHighQuality,
   getPlayListDetail,
   getSongDetail,
-  getTopArtists
+  getTopArtists,
 } from "@/api";
 import { formatCount } from "@/utils";
 
@@ -102,7 +102,7 @@ import playlists from "@/components/Playlists";
 const store = useStore();
 
 const top_list = ref([]);
-const top_list_songs = ref([]);
+const top_list_songs = ref({});
 const new_song_list = ref([]);
 const quality_song_list = ref([]);
 const aritsts_list = ref([]);
@@ -125,7 +125,7 @@ const init = () => {
     getTopList(),
     getPersonalizedNewsong(),
     getHighQuality(),
-    getTopArtists()
+    getTopArtists(),
   ])
     .then(
       ([response_hot, response_song, response_quality, response_aritsts]) => {
@@ -136,10 +136,10 @@ const init = () => {
           "热歌榜",
           "网络热歌榜",
           "美国Billboard榜",
-          "原创榜"
+          "原创榜",
         ];
-        top_list.value = emun.map(it =>
-          response_hot.list.find(song => song.name === it)
+        top_list.value = emun.map((it) =>
+          response_hot.list.find((song) => song.name === it)
         );
         new_song_list.value = response_song.result;
         const { playlists } = response_quality;
@@ -152,25 +152,31 @@ const init = () => {
         fetch_top_song();
       }
     )
-    .catch(error => {
+    .catch((error) => {
       loading.value = false;
       throw error;
     });
 };
 const fetch_top_song = () => {
-  const fetch_all_desc_arr = top_list.value.map(it =>
-    getPlayListDetail({ id: it.id })
-  );
-  Promise.all(fetch_all_desc_arr)
-    .then(async response => {
-      const songs = response.map(it => {
-        return it?.playlist?.tracks?.slice(0, 10);
-      });
-      top_list_songs.value = songs;
-    })
-    .catch(error => {
-      throw error;
-    });
+  const fetch_all_desc_arr = top_list.value.map((it, index) => {
+    const fetch_detail = (it) => {
+      getPlayListDetail({ id: it.id })
+        .then((response) => {
+          if (response.code) {
+            top_list_songs.value[it.name] = response?.playlist?.tracks?.slice(
+              0,
+              10
+            );
+          } else {
+            getPlayListDetail(it);
+          }
+        })
+        .catch((error) => {
+          getPlayListDetail(it);
+        });
+    };
+    fetch_detail(it);
+  });
 };
 const handle_play_daily = async () => {
   loading_daily.value = true;
@@ -201,10 +207,10 @@ const toggle_play_list = async () => {
     url,
     name,
     desc,
-    id
+    id,
   };
 };
-const fetch_list_detail = async id => {
+const fetch_list_detail = async (id) => {
   let result = {};
   const { playlist } = await getPlayListDetail({ id });
   const num = RandomNum(1, playlist.trackIds.length - 1);
@@ -213,7 +219,7 @@ const fetch_list_detail = async id => {
   [result] = songs;
   return result;
 };
-const handle_play = id => {
+const handle_play = (id) => {
   store
     .dispatch("fetch_song_data", id)
     .then(() => {

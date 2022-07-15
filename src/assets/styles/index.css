@@ -1,43 +1,43 @@
 @font-face {
   font-family: "Barlow";
   font-weight: normal;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Regular.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Regular.ttf") format("truetype");
+  src        : url("../font/Barlow-Regular.woff2") format("woff2"),
+    url("../font/Barlow-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Barlow";
   font-weight: medium;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Medium.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Medium.ttf") format("truetype");
+  src        : url("../font/Barlow-Medium.woff2") format("woff2"),
+    url("../font/Barlow-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Barlow";
   font-weight: 600;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-SemiBold.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-SemiBold.ttf") format("truetype");
+  src        : url("../font/Barlow-SemiBold.woff2") format("woff2"),
+    url("../font/Barlow-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Barlow";
   font-weight: bold;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Bold.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Bold.ttf") format("truetype");
+  src        : url("../font/Barlow-Bold.woff2") format("woff2"),
+    url("../font/Barlow-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Barlow";
   font-weight: 800;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-ExtraBold.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-ExtraBold.ttf") format("truetype");
+  src        : url("../font/Barlow-ExtraBold.woff2") format("woff2"),
+    url("../font/Barlow-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Barlow";
   font-weight: 900;
-  src        : url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Black.woff2") format("woff2"),
-    url("https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/Barlow-Black.ttf") format("truetype");
+  src        : url("../font/Barlow-Black.woff2") format("woff2"),
+    url("../font/Barlow-Black.ttf") format("truetype");
 }
 
 

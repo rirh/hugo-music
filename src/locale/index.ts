@@ -4,10 +4,10 @@ const modules = import.meta.globEager('../assets/locales/*.json');
 // const data = await Promise.all(Object.keys(modules).map(it=>modules[it]()))  
 
 export const get_all_lang = () => {
-  let messages = {};
+  let messages:any = {};
   Object.keys(modules).forEach(it => {
     const { default: data } = modules[it]
-    let _key = it.split("/");
+    let _key: any = it.split("/");
     [_key] = _key[_key.length - 1].split(".");
     messages[_key] = data
   })

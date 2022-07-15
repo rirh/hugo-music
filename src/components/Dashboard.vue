@@ -300,7 +300,12 @@ watch(current_progress, () => {
   if (times.includes(progress)) {
     const debounce_scroll = debounce(() => {
       const el = document.getElementById(`lyric-${progress}`);
-      el && el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el &&
+        el.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
       // el && (el.parentNode.scrollTop = el.offsetTop);
     }, 200);
     debounce_scroll();
@@ -412,7 +417,7 @@ const handle_go_artists = (id) => {
       brightness(var(--brightness-lyrics-background));
   }
   .lyrics-bg {
-    position: absolute;
+    position: fixed;
     height: 100vh;
     width: 100vw;
 
@@ -422,7 +427,7 @@ const handle_go_artists = (id) => {
       width: 140vw;
       height: 140vw;
       opacity: 0.6;
-      position: absolute;
+      position: fixed;
       background-size: cover;
     }
     .bg-r {
