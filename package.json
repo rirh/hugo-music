@@ -1,10 +1,10 @@
 {
   "name": "z-music-fe",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.2",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": " npm --no-git-tag-version version patch && vite build",
     "preview": "vite preview",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
@@ -22,6 +22,7 @@
     "conventional-changelog": "^3.1.25",
     "cz-conventional-changelog": "^3.3.0",
     "dayjs": "^1.10.7",
+    "fast-glob": "^3.2.11",
     "lodash": "^4.17.21",
     "plyr": "^3.6.12",
     "postcss": "^8.4.6",
