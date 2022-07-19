@@ -19,7 +19,7 @@
         <div class="buttons">
           <button
             :style="{ 'border-color': style.text_color }"
-            class="play-button button-icon "
+            class="play-button button-icon"
             @click="handle_play"
           >
             <Spinner :color="style.text_color" v-if="playloading" />
@@ -33,7 +33,7 @@
           <button
             :style="{ 'border-color': style.text_color }"
             @click="handle_next"
-            class="play-button button-icon "
+            class="play-button button-icon"
           >
             <Spinner :color="style.text_color" v-if="nextloading" />
             <svg-icon
@@ -56,7 +56,7 @@ import Image from "@/components/Image";
 import Spinner from "@/components/Spinner";
 import LinkWithArtists from "@/components/LinkWithArtists";
 const style = ref({
-  background: "#fff"
+  background: "#fff",
 });
 const loading = ref(false);
 
@@ -65,10 +65,10 @@ const props = defineProps({
   name: String,
   desc: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   nextloading: Boolean,
-  playloading: Boolean
+  playloading: Boolean,
 });
 const { url } = toRefs(props);
 const emit = defineEmits(["on-play", "on-next"]);
@@ -79,13 +79,14 @@ const handle_play = () => {
   emit("on-play");
 };
 const handle_load_back = () => {
+  if (!url.value) return;
   rgbaster(
     url.value, // 图片地址
     {
       ignore: ["rgb(255,255,255)", "rgb(0,0,0)"], // 要忽略识别的颜色
-      scale: 0.6 // 查询时缩小图片，降低精度。换取识别速度提高
+      scale: 0.6, // 查询时缩小图片，降低精度。换取识别速度提高
     }
-  ).then(response => {
+  ).then((response) => {
     const [primary, success] = response;
     style.value = {
       background: `linear-gradient(to top left,${primary.color}, ${success.color})`,
@@ -94,7 +95,7 @@ const handle_load_back = () => {
           .replace(new RegExp(/[rgb()]/g), ",")
           .split(",")
           .reduce((e, c) => (c.length ? e + "," + (255 - Number(c)) : e))
-          .replace(",", "rgb(") + ")"
+          .replace(",", "rgb(") + ")",
     };
     nextTick(() => {
       loading.value = true;

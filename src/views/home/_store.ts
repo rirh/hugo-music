@@ -366,6 +366,10 @@ export default {
         fetch_detail(state.play_list)
           .then(music => {
             commit("update_current_id", music.id);
+            if (!music.url) {
+              dispatch("next");
+              return;
+            }
             audio.src = music.url;
             audio.onloadedmetadata = async () => {
               if (audio.pause) dispatch("play");
@@ -384,7 +388,7 @@ export default {
             };
           })
           .catch(() => {
-            reject();
+            dispatch("next");
           });
       });
     }

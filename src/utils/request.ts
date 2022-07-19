@@ -1,16 +1,18 @@
 import axios from "axios";
+import axiosRetry from 'axios-retry'
+
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 // 不缓存图片
 axios.defaults.headers["Cache-Control"] = "no-cache";
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL:  import.meta.env.VITE_APP_BASE_API ||  import.meta.env.VITE_APP_BASE_API,
+  baseURL: `${import.meta.env.VITE_APP_BASE_API || import.meta.env.VITE_APP_BASE_API}`,
   withCredentials: true,
   // 超时
   timeout: 60000,
 });
-
+let axiosconfig: any = {}
 // request拦截器
 service.interceptors.request.use(
   (config) => {
@@ -18,6 +20,10 @@ service.interceptors.request.use(
     // 是否需要设置 token
     if (config.params) {
       config.params.timestamp = Date.now();
+    }
+    axiosconfig = null
+    if (config.url) {
+      axiosconfig = config;
     }
     return config;
   },
@@ -29,17 +35,19 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  (res) => {
+  (res,) => {
     // 未设置状态码则默认成功状态
     if (res?.data?.cookie && res?.data?.cookie[0])
       document.cookie = res.data.cookie[0];
-    // 返回数据判断
+    // 返回数据判断    
     if (res.data?.body) {
       return res.data?.body;
     } else if (res.data.code === 0) {
       return res.data;
     } else if (res.data.fileList) {
       return res.data;
+    } else if (`${res.data}`.startsWith('Welcome come to mars!') && axiosconfig) {
+      return service(axiosconfig)
     } else {
       return Promise.reject(res.data);
     }
@@ -57,5 +65,12 @@ service.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+axiosRetry(service, {
+  retries: 5,
+  retryCondition: (err) => {
+    console.log(err)
+    return axiosRetry.isNetworkOrIdempotentRequestError(err) || err?.response?.status === 404;
+  },
+});
 
 export default service;

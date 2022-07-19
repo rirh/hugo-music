@@ -15,33 +15,33 @@ import {
   onMounted,
   onBeforeUnmount,
   toRefs,
-  watch
+  watch,
 } from "vue";
 import { resizeImage } from "@/utils";
 import errorImage from "@/assets/image/error.png";
-const url = ref(null);
+const url = ref("");
 const imageRef = ref("imageRef");
 const props = defineProps({
   src: String,
   alt: String,
-  animate: String
+  animate: String,
 });
 
 const { src } = toRefs(props);
 let intersectionObserver = null;
 
-watch(src, params => {
+watch(src, (params) => {
   url.value = params.startsWith("http") ? resizeImage(params) : params;
 });
 
 onMounted(() => {
-  intersectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(item => {
+  intersectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((item) => {
       if (item.intersectionRatio > 0) {
         url.value = resizeImage(src.value);
       }
     });
-  });  
+  });
   intersectionObserver.observe(imageRef.value);
 });
 onBeforeUnmount(() => {
