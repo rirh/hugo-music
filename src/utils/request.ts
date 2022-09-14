@@ -41,11 +41,9 @@ service.interceptors.response.use(
       document.cookie = res.data.cookie[0];
     // 返回数据判断   
     if (res.data) {
-      return res.data;
-    } else if (res.data.code === 0) {
-      return res.data;
+      return res.data.body;
     } else if (res.data.fileList) {
-      return res.data;
+      return res.data.body;
     } else if (`${res.data}`.startsWith('Welcome come to mars!') && axiosconfig) {
       return service(axiosconfig)
     } else {
