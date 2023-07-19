@@ -59,7 +59,7 @@
         <Image
           class="logo"
           alt="logo"
-          src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
+          src="https://c18e-system-1257416358.cos.na-ashburn.myqcloud.com/image/logo-512x160.png"
         />
       </Link>
     </div>

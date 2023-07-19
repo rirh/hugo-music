@@ -97,6 +97,8 @@ const handle_logout = () => {
   // min-height: 80vh;
   height: 70vh;
   margin-bottom: 10px;
+  overflow: hidden;
+
   .left {
     width: 30vw;
     min-width: 200px;
@@ -113,7 +115,7 @@ const handle_logout = () => {
     flex: 1;
     padding: 35px 0;
     height: 100%;
-    overflow-y: scroll;
+    overflow: hidden;
   }
   .cell {
     display: flex;

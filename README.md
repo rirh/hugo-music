@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AliMales/NotesMusic">
-    <img src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/32x32.png" alt="Logo" width="80" height="80">
+    <img src="https://c18e-system-1257416358.cos.na-ashburn.myqcloud.com/image/32x32.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Z ORG | MUSIC</h3>

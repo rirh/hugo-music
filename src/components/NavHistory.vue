@@ -5,12 +5,14 @@
         title="点击可后退"
         icon-class="arrow-left"
         class="icon"
+        :style="{ opacity: dis_back ? 0 : 1 }"
         :class="{ disactive: dis_back }"
       ></svg-icon>
     </span>
     <span class="icon-btn" @click="handle_next">
       <svg-icon
         :class="{ disactive: dis_forward }"
+        :style="{ opacity: dis_forward ? 0 : 1 }"
         title="点击可前进"
         icon-class="arrow-right"
         class="icon"
@@ -26,7 +28,7 @@ const router = useRouter();
 const route = useRoute();
 const dis_back = ref(false);
 const dis_forward = ref(false);
-const is_electron = ref( import.meta.env.IS_ELECTRON || false);
+const is_electron = ref(import.meta.env.IS_ELECTRON || false);
 
 watch(
   () => route.fullPath,

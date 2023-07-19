@@ -2,13 +2,22 @@
   <div class="wapper" :class="[current_id === id && !notShowHover && 'active']">
     <div
       class="index"
-      :class="[index === 3 && 'rank-3', index === 2 && 'rank-2', index === 1 && 'rank-1']"
+      :class="[
+        index === 3 && 'rank-3',
+        index === 2 && 'rank-2',
+        index === 1 && 'rank-1',
+      ]"
       v-if="index"
     >
       {{ `${index}`.padStart(2, "0") }}
     </div>
     <div class="song" v-if="image" @click="handle_play(id)">
-      <Image class="image" animate="animate__slideInUp" :src="image" :alt="name" />
+      <Image
+        class="image"
+        animate="animate__slideInUp"
+        :src="image"
+        :alt="name"
+      />
       <div class="btn-song">
         <Spinner v-if="loading" color="var(--color-body-bg)" />
         <svg-icon
@@ -180,6 +189,9 @@ const handle_play = (id) => {
 }
 .rank-3 {
   color: rgba($color: #f00, $alpha: 0.4);
+}
+.wapper:hover {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .wapper:hover .play {
   opacity: 1;

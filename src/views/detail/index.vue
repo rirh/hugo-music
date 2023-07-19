@@ -9,123 +9,125 @@
         <span>&nbsp;{{ $t("searchResult.searchResult") }}</span>
       </h1>
       <Skeleton
-        style="margin:3%"
+        style="margin: 3%"
         v-if="loading"
         width="100%"
         height="40vh"
         animated
         bg="transparent"
       />
-      <div v-else v-for="(it, i) in response" :key="i">
-        <div>
-          <div class="title">
-            <h1 :id="it.label">{{ $t(`searchResult.${it.label}`) }}</h1>
-            <Link :to="`/detail/${route.params.keywords}/${it.label}`">
-              <span>{{ $t("searchResult.more") }}</span>
-            </Link>
-          </div>
-          <div
-            class="box fr-3"
-            style="gap: 0px 10px;"
-            v-if="it.label === 'songs'"
-          >
-            <songs
-              v-for="it in it.values"
-              :key="it.id"
-              :image="it?.al?.picUrl"
-              :name="it.name"
-              :id="it.id"
-              :desc="it?.ar"
-            />
-          </div>
-          <div
-            class="box fr-5"
-            v-if="it.label === 'artists'"
-            style="gap: 36px 24px;"
-          >
-            <artists
-              v-for="it in it.values"
-              :key="it.id"
-              :image="it.picUrl"
-              :name="it.name"
-              :id="it.id"
-            />
-          </div>
-          <div class="box fr-5" v-if="it.label === 'albums'">
-            <albums
-              v-for="it in it.values"
-              :key="it.id"
-              :image="it.picUrl"
-              :name="it.name"
-              :desc="it.artists"
-              :id="it.id"
-            />
-          </div>
-          <div
-            class="box fr-4"
-            v-if="it.label === 'mvs'"
-            style="gap: 36px 24px;"
-          >
-            <mvs
-              v-for="it in it.values"
-              :key="it.id"
-              :image="it.cover"
-              :name="it.name"
-              :desc="it.artistName"
-              :id="it.id"
-              @on-play="handle_show_video"
-            />
-          </div>
-          <div
-            class="box fr-4"
-            v-if="it.label === 'videos'"
-            style="gap: 36px 24px;"
-          >
-            <videos
-              v-for="it in it.values"
-              :key="it.id"
-              :image="it.coverUrl"
-              :name="it.title"
-              :desc="it.aliaName"
-              :id="it.vid"
-              @on-play="handle_show_video"
-            />
-          </div>
-          <div
-            class="box fr-4"
-            v-if="it.label === 'playlists'"
-            style="gap: 36px 24px;"
-          >
-            <playlists
-              v-for="it in it.values"
-              :key="it.vid"
-              :image="it.coverUrl || ''"
-              :name="it.title"
-              :id="it.vid"
-            />
-          </div>
-          <div
-            class="box fr-5"
-            v-if="it.label === 'userprofiles'"
-            style="gap: 36px 24px;"
-          >
-            <userprofiles
-              v-for="it in it.values"
-              :key="it.userId"
-              :image="it?.avatarUrl"
-              :name="it.nickname"
-              :id="it.userId"
-            />
-          </div>
-          <div
-            class="box fr-4"
-            v-if="it.label === 'djRadios'"
-            style="gap: 36px 24px;"
-          >
-            <djRadios v-for="it in it.values" :key="it.id" :it="it" />
+      <template v-else>
+        <div v-for="(it, i) in response" :key="i">
+          <div  v-if="it.values">
+            <div class="title">
+              <h1 :id="it.label">{{ $t(`searchResult.${it.label}`) }}</h1>
+              <Link :to="`/detail/${route.params.keywords}/${it.label}`">
+                <span>{{ $t("searchResult.more") }}</span>
+              </Link>
+            </div>
+            <div
+              class="box fr-3"
+              style="gap: 0px 10px"
+              v-if="it.label === 'songs'"
+            >
+              <songs
+                v-for="it in it.values"
+                :key="it.id"
+                :image="it?.al?.picUrl"
+                :name="it.name"
+                :id="it.id"
+                :desc="it?.ar"
+              />
+            </div>
+            <div
+              class="box fr-5"
+              v-if="it.label === 'artists'"
+              style="gap: 36px 24px"
+            >
+              <artists
+                v-for="it in it.values"
+                :key="it.id"
+                :image="it.picUrl"
+                :name="it.name"
+                :id="it.id"
+              />
+            </div>
+            <div class="box fr-5" v-if="it.label === 'albums'">
+              <albums
+                v-for="it in it.values"
+                :key="it.id"
+                :image="it.picUrl"
+                :name="it.name"
+                :desc="it.artists"
+                :id="it.id"
+              />
+            </div>
+            <div
+              class="box fr-4"
+              v-if="it.label === 'mvs'"
+              style="gap: 36px 24px"
+            >
+              <mvs
+                v-for="it in it.values"
+                :key="it.id"
+                :image="it.cover"
+                :name="it.name"
+                :desc="it.artistName"
+                :id="it.id"
+                @on-play="handle_show_video"
+              />
+            </div>
+            <div
+              class="box fr-4"
+              v-if="it.label === 'videos'"
+              style="gap: 36px 24px"
+            >
+              <videos
+                v-for="it in it.values"
+                :key="it.id"
+                :image="it.coverUrl"
+                :name="it.title"
+                :desc="it.aliaName"
+                :id="it.vid"
+                @on-play="handle_show_video"
+              />
+            </div>
+            <div
+              class="box fr-4"
+              v-if="it.label === 'playlists'"
+              style="gap: 36px 24px"
+            >
+              <playlists
+                v-for="it in it.values"
+                :key="it.vid"
+                :image="it.coverUrl || ''"
+                :name="it.title"
+                :id="it.vid"
+              />
+            </div>
+            <div
+              class="box fr-5"
+              v-if="it.label === 'userprofiles'"
+              style="gap: 36px 24px"
+            >
+              <userprofiles
+                v-for="it in it.values"
+                :key="it.userId"
+                :image="it?.avatarUrl"
+                :name="it.nickname"
+                :id="it.userId"
+              />
+            </div>
+            <div
+              class="box fr-4"
+              v-if="it.label === 'djRadios'"
+              style="gap: 36px 24px"
+            >
+              <djRadios v-for="it in it.values" :key="it.id" :it="it" />
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </main>
   </transition>
   <ModalWithVideo
@@ -156,7 +158,7 @@ const response = ref([]);
 const loading = ref(true);
 const videoData = reactive({
   open: false,
-  url: ""
+  url: "",
 });
 onMounted(async () => {
   init();
@@ -167,7 +169,7 @@ watch(route, () => {
 const handle_close_video = () => {
   videoData.open = false;
 };
-const handle_show_video = url => {
+const handle_show_video = (url) => {
   console.log(url);
   if (url) {
     videoData.open = true;
@@ -175,20 +177,32 @@ const handle_show_video = url => {
   }
 };
 const init = () => {
-  // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
+  // type: 搜索类型；
+  // 默认为 1 即单曲 ,
+  // 取值意义 :
+  // 1: 单曲,
+  //  10: 专辑,
+  //   100: 歌手,
+  //   1000: 歌单,
+  //   1002: 用户,
+  //    1004: MV,
+  //     1006: 歌词,
+  //      1009: 电台,
+  //      1014: 视频,
+  //      1018:综合
   const types = [1, 10, 100, 1000, 1002, 1004, 1009, 1014];
   loading.value = true;
   Promise.all(
-    types.map(type =>
+    types.map((type) =>
       getCloudSearch({
         ...route.params,
         type,
         limit: 10,
-        offset: 0
+        offset: 0,
       })
     )
   )
-    .then(res => {
+    .then((res) => {
       loading.value = false;
       response.value = res.map(({ result, code }) => {
         if (code !== 200) result = {};
@@ -214,12 +228,12 @@ const init = () => {
           const type = route.query.type;
           document.getElementById(type).scrollIntoView({
             behavior: "smooth",
-            block: "start"
+            block: "start",
           });
         }
       });
     })
-    .catch(error => {
+    .catch((error) => {
       loading.value = false;
       throw error;
     });

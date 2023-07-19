@@ -73,6 +73,7 @@
 </template>
 
 <script setup>
+import { throttle } from "lodash";
 import { ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -86,22 +87,24 @@ const store = useStore();
 
 const query = useDebouncedRef("", 600);
 
-watch(query, q => {
-  // 发起API请求
-  fetch_search_song(q);
-});
+watch(
+  query,
+  throttle(function (q) {
+    fetch_search_song(q);
+  }, 200)
+);
 const song_options = ref([]);
 const loading = ref(false);
 const show_options = ref(false);
 const hot_key_words = ref([]);
 const searchRef = ref();
 onMounted(() => {
-  getSearchHot().then(response => {
+  getSearchHot().then((response) => {
     hot_key_words.value = response.result.hots;
   });
 });
 
-const handle_key_words = keywords => {
+const handle_key_words = (keywords) => {
   query.value = keywords;
   show_options.value = true;
 };
@@ -110,26 +113,28 @@ const handle_blur = () => {
     show_options.value = false;
   }, 200);
 };
-const fetch_search_song = async e => {
+const fetch_search_song = async (e) => {
   loading.value = true;
   const keywords = e;
   const { result, code } = await getSearchSuggest({ keywords });
   loading.value = false;
   if (code !== 200) return;
   if (!result.order) return;
-  song_options.value = result?.order.map(e => {
+  song_options.value = result?.order.map((e) => {
     let options = result[e];
-    options = options.map(it => ({
+    options = options.map((it) => ({
       ...it,
       value: it.id,
-      label: `${it.name}${(it.artists &&
-        "-" + it.artists.map(artist => artist.name).join("/")) ||
-        ""}`
+      label: `${it.name}${
+        (it.artists &&
+          "-" + it.artists.map((artist) => artist.name).join("/")) ||
+        ""
+      }`,
     }));
     return {
       value: e,
       label: e,
-      options
+      options,
     };
   });
   show_options.value = true;
@@ -138,7 +143,7 @@ const fetch_search_song = async e => {
 // const handle_detail = () => {
 //   router.push(`/detail/${select.value.query}`);
 // };
-const handle_go_search_page = keywords => {
+const handle_go_search_page = (keywords) => {
   router.push(`/detail/${keywords}`);
 };
 const handle_select = async (type, id) => {
@@ -151,7 +156,7 @@ const handle_select = async (type, id) => {
       break;
   }
 };
-const handle_go_detail = label => {
+const handle_go_detail = (label) => {
   if (label) label = `?type=${label}`;
   if (query.value) {
     router.push(`/detail/${query.value || ""}${label || ""}`);

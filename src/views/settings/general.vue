@@ -66,7 +66,7 @@ import { useStore } from "vuex";
 const store = useStore();
 
 const spreadflower = ref("auto");
-const lyricBgMode = ref("blur");
+const lyricBgMode = ref("dynamic");
 watchEffect(() => {
   spreadflower.value = store.state.settings.spreadflower;
   lyricBgMode.value = store.state.settings.lyricBgMode;

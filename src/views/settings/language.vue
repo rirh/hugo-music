@@ -1,10 +1,11 @@
 <template>
   <div class="language">
-    <h1>{{ $t("settings.language") }}</h1>
-    <p>
-      <strong>{{ $t("settings.languageTips") }}</strong>
-    </p>
-
+    <div class="header">
+      <h1>{{ $t("settings.language") }}</h1>
+      <p>
+        <strong>{{ $t("settings.languageTips") }}</strong>
+      </p>
+    </div>
     <div class="cell" v-for="it in Object.keys(options)" :key="it">
       <input
         v-model="language"
@@ -83,7 +84,12 @@ function change_language() {
   padding: 0 40px;
   height: 80vh;
   overflow-y: scroll;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
+  position: relative;
+  .header {
+    position: sticky;
+    top: 0;
+  }
   .cell {
     // line-height: 30px;
     margin-bottom: 5px;

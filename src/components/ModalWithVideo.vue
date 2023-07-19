@@ -28,6 +28,7 @@ import Modal from "./Modal.vue";
 const store = useStore();
 const videoRef = ref();
 const current_state = computed(() => store.state.sound.current_state);
+const player = new Plyr(videoRef);
 
 const _prop = defineProps({
   open: {

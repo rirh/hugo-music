@@ -1,5 +1,5 @@
 <template>
-  <div class="nextlist">
+  <div class="nextlist" v-clock>
     <h1 v-if="current_song.id">正在播放</h1>
     <Songs
       :image="current_song.image"
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="box fr-3" style=" gap: 10px 10px;">
+    <div class="box fr-3" style="gap: 10px 10px">
       <Songs
         v-for="(it, i) in list.value"
         :key="it"
@@ -35,7 +35,7 @@
       >
         <div class="flex-1">
           <Button
-            v-if="list.value.length"
+            v-if="current_song.id !== it.id"
             @click="handle_delete_song(it.id, i)"
             class="flex-1-btn"
             icon-class="clear"
@@ -56,9 +56,10 @@ import Songs from "@/components/Songs";
 import Button from "@/components/Button";
 const store = useStore();
 const list = reactive({ value: [] });
+
 watchEffect(() => {
   const play_list = store.state.sound.play_list;
-  list.value = Object.keys(play_list).map(key => {
+  list.value = Object.keys(play_list).map((key) => {
     const it = play_list[key];
     const image = it?.songs[0]?.al?.picUrl;
     const name = it?.songs[0]?.name;
@@ -70,7 +71,7 @@ watchEffect(() => {
       name,
       auth,
       durt,
-      id
+      id,
     };
   });
   return store.state.sound.play_list;
@@ -92,7 +93,7 @@ const current_song = computed(() => {
       name,
       auth,
       durt,
-      id
+      id,
     };
   }
   return result;

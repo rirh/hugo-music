@@ -33,7 +33,7 @@ const _props = defineProps({
   name: String,
   image: String,
   desc: String,
-  id: Number
+  id: Number,
 });
 const props = reactive(_props);
 const current_url = ref(null);
@@ -64,6 +64,7 @@ const handle_load_video = async () => {
     width: 100%;
     overflow: hidden;
     border-radius: 0.75em;
+
     .video {
       height: 120px;
       width: 100%;
@@ -88,9 +89,12 @@ const handle_load_video = async () => {
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      object-fit: cover;
+      object-position: left -30px;
       &:hover {
         transform: scale(2.2);
         transform-origin: center;
+        object-position: center;
       }
     }
   }

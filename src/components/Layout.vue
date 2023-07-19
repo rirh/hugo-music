@@ -3,24 +3,19 @@
   <div class="app-container" :class="{ drag: is_electron }">
     <div class="left" :style="{ 'padding-top': is_electron ? '30px' : '15px' }">
       <Link to="/">
-        <Image
-          class="logo"
-          alt="logo"
-          src="https://6372-crypto2server-576164-1302901174.tcb.qcloud.la/z-org-logos/logo-512x160.png"
-        />
+      <Image class="logo" alt="logo"
+        src="https://c18e-system-1257416358.cos.na-ashburn.myqcloud.com/image/logo-512x160.png" />
       </Link>
       <NavHistory />
       <SearchBar />
       <Link class="setting" to="/settings">
-        <svg-icon class="icon" icon-class="settings" />
+      <svg-icon class="icon" icon-class="settings" />
       </Link>
     </div>
     <div class="right">
       <router-view v-slot="{ Component }">
-        <transition
-          enter-active-class="animate__animated animate__fadeIn"
-          leave-active-class="animate__animated animate__fadeOut"
-        >
+        <transition enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut">
           <!-- <keep-alive> -->
           <component :is="Component" />
           <!-- </keep-alive> -->
@@ -30,10 +25,8 @@
       <PlayerBar @on-open-dashbord="handle_open_dashbord" />
     </div>
   </div>
-  <transition
-    leave-active-class="animate__animated animate__fadeOutDown"
-    enter-active-class="animate__animated animate__fadeInUp"
-  >
+  <transition leave-active-class="animate__animated animate__fadeOutDown"
+    enter-active-class="animate__animated animate__fadeInUp">
     <Dashboard v-show="dashboard_open" />
   </transition>
 </template>
@@ -52,7 +45,7 @@ import Dashboard from "@/components/Dashboard.vue";
 document.title = "Z ORG | MUSIC";
 
 const store = useStore();
-const is_electron = ref( import.meta.env.IS_ELECTRON || false);
+const is_electron = ref(import.meta.env.IS_ELECTRON || false);
 const dashboard_open = computed(() => store.state.sound.dashboard_open);
 
 const handle_open_dashbord = () => {
@@ -75,6 +68,8 @@ const handle_open_dashbord = () => {
   background-attachment: fixed;
   box-sizing: border-box;
   z-index: -1;
+  color-scheme: auto;
+
   .left {
     width: 295px;
     min-width: 295px;
@@ -87,6 +82,8 @@ const handle_open_dashbord = () => {
     padding: 15px 20px;
     position: relative;
     box-sizing: border-box;
+    -webkit-app-region: drag;
+
     .setting {
       position: absolute;
       left: 20px;
@@ -98,20 +95,25 @@ const handle_open_dashbord = () => {
         width: 24px;
         transition: all 0.2s;
       }
+
       .icon:hover {
         color: var(--color-text);
         transform: scale(1.1);
       }
+
       .icon:active {
         transform: scale(0.85);
       }
     }
   }
+
   .right {
     flex: 1;
     overflow: auto;
     position: relative;
+    -webkit-app-region: drag;
   }
+
   .logo {
     height: 45px;
     min-height: 35px;

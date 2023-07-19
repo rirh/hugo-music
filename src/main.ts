@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 // global css
 import 'src/assets/styles/index.css'
+import 'src/assets/styles/plyr.css'
 
 import store from 'src/store/index'
 import router from 'src/routes/index'

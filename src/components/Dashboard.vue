@@ -313,8 +313,12 @@ watch(current_progress, () => {
 });
 
 const time_to_sec = (time) => {
-  const [m, s] = time.split(":");
-  return Number(m * 60) + Number(s);
+  let result = ''
+  if(time){
+    const [m, s] = time.split(":");
+    result= Number(m * 60) + Number(s);
+  }
+  return result
 };
 
 const handle_close_dashboard = () => {

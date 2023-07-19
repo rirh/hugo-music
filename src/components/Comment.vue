@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-  name: "Comment"
+  name: "Comment",
 };
 </script>
 <script setup>
@@ -40,8 +40,8 @@ defineProps({
   avatar: String,
   auth: String,
   content: String,
-  time: String,
-  beReplied: Array
+  time: String | Number,
+  beReplied: Array,
 });
 </script>
 

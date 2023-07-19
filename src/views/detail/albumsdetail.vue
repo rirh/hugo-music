@@ -89,7 +89,7 @@
     </ul>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { getSongDetail, getAlbum } from "@/api";
