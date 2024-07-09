@@ -82,12 +82,12 @@ const handle_close = () => {
   _emits("on-close");
 };
 const handle_go_export = () => {
-  if (import.meta.env.IS_ELECTRON) {
-    const { shell } = require("electron");
-    shell.openExternal("http://signup.tigerzh.com/?appname=music");
-  } else {
-    window.open("http://signup.tigerzh.com/?appname=music", { blank: true });
-  }
+  // if (import.meta.env.IS_ELECTRON) {
+  //   const { shell } = require("electron");
+  //   shell.openExternal("http://signup.tigerzh.com/?appname=music");
+  // } else {
+  //   window.open("http://signup.tigerzh.com/?appname=music", { blank: true });
+  // }
 };
 const handle_set_effects = (type) => {
   store.dispatch(type);

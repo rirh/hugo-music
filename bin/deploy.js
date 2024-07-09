@@ -25,7 +25,7 @@ const inquirer = require("inquirer");
 const _package = require("../package.json");
 // const { outputDir } = require("../vue.config");
 const envs = require("./env.json");
-const { exec } = require('child_process')
+const { exec } = require("child_process");
 // 当前版本
 const version = _package.version;
 // 项目目录
@@ -50,18 +50,18 @@ inquirer
       const spinner = ora({
         text: `${answers.commit}：部署中...`,
       }).start();
-      exec(
-        `pnpm build:${it.mpmModel};
-        cp -r ${dirPath} ${versionPath};
-        scp -r ${dirPath} ${it.sshNmae}:${it.targetPath};
-        scp -r ${versionPath} ${it.sshNmae}:${it.targetPath};
-        rm -rf ${versionPath};
-        `,
-        function (err) {
-          if (err) throw err;
-          spinner.succeed("部署完成");
-          spinner.succeed(dayjs().format("YYYY-MM-DD HH:mm:ss"));
-        }
-      );
+      const command = `npm run build:${it.mpmModel};
+      cp -r ${dirPath} ${versionPath};
+      scp -r ${dirPath} ${it.sshNmae}:${it.targetPath};
+      scp -r ${versionPath} ${it.sshNmae}:${it.targetPath};
+      rm -rf ${versionPath};
+      `;
+      console.log(command)
+
+      exec(command, function (err) {
+        if (err) throw err;
+        spinner.succeed("部署完成");
+        spinner.succeed(dayjs().format("YYYY-MM-DD HH:mm:ss"));
+      });
     }
   });

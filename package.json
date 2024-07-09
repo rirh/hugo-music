@@ -1,7 +1,7 @@
 {
   "name": "z-music-fe",
   "private": true,
-  "version": "1.0.17",
+  "version": "1.0.23",
   "scripts": {
     "dev": "vite",
     "build": " npm --no-git-tag-version version patch && vite build",
@@ -9,7 +9,7 @@
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "changelog": "rm -rf CHANGELOG.md && conventional-changelog -p angular -i CHANGELOG.md -s",
-    "cz": "git add . && git cz && git push",
+    "git": "git add . && git cz && git push",
     "deploy": "npm --no-git-tag-version version patch && node bin/deploy.js"
   },
   "dependencies": {
@@ -46,7 +46,6 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.0",
     "child_process": "1.0.2",
-    "electron": "^19.0.8",
     "inquirer": "8.0.0",
     "ora": "5.4.0",
     "typescript": "^4.5.4",
