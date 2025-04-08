@@ -128,7 +128,7 @@ const i18n = useI18n();
 const store = useStore();
 const router = useRouter();
 const form = reactive({
-  email: "huibikuile@qq.com",
+  email: "",
   code: "",
   tips: i18n.t("login.sendCode"),
   is_send: false,
@@ -140,7 +140,7 @@ const handle_go_sigin = () => {
     // const { shell } = require("electron");
     // shell.openExternal("http://signup.tigerzh.com/?appname=music");
   } else {
-    window.location.href = "http://signup.tigerzh.com/?appname=music";
+    // window.location.href = "http://signup.tigerzh.com/?appname=music";
   }
 };
 const handle_login = () => {

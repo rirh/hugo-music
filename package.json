@@ -1,7 +1,7 @@
 {
   "name": "z-music-fe",
   "private": true,
-  "version": "1.0.23",
+  "version": "1.0.27",
   "scripts": {
     "dev": "vite",
     "build": " npm --no-git-tag-version version patch && vite build",

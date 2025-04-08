@@ -20,7 +20,7 @@
     <a href="https://github.com/AliMales/NotesMusic"><strong>探索文档 »</strong></a>
     <br />
     <br />
-    <a href="https://music.tigerzh.com">访问网站</a>
+    <a href="https://music.240515.xyz">访问网站</a>
     ·
     <a href="https://github.com/AliMales/NotesMusic/issues">反馈bug</a>
     ·

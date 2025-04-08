@@ -1,21 +1,39 @@
-
 <template>
   <div class="app-container" :class="{ drag: is_electron }">
     <div class="left" :style="{ 'padding-top': is_electron ? '30px' : '15px' }">
       <Link to="/">
-      <Image class="logo" alt="logo"
-        src="https://c18e-system-1257416358.cos.na-ashburn.myqcloud.com/image/logo-512x160.png" />
+        <Image
+          class="logo"
+          alt="logo"
+          src="https://c18e-system-1257416358.cos.na-ashburn.myqcloud.com/image/logo-512x160.png"
+        />
       </Link>
       <NavHistory />
       <SearchBar />
+      <div
+        style="position: absolute; left: 0; bottom: 35px; transform: scale(0.8)"
+      >
+        <iframe
+          frameborder="0"
+          src="https://support.nodeget.com/page/promotion?id=187"
+          style="
+            border-radius: 8px;
+            height: 250px;
+            transform: scale(1);
+            transform-origin: top left;
+          "
+        ></iframe>
+      </div>
       <Link class="setting" to="/settings">
-      <svg-icon class="icon" icon-class="settings" />
+        <svg-icon class="icon" icon-class="settings" />
       </Link>
     </div>
     <div class="right">
       <router-view v-slot="{ Component }">
-        <transition enter-active-class="animate__animated animate__fadeIn"
-          leave-active-class="animate__animated animate__fadeOut">
+        <transition
+          enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut"
+        >
           <!-- <keep-alive> -->
           <component :is="Component" />
           <!-- </keep-alive> -->
@@ -25,8 +43,10 @@
       <PlayerBar @on-open-dashbord="handle_open_dashbord" />
     </div>
   </div>
-  <transition leave-active-class="animate__animated animate__fadeOutDown"
-    enter-active-class="animate__animated animate__fadeInUp">
+  <transition
+    leave-active-class="animate__animated animate__fadeOutDown"
+    enter-active-class="animate__animated animate__fadeInUp"
+  >
     <Dashboard v-show="dashboard_open" />
   </transition>
 </template>
